@@ -1,0 +1,96 @@
+package controllers;
+
+import javafx.fxml.FXML;
+import javafx.scene.image.ImageView;
+
+public class HomeController {
+
+    @FXML
+    private ImageView hex;
+
+    @FXML
+    private ImageView pin;
+
+    @FXML
+    private ImageView clock;
+
+    @FXML
+    private ImageView vcc;
+
+    @FXML
+    private ImageView mass;
+
+    @FXML
+    private ImageView and;
+
+    @FXML
+    private ImageView or;
+
+    @FXML
+    private ImageView xor;
+
+    @FXML
+    private ImageView nand;
+
+    @FXML
+    private ImageView nor;
+
+    @FXML
+    private ImageView not;
+
+    @FXML
+    private ImageView jk;
+
+    @FXML
+    private ImageView d;
+
+    @FXML
+    private ImageView rs;
+
+    @FXML
+    private ImageView t;
+
+    @FXML
+    private ImageView cpt;
+
+    @FXML
+    private ImageView registreDecalge;
+
+    @FXML
+    private ImageView mux;
+
+    @FXML
+    private ImageView dmux;
+
+    @FXML
+    private ImageView dec;
+
+    @FXML
+    private ImageView addcomplet;
+
+    @FXML
+    private ImageView demiAdd;
+
+    @FXML
+    private ImageView enco;
+
+    @FXML
+    private ImageView fichier;
+
+    @FXML
+    private ImageView edition;
+
+    @FXML
+    private ImageView simulation;
+
+    @FXML
+    private ImageView affichage;
+
+    @FXML
+    private ImageView aide;
+
+    @FXML
+    private ImageView darkMode;
+
+}
+
