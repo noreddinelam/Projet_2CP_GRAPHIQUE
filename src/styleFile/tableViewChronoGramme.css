@@ -13,6 +13,7 @@
 .table-view .column-header-background .label{
     -fx-background-color: transparent;
     -fx-text-fill: white;
+    -fx-font-family: "Calisto MT";
 }
 
 .table-view .column-header {
@@ -39,6 +40,9 @@
     -fx-background-color: #005797;
     -fx-background-insets: 0;
     -fx-background-radius: 1;
+}
+.table-cell { 
+  -fx-font-family: "Calisto MT"; 
 }
 
 
