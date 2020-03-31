@@ -469,7 +469,7 @@
                                                    <children>
                                                       <ImageView fx:id="registreDecalge" fitHeight="54.0" fitWidth="86.0" layoutX="14.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../dec/1-2.png" />
+                                                            <Image url="@../regDecDroite/2_FM.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
