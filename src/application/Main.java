@@ -34,6 +34,12 @@ public class Main extends Application {
 		        //playing the transition   
 		        fade.play();  
 			scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fichier.fxml"));
+
+			Parent root = fxmlLoader.load();
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/styleFile/fichier.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
