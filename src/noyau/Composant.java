@@ -77,12 +77,19 @@ public abstract class Composant implements Serializable{
 		return Integer.toString(res);
 	}
 	
-
+	public String concatener(EtatLogique[] tabFils,int tai) { // Role : convertir les etats logiques des fils du "tabFils" de taille "tai" 
+		//        en binaire et les concatener 
+		int res = 0;
+		for (int i = 0; i < tai; i++) {
+			res =  res*10 +tabFils[tai-i-1].getNum();
+		}
+		return Integer.toString(res);
+	}
 	
 	public EtatLogique validerEntrees() { //role :  valider si les entrees du composant sont pretes 
 		int i =0;
 		while(i<nombreEntree) {
-			if(entrees[i].getEtatLogiqueFil()== null) // verifier si toutes les entrees du composants sont reliées a un autre composant 
+			if(entrees[i]== null) // verifier si toutes les entrees du composants sont reliées a un autre composant 
 				return null;
 			if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum()) //  verifier si le fil d'entree est en haute impedence . 
 				return EtatLogique.HAUTE_IMPEDANCE;

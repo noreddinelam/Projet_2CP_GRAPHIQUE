@@ -6,6 +6,7 @@ public class Compteur extends Sequentiels{
 	private int valeurMax; 
 	private Fil load = null;
 	private boolean compter = true; // true -> compteur /  false ->decompteur	
+	
 
 	public Compteur(int nombreEntree,String nom,Front front) { // constructeur 
 		super(nombreEntree,nom,front);
@@ -19,50 +20,21 @@ public class Compteur extends Sequentiels{
 
 	public void genererSorties() { // role : executer une des fonctions du compteur (compter,decompter,remise a zero ou chargement) 
 								   //        et mettre le resultat dans les fils de sortie
-		if (!(this.clear.getEtatLogiqueFil().getNum() == 0))  // clear==1
-		{
-			if  (!(this.load.getEtatLogiqueFil().getNum() == 0)) // load == 1
-			{
-				if (compter == true) // compter
-				{	
-					this.compter();
-				}
-				else // compter == false (decompteur)
-				{	
-					this.decompter();
-				}
-			}
-			else // load == zero
-			{
-				valeur = Integer.parseInt(this.concatener(entrees, nombreEntree),2);// recuperer la valeur d'entree 
-			}
-		}
-		else // clear == zero
-		{
+		if (clear.getEtatLogiqueFil().getNum() == 0) {
 			valeur = 0;
+			int bin = Integer.parseInt(Integer.toBinaryString(valeur)); // convertir la valeur du compteur en binaire
+			numToFils(bin); // mettre la valeur du compteur sur les fils de sortie
 		}
-	
-		int bin = Integer.parseInt(Integer.toBinaryString(valeur)); // convertir la valeur du compteur en binaire
-		numToFils(bin); // mettre la valeur du compteur sur les fils de sortie
-
+		else {
+			initialiser();
+		}
 	}
 	public boolean valider() {
-		if (clear.getEtatLogiqueFil().getNum() == 1 && load.getEtatLogiqueFil().getNum() == 1) {// mode synchrone
-			if(entreeHorloge != null) { // horloge reliée 
-					switch (front) { // verification de l'etat de l'horloge .
-					case Front_Descendant:{
-						if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ZERO )
-							return true;
-					}break;
-					case Front_Montant :{
-						if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ONE )
-							return true;
-					}break;
-				}
-			}
+		if (clear.getEtatLogiqueFil().getNum() == 0) {
+			return true;
 		}
-		else if(load.getEtatLogiqueFil().getNum() == 0 && clear.getEtatLogiqueFil().getNum() == 1){ // mode asynchrone 
-			if(validerEntrees().getNum() == 1) return true; //verification de toutes les entrees .
+		if (load.getEtatLogiqueFil().getNum() == 0 && validerEntrees() == EtatLogique.ONE) {
+			return true;
 		}
 		return false;
 	}
@@ -101,13 +73,69 @@ public class Compteur extends Sequentiels{
 	@Override
 	public void genererSortiesSyncho() {
 		// TODO Auto-generated method stub
-		
+		if(load.getEtatLogiqueFil().getNum() == 1)
+		{
+			if (compter == true) // compter
+			{	
+				this.compter();
+			}
+			else // compter == false (decompteur)
+			{	
+				this.decompter();
+			}
+		}
+		else {
+			valeur = Integer.parseInt(this.concatener(etatPrec, nombreEntree),2);
+		}
+		int bin = Integer.parseInt(Integer.toBinaryString(valeur)); // convertir la valeur du compteur en binaire
+		numToFils(bin); // mettre la valeur du compteur sur les fils de sortie
 	}
 
 	@Override
 	public boolean validerSyncho() {
+		boolean f = false;
+		if(clear.getEtatLogiqueFil()==EtatLogique.ONE) {
+			if((load.getEtatLogiqueFil() == EtatLogique.ONE) || ((load.getEtatLogiqueFil() == EtatLogique.ZERO)&&(validerEntrees() == EtatLogique.ONE))) {
+				
+				if (entreeHorloge != null) {
+					switch (front) {
+					case Front_Descendant:{
+						if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ZERO )
+						{
+							if (etatPrecHorloge == EtatLogique.ONE) {
+								f = true;
+							}
+						}
+						else {
+							sleep = false ;
+							etatPrecHorloge = EtatLogique.ONE;
+						}
+					}break;
+					case Front_Montant :{
+						if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ONE )
+						{
+							if (etatPrecHorloge == EtatLogique.ZERO) {
+								f = true;
+							}
+						}
+						else {
+							sleep = false ;
+							etatPrecHorloge = EtatLogique.ZERO;
+						}
+					}break;
+					}
+				}
+			}
+		}
+		return f;
+	}
+
+	@Override
+	public void initialiser() {
 		// TODO Auto-generated method stub
-		return false;
+		for (int i = 0; i < nombreEntree; i++) {
+			etatPrec[i] = entrees[i].getEtatLogiqueFil();
+		}
 	}
 	
 

@@ -137,5 +137,11 @@ public class RegistreDecalage extends Sequentiels {
 		return false;
 	}
 
+	@Override
+	public void initialiser() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }
