@@ -9,7 +9,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -35,7 +34,7 @@
                   <Line endX="139.2928924560547" endY="-0.7070963382720947" startX="-40.0" stroke="#707070" strokeWidth="3.0" />
                   <TabPane prefHeight="526.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/borderPane.css" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                        <Tab style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
+                        <Tab fx:id="comonents" style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
                            <content>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                            </content>
@@ -44,7 +43,7 @@
                                  <children>
                                     <ScrollPane hvalue="0.35" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="0.07" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
-                                          <VBox prefWidth="165.0" style="-fx-background-color: #4b535e;">
+                                          <VBox fx:id="vBoxComp" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
                                                 <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="HEX" textFill="WHITE">
                                                    <font>
@@ -737,113 +736,6 @@
          </children></VBox>
    </right>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER">
-         <children>
-            <ScrollPane prefHeight="700.0" prefWidth="1117.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/workScrollPane.css">
-               <content>
-                  <VBox prefHeight="699.0" prefWidth="1108.0" style="-fx-background-color: #5a6572;">
-                     <children>
-                        <HBox prefHeight="686.0" prefWidth="1108.0" style="-fx-background-color: #5a6572;">
-                           <children>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="686.0" prefWidth="1108.0" style="-fx-background-color: #5a6572;">
-                           <children>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="686.0" prefWidth="1108.0" style="-fx-background-color: #5a6572;">
-                           <children>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="686.0" prefWidth="1108.0" style="-fx-background-color: #5a6572;">
-                           <children>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </content>
-            </ScrollPane>
-         </children>
-      </AnchorPane>
+      <AnchorPane fx:id="workSpace" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
