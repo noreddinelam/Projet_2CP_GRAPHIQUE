@@ -1,0 +1,17 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+#ouvrir,#nouveau,#fermer,#sauvegarder,#importer,#sauvComme,#encapsuler{
+	/* @SuppressWarning */
+	-fx-background-color: #4B535E     ;
+	/* @SuppressWarning */
+	-fx-text-fill: #E4E4E4	 ;
+	
+}
+
+#ouvrir:hover,#nouveau:hover,#fermer:hover,#sauvegarder:hover,#importer:hover,#sauvComme:hover,#encapsuler:hover{
+	/* @SuppressWarning */
+	-fx-background-color: #5A6572      ;
+	/* @SuppressWarning */
+	-fx-text-fill: #000000;
+	/* @SuppressWarning */
+	-fx-background: #FFFFFF;
+}
