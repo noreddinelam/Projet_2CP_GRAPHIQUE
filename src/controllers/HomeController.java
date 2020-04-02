@@ -1,9 +1,15 @@
 package controllers;
 
-import javafx.fxml.FXML;
-import javafx.scene.image.ImageView;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class HomeController {
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+
+public class HomeController implements Initializable {
 
     @FXML
     private ImageView hex;
@@ -91,6 +97,22 @@ public class HomeController {
 
     @FXML
     private ImageView darkMode;
+    
+    
+    
+    
+    
+    @Override
+	public void initialize(URL url, ResourceBundle rb) {
+		// TODO Auto-generated method stub
+    
+    	Tooltip.install(fichier, new Tooltip("fichier"));
+    	Tooltip.install(edition, new Tooltip("edition"));
+    	Tooltip.install(simulation, new Tooltip("simulation"));
+    	Tooltip.install(affichage, new Tooltip("affichage"));
+    	Tooltip.install(aide, new Tooltip("aide"));
+    
+	}
 
 }
 

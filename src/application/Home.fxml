@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
@@ -668,6 +669,9 @@
                      <image>
                         <Image url="@../homePage_icones/FILE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -680,6 +684,9 @@
                      <image>
                         <Image url="@../homePage_icones/EDIT%20FILE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -692,6 +699,9 @@
                      <image>
                         <Image url="@../homePage_icones/SIMULATION.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -704,6 +714,9 @@
                      <image>
                         <Image url="@../homePage_icones/AFFICHAGE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -716,6 +729,9 @@
                      <image>
                         <Image url="@../homePage_icones/AIDE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -731,6 +747,9 @@
                      <image>
                         <Image url="@../homePage_icones/ON.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
             </AnchorPane>
