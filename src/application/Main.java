@@ -53,8 +53,8 @@ public class Main extends Application {
 			
 					/*FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/application/PageEntree.fxml"));*/
-						Parent root = FXMLLoader.load(getClass().getResource("/application/PageEntree.fxml"));
-					 	FadeTransition fade = new FadeTransition();  
+						Parent root = FXMLLoader.load(getClass().getResource("/application/Home.fxml"));
+					/* 	FadeTransition fade = new FadeTransition();  
 			         	fade.setDuration(Duration.millis(1000)); 
 			         	fade.setDelay(Duration.millis(4000));
 				        fade.setFromValue(10);  
@@ -66,11 +66,11 @@ public class Main extends Application {
 				     
 				          
 				        //playing the transition   
-				        fade.play(); 
+				        fade.play(); */
 					Scene scene = new Scene(root);
 					scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					primaryStage.setScene(scene);
-					primaryStage.initStyle(StageStyle.UNDECORATED);
+				//	primaryStage.initStyle(StageStyle.UNDECORATED);
 					primaryStage.setResizable(false);
 					primaryStage.show();
 		

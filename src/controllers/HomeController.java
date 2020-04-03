@@ -1,13 +1,20 @@
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXDrawersStack;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
@@ -21,7 +28,10 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 
 public class HomeController implements Initializable {
 
@@ -127,6 +137,14 @@ public class HomeController implements Initializable {
     @FXML
     private VBox vBoxComp;
     
+    @FXML
+    private JFXDrawer fichierDrawer;
+    
+    @FXML
+    private JFXDrawersStack jjjj;
+    
+    @FXML
+    private VBox vbar;
     
 
    
@@ -201,6 +219,83 @@ public class HomeController implements Initializable {
 	Tooltip.install(simulation, new Tooltip("simulation"));
 	Tooltip.install(affichage, new Tooltip("affichage"));
 	Tooltip.install(aide, new Tooltip("aide"));
+	
+	
+	 Pane fichierContent = null;
+	try {
+		fichierContent = FXMLLoader.load(getClass().getResource("/application/fichier.fxml"));
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+	fichierDrawer.setSidePane(fichierContent);
+	fichierDrawer.setOpacity(0);
+
+	fichier.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
+		if(fichierDrawer.isOpened()) {
+			FadeTransition fade = new FadeTransition();  
+         	fade.setDuration(Duration.millis(200)); 
+         	fade.setDelay(Duration.millis(200));
+	        fade.setFromValue(10);  
+	        fade.setToValue(0);    
+	        fade.setCycleCount(0);  
+	        fade.setAutoReverse(true);     
+	        fade.setNode(fichierDrawer);  
+	        
+	     
+	          
+	        //playing the transition   
+	        fade.play();
+	        fichierDrawer.close();
+			/*fichierDrawer.setOpacity(0);*/
+		}
+		else {
+			FadeTransition fade = new FadeTransition();  
+         	fade.setDuration(Duration.millis(200)); 
+         	fade.setDelay(Duration.millis(200));
+	        fade.setFromValue(0);  
+	        fade.setToValue(10);    
+	        fade.setCycleCount(0);  
+	        fade.setAutoReverse(true);     
+	        fade.setNode(fichierDrawer);  
+	        
+	     
+	          
+	        //playing the transition   
+	        fade.play();
+			
+			fichierDrawer.open();
+			/*fichierDrawer.setOpacity(1);*/
+
+		}
+		
+		workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{
+			if(fichierDrawer.isOpened()) {
+				FadeTransition fade = new FadeTransition();  
+	         	fade.setDuration(Duration.millis(200)); 
+	         	fade.setDelay(Duration.millis(200));
+		        fade.setFromValue(10);  
+		        fade.setToValue(0);    
+		        fade.setCycleCount(0);  
+		        fade.setAutoReverse(true);     
+		        fade.setNode(fichierDrawer);  
+		        
+		     
+		          
+		        //playing the transition   
+		        fade.play();
+		        fichierDrawer.close();
+			}
+		});
+		
+		
+		
+	
+			
+			
+		
+	});
+
 
 
     

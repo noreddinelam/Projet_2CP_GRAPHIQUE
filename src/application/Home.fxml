@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDrawer?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
@@ -660,7 +661,7 @@
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="700.0" prefWidth="65.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbar" prefHeight="700.0" prefWidth="65.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>
@@ -755,6 +756,9 @@
          </children></VBox>
    </right>
    <center>
-      <AnchorPane fx:id="workSpace" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="workSpace" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER">
+         <children>
+            <JFXDrawer fx:id="fichierDrawer" defaultDrawerSize="400.0" direction="RIGHT" layoutX="874.0" layoutY="31.0" miniDrawerSize="200.0" prefHeight="300.0" prefWidth="242.0" viewOrder="5.0" AnchorPane.rightAnchor="0.3999999999998636" />
+         </children></AnchorPane>
    </center>
 </BorderPane>
