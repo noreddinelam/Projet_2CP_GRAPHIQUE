@@ -3,8 +3,6 @@ package noyau;
 
 public class Multiplexeur extends Combinatoires {
 	
-	
-	
 	private int nbCommande;
 	
 	public Multiplexeur(int nombreEntree,String nom) { // constructeur 
@@ -39,7 +37,7 @@ public class Multiplexeur extends Combinatoires {
 	public EtatLogique validerCommandes() { // Role : valider les commandes ( si toutes les commandes sont valides retourner 1) 
 		int i =0;
 		while(i<nbCommande) {
-			if(commande[i].getEtatLogiqueFil()== null) // tester si les fils sont a null 
+			if(commande[i] == null) // tester si les fils sont a null 
 				return null;
 			if(commande[i].getEtatLogiqueFil().equals(EtatLogique.HAUTE_IMPEDANCE)) //tester  l'etat logique HAUTE IMPEDANCE 
 				return EtatLogique.HAUTE_IMPEDANCE;

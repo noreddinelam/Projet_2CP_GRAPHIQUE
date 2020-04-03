@@ -68,35 +68,34 @@ public class Circuit implements Serializable{
 		bascule.setPreset(fil);
 		fil.addDestination(bascule);
 	}
-	private EtatLogique[] convertir(int i , int nbits) // 
+	private EtatLogique[] convertir(int i , int nbits) // elle transforme une ligne dans de la table en etat  logique pour generer les sorties
 	{
-		EtatLogique tableVerite[]= new EtatLogique[nbits];
+		EtatLogique tableVerite[]= new EtatLogique[nbits]; // initialiser un tableau de etat logique qui sera le resultat de la conversion
 		int j=0;
-		String bin = Integer.toBinaryString(i); 
-		for( j=0;j < bin.length() ; j++)
-		{
-			
+		String bin = Integer.toBinaryString(i); // transformer le numero de la ligne en binaire 
+		for( j=0;j < bin.length() ; j++) // initialiser les cases de 0 au nb bit de la ligne avec soit ZERO ou ONE 
+		{	
 			if(bin.charAt(bin.length()-j-1)=='0') tableVerite[nbits-j-1]=EtatLogique.ZERO;
 			else tableVerite[nbits-j-1]=EtatLogique.ONE;
 		}
-		for(int k=j ; k<nbits; k++) tableVerite[nbits-k-1]=EtatLogique.ZERO;
+		for(int k=j ; k<nbits; k++) tableVerite[nbits-k-1]=EtatLogique.ZERO; // continuer l'initialisation des cases restantes
 		
 		return tableVerite;
 	}
 	
-	public void tableVerite()
+	public void tableVerite() // generer la table de verité du ciruit
 	{
-		int nbEntrees = entreesCircuit.size();
-		int nbSorties = sortiesCircuit.size();
-		int c= nbEntrees+nbSorties;
+		int nbEntrees = entreesCircuit.size(); // nombre d'entrees du circuit
+		int nbSorties = sortiesCircuit.size(); // nombre de sortiees du circuit
+		int c= nbEntrees+nbSorties; // la taille de la table de verité
 		int j,k=0;
-		double l=Math.pow(2, nbEntrees);
-		tableVerite = new EtatLogique[(int)l][c];
-		EtatLogique ligne[] ;
-		for (Pin pin : entreesCircuit) {
+		double l=Math.pow(2, nbEntrees); // calculer le nombre de lignes de la table de verité
+		tableVerite = new EtatLogique[(int)l][c]; // initialiser la taille de la table
+		EtatLogique ligne[] ; // sert à stocker une ligne 
+		for (Pin pin : entreesCircuit) { // affichage des labels des pins d'entrees
 			System.out.print(pin.nom+"  ");
 		}
-		for (Affichage pin : sortiesCircuit) {
+		for (Affichage pin : sortiesCircuit) { // affichage des labels des pins de sorties 
 			System.out.print(((Pin)pin).nom + "  ");
 		}
 		System.out.println();
@@ -104,27 +103,47 @@ public class Circuit implements Serializable{
 		{
 			ligne = Arrays.copyOf(convertir(i, nbEntrees), c);
 			j=0;
-			for ( Pin pin : entreesCircuit){
+			for ( Pin pin : entreesCircuit){ // evaluer les pins d'entrees
 				pin.setEtat(ligne[j]);
 				pin.evaluer();// a changer
 				j++;
 			}
-			for ( Affichage aff : sortiesCircuit){
+			for ( Affichage aff : sortiesCircuit){ // recuperer l'etat des pins de sorties
 				Pin pin = (Pin) aff ;
 				ligne[j]=pin.getEtat();
 				j++;
 			}
-			tableVerite[i]=Arrays.copyOf(ligne, c);
+			tableVerite[i]=Arrays.copyOf(ligne, c); // inserer la ligne dans la table de verité
 		}
 	}
 	
-	public void afficher() {
+	public void afficher() { // pour l'affichage en mode console de la table de vérité 
 		for (int i = 0; i < tableVerite.length; i++) {
 			for (int j = 0; j < tableVerite[i].length; j++) {
 				System.out.print(tableVerite[i][j].getNum() + " | ");
 			}
 			System.out.println();
 		}
+	}
+	public static void initialiser() {// à completer au fur et mesure .
+		for (Pin pin : entreesCircuit) { // initialiser les pins d'entrees pour le commencement de la simulation
+			pin.evaluer();
+		}
+		
+		ArrayList<Integer> etage = new ArrayList<Integer>();
+		ArrayList<Integer> tmp = null ;
+		int max;
+		for (int i = 0; i < listeEtages.size(); i++) { // former les étages du circuit pour l'execution et la generation du chronogramme
+			for (Sequentiels b : listeEtages) {
+				b.entreeHorloge.addEtages(etage);
+				tmp = new ArrayList<Integer>(etage);
+				max = Collections.max(tmp); // avoir le nombre des etages
+				nbEtages = (nbEtages < max ) ? max : nbEtages ;
+				b.setEtages(tmp);
+				etage.clear();
+			}
+		}
+		
 	}
 	public static ArrayList<Composant> getCompUtilises() {
 		return compUtilises;
@@ -140,26 +159,6 @@ public class Circuit implements Serializable{
 	}
 	public EtatLogique[][] getTableVerite() {
 		return tableVerite;
-	}
-	public static void initialiser() {// à completer au fur et mesure .
-		for (Pin pin : entreesCircuit) {
-			pin.evaluer();
-		}
-		
-		ArrayList<Integer> etage = new ArrayList<Integer>();
-		ArrayList<Integer> tmp = null ;
-		int max;
-		for (int i = 0; i < listeEtages.size(); i++) {
-			for (Sequentiels b : listeEtages) {
-				b.entreeHorloge.addEtages(etage);
-				tmp = new ArrayList<Integer>(etage);
-				max = Collections.max(tmp);
-				nbEtages = (nbEtages < max ) ? max : nbEtages ;
-				b.setEtages(tmp);
-				etage.clear();
-			}
-		}
-		
 	}
 	public static ArrayList<Sequentiels> getListeEtages() {
 		return listeEtages;

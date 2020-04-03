@@ -21,7 +21,7 @@ public class RST extends Bascule{
 	}
 
 	@Override
-	public void initialiser() {
+	public void initialiser() { // initialiser les etats precedents
 		// TODO Auto-generated method stub
 		etatPrec[0] = entrees[0].getEtatLogiqueFil();
 		etatPrec[1] = entrees[1].getEtatLogiqueFil();

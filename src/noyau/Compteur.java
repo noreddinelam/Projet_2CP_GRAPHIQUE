@@ -18,18 +18,17 @@ public class Compteur extends Sequentiels{
 		initSorties();
 	}
 
-	public void genererSorties() { // role : executer une des fonctions du compteur (compter,decompter,remise a zero ou chargement) 
-								   //        et mettre le resultat dans les fils de sortie
-		if (clear.getEtatLogiqueFil().getNum() == 0) {
+	public void genererSorties() { // sert dans le mode asynchrone (juste la cmd clear) ou bien l'initialisation des entrees dans le mode synchrone
+		if (clear.getEtatLogiqueFil().getNum() == 0) {// si clear est à 0
 			valeur = 0;
 			int bin = Integer.parseInt(Integer.toBinaryString(valeur)); // convertir la valeur du compteur en binaire
 			numToFils(bin); // mettre la valeur du compteur sur les fils de sortie
 		}
 		else {
-			initialiser();
+			initialiser(); // initialiser les etats prec pour le prochain front elle sert surtout dans le load
 		}
 	}
-	public boolean valider() {
+	public boolean valider() { // valider le circuit si clear est à 0 ou bien load à 0 à condition d'avoir toutes les entrees branchées 
 		if (clear.getEtatLogiqueFil().getNum() == 0) {
 			return true;
 		}
@@ -51,24 +50,6 @@ public class Compteur extends Sequentiels{
 		else
 			valeur = valeurMax;
 	}
-	public Fil getLoad() {
-		return load;
-	}
-	public void setLoad(Fil load) {
-		this.load = load;
-	}
-	public boolean isCompter() {
-		return compter;
-	}
-	public void setCompter(boolean compter) {
-		this.compter = compter;
-	}
-	public int getValeur() {
-		return valeur;
-	}
-	public void setValeur(int valeur) {
-		this.valeur = valeur;
-	}
 
 	@Override
 	public void genererSortiesSyncho() {
@@ -84,7 +65,7 @@ public class Compteur extends Sequentiels{
 				this.decompter();
 			}
 		}
-		else {
+		else { // charger la valeur des entrees dans le compteur
 			valeur = Integer.parseInt(this.concatener(etatPrec, nombreEntree),2);
 		}
 		int bin = Integer.parseInt(Integer.toBinaryString(valeur)); // convertir la valeur du compteur en binaire
@@ -92,7 +73,7 @@ public class Compteur extends Sequentiels{
 	}
 
 	@Override
-	public boolean validerSyncho() {
+	public boolean validerSyncho() { // valider le compteur soit dans le mode synchrone ou load à 0 et toutes les entrées sont toutes validées
 		boolean f = false;
 		if(clear.getEtatLogiqueFil()==EtatLogique.ONE) {
 			if((load.getEtatLogiqueFil() == EtatLogique.ONE) || ((load.getEtatLogiqueFil() == EtatLogique.ZERO)&&(validerEntrees() == EtatLogique.ONE))) {
@@ -131,12 +112,30 @@ public class Compteur extends Sequentiels{
 	}
 
 	@Override
-	public void initialiser() {
+	public void initialiser() { // initialiser les etats precedents qui servent si le load à 0
 		// TODO Auto-generated method stub
 		for (int i = 0; i < nombreEntree; i++) {
 			etatPrec[i] = entrees[i].getEtatLogiqueFil();
 		}
 	}
 	
+	public Fil getLoad() {
+		return load;
+	}
+	public void setLoad(Fil load) {
+		this.load = load;
+	}
+	public boolean isCompter() {
+		return compter;
+	}
+	public void setCompter(boolean compter) {
+		this.compter = compter;
+	}
+	public int getValeur() {
+		return valeur;
+	}
+	public void setValeur(int valeur) {
+		this.valeur = valeur;
+	}
 
 }

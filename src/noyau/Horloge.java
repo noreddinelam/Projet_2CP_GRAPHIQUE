@@ -20,22 +20,22 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 		
 	}
 	public void evaluer() {
-		for(Sequentiels s : Circuit.getListeEtages()) /// à revoir 
+		for(Sequentiels s : Circuit.getListeEtages()) /// initialiser les etats precedents des fils horloge de chaque composant
 			s.etatPrecHorloge = s.entreeHorloge.getEtatLogiqueFil();
-		genererSorties();
-		sorties[0].evaluer();
-		tictac();
+		genererSorties(); // generer un front
+		sorties[0].evaluer(); // sert pour initialser le fil de sortie de l'horloge 
+		tictac(); // c'est la methode responsable de l'execution en mode synchrone des composants sequentiels
 	}
-	public void genererSorties() {
+	public void genererSorties() { // inverser l'etat de l'horloge pour generer sorte de front
 		etat = (etat == EtatLogique.ZERO) ? EtatLogique.ONE : EtatLogique.ZERO ;
 		sorties[0].setEtatLogiqueFil(etat);
 	}
 	
-	public boolean valider() {
+	public boolean valider() { // à voir apres si elle est nécessaire
 		return false;
 	}
 	
-	public void addEtages(ArrayList<Integer> etage) {
+	public void addEtages(ArrayList<Integer> etage) { // sert pour la creation des etages dans la simulation
 		if (! etage.contains(0)) {
 			etage.add(0);
 		}
@@ -43,8 +43,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 
 
 	@Override
-	public void run() {
-		
+	public void run() {	
 		this.evaluer();
 		Circuit.initialiser();
 		while(this.active)// tant que l'horloge est active

@@ -9,8 +9,8 @@ import javax.management.relation.Role;
 
 public abstract class Composant implements Serializable{
 	/*--------- Attributs -------------*/
-	protected String nom;
-	protected String icon;
+	protected String nom; // pour le label
+	protected String icon; // le lien vers l'icone
 	protected Fil entrees[]= new Fil[32] ;
 	protected Fil sorties[] = new Fil[32];
 	protected EtatLogique etatFinal[] = new EtatLogique[32];
@@ -106,7 +106,7 @@ public abstract class Composant implements Serializable{
 			sorties[i]=new Fil(this);
 	}
 	
-	public void addEtages(ArrayList<Integer> etage) {
+	public void addEtages(ArrayList<Integer> etage) { // pour la construction des etages pour le sequentiels
 		for (int i = 0; i < nombreEntree; i++) {
 			entrees[i].addEtages(etage);
 		}

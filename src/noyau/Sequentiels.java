@@ -34,6 +34,15 @@ public abstract class Sequentiels extends Composant {
 	public abstract void genererSorties();
 	public abstract boolean valider();
 	
+	@Override
+	public void addEtages(ArrayList<Integer> etage) { // ajouter l'elt sequentiel à la liste des etages selon son étage ou il se trouve
+		for (Integer i : etages) {
+			if(! etage.contains(i+1)) {
+				etage.add(i+1);
+			}
+		}
+	}
+	
 	public ArrayList<Integer> getEtages() {
 		return etages;
 	}
@@ -42,12 +51,4 @@ public abstract class Sequentiels extends Composant {
 		this.etages = etages;
 	}
 	
-	@Override
-	public void addEtages(ArrayList<Integer> etage) {
-		for (Integer i : etages) {
-			if(! etage.contains(i+1)) {
-				etage.add(i+1);
-			}
-		}
-	}
 }
