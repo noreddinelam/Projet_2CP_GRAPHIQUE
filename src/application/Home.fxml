@@ -758,7 +758,8 @@
    <center>
       <AnchorPane fx:id="workSpace" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER">
          <children>
-            <JFXDrawer fx:id="fichierDrawer" defaultDrawerSize="400.0" direction="RIGHT" layoutX="874.0" layoutY="31.0" miniDrawerSize="200.0" prefHeight="300.0" prefWidth="242.0" viewOrder="5.0" AnchorPane.rightAnchor="0.3999999999998636" />
+            <JFXDrawer fx:id="fichierDrawer" defaultDrawerSize="400.0" direction="RIGHT" layoutX="874.0" layoutY="57.0" miniDrawerSize="200.0" opacity="0.0" prefHeight="300.0" prefWidth="242.0" viewOrder="5.0" AnchorPane.rightAnchor="0.3999999999998636" />
+            <JFXDrawer fx:id="editionDrawer" defaultDrawerSize="400.0" direction="RIGHT" layoutX="874.0" layoutY="127.0" miniDrawerSize="200.0" opacity="0.0" prefHeight="315.0" prefWidth="242.0" viewOrder="5.0" />
          </children></AnchorPane>
    </center>
 </BorderPane>

@@ -141,7 +141,7 @@ public class HomeController implements Initializable {
     private JFXDrawer fichierDrawer;
     
     @FXML
-    private JFXDrawersStack jjjj;
+    private JFXDrawer editionDrawer;
     
     @FXML
     private VBox vbar;
@@ -220,6 +220,7 @@ public class HomeController implements Initializable {
 	Tooltip.install(affichage, new Tooltip("affichage"));
 	Tooltip.install(aide, new Tooltip("aide"));
 	
+	/*---------------------fichier--------------------*/
 	
 	 Pane fichierContent = null;
 	try {
@@ -240,14 +241,9 @@ public class HomeController implements Initializable {
 	        fade.setToValue(0);    
 	        fade.setCycleCount(0);  
 	        fade.setAutoReverse(true);     
-	        fade.setNode(fichierDrawer);  
-	        
-	     
-	          
-	        //playing the transition   
+	        fade.setNode(fichierDrawer);    
 	        fade.play();
 	        fichierDrawer.close();
-			/*fichierDrawer.setOpacity(0);*/
 		}
 		else {
 			FadeTransition fade = new FadeTransition();  
@@ -257,20 +253,30 @@ public class HomeController implements Initializable {
 	        fade.setToValue(10);    
 	        fade.setCycleCount(0);  
 	        fade.setAutoReverse(true);     
-	        fade.setNode(fichierDrawer);  
-	        
-	     
-	          
-	        //playing the transition   
-	        fade.play();
-			
+	        fade.setNode(fichierDrawer);      
+	        fade.play();	
 			fichierDrawer.open();
-			/*fichierDrawer.setOpacity(1);*/
+			editionDrawer.close();
+			editionDrawer.setOpacity(0);
+
 
 		}
-		
-		workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{
-			if(fichierDrawer.isOpened()) {
+	});
+	
+	
+	/*--------------------edition------------------------*/
+	 Pane EditionContent = null;
+		try {
+			EditionContent = FXMLLoader.load(getClass().getResource("/application/Edition.fxml"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		editionDrawer.setSidePane(EditionContent);
+		editionDrawer.setOpacity(0);
+
+		edition.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
+			if(editionDrawer.isOpened()) {
 				FadeTransition fade = new FadeTransition();  
 	         	fade.setDuration(Duration.millis(200)); 
 	         	fade.setDelay(Duration.millis(200));
@@ -278,30 +284,54 @@ public class HomeController implements Initializable {
 		        fade.setToValue(0);    
 		        fade.setCycleCount(0);  
 		        fade.setAutoReverse(true);     
-		        fade.setNode(fichierDrawer);  
-		        
-		     
-		          
-		        //playing the transition   
+		        fade.setNode(editionDrawer);    
 		        fade.play();
+		        editionDrawer.close();
+			}
+			else {
+				FadeTransition fade = new FadeTransition();  
+	         	fade.setDuration(Duration.millis(200)); 
+	         	fade.setDelay(Duration.millis(200));
+		        fade.setFromValue(0);  
+		        fade.setToValue(10);    
+		        fade.setCycleCount(0);  
+		        fade.setAutoReverse(true);     
+		        fade.setNode(editionDrawer);  
+		        fade.play();
+		        editionDrawer.open();
 		        fichierDrawer.close();
+		        fichierDrawer.setOpacity(0);
+
 			}
 		});
 		
-		
+	
 		
 	
-			
+	
+	
+	/*-------------------------------------------------*/
+		workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{
+			if(fichierDrawer.isOpened() ||editionDrawer.isOpened()) {
+				fichierDrawer.close();
+				fichierDrawer.setOpacity(0);
+				editionDrawer.close();
+				editionDrawer.setOpacity(0);
+			}
 			
 		
-	});
+		});
+	
+	
 
+		
+		
 
-
-    
-	  
 	    
 	}
+	
+	
+	
     
 	private void ajouterLeGest( Node elementAdrager) {
 	
@@ -429,6 +459,11 @@ public class HomeController implements Initializable {
 	
 
 	}
+	
+	
+	
+	
+	
 	
 
 	
