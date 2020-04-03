@@ -419,34 +419,34 @@ public class Main extends Application {
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//--> Test des bascules JK
 		
-		Circuit circuit=new Circuit();
-		JK jk1= new JK("jk1",Front.Front_Descendant);
-		JK jk2= new JK("jk2",Front.Front_Descendant);
-		JK jk3= new JK("jk3",Front.Front_Descendant);
-		Xor xor1=new Xor(2, "xor1");
-		Xor xor2=new Xor(2, "xor2");
-      	Pin p1=new Pin(true, "pin1");
-      	Pin p2=new Pin(true, "pin2");	
-		Pin X=new Pin(true, "X");
-		Horloge horloge=new Horloge("horloge",1000);
-		p1.setEtat(EtatLogique.ONE);
-		p2.setEtat(EtatLogique.ONE);
-		X.setEtat(EtatLogique.ONE);
-		circuit.relier(p1, jk1, 0, 0);
-		circuit.relier(p2, jk1, 0, 1);
-		circuit.relier(p1, jk2, 0, 0);
-		circuit.relier(p2, jk2, 0, 1);
-		circuit.relier(p1, jk3, 0, 0);
-		circuit.relier(p2, jk3, 0, 1);
-		circuit.relierHorloge(jk1, horloge, 0);
-		circuit.relier(jk1, xor1, 0, 0);
-		circuit.relier(X, xor1, 0, 1);
-		circuit.relierHorloge(jk2, xor1, 0);
-		circuit.relier(jk2, xor2, 0, 0);
-		circuit.relier(X, xor2, 0, 1);
-		circuit.relierHorloge(jk3, xor2, 0);
-		Thread thread=new Thread(horloge);
- 		thread.start();
+//		Circuit circuit=new Circuit();
+//		JK jk1= new JK("jk1",Front.Front_Descendant);
+//		JK jk2= new JK("jk2",Front.Front_Descendant);
+//		JK jk3= new JK("jk3",Front.Front_Descendant);
+//		Xor xor1=new Xor(2, "xor1");
+//		Xor xor2=new Xor(2, "xor2");
+//      	Pin p1=new Pin(true, "pin1");
+//      	Pin p2=new Pin(true, "pin2");	
+//		Pin X=new Pin(true, "X");
+//		Horloge horloge=new Horloge("horloge",1000);
+//		p1.setEtat(EtatLogique.ONE);
+//		p2.setEtat(EtatLogique.ONE);
+//		X.setEtat(EtatLogique.ONE);
+//		circuit.relier(p1, jk1, 0, 0);
+//		circuit.relier(p2, jk1, 0, 1);
+//		circuit.relier(p1, jk2, 0, 0);
+//		circuit.relier(p2, jk2, 0, 1);
+//		circuit.relier(p1, jk3, 0, 0);
+//		circuit.relier(p2, jk3, 0, 1);
+//		circuit.relierHorloge(jk1, horloge, 0);
+//		circuit.relier(jk1, xor1, 0, 0);
+//		circuit.relier(X, xor1, 0, 1);
+//		circuit.relierHorloge(jk2, xor1, 0);
+//		circuit.relier(jk2, xor2, 0, 0);
+//		circuit.relier(X, xor2, 0, 1);
+//		circuit.relierHorloge(jk3, xor2, 0);
+//		Thread thread=new Thread(horloge);
+// 		thread.start();
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//--> Test des bascules D avec un registre a descalage 
@@ -502,21 +502,67 @@ public class Main extends Application {
 		//--> Test du cpt avec bascule JK et load à 0
 //		Circuit circuit = new Circuit();
 //		Compteur cpt= new Compteur(3, "cpt", Front.Front_Montant);
-//		JK jk = new JK("jk", Front.Front_Descendant);
+//		JK jk = new JK("jk", Front.Front_Montant);
 //		Horloge horloge = new Horloge("hrlg", 1000);
 //		Pin pin = new Pin(true, "nom");
 //		Pin load= new Pin(true, "load");
+//		Pin clear= new Pin(true, "clr");
 //		pin.setEtat(EtatLogique.ONE);
+//		clear.setEtat(EtatLogique.ONE);
 //		circuit.relier(load, cpt, 0, 0);
 //		circuit.relier(load, cpt, 0, 1);
 //		circuit.relier(jk, cpt, 0, 2);
 //		circuit.relier(pin, jk, 0, 0);
 //		circuit.relier(pin, jk, 0, 1);
+//		circuit.relierClear(cpt, clear, 0);
 //		circuit.relierHorloge(jk, horloge, 0);
 //		circuit.relierHorloge(cpt, horloge, 0);
 //		circuit.relierLoad(cpt, load, 0);
 //		Thread thread=new Thread(horloge);
 //		thread.start();
 		//horloge.run();
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//--> Test du reg à decalage avec load :
+//		Circuit circuit = new Circuit();
+//		RegistreDecalage reg = new RegistreDecalage(4, "reg", true, Front.Front_Montant);
+//		Pin pin = new Pin(true, "nom");
+//		pin.setEtat(EtatLogique.ONE);
+//		Pin pin2 = new Pin(true, "nom");
+//		//pin2.setEtat(EtatLogique.ONE);
+//		Pin load= new Pin(true, "clr");
+//		Horloge horloge = new Horloge("hrlg", 1000);
+//		circuit.relier(pin, reg, 0, 0);
+//		circuit.relier(pin2, reg, 0, 1);
+//		circuit.relier(pin2, reg, 0, 2);
+//		circuit.relier(pin2, reg, 0, 3);
+//		circuit.relier(pin2, reg, 0, 4);
+//		circuit.relierLoad(reg,load, 0);
+//		circuit.relierHorloge(reg, horloge, 0);
+//		Thread thread=new Thread(horloge);
+////		thread.start();
+//		horloge.run();
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//--> Test du reg à decalage avec bascule T et porte not :
+//		Circuit circuit = new Circuit();
+//		RegistreDecalage reg = new RegistreDecalage(4, "reg", true, Front.Front_Montant);
+//		//Compteur reg= new Compteur(3, "n", Front.Front_Montant);
+//		Not not = new Not("not");
+//		Or or = new Or(2, "or");
+//		T t = new T("T", Front.Front_Montant);
+//		Pin pin = new Pin(true, "nom");
+//		pin.setEtat(EtatLogique.ONE);
+//		Pin pin2 = new Pin(true, "nom");
+//		pin2.setEtat(EtatLogique.ONE);
+//		Horloge horloge = new Horloge("hrlg", 1000);
+//		circuit.relier(pin,t, 0, 0);
+//		circuit.relier(pin2, reg, 0, 0);
+//		circuit.relier(t, or, 0, 0);
+//		circuit.relier(t, not, 1, 0);
+//		circuit.relier(not, or, 0, 1);
+//		circuit.relierHorloge(t, horloge, 0);
+//		circuit.relierHorloge(reg, or, 0);
+//		Thread thread=new Thread(horloge);
+//		thread.start();
+//		horloge.run();
 	}
 }

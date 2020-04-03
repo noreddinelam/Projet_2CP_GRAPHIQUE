@@ -9,10 +9,11 @@ public abstract class Sequentiels extends Composant {
 	protected Fil clear = null;
 	protected Front front;
 	protected ArrayList<Integer> etages = new ArrayList<Integer>();
-	protected EtatLogique etatPrec[] = new EtatLogique[32];
+	protected EtatLogique etatPrec[];
 	
 	public Sequentiels(int nombreEntree,String nom,Front front) {
 		super(nombreEntree,nom);
+		etatPrec = new EtatLogique[nombreEntree];
 		this.front = front ;
 		clear = new Fil(null);
 		clear.setEtatLogiqueFil(EtatLogique.ONE);

@@ -44,10 +44,11 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 
 	@Override
 	public void run() {
+		
 		this.evaluer();
 		Circuit.initialiser();
 		while(this.active)// tant que l'horloge est active
-		{
+		{			
 			this.evaluer();//on excut l'evaluation
 			try {
 				int i=1;// just pour revenir a la ligne a chaque front de 3 bascules
@@ -56,11 +57,14 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 			    	if (sequentiels.getClass().getSimpleName().equals("Compteur")) {
 			    		System.out.print(((Compteur)sequentiels).getValeur() + " | ");
 					}
-			    	else {
+			    	else if(sequentiels.getClass().getSimpleName().equals("T")){
 			    		System.out.print(sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
 					}
+			    	else {
+			    		System.out.print("Valeur : " + ((RegistreDecalage)sequentiels).valeur()+ " |  " + sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
+					}
 			    	
-			    	if(i==3) // condition de retour a la ligne en fonctions du nombre elt contenu dans la liste eds etages
+			    	if(i==2) // condition de retour a la ligne en fonctions du nombre elt contenu dans la liste eds etages
 			    		{
 			    		System.out.println("\n");
 			    		i=1;
