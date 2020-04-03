@@ -14,11 +14,11 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Edition.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Affichage.fxml"));
 
 			Parent root = fxmlLoader.load();
 			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/styleFile/edition.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/styleFile/affichage.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
