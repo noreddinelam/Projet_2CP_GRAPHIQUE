@@ -41,11 +41,11 @@
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.35" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="0.07" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.35" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox fx:id="vBoxComp" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="HEX" textFill="WHITE">
+                                                <Label fx:id="tHex" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="HEX" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -68,7 +68,7 @@
                                                       </ImageView>
                                                    </children>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="PIN" textFill="WHITE">
+                                                <Label fx:id="tPin" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="PIN" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -91,7 +91,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="H" textFill="WHITE">
+                                                <Label fx:id="tH" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="H" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -114,7 +114,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="VCC" textFill="WHITE">
+                                                <Label fx:id="tVcc" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="VCC" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -137,7 +137,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="MASS" textFill="WHITE">
+                                                <Label fx:id="tMass" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="MASS" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -175,11 +175,11 @@
                            <content>
                               <AnchorPane prefHeight="512.0" prefWidth="185.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="509.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="509.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="AND" textFill="WHITE">
+                                                <Label fx:id="tAnd" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="AND" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -202,7 +202,7 @@
                                                       </ImageView>
                                                    </children>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="OR" textFill="WHITE">
+                                                <Label fx:id="tOr" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="OR" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -225,7 +225,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="XOR" textFill="WHITE">
+                                                <Label fx:id="tXor" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="XOR" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -248,7 +248,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NAND" textFill="WHITE">
+                                                <Label fx:id="tNand" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NAND" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -271,7 +271,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NOR" textFill="WHITE">
+                                                <Label fx:id="tNor" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NOR" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -294,7 +294,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NOT" textFill="WHITE">
+                                                <Label fx:id="tNot" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NOT" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -331,11 +331,11 @@
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefHeight="923.0" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="JK" textFill="WHITE">
+                                                <Label fx:id="tJk" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="JK" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -358,7 +358,7 @@
                                                       </ImageView>
                                                    </children>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="D" textFill="WHITE">
+                                                <Label fx:id="tD" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="D" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -384,7 +384,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="RS" textFill="WHITE">
+                                                <Label fx:id="tRs" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="RS" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -407,7 +407,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="T" textFill="WHITE">
+                                                <Label fx:id="tT" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="T" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -430,7 +430,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="CPT" textFill="WHITE">
+                                                <Label fx:id="tCpt" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="CPT" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -453,7 +453,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="R-D" textFill="WHITE">
+                                                <Label fx:id="tRd" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="R-D" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -494,7 +494,7 @@
                                        <content>
                                           <VBox prefHeight="923.0" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="MUX" textFill="WHITE">
+                                                <Label fx:id="tMux" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="MUX" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -517,7 +517,7 @@
                                                       </ImageView>
                                                    </children>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DMUX" textFill="WHITE">
+                                                <Label fx:id="tDmux" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DMUX" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -543,7 +543,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DEC" textFill="WHITE">
+                                                <Label fx:id="tDEC" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DEC" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -566,7 +566,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="ADDC" textFill="WHITE">
+                                                <Label fx:id="tAddc" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="ADDC" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -589,7 +589,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DADD" textFill="WHITE">
+                                                <Label fx:id="tDadd" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DADD" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -612,7 +612,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="ENC" textFill="WHITE">
+                                                <Label fx:id="tEnc" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="ENC" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>

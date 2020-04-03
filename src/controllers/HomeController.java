@@ -1,8 +1,10 @@
 package controllers;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
-
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,9 +12,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
@@ -20,81 +20,159 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import javafx.util.Duration;
+import noyau.Composant;
+
+import static java.util.Map.entry;
 
 public class HomeController implements Initializable {
 	
   
 	
 	
-    
+    Map<ImageView,Label> elemanrsMapFillMap;
     Node dragItem;
     
     @FXML
+    private Tab comonents;
+
+    @FXML
+    private VBox vBoxComp;
+
+    @FXML
+    private Label tHex;
+
+    @FXML
     private ImageView hex;
+
+    @FXML
+    private Label tPin;
 
     @FXML
     private ImageView pin;
 
     @FXML
+    private Label tH;
+
+    @FXML
     private ImageView clock;
+
+    @FXML
+    private Label tVcc;
 
     @FXML
     private ImageView vcc;
 
     @FXML
+    private Label tMass;
+
+    @FXML
     private ImageView mass;
+
+    @FXML
+    private Label tAnd;
 
     @FXML
     private ImageView and;
 
     @FXML
+    private Label tOr;
+
+    @FXML
     private ImageView or;
+
+    @FXML
+    private Label tXor;
 
     @FXML
     private ImageView xor;
 
     @FXML
+    private Label tNand;
+
+    @FXML
     private ImageView nand;
+
+    @FXML
+    private Label tNor;
 
     @FXML
     private ImageView nor;
 
     @FXML
+    private Label tNot;
+
+    @FXML
     private ImageView not;
+
+    @FXML
+    private Label tJk;
 
     @FXML
     private ImageView jk;
 
     @FXML
+    private Label tD;
+
+    @FXML
     private ImageView d;
+
+    @FXML
+    private Label tRs;
 
     @FXML
     private ImageView rs;
 
     @FXML
+    private Label tT;
+
+    @FXML
     private ImageView t;
+
+    @FXML
+    private Label tCpt;
 
     @FXML
     private ImageView cpt;
 
     @FXML
+    private Label tRd;
+
+    @FXML
     private ImageView registreDecalge;
+
+    @FXML
+    private Label tMux;
 
     @FXML
     private ImageView mux;
 
     @FXML
+    private Label tDmux;
+
+    @FXML
     private ImageView dmux;
+
+    @FXML
+    private Label tDEC;
 
     @FXML
     private ImageView dec;
 
     @FXML
+    private Label tAddc;
+
+    @FXML
     private ImageView addcomplet;
 
     @FXML
+    private Label tDadd;
+
+    @FXML
     private ImageView demiAdd;
+
+    @FXML
+    private Label tEnc;
 
     @FXML
     private ImageView enco;
@@ -116,19 +194,14 @@ public class HomeController implements Initializable {
 
     @FXML
     private ImageView darkMode;
-    
 
     @FXML
     private AnchorPane workSpace;
+  
+   
+   
     
-
-    @FXML
-    private Tab comonents;
-    
-    @FXML
-    private VBox vBoxComp;
-    
-    
+   
     @FXML
     void mouseEntered(MouseDragEvent event) {
     	   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
@@ -168,6 +241,31 @@ public class HomeController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		 elemanrsMapFillMap= Map.ofEntries(
+		    		entry(hex, tHex),
+		    		entry(pin, tPin),
+		    		entry(clock, tH),
+		    		entry(vcc, tVcc),
+		    		entry(mass, tMass),
+		    		entry(and, tAnd),
+		    		entry(or, tOr),
+		    		entry(nand, tNand),
+		    		entry(nor, tNor),
+		    		entry(xor, tXor),
+		    		entry(not, tNot),
+		    		entry(jk, tJk),
+		    		entry(d, tD),
+		    		entry(t, tT),
+		    		entry(rs, tRs),
+		    		entry(cpt, tCpt),
+		    		entry(registreDecalge, tRd),
+		    		entry(mux, tMux),
+		    		entry(dmux, tDmux),
+		    		entry(dec, tDEC),
+		    		entry(enco, tEnc),
+		    		entry(addcomplet, tAddc),
+		    		entry(demiAdd, tDadd)
+		    		);
 	
     ajouterLeGest(hex);
     ajouterLeGest(pin);
@@ -198,20 +296,29 @@ public class HomeController implements Initializable {
 	    
 	}
     
-	private void ajouterLeGest( Node elementAdrager) {
+	private void ajouterLeGest( ImageView elementAdrager) {
 	
 	
 	    elementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	            elementAdrager.setCursor(Cursor.HAND);
-	        }
+	            elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#000000;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
+	            transitionDesComposants(elementAdrager);
+				}
+	          
+	        
 	    });
+	    elementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() {
+	    	public void handle(MouseEvent e) {
+	    		  elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#303337;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
+	    	}
+		});
 	    
 	    elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	        	ImageView dragImageView = new ImageView();
 	        	System.out.println("mee p");
-	            dragItem = elementAdrager;
+	            System.out.println(elementAdrager.getId());
 	            dragImageView.setMouseTransparent(true);
 	            elementAdrager.setMouseTransparent(true);
 	            elementAdrager.setCursor(Cursor.CLOSED_HAND);
@@ -243,6 +350,7 @@ public class HomeController implements Initializable {
 	            
 	            elementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
+	    	        	
 	    	            dragItem = null;
 	    	            
 	    	            dragImageView.setMouseTransparent(false);
@@ -268,14 +376,17 @@ public class HomeController implements Initializable {
 	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	            eleementAdrager.setCursor(Cursor.HAND);
+	       
+	       
 	        }
 	    });
 	    
 	    eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	        
-	        	System.out.println("mee p");
+	   
 	            dragItem = eleementAdrager;
+	       
 	            eleementAdrager.setMouseTransparent(true);
 	            eleementAdrager.setMouseTransparent(true);
 	            eleementAdrager.setCursor(Cursor.CLOSED_HAND);
@@ -283,12 +394,10 @@ public class HomeController implements Initializable {
 	            
 	            eleementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
-	    	        	System.out.println("meee D");
+	    	       
 	    	            SnapshotParameters snapParams = new SnapshotParameters();
 	    	            snapParams.setFill(Color.TRANSPARENT);
 	    	            eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
-	    	            workSpace.getChildren().add(eleementAdrager);
-
 	    	            eleementAdrager.startFullDrag();
 	    	            e.consume();
 	    	        }
@@ -298,8 +407,8 @@ public class HomeController implements Initializable {
 	    	        public void handle(MouseEvent e) {
 	    	            Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
 	    	            eleementAdrager.relocate(
-	    	                    (int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() ),
-	    	                    (int)(localPoint.getY() - eleementAdrager.getBoundsInLocal().getHeight() )
+	    	                    (int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
+	    	                    (int)(localPoint.getY() - eleementAdrager.getBoundsInLocal().getHeight()/2 )
 	    	            );
 	    	            e.consume();
 	    	        }
@@ -307,14 +416,11 @@ public class HomeController implements Initializable {
 	            
 	            eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
-	    	            dragItem = null;
-	    	            
+	    	            dragItem = null;  	            
 	    	            eleementAdrager.setMouseTransparent(false);
-	    	          
 	    	            eleementAdrager.setMouseTransparent(false);
 	    	            eleementAdrager.setCursor(Cursor.DEFAULT);
 	    	            if(e.getSceneX() <240)
-	    	  
 	    	           workSpace.getChildren().remove(eleementAdrager);
 	    	        }
 	    	    });
@@ -323,6 +429,31 @@ public class HomeController implements Initializable {
 	    });
 	
 
+	}
+	public void transitionDesComposants(Node composants) {
+	    int duration = 100;
+	    int count = 3;
+
+	    TranslateTransition transition1 = new TranslateTransition(Duration.millis(duration), composants);
+	    transition1.setFromX(0);
+	    transition1.setToX(-5);
+	    transition1.setInterpolator(Interpolator.LINEAR);
+
+	    TranslateTransition transition2 = new TranslateTransition(Duration.millis(duration), composants);
+	    transition2.setFromX(-5);
+	    transition2.setToX(5);
+	    transition2.setDelay(Duration.millis(duration));
+	    transition2.setInterpolator(Interpolator.LINEAR);
+	    transition2.setCycleCount(count);
+
+	    TranslateTransition transition3 = new TranslateTransition(Duration.millis(duration), composants);
+	    transition3.setToX(0);
+	    transition3.setDelay(Duration.millis((count + 1) * duration));
+	    transition3.setInterpolator(Interpolator.LINEAR);
+
+	    transition1.play();
+	    transition2.play();
+	    transition3.play();
 	}
 	
 
