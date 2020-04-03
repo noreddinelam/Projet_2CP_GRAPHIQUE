@@ -35,11 +35,11 @@ public class Main extends Application {
 		        fade.play();  
 			scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Edition.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Affichage.fxml"));
 
 			Parent root = fxmlLoader.load();
 			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/styleFile/edition.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/styleFile/affichage.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
