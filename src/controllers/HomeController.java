@@ -1,6 +1,7 @@
 package controllers;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.animation.Interpolator;
@@ -23,7 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import noyau.Composant;
 
-import static java.util.Map.entry;
 
 public class HomeController implements Initializable {
 	
@@ -236,64 +236,55 @@ public class HomeController implements Initializable {
 
     }
     
-   
-    
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		 elemanrsMapFillMap= Map.ofEntries(
-		    		entry(hex, tHex),
-		    		entry(pin, tPin),
-		    		entry(clock, tH),
-		    		entry(vcc, tVcc),
-		    		entry(mass, tMass),
-		    		entry(and, tAnd),
-		    		entry(or, tOr),
-		    		entry(nand, tNand),
-		    		entry(nor, tNor),
-		    		entry(xor, tXor),
-		    		entry(not, tNot),
-		    		entry(jk, tJk),
-		    		entry(d, tD),
-		    		entry(t, tT),
-		    		entry(rs, tRs),
-		    		entry(cpt, tCpt),
-		    		entry(registreDecalge, tRd),
-		    		entry(mux, tMux),
-		    		entry(dmux, tDmux),
-		    		entry(dec, tDEC),
-		    		entry(enco, tEnc),
-		    		entry(addcomplet, tAddc),
-		    		entry(demiAdd, tDadd)
-		    		);
-	
-    ajouterLeGest(hex);
-    ajouterLeGest(pin);
-    ajouterLeGest(clock);
-    ajouterLeGest(vcc);
-    ajouterLeGest(mass);
-    ajouterLeGest(and);
-    ajouterLeGest(or);
-    ajouterLeGest(xor);
-    ajouterLeGest(nor);
-    ajouterLeGest(nand);
-    ajouterLeGest(not);
-    ajouterLeGest(mux);
-    ajouterLeGest(dmux);
-    ajouterLeGest(dec);
-    ajouterLeGest(addcomplet);
-    ajouterLeGest(enco);
-    ajouterLeGest(demiAdd);
-    ajouterLeGest(d);
-    ajouterLeGest(jk);
-    ajouterLeGest(t);
-    ajouterLeGest(rs);
-    ajouterLeGest(cpt);
-    ajouterLeGest(registreDecalge);
-
-    
-	  
-	    
+		elemanrsMapFillMap = new HashMap<ImageView, Label>(){{put(hex, tHex);
+    		put(pin, tPin);
+    		put(clock, tH);
+    		put(vcc, tVcc);
+    		put(mass, tMass);
+    		put(and, tAnd);
+    		put(or, tOr);
+    		put(nand, tNand);
+    		put(nor, tNor);
+    		put(xor, tXor);
+    		put(not, tNot);
+    		put(jk, tJk);
+    		put(d, tD);
+    		put(t, tT);
+    		put(rs, tRs);
+    		put(cpt, tCpt);
+    		put(registreDecalge, tRd);
+    		put(mux, tMux);
+    		put(dmux, tDmux);
+    		put(dec, tDEC);
+    		put(enco, tEnc);
+    		put(addcomplet, tAddc);
+    		put(demiAdd, tDadd);}};
+    		
+    		ajouterLeGest(hex);
+    	    ajouterLeGest(pin);
+    	    ajouterLeGest(clock);
+    	    ajouterLeGest(vcc);
+    	    ajouterLeGest(mass);
+    	    ajouterLeGest(and);
+    	    ajouterLeGest(or);
+    	    ajouterLeGest(xor);
+    	    ajouterLeGest(nor);
+    	    ajouterLeGest(nand);
+    	    ajouterLeGest(not);
+    	    ajouterLeGest(mux);
+    	    ajouterLeGest(dmux);
+    	    ajouterLeGest(dec);
+    	    ajouterLeGest(addcomplet);
+    	    ajouterLeGest(enco);
+    	    ajouterLeGest(demiAdd);
+    	    ajouterLeGest(d);
+    	    ajouterLeGest(jk);
+    	    ajouterLeGest(t);
+    	    ajouterLeGest(rs);
+    	    ajouterLeGest(cpt);
+    	    ajouterLeGest(registreDecalge);
 	}
     
 	private void ajouterLeGest( ImageView elementAdrager) {
@@ -305,8 +296,7 @@ public class HomeController implements Initializable {
 	            elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#000000;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
 	            transitionDesComposants(elementAdrager);
 				}
-	          
-	        
+        
 	    });
 	    elementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() {
 	    	public void handle(MouseEvent e) {
@@ -326,12 +316,10 @@ public class HomeController implements Initializable {
 	            
 	            elementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
-	    	        	System.out.println("meee D");
 	    	            SnapshotParameters snapParams = new SnapshotParameters();
 	    	            snapParams.setFill(Color.TRANSPARENT);
 	    	            dragImageView.setImage(elementAdrager.snapshot(snapParams, null));
 	    	            workSpace.getChildren().add(dragImageView);
-
 	    	            dragImageView.startFullDrag();
 	    	            e.consume();
 	    	        }
@@ -341,8 +329,8 @@ public class HomeController implements Initializable {
 	    	        public void handle(MouseEvent e) {
 	    	            Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
 	    	            dragImageView.relocate(
-	    	                    (int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() ),
-	    	                    (int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() )
+	    	                    (int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2 ),
+	    	                    (int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2)
 	    	            );
 	    	            e.consume();
 	    	        }
@@ -358,8 +346,7 @@ public class HomeController implements Initializable {
 	    	            elementAdrager.setMouseTransparent(false);
 	    	            elementAdrager.setCursor(Cursor.DEFAULT);
 	    	            if(e.getSceneX() <240)
-	    	  
-	    	           workSpace.getChildren().remove(dragImageView);
+	    	    	          workSpace.getChildren().remove(dragImageView);
 	    	            else ajouterLeGestApresCollage(dragImageView);
 	    	        }
 	    	    });
