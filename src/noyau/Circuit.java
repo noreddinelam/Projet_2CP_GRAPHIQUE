@@ -7,53 +7,53 @@ import java.util.Collections;
 
 public class Circuit implements Serializable{
 	
-	private static ArrayList<Composant> compUtilises = new ArrayList<Composant>();
-	private static ArrayList<Fil> filUtilises = new ArrayList<Fil>();
-	private static ArrayList<Pin> entreesCircuit = new ArrayList<Pin>();
-	private static ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>();
-	private EtatLogique tableVerite[][];
-	private static ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>();
-	private static int nbEtages = 0;
+	private static ArrayList<Composant> compUtilises = new ArrayList<Composant>(); // tout les composants du circuit
+	private static ArrayList<Fil> filUtilises = new ArrayList<Fil>(); // tout les fils du circuit
+	private static ArrayList<Pin> entreesCircuit = new ArrayList<Pin>(); // toutes les entrees du circuit
+	private static ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>(); // toutes les sorties du circuit
+	private EtatLogique tableVerite[][]; // la table de verite du circuit
+	private static ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>(); // la liste des etages pour les elts sequentiels 
+	private static int nbEtages = 0; // nombre des etages
 	
 	
-	public static void ajouterComposant(Composant comp) {
+	public static void ajouterComposant(Composant comp) { // ajouter un composant à la liste des composants utilisés
 		compUtilises.add(comp);
 	}
-	public static void ajouterFil(Fil fil) {
+	public static void ajouterFil(Fil fil) { // ajouter un fil à la liste des fils 
 		filUtilises.add(fil);
 	}
-	public static void ajouterEntree(Pin pin) {
+	public static void ajouterEntree(Pin pin) { // ajouter une entree à la liste des entrees
 		entreesCircuit.add(pin);
 		
 	}
-	public static void ajouterSortie(Affichage compAff) {
+	public static void ajouterSortie(Affichage compAff) { // ajouter une sorties à la liste des sorties
 		sortiesCircuit.add(compAff);
 	}
-	public void relier(Composant compS,Composant compD, int s, int e) {
-		Fil f = compS.sorties[s];
-		compD.entrees[e] = f;
-		f.addDestination(compD);
+	public void relier(Composant compS,Composant compD, int s, int e) {// pour relier deux composants 
+		Fil f = compS.sorties[s]; // recuperer le fil de sortie du composant source
+		compD.entrees[e] = f; // mettre le fil dans l'entree e du composant de destination 
+		f.addDestination(compD); // ajouter une destination au fil
 		
 	}
-	public void relierCommand(Composant compS,Combinatoires compD, int s, int e) {
+	public void relierCommand(Composant compS,Combinatoires compD, int s, int e) { // pour relier une commande pour mux et demux
 		Fil f = compS.sorties[s];
 		compD.commande[e] = f;
 		f.addDestination(compD);		
 	}
-	public void relierHorloge(Sequentiels composant,Composant horloge,int sortie) {
+	public void relierHorloge(Sequentiels composant,Composant horloge,int sortie) { // pour relier une horloge pour les elts sequentiels
 		Fil fil = horloge.sorties[sortie];
 		composant.entreeHorloge = fil;
 		fil.addDestination(composant);
-		if (! listeEtages.contains(composant)) {
+		if (! listeEtages.contains(composant)) { // ajouter le composant à la liste des étages si il ne se trouve pas
 			listeEtages.add(composant);
 		}
 	}
-	public void relierClear(Sequentiels composant,Composant clear,int sortie) {
+	public void relierClear(Sequentiels composant,Composant clear,int sortie) { // pour relier un clear pour les elts sequentiels
 		Fil fil = clear.sorties[sortie];
 		composant.clear = fil;
 		fil.addDestination(composant);
 	}
-	public void relierLoad(Sequentiels composant,Composant load,int sortie) {
+	public void relierLoad(Sequentiels composant,Composant load,int sortie) { // pour relier un load pour les registre decalage et compteur
 		Fil fil = load.sorties[sortie];
 		if (composant.getClass().getSimpleName().equals("RegistreDecalage")) {
 			((RegistreDecalage)composant).setLoad(fil);
@@ -63,7 +63,12 @@ public class Circuit implements Serializable{
 		}
 		fil.addDestination(composant);
 	}
-	private EtatLogique[] convertir(int i , int nbits)
+	public void relierPreset(Bascule bascule,Composant preset,int sortie) { // pour relier un preset pour les bascules
+		Fil fil = preset.sorties[sortie];
+		bascule.setPreset(fil);
+		fil.addDestination(bascule);
+	}
+	private EtatLogique[] convertir(int i , int nbits) // 
 	{
 		EtatLogique tableVerite[]= new EtatLogique[nbits];
 		int j=0;

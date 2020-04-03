@@ -21,7 +21,8 @@ public class AdditionneurN_Bites extends Additionneur {
 			
 		}
 
-	public boolean valider() {
+	public boolean valider() { // verifier si le composant est pret a executer sa fonction logique 
+		   					   // valider si les entrees sont pretes 
 		return (validerEntrees().getNum() == 1 ) ? true : false;
 	}
 		
