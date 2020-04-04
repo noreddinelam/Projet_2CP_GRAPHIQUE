@@ -27,9 +27,6 @@ import noyau.Composant;
 
 public class HomeController implements Initializable {
 	
-  
-	
-	
     Map<ImageView,Label> elemanrsMapFillMap;
     Node dragItem;
     
@@ -233,7 +230,6 @@ public class HomeController implements Initializable {
   	            e.consume();
   	        }
   	    });
-
     }
     
 	@Override
