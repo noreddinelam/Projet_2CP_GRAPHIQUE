@@ -116,6 +116,7 @@ public class ChronogrammeController implements Initializable {
 // 	    	tableView.getItems().add(pin);
 // 	    	tableView.getItems().add(pin1);
     	scrollPane.setPannable(false);
+    	
  	  
  	     
 		}
