@@ -1,10 +1,16 @@
 package application;
 	
+import java.io.File;
+
+import javax.imageio.ImageIO;
+
+import controllers.TableDeVeriteController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import noyau.*;
 
@@ -13,7 +19,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Chronogramme.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TableDeVerite.fxml"));
 			Parent root = fxmlLoader.load();
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
