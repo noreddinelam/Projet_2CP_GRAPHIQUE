@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,13 +18,17 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import noyau.Composant;
+
 
 
 public class HomeController implements Initializable {
@@ -194,46 +200,35 @@ public class HomeController implements Initializable {
 
     @FXML
     private AnchorPane workSpace;
-  
-   
-   
     
-   
     @FXML
-    void mouseEntered(MouseDragEvent event) {
-    	   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
-   	        public void handle(MouseDragEvent e) {
-   	            workSpace.setStyle("-fx-border-color:red;-fx-border-width:2;-fx-border-style:solid;");
-   	            e.consume();
-   	        }
-   	    });
-
-    }
-
+    private ImageView logo;
+    /////////////////////////////Les lignes de Guide
+	private Line guideX = new Line();
+	private Line guideXp = new Line();
+	private	Line guideY = new Line();
+	private	Line guideYp = new Line();
+    ///////////////////////////////////////////////
     @FXML
-    void mouseExited(MouseDragEvent event) {
-        workSpace.setOnMouseDragExited(new EventHandler<MouseDragEvent>() {
-	        public void handle(MouseDragEvent e) {
-	            workSpace.setStyle("-fx-border-style:none;");
-	            e.consume();
-	        }
-	    });
-
-    }
+    private Label afficheurX;
 
     @FXML
-    void mouseReleased(MouseDragEvent event) {
-    	  workSpace.setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
-  	        public void handle(MouseDragEvent e) {
-  	            //TODO: add new instance of dragItem to rightPane
-  	        	System.out.println("m done");
-  	            e.consume();
-  	        }
-  	    });
+    private Label afficheurY;
+    
+	////////////////////Appliquer l'animation de rotation   
+    @FXML
+    void mouseEnterLogo(MouseEvent event) {
+    	rotationDelogo(logo,1,500);
     }
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		ajouterGestWorkSpace();/////Les gestes De drag and drop 
+		tracerLesGuides();//Initialisation des files de guide
+		//initialisation des coordones de X et Y a 0
+		afficheurX.setText("X : 0"); 
+		afficheurY.setText("Y : 0");
+		//Creation d'une map pour gerer les titres des composants 
 		elemanrsMapFillMap = new HashMap<ImageView, Label>(){{put(hex, tHex);
     		put(pin, tPin);
     		put(clock, tH);
@@ -258,6 +253,8 @@ public class HomeController implements Initializable {
     		put(addcomplet, tAddc);
     		put(demiAdd, tDadd);}};
     		
+    	////Ajouter pour chaque Composant les gestes de drag and drop
+    		
     		ajouterLeGest(hex);
     	    ajouterLeGest(pin);
     	    ajouterLeGest(clock);
@@ -281,9 +278,48 @@ public class HomeController implements Initializable {
     	    ajouterLeGest(rs);
     	    ajouterLeGest(cpt);
     	    ajouterLeGest(registreDecalge);
+		  
+    	    ////////////// tracer les regles 
+  
+    	    tracerLesregles(workSpace);
+	}
+	private void ajouterGestWorkSpace() {////Methodes pour Ajouter l'interaction avec le drag and drop et les guides
+		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
+	   	        public void handle(MouseDragEvent e) {
+                       workSpace.getChildren().add(guideX);
+                       workSpace.getChildren().add(guideXp);
+                       workSpace.getChildren().add(guideY);
+                       workSpace.getChildren().add(guideYp);
+                       
+
+	   	            e.consume();
+	   	        }
+	   	    });
+		   
+		  	  workSpace.setOnMouseDragExited(new EventHandler<MouseDragEvent>() {
+			        public void handle(MouseDragEvent e) {
+			        	e.consume();
+			        }
+			    });
+		  	  
+		  	  
+			  workSpace.setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
+		  	        public void handle(MouseDragEvent e) {
+		  	            //TODO: add new instance of dragItem to rightPane
+		  	        workSpace.getChildren().remove(guideX);
+		  	      workSpace.getChildren().remove(guideXp);
+		  	    workSpace.getChildren().remove(guideY);
+		  	    workSpace.getChildren().remove(guideYp);
+		  	        
+		  	        
+		  	            e.consume();
+		  	        }
+		  	    });
+
 	}
     
-	private void ajouterLeGest( ImageView elementAdrager) {
+	private void ajouterLeGest( ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
+		//est ajoute dans le workSpace
 	
 	
 	    elementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -303,12 +339,10 @@ public class HomeController implements Initializable {
 	    elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	        	ImageView dragImageView = new ImageView();
-	        	System.out.println("mee p");
 	            System.out.println(elementAdrager.getId());
 	            dragImageView.setMouseTransparent(true);
 	            elementAdrager.setMouseTransparent(true);
 	            elementAdrager.setCursor(Cursor.CLOSED_HAND);
-	            
 	            
 	            elementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
@@ -323,11 +357,38 @@ public class HomeController implements Initializable {
 	            
 	            elementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
-	    	            Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+	    	        	Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
 	    	            dragImageView.relocate(
-	    	                    (int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2 ),
-	    	                    (int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2)
+	    	                    (int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2),
+	    	                    (int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2 )
 	    	            );
+	    	            
+	    	            String xString=String.valueOf(dragImageView.getLayoutX());
+    	                String yString=String.valueOf(dragImageView.getLayoutY());
+	    	            if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<1066 )&&(dragImageView.getLayoutY()>17))
+	    	            {
+	    	                guideX.setLayoutX(dragImageView.getLayoutX());
+	    	                guideY.setLayoutY(dragImageView.getLayoutY());
+	    	                guideXp.setLayoutX(dragImageView.getLayoutX()+ elementAdrager.getBoundsInLocal().getWidth()+1);
+	    	                guideYp.setLayoutY(dragImageView.getLayoutY()+ elementAdrager.getBoundsInLocal().getHeight()+1);
+	    	                
+	    	        
+	    	                afficheurX.setText("X : "+xString);
+	    	                afficheurY.setText("Y : "+yString);
+	    	                
+	    	            }
+	    	      
+	    	            else 
+	    	            	{
+	    	            	guideX.setLayoutX(0);
+	    	            	guideY.setLayoutY(0);
+	    	            	guideXp.setLayoutX(0);
+	    	            	guideYp.setLayoutY(0);
+	    	            	 afficheurX.setText("X : 0");
+		    	                afficheurY.setText("Y :0");
+	    	            	}
+	    	     
+	    	        
 	    	            e.consume();
 	    	        }
 	    	    });
@@ -341,8 +402,8 @@ public class HomeController implements Initializable {
 	    	          
 	    	            elementAdrager.setMouseTransparent(false);
 	    	            elementAdrager.setCursor(Cursor.DEFAULT);
-	    	            if(e.getSceneX() <240)
-	    	    	          workSpace.getChildren().remove(dragImageView);
+	    	            if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670)
+	    	            	workSpace.getChildren().remove(dragImageView);
 	    	            else ajouterLeGestApresCollage(dragImageView);
 	    	        }
 	    	    });
@@ -353,7 +414,9 @@ public class HomeController implements Initializable {
 
 	}
 	
-	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {
+	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
+		//est ajoute dans le workSpace
+		
 		
 		
 	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -383,6 +446,7 @@ public class HomeController implements Initializable {
 	    	            eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
 	    	            eleementAdrager.startFullDrag();
 	    	            e.consume();
+	    	            
 	    	        }
 	    	    });
 	            
@@ -393,6 +457,30 @@ public class HomeController implements Initializable {
 	    	                    (int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
 	    	                    (int)(localPoint.getY() - eleementAdrager.getBoundsInLocal().getHeight()/2 )
 	    	            );
+	    	            
+	    	            String xString=String.valueOf(eleementAdrager.getLayoutX());
+    	                String yString=String.valueOf(eleementAdrager.getLayoutY());
+	    	            if(eleementAdrager.getLayoutX()>0)
+	    	            {
+	    	                guideX.setLayoutX(eleementAdrager.getLayoutX());
+	    	                guideY.setLayoutY(eleementAdrager.getLayoutY());
+	    	                guideXp.setLayoutX(eleementAdrager.getLayoutX()+ eleementAdrager.getBoundsInLocal().getWidth()+1);
+	    	                guideYp.setLayoutY(eleementAdrager.getLayoutY()+ eleementAdrager.getBoundsInLocal().getHeight()+1);
+
+	    	                afficheurX.setText("X : "+xString);
+	    	                afficheurY.setText("Y : "+yString);
+	    	            }
+	    	            
+	    	       
+	    	            else 
+	    	            	{
+	    	            	guideX.setLayoutX(0);
+	    	               	guideY.setLayoutY(0);
+	    	            	guideXp.setLayoutX(0);
+	    	            	guideYp.setLayoutY(0);
+	    	              	afficheurX.setText("X : 0");
+		    	            afficheurY.setText("Y :0");
+	    	            	}	    	        
 	    	            e.consume();
 	    	        }
 	    	    });
@@ -403,7 +491,7 @@ public class HomeController implements Initializable {
 	    	            eleementAdrager.setMouseTransparent(false);
 	    	            eleementAdrager.setMouseTransparent(false);
 	    	            eleementAdrager.setCursor(Cursor.DEFAULT);
-	    	            if(e.getSceneX() <240)
+	    	            if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670)
 	    	           workSpace.getChildren().remove(eleementAdrager);
 	    	        }
 	    	    });
@@ -413,7 +501,7 @@ public class HomeController implements Initializable {
 	
 
 	}
-	public void transitionDesComposants(Node composants) {
+	public void transitionDesComposants(Node composants) {// Methode d'animation de 'Shake'
 	    int duration = 100;
 	    int count = 3;
 
@@ -438,8 +526,208 @@ public class HomeController implements Initializable {
 	    transition2.play();
 	    transition3.play();
 	}
-	
+	 void tracerLesregles(AnchorPane w) {// Methode de tracage des Regles
 
+	        boolean v = true;
+	        for (int i = 0; i <= workSpace.getPrefWidth(); i += 25) {
+
+	            Line p = new Line();
+	         
+	            p.toFront();
+	            if (v) {
+	                v = false;
+	                p.setStyle("-fx-stroke-width: 1.5px;");
+	                p.setStroke(Color.web("ffffff"));
+	                p.setOpacity(1);
+	                p.setLayoutX(i);
+	                p.setLayoutY(0);
+	                p.setStartX(0);
+	                p.setStartY(0);
+	                p.setEndX(0);
+	                p.setEndY(15);
+	                for(int j=i+4;j<i+24;j+=4)
+	                {
+	                	   Line ppLine=new Line();
+	                	 ppLine.setStyle("-fx-stroke-width: 1.5px;");
+	 	                ppLine.setStroke(Color.web("ffffff"));
+	 	                ppLine.setOpacity(1);
+	 	                ppLine.setLayoutX(j);
+	 	                ppLine.setLayoutY(0);
+	 	                ppLine.setStartX(0);
+	 	                ppLine.setStartY(0);
+	 	                ppLine.setEndX(0);
+	 	                ppLine.setEndY(4);
+	 	                w.getChildren().add(ppLine);
+	                	
+	                }
+	            } else {
+	                v = true;
+	                p.setStyle("-fx-stroke-width: 1.5px;");
+	                p.setStroke(Color.web("ffffff"));
+	                p.setOpacity(1);
+	                p.setLayoutX(i);
+	                p.setLayoutY(0);
+	                p.setStartX(0);
+	                p.setStartY(0);
+	                p.setEndX(0);
+	                p.setEndY(6.5);
+	                if (i < workSpace.getPrefWidth() - 6)
+	                	for(int j=i+4;j<i+24;j+=4)
+	                	{
+	                		Line ppLine=new Line();
+	                		ppLine.setStyle("-fx-stroke-width: 1.5px;");
+	                		ppLine.setStroke(Color.web("ffffff"));
+	                		ppLine.setOpacity(1);
+	                		ppLine.setLayoutX(j);
+	                		ppLine.setLayoutY(0);
+	                		ppLine.setStartX(0);
+	                		ppLine.setStartY(0);
+	                		ppLine.setEndX(0);
+	                		ppLine.setEndY(4);
+	                		w.getChildren().add(ppLine);
+
+	                	}
+	                
+	            }
+
+	            p.toFront();
+	            w.getChildren().add(p);
+	        }
+
+	        v = true;
+	        for (int i = 0; i <= workSpace.getPrefHeight(); i += 25) {
+
+	            Line p = new Line();
+	            p.toFront();
+	            if (v) {
+	                v = false;
+	                p.setStyle("-fx-stroke-width: 1px;");
+	                p.setStroke(Color.web("ffffff")); 
+	                p.setOpacity(1);
+	                p.setLayoutX(0);
+	                p.setLayoutY(i);
+	                p.setStartX(0);
+	                p.setStartY(0);
+	                p.setEndX(15);
+	                p.setEndY(0);
+	                for(int j=i+4;j<i+24;j+=4)
+	                {
+	                	   Line ppLine=new Line();
+	                	 ppLine.setStyle("-fx-stroke-width: 1.5px;");
+	 	                ppLine.setStroke(Color.web("ffffff"));
+	 	                ppLine.setOpacity(1);
+	 	                ppLine.setLayoutX(0);
+	 	                ppLine.setLayoutY(j);
+	 	                ppLine.setStartX(0);
+	 	                ppLine.setStartY(0);
+	 	                ppLine.setEndX(4);
+	 	                ppLine.setEndY(0);
+	 	                w.getChildren().add(ppLine);
+	                	
+	                }
+	            } else {
+	                v = true;
+	                p.setStyle("-fx-stroke-width: 1px;");
+	                p.setStroke(Color.web("ffffff"));
+	                p.setOpacity(1);
+	                p.setLayoutX(0);
+	                p.setLayoutY(i);
+	                p.setStartX(0);
+	                p.setStartY(0);
+	                p.setEndX(6.5);
+	                p.setEndY(0);
+	                for(int j=i+4;j<i+24;j+=4)
+	                {
+	                	   Line ppLine=new Line();
+	                	 ppLine.setStyle("-fx-stroke-width: 1.5px;");
+	 	                ppLine.setStroke(Color.web("ffffff"));
+	 	                ppLine.setOpacity(1);
+	 	                ppLine.setLayoutX(0);
+	 	                ppLine.setLayoutY(j);
+	 	                ppLine.setStartX(0);
+	 	                ppLine.setStartY(0);
+	 	                ppLine.setEndX(4);
+	 	                ppLine.setEndY(0);
+	 	                w.getChildren().add(ppLine);
+	                	
+	                }
+	            }
+
+	            p.toFront();
+	            w.getChildren().add(p);
+	        }
+	    }
+	 
+	 
+	
+	     
+	private void rotationDelogo(ImageView image,int nombreDeboucle,int vitesse) {// Methode de rotation de logo
+
+	     RotateTransition rotate = new RotateTransition();           	     
+	        rotate.setAxis(Rotate.Z_AXIS);  	          	       
+	        rotate.setByAngle(360);  	          	     
+	        rotate.setCycleCount(nombreDeboucle);  
+	        rotate.setDuration(Duration.millis(vitesse));   
+	        rotate.setAutoReverse(false);  	              
+	        rotate.setNode(image);    
+	        rotate.play();
+	    
+	        rotate.setOnFinished(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent arg0) {
+					       	     
+				         
+				        logo.setRotate(0);
+				    
+					
+				}
+			});
+	     
+	}
+ 
+	private void tracerLesGuides() {//Methode d'initialitaton des guides
+        guideX.setStyle("-fx-stroke-width: 0.3px;");
+        guideX.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
+        guideX.setStroke(Color.web("ffffff")); 
+        guideX.setOpacity(1);
+        guideX.setLayoutY(0);
+        guideX.setStartX(0);
+        guideX.setStartY(0);
+        guideX.setEndX(0);
+        guideX.setEndY(700);	
+        /////////////////////////////////////////////////////
+        guideXp.setStyle("-fx-stroke-width: 0.3px;");
+        guideXp.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
+        guideXp.setStroke(Color.web("ffffff")); 
+        guideXp.setOpacity(1);
+        guideXp.setLayoutY(0);
+        guideXp.setStartX(0);
+        guideXp.setStartY(0);
+        guideXp.setEndX(0);
+        guideXp.setEndY(700);
+        /////////////////////////////////////////////////////
+        guideY.setStyle("-fx-stroke-width: 0.3px;");
+        guideY.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
+        guideY.setStroke(Color.web("ffffff")); 
+        guideY.setOpacity(1);
+    	guideY.setLayoutX(0);
+        guideY.setStartX(0);
+        guideY.setStartY(0);
+        guideY.setEndX(1130);
+        guideY.setEndY(0);
+        /////////////////////////////////////////////////////
+        guideYp.setStyle("-fx-stroke-width: 0.3px;");
+        guideYp.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
+        guideYp.setStroke(Color.web("ffffff")); 
+        guideYp.setOpacity(1);
+    	guideYp.setLayoutX(0);
+        guideYp.setStartX(0);
+        guideYp.setStartY(0);
+        guideYp.setEndX(1130);
+        guideYp.setEndY(0);
+        
+        
+	}
 	
 }
 
