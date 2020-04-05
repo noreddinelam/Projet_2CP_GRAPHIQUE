@@ -7,7 +7,7 @@ public class D extends Bascule{
 		// TODO Auto-generated constructor stub
 	}
 
-	public void genererSortiesSyncho() {
+	public void genererSortiesSyncho() { // generer la sortie de la bascule D
 		
 		if(etatPrec[0].getNum()==1)
 		{
@@ -22,7 +22,7 @@ public class D extends Bascule{
 	}
 
 	@Override
-	public void initialiser() {
+	public void initialiser() { // initialiser l'etat precedent
 		// TODO Auto-generated method stub
 		etatPrec[0] = entrees[0].getEtatLogiqueFil();
 	}

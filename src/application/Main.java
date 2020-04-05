@@ -1,6 +1,8 @@
 package application;
 	
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -31,7 +33,7 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-		launch(args);
+		//launch(args);
 		
 		///////////////////////////////////////////////////////////////////////////////
 		//--> Test d'un deMultipluexeur
@@ -154,21 +156,21 @@ public class Main extends Application {
 		//--> Simulation d'un additionneur Complet a base des portes logiques
 		
 //		Circuit circuit = new Circuit();
-//		Pin a0= new Pin(true);
+//		Pin a0= new Pin(true,"a0");
 //		a0.setEtat(EtatLogique.ONE);
-//		Pin b0= new Pin(true);
+//		Pin b0= new Pin(true,"b0");
 //		b0.setEtat(EtatLogique.ONE);
-//		Pin r0=new Pin(true);
+//		Pin r0=new Pin(true,"r0");
 //		
-//		Xor xor1=new Xor(2);
-//		Xor xor2=new Xor(2);
-//		And and1=new And(2);
-//		And and2=new And(2);
-//		Or or=new Or(2);
-//		Not inverseur=new Not();
-//		Not inverseur2=new Not();
-//		Pin pinS1 = new Pin(false);
-//		Pin pinS2 = new Pin(false);
+//		Xor xor1=new Xor(2,"xor1");
+//		Xor xor2=new Xor(2,"xor2");
+//		And and1=new And(2,"and1");
+//		And and2=new And(2,"and2");
+//		Or or=new Or(2,"or");
+//		Not inverseur=new Not("inv");
+//		Not inverseur2=new Not("inv2");
+//		Pin pinS1 = new Pin(false,"pinS1");
+//		Pin pinS2 = new Pin(false,"pinS2");
 //		circuit.relier(a0, xor1, 0, 0);
 //		circuit.relier(b0, xor1, 0, 1);
 //		circuit.relier(a0, and1, 0, 0);
@@ -473,5 +475,105 @@ public class Main extends Application {
 //		circuit.relierHorloge(b2, horloge, 0);
 //		Thread thread=new Thread(horloge);
 //		thread.start();
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//--> Test du cpt :
+//		Circuit circuit = new Circuit();
+//		Compteur cpt= new Compteur(3, "cpt", Front.Front_Montant);
+//		Horloge horloge = new Horloge("hrlg", 1000);
+//		Pin clear= new Pin(true, "pin");
+//		Pin pin = new Pin(true, "nom");
+//		pin.setEtat(EtatLogique.ONE);
+//		clear.setEtat(EtatLogique.ZERO);
+//		circuit.relierHorloge(cpt, horloge, 0);
+//		circuit.relierLoad(cpt, clear, 0);
+//		circuit.relier(pin, cpt, 0, 0);
+//		circuit.relier(pin, cpt, 0, 1);
+//		circuit.relier(pin, cpt, 0, 2);
+//		Thread thread=new Thread(horloge);
+//		thread.start();
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//--> Test du cpt avec bascule JK
+//		Circuit circuit = new Circuit();
+//		Compteur cpt= new Compteur(3, "cpt", Front.Front_Montant);
+//		JK jk = new JK("jk", Front.Front_Montant);
+//		Horloge horloge = new Horloge("hrlg", 1000);
+//		Pin pin = new Pin(true, "nom");
+//		pin.setEtat(EtatLogique.ONE);
+//		circuit.relier(pin, jk, 0, 0);
+//		circuit.relier(pin, jk, 0, 1);
+//		circuit.relierHorloge(jk, horloge, 0);
+//		circuit.relierHorloge(cpt, jk, 0);
+//		Thread thread=new Thread(horloge);
+//		thread.start();
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//--> Test du cpt avec bascule JK et load à 0
+//		Circuit circuit = new Circuit();
+//		Compteur cpt= new Compteur(3, "cpt", Front.Front_Montant);
+//		JK jk = new JK("jk", Front.Front_Montant);
+//		Horloge horloge = new Horloge("hrlg", 1000);
+//		Pin pin = new Pin(true, "nom");
+//		Pin load= new Pin(true, "load");
+//		Pin clear= new Pin(true, "clr");
+//		pin.setEtat(EtatLogique.ONE);
+//		clear.setEtat(EtatLogique.ONE);
+//		circuit.relier(load, cpt, 0, 0);
+//		circuit.relier(load, cpt, 0, 1);
+//		circuit.relier(jk, cpt, 0, 2);
+//		circuit.relier(pin, jk, 0, 0);
+//		circuit.relier(pin, jk, 0, 1);
+//		circuit.relierClear(cpt, clear, 0);
+//		circuit.relierHorloge(jk, horloge, 0);
+//		circuit.relierHorloge(cpt, horloge, 0);
+//		circuit.relierLoad(cpt, load, 0);
+//		Thread thread=new Thread(horloge);
+//		thread.start();
+		//horloge.run();
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//--> Test du reg à decalage avec load :
+//		Circuit circuit = new Circuit();
+//		RegistreDecalage reg = new RegistreDecalage(4, "reg", true, Front.Front_Montant);
+//		Pin pin = new Pin(true, "nom");
+//		pin.setEtat(EtatLogique.ONE);
+//		Pin pin2 = new Pin(true, "nom");
+//		//pin2.setEtat(EtatLogique.ONE);
+//		Pin load= new Pin(true, "clr");
+//		Horloge horloge = new Horloge("hrlg", 1000);
+//		circuit.relier(pin, reg, 0, 0);
+//		circuit.relier(pin2, reg, 0, 1);
+//		circuit.relier(pin2, reg, 0, 2);
+//		circuit.relier(pin2, reg, 0, 3);
+//		circuit.relier(pin2, reg, 0, 4);
+//		circuit.relierLoad(reg,load, 0);
+//		circuit.relierHorloge(reg, horloge, 0);
+//		Thread thread=new Thread(horloge);
+////		thread.start();
+//		horloge.run();
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//--> Test du reg à decalage avec bascule T et porte not :
+//		Circuit circuit = new Circuit();
+//		RegistreDecalage reg = new RegistreDecalage(4, "reg", true, Front.Front_Montant);
+//		//Compteur reg= new Compteur(3, "n", Front.Front_Montant);
+//		Not not = new Not("not");
+//		Or or = new Or(2, "or");
+//		T t = new T("T", Front.Front_Montant);
+//		Pin pin = new Pin(true, "nom");
+//		pin.setEtat(EtatLogique.ONE);
+//		Pin pin2 = new Pin(true, "nom");
+//		pin2.setEtat(EtatLogique.ONE);
+//		Horloge horloge = new Horloge("hrlg", 1000);
+//		circuit.relier(pin,t, 0, 0);
+//		circuit.relier(pin2, reg, 0, 0);
+//		circuit.relier(t, or, 0, 0);
+//		circuit.relier(t, not, 1, 0);
+//		circuit.relier(not, or, 0, 1);
+//		circuit.relierHorloge(t, horloge, 0);
+//		circuit.relierHorloge(reg, or, 0);
+//		Thread thread=new Thread(horloge);
+//		thread.start();
+//		horloge.run();
+		HashMap<String, String> map = new HashMap<String, String>();
+		ArrayList<String> strings = new ArrayList<String>(map.values());
+		map.get("1000");
 	}
 }
