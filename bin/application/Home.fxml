@@ -22,7 +22,7 @@
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </VBox.margin>
                <children>
-                  <ImageView id="logo" fitHeight="121.0" fitWidth="140.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView id="logo" fx:id="logo" fitHeight="121.0" fitWidth="140.0" layoutY="1.0" onMouseEntered="#mouseEnterLogo" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.8510665893554688" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="20.0">
                      <image>
                         <Image url="@../homePage_icones/LOGO.png" />
                      </image>
@@ -41,7 +41,7 @@
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.35" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.35" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox fx:id="vBoxComp" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
@@ -659,7 +659,7 @@
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="700.0" prefWidth="65.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="716.0" prefWidth="52.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>
@@ -699,7 +699,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>
-                  <ImageView fx:id="affichage" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="affichage" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="14.0">
                      <image>
                         <Image url="@../homePage_icones/AFFICHAGE.png" />
                      </image>
@@ -711,7 +711,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>
-                  <ImageView fx:id="aide" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="aide" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0">
                      <image>
                         <Image url="@../homePage_icones/AIDE.png" />
                      </image>
@@ -721,12 +721,34 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </AnchorPane>
+            <Label fx:id="afficheurX" prefHeight="28.0" prefWidth="58.0" style="-fx-background-color: #E0E0D1; -fx-background-radius: 18;" text="X : 1203" textFill="#303337">
+               <VBox.margin>
+                  <Insets left="4.0" right="2.0" top="220.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Calisto MT" size="10.0" />
+               </font>
+               <padding>
+                  <Insets left="8.0" />
+               </padding>
+            </Label>
+            <Label fx:id="afficheurY" prefHeight="28.0" prefWidth="59.0" style="-fx-background-color: E0E0D1; -fx-background-radius: 18;" text="Y : 33" textFill="#303337">
+               <VBox.margin>
+                  <Insets left="4.0" right="2.0" top="14.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Calisto MT" size="10.0" />
+               </font>
+               <padding>
+                  <Insets left="8.0" />
+               </padding>
+            </Label>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <VBox.margin>
-                  <Insets top="310.0" />
+                  <Insets top="30.0" />
                </VBox.margin>
                <children>
-                  <ImageView fx:id="darkMode" layoutX="7.0">
+                  <ImageView fx:id="darkMode" layoutX="4.0" layoutY="14.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.topAnchor="14.0">
                      <image>
                         <Image url="@../homePage_icones/ON.png" />
                      </image>
@@ -736,6 +758,6 @@
          </children></VBox>
    </right>
    <center>
-      <AnchorPane fx:id="workSpace" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="workSpace" maxHeight="700.0" maxWidth="1130.0" minHeight="700.0" minWidth="1130.0" prefHeight="700.0" prefWidth="1130.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
