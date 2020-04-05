@@ -10,13 +10,13 @@ public class Encodeur extends Combinatoires {
 	}
 	public void genererSorties() {
 		int i = 0;
-		while ((i < nombreEntree )&&(entrees[i].getEtatLogiqueFil() != EtatLogique.ONE))
+		while ((i < nombreEntree )&&(entrees[i].getEtatLogiqueFil() != EtatLogique.ONE)) // recuperer le premier un dans les entrées
 			i++;
 		int res = Integer.parseInt(Integer.toBinaryString(i));
-		numToFils(res);
+		numToFils(res); // distribuer la valeur resultante dans les fils de sorties
 	}
 	
-	public boolean valider() {
+	public boolean valider() { // verifier si les entrees du composant sont toutes reliées
 		return (validerEntrees().getNum() == 1) ? true : false;
 	}
 

@@ -39,7 +39,7 @@ public class Demultiplexeur extends Combinatoires{
 	public EtatLogique validerCommandes() { // role : valider les commandes ( si toutes les commandes sont valides retourner 1) 
 		int i =0;
 		while(i<nbCommande) {
-			if(commande[i].getEtatLogiqueFil()== null) // tester si les fils de sorties  sont a null 
+			if(commande[i] == null) // tester si les fils de sorties  sont a null 
 				return null;
 			if(commande[i].getEtatLogiqueFil().equals(EtatLogique.HAUTE_IMPEDANCE)) // tester si l'etat  des fils de sorties est "Haute impedance" 
 				return EtatLogique.HAUTE_IMPEDANCE;

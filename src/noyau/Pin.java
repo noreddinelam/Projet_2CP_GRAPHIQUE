@@ -12,7 +12,7 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		// TODO Auto-generated constructor stub
 		super(0,nom);
 		this.input = input;
-		if (input) {
+		if (input) { // pour verifier si c'est un pin d'entree ou de sortie
 			nombreSortie = 1;
 			sorties[0] = new Fil(this);
 			Circuit.ajouterEntree(this);
@@ -36,7 +36,7 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 					sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
 				}
 			}
-			if (horloge == true) {
+			if (horloge == true) { // verifier si le pin sert comme horloge ou pas
 				tictac();
 			}
 		}else // to be continued ...
@@ -55,6 +55,20 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 	public boolean valider() {
 		return true;
 	}
+
+	@Override
+	public void afficher() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void addEtages(ArrayList<Integer> etage) { // sert pour la creation des etages dans la simulation
+		if (! etage.contains(0)) {
+			etage.add(0);
+			this.horloge = true ; // mettre le pin comme etant une horloge
+		}
+	}
+	
 	public boolean isInput() {
 		return input;
 	}
@@ -67,18 +81,5 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 	public void setEtat(EtatLogique etat) {
 		this.etat = etat;
 	}
-
-	@Override
-	public void afficher() {
-		// TODO Auto-generated method stub
-		
-	}
 	
-	public void addEtages(ArrayList<Integer> etage) {
-		if (! etage.contains(0)) {
-			etage.add(0);
-			this.horloge = true ;
-		}
-	}
-
 }

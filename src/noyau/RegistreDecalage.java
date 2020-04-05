@@ -6,7 +6,7 @@ public class RegistreDecalage extends Sequentiels {
 	
 	private int taille;
 	private EtatLogique[] valeur;
-	private boolean decalageDroite;
+	private boolean decalageDroite; // si true dec droite sinon dec gauche
 	private Fil load ;
 	public RegistreDecalage(int taille,String nom,boolean dec,Front front) { // constructeur 
 		super(taille+1,nom,front);
@@ -21,23 +21,14 @@ public class RegistreDecalage extends Sequentiels {
 		sorties[0].setEtatLogiqueFil(EtatLogique.HAUTE_IMPEDANCE);
 	}
 	
-	public void genererSorties() { // executer une des fonction du registre ( decalage a droite , remise a zero )
+	public void genererSorties() { // executer le clear en mode asynchrone ou bien initialisation en mode synchrone
 		if(this.clear.getEtatLogiqueFil().getNum()==0)
+		{
 			Arrays.fill(valeur, EtatLogique.ZERO);//initialiser le tableau avec ZERO
+			sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
+		}
 		else {
-			if (this.load.getEtatLogiqueFil().getNum() == 0) {
-				for (int i = 1; i < nombreEntree; i++) {
-					valeur[i-1] = entrees[i].getEtatLogiqueFil();
-				}
-			}
-			else {
-				if (decalageDroite) { // decalage droite
-					decalageDroite();
-				}
-				else { //decalage gauche 
-					decalageGauche();
-				}
-			}
+			initialiser(); // initialisation des etats precedents
 		}
 			
 	}
@@ -69,7 +60,7 @@ public class RegistreDecalage extends Sequentiels {
 	@Override
 	public EtatLogique validerEntrees() {
 		// TODO Auto-generated method stub
-		if(entrees[0].getEtatLogiqueFil()== null) // verifier si  l'entree du composants est reliée a un autre composant 
+		if(entrees[0] == null) // verifier si  l'entree du composants est reliée a un autre composant 
 			return null;
 		if(entrees[0].getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum()) //  verifier si le fil d'entree est en haute impedence . 
 			return EtatLogique.HAUTE_IMPEDANCE;
@@ -78,22 +69,11 @@ public class RegistreDecalage extends Sequentiels {
 		return EtatLogique.ONE;
 	}
 
-	public boolean valider() {
-		if (clear.getEtatLogiqueFil().getNum() == 1 && load.getEtatLogiqueFil().getNum() == 1) { // registre à decalge en mode synchrone
-			if(validerEntrees().getNum() == 1 && entreeHorloge != null) // verifier si les entrees sont valides "valideEntrees"
-																		// verification de l'horloge à revoir .
-				switch (front) {
-				case Front_Descendant:{
-					if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ZERO )
-						return true;
-				}break;
-				case Front_Montant :{
-					if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ONE )
-						return true;
-				}break;
-				}
+	public boolean valider() { // valider le circuit si clear est à 0 ou bien load à 0 à condition d'avoir toutes les entrees branchées 
+		if (clear.getEtatLogiqueFil().getNum() == 0) {
+			return true;
 		}
-		else if (super.validerEntrees().getNum() == 1) { // mode asynchrone .
+		if (load.getEtatLogiqueFil().getNum() == 0 && super.validerEntrees() == EtatLogique.ONE) {
 			return true;
 		}
 		return false;
@@ -107,6 +87,71 @@ public class RegistreDecalage extends Sequentiels {
 			p *= 10 ;
 		}
 		return res ;
+	}
+
+	@Override
+	public void genererSortiesSyncho() { // pour generer la sortie en mode synchrone ou load à 0
+		// TODO Auto-generated method stub
+		if (this.load.getEtatLogiqueFil().getNum() == 0) {
+			for (int i = 1; i < nombreEntree; i++) {
+				valeur[i-1] = entrees[i].getEtatLogiqueFil();
+			}
+			sorties[0].setEtatLogiqueFil(valeur[taille-1]);
+		}
+		else {
+			if (decalageDroite) { // decalage droite
+				decalageDroite();
+			}
+			else { //decalage gauche 
+				decalageGauche();
+			}
+		}
+	}
+
+	@Override
+	public boolean validerSyncho() {
+		// TODO Auto-generated method stub
+		boolean f = false;
+		if (clear.getEtatLogiqueFil().getNum() == 1) { // valider le compteur soit dans le mode synchrone ou load à 0 et toutes les entrées sont toutes validées
+			if((load.getEtatLogiqueFil().getNum() == 1 && validerEntrees().getNum()== 1)||(load.getEtatLogiqueFil().getNum() == 0 && super.validerEntrees() == EtatLogique.ONE))// verification de l'horloge à revoir .
+				if (entreeHorloge != null) {
+					switch (front) {
+					case Front_Descendant:{
+						if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ZERO )
+						{
+							if (etatPrecHorloge == EtatLogique.ONE) {
+								f = true;
+							}
+						}
+						else {
+							sleep = false ;
+							etatPrecHorloge = EtatLogique.ONE;
+						}
+					}break;
+					case Front_Montant :{
+						if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ONE )
+						{
+							if (etatPrecHorloge == EtatLogique.ZERO) {
+								f = true;
+							}
+						}
+						else {
+							sleep = false ;
+							etatPrecHorloge = EtatLogique.ZERO;
+						}
+					}break;
+					}
+				}
+		}
+		return f;
+	}
+
+	@Override
+	public void initialiser() {// initialiser les etats precedents qui servent si le load à 0
+		// TODO Auto-generated method stub
+		for (int i = 1; i < nombreEntree; i++) {
+			etatPrec[i] = entrees[i].getEtatLogiqueFil();
+		}
 	}
 
 	public void setTaille(int taille) {
@@ -124,18 +169,5 @@ public class RegistreDecalage extends Sequentiels {
 	public void setLoad(Fil load) {
 		this.load = load;
 	}
-
-	@Override
-	public void genererSortiesSyncho() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean validerSyncho() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	
 }

@@ -6,8 +6,8 @@ public abstract class Additionneur extends Combinatoires{
 
 	public Additionneur(int nombreEntree,String nom) { // constructeur 
 		super(nombreEntree,nom); 
-		nombreSortie = ( nombreEntree / 2 ) + 1;
-		initSorties();
+		nombreSortie = ( nombreEntree / 2 ) + 1; // calcul du nombre de sorties 
+		initSorties(); // creer les fils de sortie 
 		}
 		// TODO Auto-generated constructor stub
 	

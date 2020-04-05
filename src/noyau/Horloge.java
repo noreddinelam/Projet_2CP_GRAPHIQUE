@@ -20,22 +20,22 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 		
 	}
 	public void evaluer() {
-		for(Sequentiels s : Circuit.getListeEtages()) /// à revoir 
+		for(Sequentiels s : Circuit.getListeEtages()) /// initialiser les etats precedents des fils horloge de chaque composant
 			s.etatPrecHorloge = s.entreeHorloge.getEtatLogiqueFil();
-		genererSorties();
-		sorties[0].evaluer();
-		tictac();
+		genererSorties(); // generer un front
+		sorties[0].evaluer(); // sert pour initialser le fil de sortie de l'horloge 
+		tictac(); // c'est la methode responsable de l'execution en mode synchrone des composants sequentiels
 	}
-	public void genererSorties() {
+	public void genererSorties() { // inverser l'etat de l'horloge pour generer sorte de front
 		etat = (etat == EtatLogique.ZERO) ? EtatLogique.ONE : EtatLogique.ZERO ;
 		sorties[0].setEtatLogiqueFil(etat);
 	}
 	
-	public boolean valider() {
+	public boolean valider() { // à voir apres si elle est nécessaire
 		return false;
 	}
 	
-	public void addEtages(ArrayList<Integer> etage) {
+	public void addEtages(ArrayList<Integer> etage) { // sert pour la creation des etages dans la simulation
 		if (! etage.contains(0)) {
 			etage.add(0);
 		}
@@ -43,19 +43,27 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 
 
 	@Override
-	public void run() {
+	public void run() {	
 		this.evaluer();
 		Circuit.initialiser();
-		
 		while(this.active)// tant que l'horloge est active
-		{
+		{			
+			this.evaluer();//on excut l'evaluation
 			try {
 				int i=1;// just pour revenir a la ligne a chaque front de 3 bascules
 			    for(Sequentiels sequentiels : Circuit.getListeEtages())// On parcour chaque composant sequentielle
 			    {
-			    	System.out.print(sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
+			    	if (sequentiels.getClass().getSimpleName().equals("Compteur")) {
+			    		System.out.print(((Compteur)sequentiels).getValeur() + " | ");
+					}
+			    	else if(sequentiels.getClass().getSimpleName().equals("T")){
+			    		System.out.print(sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
+					}
+			    	else {
+			    		System.out.print("Valeur : " + ((RegistreDecalage)sequentiels).valeur()+ " |  " + sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
+					}
 			    	
-			    	if(i==3) // condition de retour a la ligne 
+			    	if(i==2) // condition de retour a la ligne en fonctions du nombre elt contenu dans la liste eds etages
 			    		{
 			    		System.out.println("\n");
 			    		i=1;
@@ -63,7 +71,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 			    	i++;
 			    	
 			    }   
-			    this.evaluer();//on excut l'evaluation
+			    
 				Thread.sleep(temps);
 				
 			} catch (InterruptedException e) {// exception traité par la clasee thread
