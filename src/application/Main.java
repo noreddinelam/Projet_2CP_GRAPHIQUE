@@ -1,14 +1,5 @@
 package application;
 	
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.imageio.ImageIO;
-
-import controllers.TableDeVeriteController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -574,7 +565,5 @@ public class Main extends Application {
 //		Thread thread=new Thread(horloge);
 //		thread.start();
 //		horloge.run();
-		HashMap<String, String> map = new HashMap<String, String>();
-		Set<Entry<String, String>> set = map.entrySet();
 	}
 }
