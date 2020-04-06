@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="242.0" style="-fx-border-color: #000000; -fx-background-color: #535c68;" stylesheets="@../styleFile/fichier.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="nouveau" layoutX="3.0" layoutY="4.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text="Nouveau                                                   ">
+         <font>
+            <Font name="Calisto MT" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="importer" alignment="CENTER" layoutX="3.0" layoutY="214.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text=" Importer                                                    ">
+         <font>
+            <Font name="Calisto MT" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="ouvrir" layoutX="3.0" layoutY="45.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text=" Ouvrir                                                        ">
+         <font>
+            <Font name="Calisto MT" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="fermer" layoutX="3.0" layoutY="252.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text="  Fermer                                                       ">
+         <font>
+            <Font name="Calisto MT" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="sauvegarder" layoutX="3.0" layoutY="87.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text="Sauvegarder                                             " textFill="WHITE">
+         <font>
+            <Font name="Calisto MT" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="encapsuler" layoutX="3.0" layoutY="172.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text="Encapsuler et sauvegarder                       ">
+         <font>
+            <Font name="Calisto MT" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="sauvComme" alignment="CENTER" layoutX="3.0" layoutY="130.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text="  Sauvegarder comme...                               ">
+         <font>
+            <Font name="Calisto MT" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</Pane>

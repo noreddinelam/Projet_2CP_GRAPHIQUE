@@ -56,7 +56,7 @@ public class Main extends Application {
 			
 					/*FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/application/PageEntree.fxml"));*/
-						Parent root = FXMLLoader.load(getClass().getResource("/application/PageEntree.fxml"));
+						Parent root = FXMLLoader.load(getClass().getResource("PageEntree.fxml"));
 					 	FadeTransition fade = new FadeTransition();  
 			         	fade.setDuration(Duration.millis(1000)); 
 			         	fade.setDelay(Duration.millis(4000));

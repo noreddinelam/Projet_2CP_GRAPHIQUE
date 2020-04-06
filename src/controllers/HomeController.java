@@ -292,19 +292,19 @@ public class HomeController implements Initializable {
 			        fade.setNode(elementName);      
 			        fade.play();	
 			        elementName.open();
-			        elementName.setViewOrder(1);
+			        //elementName.setViewOrder(1);
 			        element1Hide.close();
 			        element1Hide.setOpacity(0);
-			        element1Hide.setViewOrder(4);
+			        //element1Hide.setViewOrder(4);
 					
 			        element2Hide.close();
 			        element2Hide.setOpacity(0);
-			        element2Hide.setViewOrder(4);
+			       // element2Hide.setViewOrder(4);
 
 			        
 			        element3Hide.close();
 			        element3Hide.setOpacity(0);
-			        element3Hide.setViewOrder(4);
+			       // element3Hide.setViewOrder(4);
 
 
 				}

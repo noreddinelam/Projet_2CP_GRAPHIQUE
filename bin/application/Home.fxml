@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDrawer?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
@@ -659,7 +661,7 @@
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="700.0" prefWidth="65.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbar" prefHeight="700.0" prefWidth="65.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>
@@ -667,6 +669,9 @@
                      <image>
                         <Image url="@../homePage_icones/FILE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -679,6 +684,9 @@
                      <image>
                         <Image url="@../homePage_icones/EDIT%20FILE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -691,6 +699,9 @@
                      <image>
                         <Image url="@../homePage_icones/SIMULATION.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -703,6 +714,9 @@
                      <image>
                         <Image url="@../homePage_icones/AFFICHAGE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -715,6 +729,9 @@
                      <image>
                         <Image url="@../homePage_icones/AIDE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -730,12 +747,21 @@
                      <image>
                         <Image url="@../homePage_icones/ON.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
             </AnchorPane>
          </children></VBox>
    </right>
    <center>
-      <AnchorPane fx:id="workSpace" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="workSpace" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER">
+         <children>
+            <JFXDrawer fx:id="fichierDrawer" defaultDrawerSize="400.0" direction="RIGHT" layoutX="880.0" layoutY="40.0" miniDrawerSize="200.0" opacity="0.0" prefHeight="300.0" prefWidth="242.0" viewOrder="6.0" AnchorPane.rightAnchor="0.0" />
+            <JFXDrawer fx:id="editionDrawer" defaultDrawerSize="400.0" direction="RIGHT" layoutX="880.0" layoutY="107.0" miniDrawerSize="200.0" opacity="0.0" prefHeight="315.0" prefWidth="242.0" viewOrder="2.0" />
+            <JFXDrawer fx:id="affichageDrawer" defaultDrawerSize="400.0" layoutX="880.0" layoutY="240.0" miniDrawerSize="100.0" opacity="0.0" prefHeight="93.0" prefWidth="242.0" viewOrder="2.0" />
+            <JFXDrawer fx:id="helpDrawer" defaultDrawerSize="400.0" layoutX="880.0" layoutY="310.0" miniDrawerSize="100.0" opacity="0.0" prefHeight="134.0" prefWidth="242.0" />
+         </children></AnchorPane>
    </center>
 </BorderPane>
