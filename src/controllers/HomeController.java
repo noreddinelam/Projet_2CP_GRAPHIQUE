@@ -146,6 +146,12 @@ public class HomeController implements Initializable {
     @FXML
     private VBox vbar;
     
+    @FXML
+    private JFXDrawer affichageDrawer;
+    
+    @FXML
+    private JFXDrawer helpDrawer;
+    
 
    
     
@@ -220,114 +226,91 @@ public class HomeController implements Initializable {
 	Tooltip.install(affichage, new Tooltip("affichage"));
 	Tooltip.install(aide, new Tooltip("aide"));
 	
-	/*---------------------fichier--------------------*/
 	
-	 Pane fichierContent = null;
-	try {
-		fichierContent = FXMLLoader.load(getClass().getResource("/application/fichier.fxml"));
-	} catch (IOException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-	fichierDrawer.setSidePane(fichierContent);
-	fichierDrawer.setOpacity(0);
+	
+	
+	rightbar(fichier, fichierDrawer,editionDrawer,affichageDrawer,helpDrawer,"/application/Fichier.fxml" );
+	rightbar(edition, editionDrawer,affichageDrawer,fichierDrawer,helpDrawer,"/application/Edition.fxml" );
+	rightbar(affichage, affichageDrawer,editionDrawer,fichierDrawer,helpDrawer,"/application/Affichage.fxml" );
+	rightbar(aide, helpDrawer,affichageDrawer,fichierDrawer,editionDrawer,"/application/Aide.fxml" );
 
-	fichier.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
-		if(fichierDrawer.isOpened()) {
-			FadeTransition fade = new FadeTransition();  
-         	fade.setDuration(Duration.millis(200)); 
-         	fade.setDelay(Duration.millis(200));
-	        fade.setFromValue(10);  
-	        fade.setToValue(0);    
-	        fade.setCycleCount(0);  
-	        fade.setAutoReverse(true);     
-	        fade.setNode(fichierDrawer);    
-	        fade.play();
-	        fichierDrawer.close();
-		}
-		else {
-			FadeTransition fade = new FadeTransition();  
-         	fade.setDuration(Duration.millis(200)); 
-         	fade.setDelay(Duration.millis(200));
-	        fade.setFromValue(0);  
-	        fade.setToValue(10);    
-	        fade.setCycleCount(0);  
-	        fade.setAutoReverse(true);     
-	        fade.setNode(fichierDrawer);      
-	        fade.play();	
-			fichierDrawer.open();
-			editionDrawer.close();
-			editionDrawer.setOpacity(0);
-
-
-		}
-	});
-	
-	
-	/*--------------------edition------------------------*/
-	 Pane EditionContent = null;
-		try {
-			EditionContent = FXMLLoader.load(getClass().getResource("/application/Edition.fxml"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		editionDrawer.setSidePane(EditionContent);
-		editionDrawer.setOpacity(0);
-
-		edition.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
-			if(editionDrawer.isOpened()) {
-				FadeTransition fade = new FadeTransition();  
-	         	fade.setDuration(Duration.millis(200)); 
-	         	fade.setDelay(Duration.millis(200));
-		        fade.setFromValue(10);  
-		        fade.setToValue(0);    
-		        fade.setCycleCount(0);  
-		        fade.setAutoReverse(true);     
-		        fade.setNode(editionDrawer);    
-		        fade.play();
-		        editionDrawer.close();
-			}
-			else {
-				FadeTransition fade = new FadeTransition();  
-	         	fade.setDuration(Duration.millis(200)); 
-	         	fade.setDelay(Duration.millis(200));
-		        fade.setFromValue(0);  
-		        fade.setToValue(10);    
-		        fade.setCycleCount(0);  
-		        fade.setAutoReverse(true);     
-		        fade.setNode(editionDrawer);  
-		        fade.play();
-		        editionDrawer.open();
-		        fichierDrawer.close();
-		        fichierDrawer.setOpacity(0);
-
-			}
-		});
-		
-	
-		
-	
-	
-	
-	/*-------------------------------------------------*/
 		workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{
-			if(fichierDrawer.isOpened() ||editionDrawer.isOpened()) {
+			if(fichierDrawer.isOpened() ||editionDrawer.isOpened() ||affichageDrawer.isOpened() || helpDrawer.isOpened()) {
 				fichierDrawer.close();
 				fichierDrawer.setOpacity(0);
+				
 				editionDrawer.close();
 				editionDrawer.setOpacity(0);
+				
+				affichageDrawer.close();
+				affichageDrawer.setOpacity(0);
+				
+				helpDrawer.close();
+				helpDrawer.setOpacity(0);
 			}
 			
 		
 		});
-	
-	
-
-		
-		
 
 	    
+	}
+	
+	
+	
+	public void rightbar(ImageView icon,JFXDrawer elementName, JFXDrawer element1Hide, JFXDrawer element2Hide, JFXDrawer element3Hide, String s) {
+		Pane lay = null;
+		try {
+			lay = FXMLLoader.load(getClass().getResource(s));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		elementName.setSidePane(lay);
+		elementName.setOpacity(0);
+
+			icon.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
+				if(elementName.isOpened()) {
+					FadeTransition fade = new FadeTransition();  
+		         	fade.setDuration(Duration.millis(200)); 
+		         	fade.setDelay(Duration.millis(200));
+			        fade.setFromValue(10);  
+			        fade.setToValue(0);    
+			        fade.setCycleCount(0);  
+			        fade.setAutoReverse(true);     
+			        fade.setNode(elementName);    
+			        fade.play();
+			        elementName.close();
+				}
+				else {
+					FadeTransition fade = new FadeTransition();  
+		         	fade.setDuration(Duration.millis(200)); 
+		         	fade.setDelay(Duration.millis(200));
+			        fade.setFromValue(0);  
+			        fade.setToValue(10);    
+			        fade.setCycleCount(0);  
+			        fade.setAutoReverse(true);     
+			        fade.setNode(elementName);      
+			        fade.play();	
+			        elementName.open();
+			        elementName.setViewOrder(1);
+			        element1Hide.close();
+			        element1Hide.setOpacity(0);
+			        element1Hide.setViewOrder(4);
+					
+			        element2Hide.close();
+			        element2Hide.setOpacity(0);
+			        element2Hide.setViewOrder(4);
+
+			        
+			        element3Hide.close();
+			        element3Hide.setOpacity(0);
+			        element3Hide.setViewOrder(4);
+
+
+				}
+			});
+			
+		
 	}
 	
 	
