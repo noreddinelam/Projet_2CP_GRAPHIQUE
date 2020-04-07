@@ -26,7 +26,7 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-		//launch(args);
+		launch(args);
 		
 		///////////////////////////////////////////////////////////////////////////////
 		//--> Test d'un deMultipluexeur
@@ -529,7 +529,7 @@ public class Main extends Application {
 //		Pin pin = new Pin(true, "nom");
 //		pin.setEtat(EtatLogique.ONE);
 //		Pin pin2 = new Pin(true, "nom");
-//		//pin2.setEtat(EtatLogique.ONE);
+//		pin2.setEtat(EtatLogique.ONE);
 //		Pin load= new Pin(true, "clr");
 //		Horloge horloge = new Horloge("hrlg", 1000);
 //		circuit.relier(pin, reg, 0, 0);
@@ -564,6 +564,6 @@ public class Main extends Application {
 //		circuit.relierHorloge(reg, or, 0);
 //		Thread thread=new Thread(horloge);
 //		thread.start();
-//		horloge.run();
+		//horloge.run();
 	}
 }

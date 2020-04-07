@@ -63,7 +63,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 			    		System.out.print("Valeur : " + ((RegistreDecalage)sequentiels).valeur()+ " |  " + sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
 					}
 			    	
-			    	if(i==2) // condition de retour a la ligne en fonctions du nombre elt contenu dans la liste eds etages
+			    	if(i==1) // condition de retour a la ligne en fonctions du nombre elt contenu dans la liste eds etages
 			    		{
 			    		System.out.println("\n");
 			    		i=1;
