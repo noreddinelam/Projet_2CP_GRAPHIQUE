@@ -1,11 +1,12 @@
 package application;
 	
+import controllers.ClickDroitController;
+import controllers.ImgController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import noyau.*;
 
 
@@ -13,10 +14,13 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Home.fxml"));
+			Composant a = new And(4,"sari");
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("imgView.fxml"));
 			Parent root = fxmlLoader.load();
 			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+			ImgController c = fxmlLoader.getController();
+			//c.setCmp(a);
+			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {

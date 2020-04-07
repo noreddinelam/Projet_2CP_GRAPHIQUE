@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Polyline?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="604.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ImgController">
+   <children>
+      <ImageView fx:id="img" fitHeight="84.0" fitWidth="80.0" layoutX="269.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../and/2E.png" />
+         </image>
+      </ImageView>
+      <Polyline fx:id="line" fill="#80ff0000" layoutX="111.0" layoutY="136.0" onMousePressed="#press" onMouseReleased="#release" points="-50.0, -40.0, 75.0, 7.0, 0.0, 60.0, 0.0, 60.0" strokeType="INSIDE" strokeWidth="4.0" />
+   </children>
+</Pane>

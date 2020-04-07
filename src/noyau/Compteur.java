@@ -16,6 +16,10 @@ public class Compteur extends Sequentiels{
 		this.valeurMax = ( Integer.valueOf(entreeDouble.intValue())) -1 ;
 		initSorties();
 	}
+	
+	public boolean getCompter() {
+		return compter;
+	}
 
 	public void genererSorties() { // role : executer une des fonctions du compteur (compter,decompter,remise a zero ou chargement) 
 								   //        et mettre le resultat dans les fils de sortie

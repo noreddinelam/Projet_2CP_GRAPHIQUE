@@ -8,32 +8,32 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="162.0" prefWidth="160.0" style="-fx-border-color: #000000; -fx-background-color: #535c68;" stylesheets="@../styleFile/clickDroit.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClickDroitController">
    <children>
-      <Button fx:id="copier" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="28.0" prefWidth="164.0" text="        Copier" textFill="WHITE">
+      <Button fx:id="copier" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#copier" prefHeight="28.0" prefWidth="164.0" text="        Copier" textFill="WHITE">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="couper" alignment="TOP_LEFT" layoutY="27.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" text="        Couper" textFill="WHITE">
+      <Button fx:id="couper" alignment="TOP_LEFT" layoutY="27.0" mnemonicParsing="false" onAction="#couper" prefHeight="25.0" prefWidth="164.0" text="        Couper" textFill="WHITE">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="supprimer" alignment="TOP_LEFT" layoutY="54.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" text="        Supprimer" textFill="WHITE">
+      <Button fx:id="supprimer" alignment="TOP_LEFT" layoutY="54.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="25.0" prefWidth="164.0" text="        Supprimer" textFill="WHITE">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="rotationD" alignment="TOP_LEFT" layoutY="81.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" text="        Rotation Droite" textFill="WHITE">
+      <Button fx:id="rotationD" alignment="TOP_LEFT" layoutY="81.0" mnemonicParsing="false" onAction="#rotationD" prefHeight="25.0" prefWidth="164.0" text="        Rotation Droite" textFill="WHITE">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="rotationG" alignment="TOP_LEFT" layoutY="107.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" text="        Rotation Gauche" textFill="WHITE">
+      <Button fx:id="rotationG" alignment="TOP_LEFT" layoutY="107.0" mnemonicParsing="false" onAction="#rotationG" prefHeight="25.0" prefWidth="164.0" text="        Rotation Gauche" textFill="WHITE">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="prop" alignment="TOP_LEFT" layoutY="134.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="164.0" text="        Propriétés" textFill="WHITE">
+      <Button fx:id="prop" alignment="TOP_LEFT" layoutY="134.0" mnemonicParsing="false" onAction="#prop" prefHeight="20.0" prefWidth="164.0" text="        Propriétés" textFill="WHITE">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>

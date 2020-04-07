@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="pane_proprietes" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="202.0" prefWidth="439.0" style="-fx-background-color: #4B535E;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProprietesPortesController">
+<Pane fx:id="pane_proprietes" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="202.0" prefWidth="439.0" style="-fx-background-color: #4B535E;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProprietesEncodeurController">
    <children>
       <Pane layoutY="24.0" prefHeight="179.0" prefWidth="439.0" style="-fx-background-color: #4B535E;">
          <children>
@@ -38,7 +38,7 @@
                </children></Pane>
             <Pane layoutX="201.0" layoutY="36.0" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #7c7878;" />
             <Pane layoutX="202.0" layoutY="69.0" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #7c7878;" />
-            <TextField fx:id="label" alignment="TOP_CENTER" layoutX="200.0" layoutY="7.0" prefHeight="23.0" prefWidth="191.0" promptText="Label" style="-fx-background-color: #4B535E;">
+            <TextField fx:id="label" alignment="TOP_CENTER" layoutX="203.0" layoutY="7.0" prefHeight="23.0" prefWidth="191.0" promptText="Label" style="-fx-background-color: #4B535E;">
                <cursor>
                   <Cursor fx:constant="SW_RESIZE" />
                </cursor>
@@ -47,7 +47,7 @@
                </font>
             </TextField>
             <Pane layoutX="201.0" layoutY="106.0" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #7c7878;" />
-            <Label fx:id="nbEntres" alignment="TOP_RIGHT" layoutX="297.0" layoutY="46.0" text="2" textFill="#b2b2b2">
+            <Label fx:id="nbEntres" alignment="CENTER" layoutX="277.0" layoutY="45.0" prefHeight="19.0" prefWidth="58.0" text="2X4" textFill="#b2b2b2">
                <font>
                   <Font name="Calisto MT" size="15.0" />
                </font>
@@ -69,7 +69,7 @@
                <font>
                   <Font name="Calisto MT" size="14.0" />
                </font></Button>
-            <Label fx:id="direction" layoutX="286.0" layoutY="79.0" text="Nord" textFill="#b2b2b2">
+            <Label fx:id="direction" alignment="CENTER" layoutX="272.0" layoutY="79.0" prefHeight="19.0" prefWidth="64.0" text="Nord" textFill="#b2b2b2">
                <font>
                   <Font name="Calisto MT" size="15.0" />
                </font>
@@ -91,7 +91,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Label fx:id="composant" layoutX="190.0" layoutY="4.0" prefHeight="30.0" prefWidth="64.0" text="NOR" textFill="#e4e4e4">
+      <Label layoutX="158.0" layoutY="4.0" prefHeight="30.0" prefWidth="140.0" text="Decodeur" textFill="#e4e4e4">
          <font>
             <Font name="Calisto MT" size="25.0" />
          </font>

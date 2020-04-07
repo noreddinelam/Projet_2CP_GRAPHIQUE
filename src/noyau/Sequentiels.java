@@ -18,6 +18,17 @@ public abstract class Sequentiels extends Composant {
 		clear.setEtatLogiqueFil(EtatLogique.ONE);
 	}
 	
+	
+	public Front getFront() {
+		return front;
+	}
+
+
+	public void setFront(Front front) {
+		this.front = front;
+	}
+
+
 	public abstract void genererSortiesSyncho();
 	
 	public abstract boolean validerSyncho();

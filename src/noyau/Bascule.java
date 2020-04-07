@@ -1,6 +1,5 @@
 package noyau;
 
-import java.util.ArrayList;
 
 public abstract class Bascule extends Sequentiels{
 	

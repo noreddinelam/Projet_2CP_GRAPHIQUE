@@ -21,6 +21,13 @@ public class RegistreDecalage extends Sequentiels {
 		sorties[0].setEtatLogiqueFil(EtatLogique.HAUTE_IMPEDANCE);
 	}
 	
+	public int getTaille() {
+		return taille;
+	}
+	public boolean isDecalageDroite() {
+		return decalageDroite;
+	}
+
 	public void genererSorties() { // executer une des fonction du registre ( decalage a droite , remise a zero )
 		if(this.clear.getEtatLogiqueFil().getNum()==0)
 			Arrays.fill(valeur, EtatLogique.ZERO);//initialiser le tableau avec ZERO
