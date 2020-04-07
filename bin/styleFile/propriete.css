@@ -1,4 +1,33 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-#modifier:hover,#annuler:hover{
-	-fx-text-fill: #000000;
+
+#plusNbEntrees,#nextDirection,#previousDirection,#moinsNbEntrees{
+-fx-background-color :  #4B535E;
+-fx-border-color : #b2b2b2;
+-fx-border-radius : 20px;
+}
+
+#plusNbBits,#moinsNbBits,#nextFront,#previousFront,#nextCompteur,#previousCompteur,#previousFront,#plusNbEntrees,#nextDirection,#previousDirection,#moinsNbEntrees,#nextFront,#nextput,#previousput,#previousDecalage,#nextDecalage{
+-fx-background-color :  #4B535E;
+-fx-border-color : #4B535E;
+-fx-border-radius : 20px;
+}
+
+#plusNbBits:hover,#moinsNbBits:hover,#nextFront:hover,#previousFront:hover,#nextCompteur:hover,#previousCompteur:hover,#previousFront:hover,#plusNbEntrees:hover,#nextDirection:hover,#previousDirection:hover,#moinsNbEntrees:hover,#nextFront:hover,#nextput:hover,#previousput:hover,#previousDecalage:hover,#nextDecalage:hover{
+	-fx-background-color :  #4B535E;
+	-fx-border-color : #E4E4E4;
+	-fx-border-radius : 20px;
+	}
+
+#mdf,#annuler{
+	-fx-background-color :  #4B535E;
+	-fx-border-color : #b2b2b2;
+	-fx-border-radius : 20px;
+	-fx-text-fill : #b2b2b2;
+
+}
+#mdf:hover,#annuler:hover{
+	-fx-background-color :  #4B535E;
+	-fx-border-color : #E4E4E4;
+	-fx-border-radius : 20px;
+	-fx-text-fill : #E4E4E4;	
 }

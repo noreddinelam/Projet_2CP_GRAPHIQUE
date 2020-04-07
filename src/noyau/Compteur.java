@@ -17,6 +17,10 @@ public class Compteur extends Sequentiels{
 		this.valeurMax = ( Integer.valueOf(entreeDouble.intValue())) -1 ;
 		initSorties();
 	}
+	
+	public boolean getCompter() {
+		return compter;
+	}
 
 	public void genererSorties() { // sert dans le mode asynchrone (juste la cmd clear) ou bien l'initialisation des entrees dans le mode synchrone
 		if (clear.getEtatLogiqueFil().getNum() == 0) {// si clear est à 0

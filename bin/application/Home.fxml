@@ -175,7 +175,7 @@
                            <content>
                               <AnchorPane prefHeight="512.0" prefWidth="185.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="509.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="509.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
@@ -286,7 +286,7 @@
                                                    <children>
                                                       <ImageView fx:id="nor" fitHeight="63.0" fitWidth="77.0" layoutX="14.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../../../Desktop/NOR%20-1.png" />
+                                                            <Image url="@../Nor/2.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>

@@ -7,7 +7,10 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 	private EtatLogique etat = EtatLogique.ZERO;
 	private boolean horloge = false ; // pour savoir si le pin fonctionne comme horloge ou pas .
 	
-	
+	public boolean getInput()
+	{
+		return this.input;
+	}
 	public Pin(boolean input,String nom) {
 		// TODO Auto-generated constructor stub
 		super(0,nom);

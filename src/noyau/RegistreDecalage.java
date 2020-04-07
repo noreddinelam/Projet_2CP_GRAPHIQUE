@@ -20,8 +20,8 @@ public class RegistreDecalage extends Sequentiels {
 		sorties[0] = new Fil(this);
 		sorties[0].setEtatLogiqueFil(EtatLogique.HAUTE_IMPEDANCE);
 	}
-	
-	public void genererSorties() { // executer le clear en mode asynchrone ou bien initialisation en mode synchrone
+
+	public void genererSorties() { // executer une des fonction du registre ( decalage a droite , remise a zero )
 		if(this.clear.getEtatLogiqueFil().getNum()==0)
 		{
 			Arrays.fill(valeur, EtatLogique.ZERO);//initialiser le tableau avec ZERO
@@ -168,6 +168,12 @@ public class RegistreDecalage extends Sequentiels {
 
 	public void setLoad(Fil load) {
 		this.load = load;
+	}
+	public int getTaille() {
+		return taille;
+	}
+	public boolean isDecalageDroite() {
+		return decalageDroite;
 	}
 	
 }

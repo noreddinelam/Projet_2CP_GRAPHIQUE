@@ -17,7 +17,9 @@ public abstract class Composant implements Serializable{
 	protected int nombreEntree;
 	protected int nombreSortie;
 	protected boolean sleep = false;
-	/*--------- Methodes --------------*/
+	protected Direction direction = Direction.Est;
+	
+	
 	
 	public Composant(int nombreEntree,String nom) {
 		this.nombreEntree = nombreEntree;
@@ -25,7 +27,40 @@ public abstract class Composant implements Serializable{
 		Arrays.fill(etatFinal, EtatLogique.HAUTE_IMPEDANCE);
 		Circuit.ajouterComposant(this);
 	}
+	/*--------- setters & getters--------------*/
+	public String getNom() {
+		return nom;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public int getNombreEntree() {
+		return nombreEntree;
+	}
+
+	public void setNombreEntree(int nombreEntree) {
+		this.nombreEntree = nombreEntree;
+	}
 	
+	/*--------- Methodes --------------*/
 	public void evaluer() {
 		if(valider()) // si le composant est pret 
 		{
