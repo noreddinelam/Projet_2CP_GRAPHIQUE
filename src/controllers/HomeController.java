@@ -460,7 +460,7 @@ public class HomeController implements Initializable {
 	    	            
 	    	            String xString=String.valueOf(eleementAdrager.getLayoutX());
     	                String yString=String.valueOf(eleementAdrager.getLayoutY());
-	    	            if(eleementAdrager.getLayoutX()>0)
+    	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<1066 )&&(eleementAdrager.getLayoutY()>17))
 	    	            {
 	    	                guideX.setLayoutX(eleementAdrager.getLayoutX());
 	    	                guideY.setLayoutY(eleementAdrager.getLayoutY());
