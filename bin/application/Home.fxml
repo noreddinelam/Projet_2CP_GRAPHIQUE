@@ -9,7 +9,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -23,7 +22,7 @@
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </VBox.margin>
                <children>
-                  <ImageView id="logo" fitHeight="121.0" fitWidth="140.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView id="logo" fx:id="logo" fitHeight="121.0" fitWidth="140.0" layoutY="1.0" onMouseEntered="#mouseEnterLogo" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.8510665893554688" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="20.0">
                      <image>
                         <Image url="@../homePage_icones/LOGO.png" />
                      </image>
@@ -35,18 +34,18 @@
                   <Line endX="139.2928924560547" endY="-0.7070963382720947" startX="-40.0" stroke="#707070" strokeWidth="3.0" />
                   <TabPane prefHeight="526.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/borderPane.css" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                        <Tab style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
+                        <Tab fx:id="comonents" style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
                            <content>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                            </content>
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.35" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="0.07" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.35" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
-                                          <VBox prefWidth="165.0" style="-fx-background-color: #4b535e;">
+                                          <VBox fx:id="vBoxComp" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="HEX" textFill="WHITE">
+                                                <Label fx:id="tHex" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="HEX" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -64,12 +63,12 @@
                                                    <children>
                                                       <ImageView fx:id="hex" fitHeight="67.0" fitWidth="63.0" layoutX="21.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../afficheurSeg/8.png" />
+                                                            <Image url="@../AfficheurSegment/8.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="PIN" textFill="WHITE">
+                                                <Label fx:id="tPin" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="PIN" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -84,7 +83,7 @@
                                                    <children>
                                                       <ImageView fx:id="pin" fitHeight="67.0" fitWidth="63.0" layoutX="23.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../pin/AFFICHAGE_1.png" />
+                                                            <Image url="@../Pin/1Output.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -92,7 +91,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="H" textFill="WHITE">
+                                                <Label fx:id="tH" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="H" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -107,7 +106,7 @@
                                                    <children>
                                                       <ImageView fx:id="clock" fitHeight="67.0" fitWidth="63.0" layoutX="21.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../horloge/H_0.png" />
+                                                            <Image url="@../Horloge/0.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -115,7 +114,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="VCC" textFill="WHITE">
+                                                <Label fx:id="tVcc" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="VCC" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -130,7 +129,7 @@
                                                    <children>
                                                       <ImageView fx:id="vcc" fitHeight="67.0" fitWidth="58.0" layoutX="24.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../srcConst/VCC.png" />
+                                                            <Image url="@../SourceConstante/VCC.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -138,9 +137,9 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="MASS" textFill="WHITE">
+                                                <Label fx:id="tMass" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="MASSE" textFill="WHITE">
                                                    <font>
-                                                      <Font name="Calisto MT" size="14.0" />
+                                                      <Font name="Calisto MT" size="13.0" />
                                                    </font>
                                                    <padding>
                                                       <Insets left="11.0" />
@@ -153,7 +152,7 @@
                                                    <children>
                                                       <ImageView fx:id="mass" fitHeight="67.0" fitWidth="58.0" layoutX="24.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../srcConst/MASSE.png" />
+                                                            <Image url="@../SourceConstante/MASSE.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -176,11 +175,11 @@
                            <content>
                               <AnchorPane prefHeight="512.0" prefWidth="185.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="509.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="509.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="AND" textFill="WHITE">
+                                                <Label fx:id="tAnd" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="AND" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -198,12 +197,12 @@
                                                    <children>
                                                       <ImageView fx:id="and" fitHeight="67.0" fitWidth="63.0" layoutX="28.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../and/2E.png" />
+                                                            <Image url="@../And/2.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="OR" textFill="WHITE">
+                                                <Label fx:id="tOr" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="OR" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -218,7 +217,7 @@
                                                    <children>
                                                       <ImageView fx:id="or" fitHeight="67.0" fitWidth="63.0" layoutX="28.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../or/2E.png" />
+                                                            <Image url="@../Or/2.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -226,7 +225,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="XOR" textFill="WHITE">
+                                                <Label fx:id="tXor" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="XOR" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -241,7 +240,7 @@
                                                    <children>
                                                       <ImageView fitHeight="67.0" fitWidth="63.0" layoutX="28.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" fx:id="xor">
                                                          <image>
-                                                            <Image url="@../xor/2E.png" />
+                                                            <Image url="@../Xor/2.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -249,7 +248,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NAND" textFill="WHITE">
+                                                <Label fx:id="tNand" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NAND" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -264,7 +263,7 @@
                                                    <children>
                                                       <ImageView fx:id="nand" fitHeight="67.0" fitWidth="58.0" layoutX="33.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../nand/2E.png" />
+                                                            <Image url="@../Nand/2.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -272,7 +271,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NOR" textFill="WHITE">
+                                                <Label fx:id="tNor" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NOR" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -287,7 +286,7 @@
                                                    <children>
                                                       <ImageView fx:id="nor" fitHeight="67.0" fitWidth="58.0" layoutX="33.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../nor/2E.png" />
+                                                            <Image url="@../Nor/2.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -295,7 +294,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NOT" textFill="WHITE">
+                                                <Label fx:id="tNot" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="NOT" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -332,11 +331,11 @@
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefHeight="923.0" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="JK" textFill="WHITE">
+                                                <Label fx:id="tJk" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="JK" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -354,12 +353,12 @@
                                                    <children>
                                                       <ImageView fx:id="jk" fitHeight="67.0" fitWidth="63.0" layoutX="21.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../bascules/JK_FM.png" />
+                                                            <Image url="@../JK/Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="D" textFill="WHITE">
+                                                <Label fx:id="tD" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="D" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -377,7 +376,7 @@
                                                    <children>
                                                       <ImageView fx:id="d" fitHeight="67.0" fitWidth="63.0" layoutX="23.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../bascules/D_FM.png" />
+                                                            <Image url="@../D/Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -385,7 +384,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="RS" textFill="WHITE">
+                                                <Label fx:id="tRs" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="RS" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -400,7 +399,7 @@
                                                    <children>
                                                       <ImageView fx:id="rs" fitHeight="67.0" fitWidth="63.0" layoutX="21.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../bascules/RS_FM.png" />
+                                                            <Image url="@../RST/Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -408,7 +407,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="T" textFill="WHITE">
+                                                <Label fx:id="tT" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="T" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -423,7 +422,7 @@
                                                    <children>
                                                       <ImageView fx:id="t" fitHeight="67.0" fitWidth="58.0" layoutX="24.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../bascules/T_FM.png" />
+                                                            <Image url="@../T/Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -431,7 +430,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="CPT" textFill="WHITE">
+                                                <Label fx:id="tCpt" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="CPT" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -446,7 +445,7 @@
                                                    <children>
                                                       <ImageView fx:id="cpt" fitHeight="42.0" fitWidth="91.0" layoutX="7.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../cpt/CPT4_FM.png" />
+                                                            <Image url="@../Compteur/4Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -454,7 +453,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="R-D" textFill="WHITE">
+                                                <Label fx:id="tRd" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="R-D" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -469,7 +468,7 @@
                                                    <children>
                                                       <ImageView fx:id="registreDecalge" fitHeight="54.0" fitWidth="86.0" layoutX="14.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../regDecDroite/2_FM.png" />
+                                                            <Image url="@../RegistreDecalage/2DroiteMontant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -495,7 +494,7 @@
                                        <content>
                                           <VBox prefHeight="923.0" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="MUX" textFill="WHITE">
+                                                <Label fx:id="tMux" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="MUX" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -513,12 +512,12 @@
                                                    <children>
                                                       <ImageView fx:id="mux" fitHeight="76.0" fitWidth="59.0" layoutX="27.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../mux/2-1.png" />
+                                                            <Image url="@../Multiplexeur/2X1.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DMUX" textFill="WHITE">
+                                                <Label fx:id="tDmux" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DMUX" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -536,7 +535,7 @@
                                                    <children>
                                                       <ImageView fx:id="dmux" fitHeight="76.0" fitWidth="58.0" layoutX="27.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../dmx/1-2.png" />
+                                                            <Image url="@../Demultiplexeur/1X2.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -544,7 +543,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DEC" textFill="WHITE">
+                                                <Label fx:id="tDEC" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DEC" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -559,7 +558,7 @@
                                                    <children>
                                                       <ImageView fx:id="dec" fitHeight="67.0" fitWidth="63.0" layoutX="26.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../dec/1-2.png" />
+                                                            <Image url="@../Decodeur/1X2.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -567,7 +566,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="ADDC" textFill="WHITE">
+                                                <Label fx:id="tAddc" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="ADDC" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -582,7 +581,7 @@
                                                    <children>
                                                       <ImageView fx:id="addcomplet" fitHeight="67.0" fitWidth="58.0" layoutX="24.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../addComplet/AddComplet_1bit.png" />
+                                                            <Image url="@../AdditionneurN_Bites/1.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -590,7 +589,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DADD" textFill="WHITE">
+                                                <Label fx:id="tDadd" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="DADD" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -605,7 +604,7 @@
                                                    <children>
                                                       <ImageView fx:id="demiAdd" fitHeight="57.0" fitWidth="71.0" layoutX="26.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../addDemi/DemiADD_1bit.png" />
+                                                            <Image url="@../DemiAdditionneur/1.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -613,7 +612,7 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
-                                                <Label prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="ENC" textFill="WHITE">
+                                                <Label fx:id="tEnc" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="ENC" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
@@ -628,7 +627,7 @@
                                                    <children>
                                                       <ImageView fx:id="enco" fitHeight="62.0" fitWidth="64.0" layoutX="28.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../enc/2-1.png" />
+                                                            <Image url="@../Encodeur/2X1.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -660,7 +659,7 @@
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="700.0" prefWidth="65.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="716.0" prefWidth="52.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>
@@ -700,7 +699,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>
-                  <ImageView fx:id="affichage" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="affichage" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="14.0">
                      <image>
                         <Image url="@../homePage_icones/AFFICHAGE.png" />
                      </image>
@@ -712,7 +711,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>
-                  <ImageView fx:id="aide" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="aide" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0">
                      <image>
                         <Image url="@../homePage_icones/AIDE.png" />
                      </image>
@@ -722,12 +721,34 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </AnchorPane>
+            <Label fx:id="afficheurX" prefHeight="28.0" prefWidth="58.0" style="-fx-background-color: #E0E0D1; -fx-background-radius: 18;" text="X : 1203" textFill="#303337">
+               <VBox.margin>
+                  <Insets left="4.0" right="2.0" top="220.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Calisto MT" size="10.0" />
+               </font>
+               <padding>
+                  <Insets left="8.0" />
+               </padding>
+            </Label>
+            <Label fx:id="afficheurY" prefHeight="28.0" prefWidth="59.0" style="-fx-background-color: E0E0D1; -fx-background-radius: 18;" text="Y : 33" textFill="#303337">
+               <VBox.margin>
+                  <Insets left="4.0" right="2.0" top="14.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Calisto MT" size="10.0" />
+               </font>
+               <padding>
+                  <Insets left="8.0" />
+               </padding>
+            </Label>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <VBox.margin>
-                  <Insets top="310.0" />
+                  <Insets top="30.0" />
                </VBox.margin>
                <children>
-                  <ImageView fx:id="darkMode" layoutX="7.0">
+                  <ImageView fx:id="darkMode" layoutX="4.0" layoutY="14.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.topAnchor="14.0">
                      <image>
                         <Image url="@../homePage_icones/ON.png" />
                      </image>
@@ -737,113 +758,6 @@
          </children></VBox>
    </right>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER">
-         <children>
-            <ScrollPane prefHeight="700.0" prefWidth="1117.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/workScrollPane.css">
-               <content>
-                  <VBox prefHeight="699.0" prefWidth="1108.0" style="-fx-background-color: #5a6572;">
-                     <children>
-                        <HBox prefHeight="686.0" prefWidth="1108.0" style="-fx-background-color: #5a6572;">
-                           <children>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="686.0" prefWidth="1108.0" style="-fx-background-color: #5a6572;">
-                           <children>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="686.0" prefWidth="1108.0" style="-fx-background-color: #5a6572;">
-                           <children>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="686.0" prefWidth="1108.0" style="-fx-background-color: #5a6572;">
-                           <children>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="772.0" fitWidth="1470.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../homePage_icones/GRILLE.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </content>
-            </ScrollPane>
-         </children>
-      </AnchorPane>
+      <AnchorPane fx:id="workSpace" maxHeight="700.0" maxWidth="1130.0" minHeight="700.0" minWidth="1130.0" prefHeight="700.0" prefWidth="1130.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

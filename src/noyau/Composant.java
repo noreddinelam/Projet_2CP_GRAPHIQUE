@@ -9,8 +9,8 @@ import javax.management.relation.Role;
 
 public abstract class Composant implements Serializable{
 	/*--------- Attributs -------------*/
-	protected String nom;
-	protected String icon;
+	protected String nom; // pour le label
+	protected String icon; // le lien vers l'icone
 	protected Fil entrees[]= new Fil[32] ;
 	protected Fil sorties[] = new Fil[32];
 	protected EtatLogique etatFinal[] = new EtatLogique[32];
@@ -112,12 +112,19 @@ public abstract class Composant implements Serializable{
 		return Integer.toString(res);
 	}
 	
-
+	public String concatener(EtatLogique[] tabFils,int tai) { // Role : convertir les etats logiques des fils du "tabFils" de taille "tai" 
+		//        en binaire et les concatener 
+		int res = 0;
+		for (int i = 0; i < tai; i++) {
+			res =  res*10 +tabFils[tai-i-1].getNum();
+		}
+		return Integer.toString(res);
+	}
 	
 	public EtatLogique validerEntrees() { //role :  valider si les entrees du composant sont pretes 
 		int i =0;
 		while(i<nombreEntree) {
-			if(entrees[i].getEtatLogiqueFil()== null) // verifier si toutes les entrees du composants sont reliées a un autre composant 
+			if(entrees[i]== null) // verifier si toutes les entrees du composants sont reliées a un autre composant 
 				return null;
 			if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum()) //  verifier si le fil d'entree est en haute impedence . 
 				return EtatLogique.HAUTE_IMPEDANCE;
@@ -134,7 +141,7 @@ public abstract class Composant implements Serializable{
 			sorties[i]=new Fil(this);
 	}
 	
-	public void addEtages(ArrayList<Integer> etage) {
+	public void addEtages(ArrayList<Integer> etage) { // pour la construction des etages pour le sequentiels
 		for (int i = 0; i < nombreEntree; i++) {
 			entrees[i].addEtages(etage);
 		}

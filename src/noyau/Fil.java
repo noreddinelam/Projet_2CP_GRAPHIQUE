@@ -52,7 +52,11 @@ public class Fil implements Serializable{
 		return true;
 	}
 	
-	
+	public void addDestination(Composant comp){ // ajouter un composant vers la liste des destinations
+		if (destination.contains(comp) == false) {
+			destination.add(comp);
+		}
+	}
 
 	public EtatLogique getEtatLogiqueFil() {
 		return this.etat;
@@ -61,12 +65,6 @@ public class Fil implements Serializable{
 	public void setEtatLogiqueFil(EtatLogique etat) {
 
 		this.etat = etat;
-	}
-
-	public void addDestination(Composant comp){ // ajouter un composant vers la liste des destinations
-		if (destination.contains(comp) == false) {
-			destination.add(comp);
-		}
 	}
 
 	public Composant getSource() {

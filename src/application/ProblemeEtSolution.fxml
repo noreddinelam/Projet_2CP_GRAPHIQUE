@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #5A6572;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controllers.TableDeProblemesController">
+   <children>
+      <TableView fx:id="tableDeProblemes" prefHeight="400.0" prefWidth="700.0" stylesheets="@../styleFile/tableViewChronoGramme.css">
+        <columns>
+          <TableColumn fx:id="type" prefWidth="89.0" text="TYPE" />
+          <TableColumn fx:id="probleme" prefWidth="271.0" text="PROBLEME" />
+            <TableColumn fx:id="solution" prefWidth="290.0" text="SOLUTION" />
+            <TableColumn fx:id="aide" minWidth="0.0" prefWidth="49.0" text="AIDE" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

@@ -53,6 +53,7 @@ public class ImgController {
     void dragg(MouseEvent event) {
     	x2 = event.getX();
     	y2 = event.getY();
+    	line.getPoints().addAll(event.getX(),event.getY());
     }
 
 }

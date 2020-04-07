@@ -2,6 +2,7 @@ package noyau;
 
 
 import java.lang.Math;
+import java.util.spi.LocaleServiceProvider;
 
 import javax.swing.tree.TreePath;
 public class Decodeur extends Combinatoires{	
@@ -10,8 +11,7 @@ public class Decodeur extends Combinatoires{
 	public Decodeur(int nombreEntree,String nom) { // constructeur
 		super(nombreEntree,nom);
 		this.nombreSortie = (int) Math.pow(2, nombreEntree);
-		initSorties();
-		
+		initSorties(); // creer des fils de sorties	
 	}
 
 	
@@ -30,7 +30,7 @@ public class Decodeur extends Combinatoires{
 	}
 	
 	
-	public boolean valider() {
+	public boolean valider() { // verifier si les entrees sont toutes validées
 		return (validerEntrees().getNum() == 1)  ? true : false;
 	}
 
