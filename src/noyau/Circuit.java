@@ -24,7 +24,7 @@ public class Circuit implements Serializable{
 	
 	public static void ajouterComposant(Composant comp,ImageView img) { // ajouter un composant à la liste des composants utilisés
 		//compUtilises.add(comp);
-		compUtilises.putIfAbsent(comp, img);
+		compUtilises.put(comp, img);
 	}
 	public static void ajouterFil(Fil fil) { // ajouter un fil à la liste des fils 
 		filUtilises.add(fil);
