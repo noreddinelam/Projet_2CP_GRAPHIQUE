@@ -47,7 +47,6 @@ public class HomeController implements Initializable {
     private ClickDroit clickDroitFenetre;
     private Double x,y;
     private int switching = 0; 
-
     
     @FXML
     private Tab comonents;
@@ -492,6 +491,7 @@ public class HomeController implements Initializable {
 	        		clicDroitX = e.getScreenX();
 	        		clicDroitY = e.getScreenY();
 	        		clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY);
+
 	        	}
 	            eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
