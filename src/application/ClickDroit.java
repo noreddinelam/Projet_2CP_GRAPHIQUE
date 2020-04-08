@@ -1,26 +1,28 @@
 package application;
 
-import controllers.ProprietesController;
+import controllers.ClickDroitController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import noyau.Composant;
+import javafx.stage.StageStyle;
 
-public class Proprietes extends Stage{
+public class ClickDroit extends Stage{
 
-	public Proprietes(String Fenete,Composant cmp) {
+	public ClickDroit(Double x,Double y) {
 		try
 		{
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource(Fenete));
+			loader.setLocation(getClass().getResource("ClickDroit.fxml"));
 			Parent root = loader.load();
 			System.out.println(root);
-			ProprietesController c=loader.getController();
-			c.initialiser(cmp);
+			ClickDroitController c=loader.getController();
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);
+			this.setX(x);
+			this.initStyle(StageStyle.UNDECORATED);
+			this.setY(y);
 			this.setFullScreen(false);
 			this.show();
 		} catch(Exception e) {

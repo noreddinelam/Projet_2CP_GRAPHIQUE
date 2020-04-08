@@ -14,10 +14,10 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Composant a = new And(4,"sari");
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("imgView.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Home.fxml"));
 			Parent root = fxmlLoader.load();
 			Scene scene = new Scene(root);
-			ImgController c = fxmlLoader.getController();
+			//ImgController c = fxmlLoader.getController();
 			//c.setCmp(a);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			primaryStage.setScene(scene);

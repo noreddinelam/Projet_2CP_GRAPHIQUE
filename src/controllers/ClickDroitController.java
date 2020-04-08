@@ -1,14 +1,20 @@
 package controllers;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.ResourceBundle;
+
 import application.Proprietes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 
-public class ClickDroitController extends Controller{
+public class ClickDroitController extends Controller implements Initializable{
 
 	private ArrayList<String> bddPortes = new ArrayList<String>(Arrays.asList("And","Or","Xor","Nor","Nand"));
 	private ArrayList<String> bddBascules = new ArrayList<String>(Arrays.asList("JK","D","RST","T"));
@@ -26,7 +32,11 @@ public class ClickDroitController extends Controller{
 		BddFenetre.put("Not","ProprietesNot.fxml");
 		BddFenetre.put("Demultiplexeur","ProprietesDemux.fxml");
 	}
-	@FXML
+
+    @FXML
+    private Pane pane;
+	
+    @FXML
 	private Button copier;
 
 	@FXML
@@ -82,5 +92,16 @@ public class ClickDroitController extends Controller{
 	@FXML
 	void supprimer(ActionEvent event) {
 
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		copier.setCursor(Cursor.HAND);
+		couper.setCursor(Cursor.HAND);
+		supprimer.setCursor(Cursor.HAND);
+		rotationD.setCursor(Cursor.HAND);
+		rotationG.setCursor(Cursor.HAND);
+		prop.setCursor(Cursor.HAND);
 	}
 }
