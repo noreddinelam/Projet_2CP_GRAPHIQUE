@@ -5,7 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import noyau.*;
 
 public class ProprietesPinController extends ProprietesController{
@@ -26,6 +28,7 @@ public class ProprietesPinController extends ProprietesController{
 	
 	public void initialiser(Composant cmp){
 		this.cmp = cmp;
+		label.setText(cmp.getNom());
 		putInt = (((Pin)cmp).getInput() == true) ? 0 : 1 ;
 		put.setText(bddPut[putInt]);
 		
@@ -72,12 +75,27 @@ public class ProprietesPinController extends ProprietesController{
 
     @FXML
     void annuler(ActionEvent event) {
-
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
     void modifier(ActionEvent event) {
-
+    	
+    	cmp.setNom(label.getText());
+    	String path;
+    	int vlr = ((Pin)cmp).getEtat().getNum();
+    	//..\Pin\1Output.png
+    	if(putInt == 0){
+    		((Pin)cmp).setInput(true);
+    		path = "/pin/"+Integer.toString(vlr)+bddPut[putInt]+".png";
+    	}else {
+    		((Pin)cmp).setInput(false);
+    		path = "/pin/"+Integer.toString(vlr)+bddPut[putInt]+".png";
+    	}
+    	Circuit.getImageFromComp(cmp).setImage(new Image(path));
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML

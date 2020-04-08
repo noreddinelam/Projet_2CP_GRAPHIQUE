@@ -8,7 +8,7 @@
 
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="162.0" prefWidth="164.0" style="-fx-border-color: #000000; -fx-background-color: #535c68;" stylesheets="@../styleFile/clickDroit.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClickDroitController">
    <children>
-      <Button fx:id="copier" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#copier" prefHeight="28.0" prefWidth="164.0" text="        Copier" textFill="WHITE">
+      <Button fx:id="copier" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#copier" prefHeight="28.0" prefWidth="164.0" text="        Copier" textFill="#615c93">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>

@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -95,29 +96,18 @@ public class ProprietesPortesController extends ProprietesController{
     
     @FXML
     void annuler(ActionEvent event) {
-    	Proprietes f = new Proprietes("ProprietesPortes.fxml", cmp);
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
     void modifier(ActionEvent event) {
     	cmp.setNombreEntree(i);
     	cmp.setNom(label.getText());
-    	try
-		{
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("imgView.fxml"));
-			Parent root = loader.load();
-			//System.out.println(root);
-			ImgController c=loader.getController();
-			System.out.println(composant.getText()+"/"+String.valueOf(i)+"E.png");
-			c.setImgSrc(composant.getText()+"/"+String.valueOf(i)+"E.png");
-			Scene scene = new Scene(root);
-			Stage s = new Stage();
-			s.setScene(scene);
-			s.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+    	String path ="/"+composant.getText()+"/"+nbEntres.getText()+".png";
+    	Circuit.getImageFromComp(cmp).setImage(new Image(path));
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML

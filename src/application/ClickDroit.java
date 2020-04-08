@@ -6,10 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import noyau.Composant;
 
 public class ClickDroit extends Stage{
 
-	public ClickDroit(Double x,Double y) {
+	public ClickDroit(Composant cmp,Double x,Double y) {
 		try
 		{
 			FXMLLoader loader = new FXMLLoader();
@@ -17,6 +18,8 @@ public class ClickDroit extends Stage{
 			Parent root = loader.load();
 			System.out.println(root);
 			ClickDroitController c=loader.getController();
+			System.out.println(cmp);
+			c.setCmp(cmp);
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);

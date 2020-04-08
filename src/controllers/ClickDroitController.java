@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class ClickDroitController extends Controller implements Initializable{
 
@@ -56,16 +57,20 @@ public class ClickDroitController extends Controller implements Initializable{
 
 	@FXML
 	void copier(ActionEvent event) {
-
+		Stage s = (Stage)prop.getScene().getWindow(); 
+    	s.close();
 	}
 
 	@FXML
 	void couper(ActionEvent event) {
-
+		Stage s = (Stage)prop.getScene().getWindow(); 
+    	s.close();
 	}
 
 	@FXML
 	void prop(ActionEvent event) {
+		Stage s = (Stage)prop.getScene().getWindow(); 
+    	s.close();
 		String nom = cmp.getClass().getSimpleName(), key;
 		
 		if(bddPortes.contains(nom)) {
@@ -81,17 +86,20 @@ public class ClickDroitController extends Controller implements Initializable{
 
 	@FXML
 	void rotationD(ActionEvent event) {
-
+		Stage s = (Stage)prop.getScene().getWindow(); 
+    	s.close();
 	}
 
 	@FXML
 	void rotationG(ActionEvent event) {
-
+		Stage s = (Stage)prop.getScene().getWindow(); 
+    	s.close();
 	}
 
 	@FXML
 	void supprimer(ActionEvent event) {
-
+		Stage s = (Stage)prop.getScene().getWindow(); 
+    	s.close();
 	}
 
 	@Override

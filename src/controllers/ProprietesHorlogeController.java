@@ -4,8 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import noyau.Composant;
 
-public class ProprietesHorlogeController {
+public class ProprietesHorlogeController extends ProprietesController{
 
     @FXML
     private TextField label;
@@ -28,5 +29,11 @@ public class ProprietesHorlogeController {
     void modifier(ActionEvent event) {
 
     }
+
+	@Override
+	public void initialiser(Composant cmp) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

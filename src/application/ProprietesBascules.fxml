@@ -67,7 +67,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Label fx:id="composant" layoutX="190.0" layoutY="4.0" prefHeight="30.0" prefWidth="64.0" text="JK" textFill="#e4e4e4">
+      <Label fx:id="composant" alignment="CENTER" layoutX="183.0" layoutY="9.0" prefHeight="30.0" prefWidth="64.0" text="JK" textFill="#e4e4e4">
          <font>
             <Font name="Calisto MT" size="25.0" />
          </font>

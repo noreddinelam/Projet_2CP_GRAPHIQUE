@@ -24,6 +24,7 @@ public class ProprietesBasculesController extends ProprietesController {
 
 	public void initialiser(Composant cmp) {
 		this.cmp = cmp;
+		composant.setText(cmp.getClass().getSimpleName());
 		i=((Bascule)cmp).getFront().ordinal();
 		label.setText(cmp.getNom());
 		front.setText(bddNbFront[i]);

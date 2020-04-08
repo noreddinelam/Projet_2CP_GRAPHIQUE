@@ -40,7 +40,7 @@ import noyau.*;
 public class HomeController implements Initializable {
 	
     Map<ImageView,Label> elemanrsMapFillMap;
-    Node dragItem;
+    ImageView dragItem;
     ClickDroit ClickDroitFenetre;
     
     @FXML
@@ -328,11 +328,14 @@ public class HomeController implements Initializable {
 			  workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					Double x = ClickDroitFenetre.getX(), y = ClickDroitFenetre.getY(); 
-					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-					
-				if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) )
-					ClickDroitFenetre.close();
+					if(ClickDroitFenetre != null)
+					{
+						Double x = ClickDroitFenetre.getX(), y = ClickDroitFenetre.getY(); 
+						Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
+
+						if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) )
+							ClickDroitFenetre.close();
+					}
 				}
 			});
 			  
@@ -428,8 +431,10 @@ public class HomeController implements Initializable {
 	    	            	workSpace.getChildren().remove(dragImageView);
 	    	            else 
 	    	            {
-	    	            	instanceComposant(elementAdrager);
-	    	            	dragImageView.setImage(new Image(Circuit.getCompFromImage(elementAdrager).generatePath()));
+	    	            	
+	    	            	dragImageView.setId(elementAdrager.getId());
+	    	            	instanceComposant(dragImageView);
+	    	            	dragImageView.setImage(new Image(Circuit.getCompFromImage(dragImageView).generatePath()));
 	    	            	ajouterLeGestApresCollage(dragImageView);
 	    	            	
 	    	            }
@@ -484,8 +489,11 @@ public class HomeController implements Initializable {
 	        		Double clicDroitX,clicDroitY;
 	        		clicDroitX = e.getScreenX();
 	        		clicDroitY = e.getScreenY();
-	        		System.out.println(clicDroitX);
-	        		ClickDroitFenetre = new ClickDroit(clicDroitX,clicDroitY);
+	        		
+	        		System.out.println("element a draguer "+eleementAdrager);
+	        		System.out.println("element a draguer "+ Circuit.getCompUtilises());
+	        		System.out.println("Cmp"+Circuit.getCompFromImage(eleementAdrager));
+	        		ClickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY);
 	        	}
 	            eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {

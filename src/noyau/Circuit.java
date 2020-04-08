@@ -24,7 +24,7 @@ public class Circuit implements Serializable{
 	
 	public static void ajouterComposant(Composant comp,ImageView img) { // ajouter un composant à la liste des composants utilisés
 		//compUtilises.add(comp);
-		compUtilises.putIfAbsent(comp, img);
+		compUtilises.put(comp, img);
 	}
 	public static void ajouterFil(Fil fil) { // ajouter un fil à la liste des fils 
 		filUtilises.add(fil);
@@ -158,7 +158,7 @@ public class Circuit implements Serializable{
 	public static Composant getCompFromImage(ImageView img) { // recuperer le composant associé à une image .
 		Composant composant = null;
 		for (Entry<Composant, ImageView> entry : compUtilises.entrySet()) {
-			if (entry.getValue() == img) {
+			if (entry.getValue().equals(img)) {
 				composant = entry.getKey();
 				break;
 			}

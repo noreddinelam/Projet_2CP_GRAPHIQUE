@@ -10,11 +10,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="238.0" prefWidth="439.0" style="-fx-background-color: #4B535E;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProprietesRegistreController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="239.0" prefWidth="439.0" style="-fx-background-color: #303337;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProprietesRegistreController">
    <children>
-      <Pane layoutY="24.0" prefHeight="212.0" prefWidth="439.0" style="-fx-background-color: #4B535E;">
+      <Pane layoutY="27.0" prefHeight="212.0" prefWidth="439.0" style="-fx-background-color: #303337;">
          <children>
-            <Pane layoutX="6.0" layoutY="6.0" prefHeight="171.0" prefWidth="162.0" style="-fx-background-color: #4B535E;">
+            <Pane layoutX="6.0" layoutY="6.0" prefHeight="171.0" prefWidth="162.0" style="-fx-background-color: #303337;">
                <children>
                   <Pane layoutX="11.0" layoutY="3.0" prefHeight="150.0" prefWidth="2.0" style="-fx-background-color: #E4E4E4;" />
                   <Text fill="#e4e4e4" layoutX="22.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Label">
@@ -43,7 +43,7 @@
                   </Text>
                </children></Pane>
             <Pane layoutX="201.0" layoutY="36.0" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #7c7878;" />
-            <TextField fx:id="label" alignment="TOP_CENTER" layoutX="206.0" layoutY="7.0" prefHeight="23.0" prefWidth="191.0" promptText="Label" style="-fx-background-color: #4B535E;">
+            <TextField fx:id="label" alignment="TOP_CENTER" layoutX="206.0" layoutY="7.0" prefHeight="23.0" prefWidth="191.0" promptText="Label" style="-fx-background-color: #303337;">
                <cursor>
                   <Cursor fx:constant="SW_RESIZE" />
                </cursor>
@@ -54,11 +54,11 @@
             <Pane layoutX="201.0" layoutY="74.0" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #7c7878;" />
             <Button fx:id="plusNbBits" layoutX="346.0" layoutY="41.0" mnemonicParsing="false" onAction="#plusNbBits" prefHeight="29.0" prefWidth="30.0" />
             <Button fx:id="moinsNbBits" layoutX="225.0" layoutY="41.0" mnemonicParsing="false" onAction="#moinsNbBits" prefHeight="29.0" prefWidth="30.0" />
-            <Button fx:id="mdf" layoutX="314.0" layoutY="171.0" mnemonicParsing="false" onAction="#modifier" prefHeight="30.0" prefWidth="88.0" text="Modifier" textFill="#e4e4e4">
+            <Button fx:id="mdf" layoutX="314.0" layoutY="169.0" mnemonicParsing="false" onAction="#modifier" prefHeight="30.0" prefWidth="88.0" text="Modifier" textFill="#e4e4e4">
                <font>
                   <Font name="Calisto MT" size="14.0" />
                </font></Button>
-            <Button fx:id="annuler" layoutX="212.0" layoutY="171.0" mnemonicParsing="false" onAction="#annuler" prefHeight="30.0" prefWidth="88.0" text="Annuler" textFill="#c62222">
+            <Button fx:id="annuler" layoutX="212.0" layoutY="169.0" mnemonicParsing="false" onAction="#annuler" prefHeight="30.0" prefWidth="88.0" text="Annuler" textFill="#c62222">
                <font>
                   <Font name="Calisto MT" size="14.0" />
                </font></Button>
@@ -67,7 +67,7 @@
                   <Font name="Calisto MT" size="15.0" />
                </font>
             </Label>
-            <ImageView fx:id="imgPlusNbBits" fitHeight="30.0" fitWidth="30.0" layoutX="347.0" layoutY="41.0">
+            <ImageView fx:id="imgPlusNbBits" fitHeight="30.0" fitWidth="30.0" layoutX="346.0" layoutY="41.0">
                <image>
                   <Image url="@../pageEntreeIcones/+.png" />
                </image>
@@ -115,9 +115,9 @@
             </ImageView>
          </children>
       </Pane>
-      <Label layoutX="107.0" layoutY="1.0" prefHeight="30.0" prefWidth="219.0" text="Registre à decalage" textFill="#e4e4e4">
+      <Label layoutX="120.0" layoutY="3.0" prefHeight="30.0" prefWidth="219.0" text="Registre à decalage" textFill="#e4e4e4">
          <font>
-            <Font name="Calisto MT" size="25.0" />
+            <Font name="Calisto MT" size="24.0" />
          </font>
       </Label>
    </children>

@@ -1,7 +1,7 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 #copier,#couper,#supprimer,#rotationD,#rotationG,#prop{
 	/* @SuppressWarning */
-	-fx-background-color: #4B535E     ;
+	-fx-background-color:  #303337     ;
 	/* @SuppressWarning */
 	-fx-text-fill: #E4E4E4	 ;
 	/* @SuppressWarning */
@@ -10,11 +10,15 @@
 
 #copier:hover,#couper:hover,#supprimer:hover,#rotationD:hover,#rotationG:hover,#prop:hover{
 	/* @SuppressWarning */
-	-fx-background-color: #5A6572       ;
+	-fx-background-color:  #4b535e /* #394a61 #5A6572*/       ;
 	/* @SuppressWarning */
 	-fx-border-color: #000000;
 	/* @SuppressWarning */
 	-fx-text-fill: #000000;
 	/* @SuppressWarning */
 	-fx-background: #ffffff;
+}
+
+#label{
+	
 }
