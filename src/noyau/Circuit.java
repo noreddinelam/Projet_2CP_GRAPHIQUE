@@ -9,12 +9,14 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polyline;
 
 public class Circuit implements Serializable{
 	
 	private static HashMap<Composant, ImageView> compUtilises = new HashMap<Composant,ImageView>();
 	//private static ArrayList<Composant> compUtilises = new ArrayList<Composant>(); // tout les composants du circuit
-	private static ArrayList<Fil> filUtilises = new ArrayList<Fil>(); // tout les fils du circuit
+	//private static ArrayList<Fil> filUtilises = new ArrayList<Fil>(); // tout les fils du circuit
+	private static HashMap<Fil, Polyline> filUtilises = new HashMap<Fil,Polyline>();
 	private static ArrayList<Pin> entreesCircuit = new ArrayList<Pin>(); // toutes les entrees du circuit
 	private static ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>(); // toutes les sorties du circuit
 	private EtatLogique tableVerite[][]; // la table de verite du circuit
@@ -26,8 +28,9 @@ public class Circuit implements Serializable{
 		//compUtilises.add(comp);
 		compUtilises.put(comp, img);
 	}
-	public static void ajouterFil(Fil fil) { // ajouter un fil à la liste des fils 
-		filUtilises.add(fil);
+	public static void ajouterFil(Fil fil,Polyline polyline) { // ajouter un fil à la liste des fils 
+		//filUtilises.add(fil);
+		filUtilises.put(fil, polyline);
 	}
 	public static void ajouterEntree(Pin pin) { // ajouter une entree à la liste des entrees
 		entreesCircuit.add(pin);
@@ -165,9 +168,33 @@ public class Circuit implements Serializable{
 		}
 		return composant;
 	}
+	public static Polyline getPolylineFromFil(Fil fil) { // recuperer l'image associé à un composant .
+		return filUtilises.get(fil);
+	}
+	public static Fil getCompFromImage(Polyline ligne) { // recuperer le composant associé à une image .
+		Fil fil = null;
+		for (Entry<Fil, Polyline> entry : filUtilises.entrySet()) {
+			if (entry.getValue() == ligne) {
+				fil = entry.getKey();
+				break;
+			}
+		}
+		return fil;
+	}
 	
-	public static ArrayList<Fil> getFilUtilises() {
+	public static void removeImageFromComp(Composant comp) {
+		compUtilises.remove(comp);
+	}
+	public static void removeCompFromImage(ImageView img) { // recuperer le composant associé à une image .
+		compUtilises.remove(getCompFromImage(img));
+	}
+	
+	
+	public static HashMap<Fil, Polyline> getFilUtilises() {
 		return filUtilises;
+	}
+	public static void setFilUtilises(HashMap<Fil, Polyline> filUtilises) {
+		Circuit.filUtilises = filUtilises;
 	}
 	public static ArrayList<Pin> getEntreesCircuit() {
 		return entreesCircuit;
@@ -196,9 +223,7 @@ public class Circuit implements Serializable{
 	public static void setCompUtilises(HashMap<Composant, ImageView> compUtilises) {
 		Circuit.compUtilises = compUtilises;
 	}
-	public static void setFilUtilises(ArrayList<Fil> filUtilises) {
-		Circuit.filUtilises = filUtilises;
-	}
+	
 	public static void setEntreesCircuit(ArrayList<Pin> entreesCircuit) {
 		Circuit.entreesCircuit = entreesCircuit;
 	}
