@@ -10,7 +10,6 @@ import noyau.Composant;
 public class Proprietes extends Stage{
 
 	public Proprietes(String Fenete,Composant cmp) {
-		super();
 		try
 		{
 			FXMLLoader loader = new FXMLLoader();

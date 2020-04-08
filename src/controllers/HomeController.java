@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import application.ClickDroit;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -29,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Rotate;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import noyau.*;
 
@@ -38,6 +41,7 @@ public class HomeController implements Initializable {
 	
     Map<ImageView,Label> elemanrsMapFillMap;
     Node dragItem;
+    ClickDroit ClickDroitFenetre;
     
     
     @FXML
@@ -318,10 +322,22 @@ public class HomeController implements Initializable {
 		  	    workSpace.getChildren().remove(guideY);
 		  	    workSpace.getChildren().remove(guideYp);
 		  	        
-		  	        
 		  	            e.consume();
 		  	        }
 		  	    });
+			  
+			  workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					Double x = ClickDroitFenetre.getX(), y = ClickDroitFenetre.getY(); 
+					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
+					
+				if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) )
+					ClickDroitFenetre.close();
+				}
+			});
+			  
+			
 
 	}
     
@@ -442,7 +458,8 @@ public class HomeController implements Initializable {
 	    eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	        
-	   
+	        	if(e.getButton() != MouseButton.SECONDARY)
+	        	{
 	            dragItem = eleementAdrager;
 	       
 	            eleementAdrager.setMouseTransparent(true);
@@ -462,6 +479,14 @@ public class HomeController implements Initializable {
 	    	        }
 	    	    });
 	            
+	        	}else
+	        	{
+	        		Double clicDroitX,clicDroitY;
+	        		clicDroitX = e.getScreenX();
+	        		clicDroitY = e.getScreenY();
+	        		System.out.println(clicDroitX);
+	        		ClickDroitFenetre = new ClickDroit(clicDroitX,clicDroitY);
+	        	}
 	            eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
 	    	            Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
