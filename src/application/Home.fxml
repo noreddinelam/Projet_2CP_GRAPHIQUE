@@ -34,16 +34,16 @@
             <VBox prefHeight="990.0" prefWidth="184.0" style="-fx-background-color: #4b535e;">
                <children>
                   <Line endX="139.2928924560547" endY="-0.7070963382720947" startX="-40.0" stroke="#707070" strokeWidth="3.0" />
-                  <TabPane prefHeight="526.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/borderPane.css" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane fx:id="tabPane" prefHeight="526.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" styleClass="tabpane" stylesheets="@../styleFile/borderPane.css" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                        <Tab fx:id="comonents" style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
+                        <Tab fx:id="outils" style="-fx-pref-width: 40; -fx-pref-height: 10; -fx-background-radius: 5 5 5 5;" styleClass="outils">
                            <content>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                            </content>
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.35" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="0.07" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.35" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox fx:id="vBoxComp" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
@@ -173,7 +173,7 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
+                        <Tab fx:id="portes" style="-fx-pref-width: 40; -fx-pref-height: 10; -fx-background-radius: 5 5 5 5;" styleClass="portes">
                            <content>
                               <AnchorPane prefHeight="512.0" prefWidth="185.0" style="-fx-background-color: #4b535e;">
                                  <children>
@@ -329,11 +329,11 @@
                                  </padding>
                               </AnchorPane>
                            </content></Tab>
-                      <Tab style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
+                      <Tab fx:id="seq" style="-fx-pref-width: 40; -fx-pref-height: 10; -fx-background-radius: 5 5 5 5;" styleClass="seq">
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefHeight="923.0" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
@@ -488,11 +488,11 @@
                                  </padding>
                               </AnchorPane>
                            </content></Tab>
-                      <Tab style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
+                      <Tab fx:id="comb" style="-fx-pref-width: 40; -fx-pref-height: 10; -fx-background-radius: 5 5 5 5;" styleClass="comb">
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefHeight="923.0" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>

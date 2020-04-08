@@ -76,7 +76,7 @@ public class PremierePageController implements Initializable{
 						
 						Scene scene = new Scene(root);
 						Stage stage = new Stage();
-						//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						stage.setScene(scene);
 						stage.show();
 						pane.getScene().getWindow().hide();	
