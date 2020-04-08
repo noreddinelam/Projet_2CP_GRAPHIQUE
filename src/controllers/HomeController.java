@@ -1,9 +1,12 @@
 package controllers;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import application.ClickDroit;
 import javafx.animation.Interpolator;
@@ -32,6 +35,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -46,6 +50,10 @@ public class HomeController implements Initializable {
     ClickDroit clickDroitFenetre;
     private Double x,y;
     private int switching = 0; 
+    
+    // utilisé dans la sauvegarde des coordonnées 
+    Double posX ;
+	Double posY ;
     
     @FXML
     private Tab comonents;
@@ -428,13 +436,19 @@ public class HomeController implements Initializable {
 	    	           
 	    	            elementAdrager.setMouseTransparent(false);
 	    	            elementAdrager.setCursor(Cursor.DEFAULT);
-	    	            if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670)
-	    	            	workSpace.getChildren().remove(dragImageView);
-	    	            else 
+	    	            dragImageView.setId(elementAdrager.getId());
+    	            	instanceComposant(dragImageView);
+    	            	Image img = new Image(Circuit.getCompFromImage(dragImageView).generatePath());
+    	            	dragImageView.setImage(img);
+    	            	dragImageView.setFitHeight(img.getHeight());
+    	            	dragImageView.setFitWidth(img.getWidth());
+	    	            if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670 || intersectionComposant(dragImageView))
 	    	            {
-	    	            	dragImageView.setId(elementAdrager.getId());
-	    	            	instanceComposant(dragImageView);
-	    	            	dragImageView.setImage(new Image(Circuit.getCompFromImage(dragImageView).generatePath()));
+	    	            	workSpace.getChildren().remove(dragImageView);
+	    	            	Circuit.removeCompFromImage(dragImageView);
+	    	            }
+	    	            else 
+	    	            {    	            	
 	    	            	ajouterLeGestApresCollage(dragImageView);
 	    	            }
 	    	        }
@@ -451,17 +465,17 @@ public class HomeController implements Initializable {
 		
 		Polyline a = AjouterLignesInitiale(eleementAdrager);
 		workSpace.getChildren().add(a);
-		
+			
 	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
-	            eleementAdrager.setCursor(Cursor.HAND);
-	       
-	       
+	            eleementAdrager.setCursor(Cursor.HAND);   
 	        }
 	    });
 	    
 	    eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
+	        	posX = eleementAdrager.getLayoutX();
+	   		 	posY = eleementAdrager.getLayoutY();
 	        
 	        	if(e.getButton() != MouseButton.SECONDARY)
 	        	{
@@ -535,8 +549,15 @@ public class HomeController implements Initializable {
 	    	            eleementAdrager.setMouseTransparent(false);
 	    	            eleementAdrager.setMouseTransparent(false);
 	    	            eleementAdrager.setCursor(Cursor.DEFAULT);
-	    	            if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670)
-	    	           workSpace.getChildren().remove(eleementAdrager);
+	    	            if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670 || intersectionComposant(eleementAdrager))
+	    	            {
+	    	            	eleementAdrager.setLayoutX(posX);
+	    	            	eleementAdrager.setLayoutY(posY);
+	    	            }
+	    	            else {
+							posX = eleementAdrager.getLayoutX();
+							posY = eleementAdrager.getLayoutY();
+						}
 	    	        }
 	    	    });
 	            
@@ -918,6 +939,56 @@ public class HomeController implements Initializable {
 			line.setOnMousePressed(event);
 			line.setOnMouseDragged(event1);
 		}
+	 
+	 private boolean intersectionComposant(ImageView image) {
+		 boolean trouv = false;
+		Collection<ImageView> list = Circuit.getCompUtilises().values();
+		Iterator<ImageView> iterator = list.iterator();
+		ImageView img;
+		while(iterator.hasNext() && ! trouv) {
+			img = iterator.next();
+			if (img != image && intersectionCoordone(img , image)) {
+				trouv = true;
+			}
+		}
+		return trouv;
+	}
+	 
+	private boolean intersectionCoordone(ImageView origin,ImageView copie) {
+		
+		boolean verifX = false;
+		boolean verifY = false;
+		Double x1 = origin.getLayoutX();
+		Double y1 = origin.getLayoutY();
+		Double x2 = copie.getLayoutX();
+		Double y2 = copie.getLayoutY();
+		if (origin.getFitWidth() < copie.getFitWidth()) {
+			if ((x1>=x2 && x1<=x2 + copie.getFitWidth())||(x1+origin.getFitWidth() >= x2 && x1+origin.getFitWidth() <= x2 + copie.getFitWidth())) {
+				verifX = true;
+			}
+		}
+		else {
+			if ((x2>=x1 && x2<=x1 + origin.getFitWidth())||(x2+copie.getFitWidth() >= x1 && x2+copie.getFitWidth() <= x1 + origin.getFitWidth())) {
+				verifX = true;
+			}
+		}
+		if (verifX) {
+			if (origin.getFitHeight() < copie.getFitHeight()) {
+				if ((y1>=y2 && y1<=y2 + copie.getFitHeight())||(y1+origin.getFitHeight() >= y2 && y1+origin.getFitHeight() <= y2 + copie.getFitHeight())) {
+					verifY = true;
+				}
+			}
+			else {
+				if ((y2>=y1 && y2<=y1 + origin.getFitHeight())||(y2+copie.getFitHeight() >= y1 && y2+copie.getFitHeight() <= y1 + origin.getFitHeight())) {
+					verifY = true;
+				}
+			}
+		}
+		if (verifX && verifY) {
+			return true;
+		}
+		return false;
+	}
 	
 }
 
