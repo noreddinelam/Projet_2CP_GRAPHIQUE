@@ -1,6 +1,7 @@
 package controllers;
 
 import java.net.URL;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -30,6 +31,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polyline;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -41,7 +44,10 @@ public class HomeController implements Initializable {
 	
     Map<ImageView,Label> elemanrsMapFillMap;
     ImageView dragItem;
-    ClickDroit ClickDroitFenetre;
+    private ClickDroit clickDroitFenetre;
+    private Double x,y;
+    private int switching = 0; 
+
     
     @FXML
     private Tab comonents;
@@ -313,33 +319,30 @@ public class HomeController implements Initializable {
 			    });
 		  	  
 		  	  
-			  workSpace.setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
-		  	        public void handle(MouseDragEvent e) {
-		  	            //TODO: add new instance of dragItem to rightPane
-		  	        workSpace.getChildren().remove(guideX);
-		  	      workSpace.getChildren().remove(guideXp);
-		  	    workSpace.getChildren().remove(guideY);
-		  	    workSpace.getChildren().remove(guideYp);
-		  	        
-		  	            e.consume();
-		  	        }
-		  	    });
+		  	  workSpace.setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
+		  		  public void handle(MouseDragEvent e) {
+		  			  //TODO: add new instance of dragItem to rightPane
+		  			  workSpace.getChildren().remove(guideX);
+		  			  workSpace.getChildren().remove(guideXp);
+		  			  workSpace.getChildren().remove(guideY);
+		  			  workSpace.getChildren().remove(guideYp);
+
+		  			  e.consume();
+		  		  }
+		  	  });
 			  
 			  workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					if(ClickDroitFenetre != null)
-					{
-						Double x = ClickDroitFenetre.getX(), y = ClickDroitFenetre.getY(); 
-						Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
+				  @Override
+				  public void handle(MouseEvent event) {
+					  if (clickDroitFenetre != null) {
+						  Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
+						  Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
 
-						if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) )
-							ClickDroitFenetre.close();
-					}
-				}
-			});
-			  
-			
+						  if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) )
+							  clickDroitFenetre.close();
+					  }
+				  }
+			  });		
 
 	}
     
@@ -431,12 +434,10 @@ public class HomeController implements Initializable {
 	    	            	workSpace.getChildren().remove(dragImageView);
 	    	            else 
 	    	            {
-	    	            	
 	    	            	dragImageView.setId(elementAdrager.getId());
 	    	            	instanceComposant(dragImageView);
 	    	            	dragImageView.setImage(new Image(Circuit.getCompFromImage(dragImageView).generatePath()));
 	    	            	ajouterLeGestApresCollage(dragImageView);
-	    	            	
 	    	            }
 	    	        }
 	    	    });
@@ -450,7 +451,8 @@ public class HomeController implements Initializable {
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
 		
-		
+		Polyline a = AjouterLignesInitiale(eleementAdrager);
+		workSpace.getChildren().add(a);
 		
 	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
@@ -489,11 +491,7 @@ public class HomeController implements Initializable {
 	        		Double clicDroitX,clicDroitY;
 	        		clicDroitX = e.getScreenX();
 	        		clicDroitY = e.getScreenY();
-	        		
-	        		System.out.println("element a draguer "+eleementAdrager);
-	        		System.out.println("element a draguer "+ Circuit.getCompUtilises());
-	        		System.out.println("Cmp"+Circuit.getCompFromImage(eleementAdrager));
-	        		ClickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY);
+	        		clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY);
 	        	}
 	            eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
@@ -502,7 +500,9 @@ public class HomeController implements Initializable {
 	    	                    (int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
 	    	                    (int)(localPoint.getY() - eleementAdrager.getBoundsInLocal().getHeight()/2 )
 	    	            );
-	    	            
+	    	            double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth() - 2;
+	    	        	double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2 - 1;
+	    	        	a.relocate(x, y);
 	    	            String xString=String.valueOf(eleementAdrager.getLayoutX());
     	                String yString=String.valueOf(eleementAdrager.getLayoutY());
     	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<1066 )&&(eleementAdrager.getLayoutY()>17))
@@ -844,6 +844,81 @@ public class HomeController implements Initializable {
 		}
 		Circuit.ajouterComposant(comp, img);
 	}
+	private Polyline AjouterLignesInitiale(ImageView composant) {
+    	double x=composant.getLayoutX()+composant.getBoundsInLocal().getWidth();
+    	double y=composant.getLayoutY()+composant.getBoundsInLocal().getHeight()/2;
+    	Polyline a = new Polyline(x,y,x+12,y); //(x,y,x+12,y) avec x,y coordonnees de la sortie
+		a.setStrokeWidth(3);
+		a.setSmooth(true);
+		a.setStrokeType(StrokeType.CENTERED);
+		a.setCursor(Cursor.HAND);
+		ajouterGeste(a);
+		return a;
+    }
+	 public void ajouterGeste(Polyline line)
+		{
+			EventHandler<MouseEvent> event1 = new javafx.event.EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					// TODO Auto-generated method stub
+					
+					Double x2 = event.getX();
+					Double y2 = event.getY();
+					for (int i = 0; i < 4; i++) {
+						line.getPoints().remove((line.getPoints().size()-1));
+					}
+					if(Math.abs(x2-x)<10) { 
+						if(Math.abs(y2-y)<10) switching = 0; 
+						else switching = 1;
+					}else {
+						if(Math.abs(y2-y)<10) switching = 0;
+					} 		
+					if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
+					else line.getPoints().addAll(x,y2,x2,y2);
+				}
+			};
+			
+			EventHandler<MouseEvent> event = new javafx.event.EventHandler<MouseEvent>() {
+
+				@Override
+				public void handle(MouseEvent event) {
+					// TODO Auto-generated method stub
+					int i = line.getPoints().size()-4;
+					x = event.getX();
+					y = event.getY();
+					System.out.println(x);
+					System.out.println(line.getPoints().get(i));
+					System.out.println(y);
+					System.out.println(line.getPoints().get(i+1)+"\nmmmmm");
+					while((i!=0) && ((Math.abs(x-line.getPoints().get(i))>5) && ((Math.abs(y - line.getPoints().get(i+1)) >=5 ))))
+					{
+						line.getPoints().addAll(line.getPoints().get(i),line.getPoints().get(i+1));
+						i=i-2;
+						System.out.println(i+"Dkhal");
+						System.out.println(x);
+						System.out.println(line.getPoints().get(i));
+						System.out.println(y);
+						System.out.println(line.getPoints().get(i+1)+"\n******************");
+					}
+
+					Double x1 = line.getPoints().get(i),y1 = line.getPoints().get(i+1);
+					if(Math.abs(x-line.getPoints().get(i)) < 5) {
+						if(Math.abs(y - line.getPoints().get(i+1)) < 5) {
+							line.getPoints().addAll(x,y,x,y);
+						}
+						else {
+							line.getPoints().addAll(x1,y1,x1,y,x1,y,x1,y);
+						}	
+					}else{
+						if(Math.abs(y - line.getPoints().get(i+1)) < 5) {
+							line.getPoints().addAll(x1,y1,x,y1,x,y1,x,y1);
+						}
+					}
+				}
+			};
+			line.setOnMousePressed(event);
+			line.setOnMouseDragged(event1);
+		}
 	
 }
 
