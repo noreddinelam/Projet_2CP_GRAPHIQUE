@@ -26,5 +26,9 @@ public class AdditionneurN_Bites extends Additionneur {
 		return (validerEntrees().getNum() == 1 ) ? true : false;
 	}
 		
-	
+	@Override
+	public String generatePath() {
+		// TODO Auto-generated method stub
+		return this.getClass().getSimpleName() + "/" + String.valueOf((getNombreEntree() -1) / 2)+".png";
+	}
 }

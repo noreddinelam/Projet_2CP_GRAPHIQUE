@@ -10,5 +10,11 @@ public class Not extends Portes{
 		if(entrees[0].getEtatLogiqueFil().getNum()==1) sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
 		else sorties[0].setEtatLogiqueFil(EtatLogique.ONE);
 	}
+	
+	@Override
+	public String generatePath() {
+		// TODO Auto-generated method stub
+		return "Not/Not.png";
+	}
 
 }

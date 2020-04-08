@@ -261,7 +261,7 @@
                                                 </Label>
                                                 <AnchorPane prefHeight="99.0" prefWidth="100.0" style="-fx-background-color: #303337; -fx-background-radius: 32; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);">
                                                    <children>
-                                                      <ImageView fx:id="nand" fitHeight="67.0" fitWidth="58.0" layoutX="33.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fx:id="nand" fitHeight="61.0" fitWidth="69.0" layoutX="18.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../Nand/2.png" />
                                                          </image>
@@ -284,7 +284,7 @@
                                                 </Label>
                                                 <AnchorPane prefHeight="99.0" prefWidth="100.0" style="-fx-background-color: #303337; -fx-background-radius: 32; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);">
                                                    <children>
-                                                      <ImageView fx:id="nor" fitHeight="67.0" fitWidth="58.0" layoutX="33.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fx:id="nor" fitHeight="63.0" fitWidth="77.0" layoutX="14.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../Nor/2.png" />
                                                          </image>
@@ -307,7 +307,7 @@
                                                 </Label>
                                                 <AnchorPane prefHeight="99.0" prefWidth="100.0" style="-fx-background-color: #303337; -fx-background-radius: 32; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);">
                                                    <children>
-                                                      <ImageView fx:id="not" fitHeight="67.0" fitWidth="58.0" layoutX="33.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fx:id="not" fitHeight="48.0" fitWidth="71.0" layoutX="17.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../not/NOT.png" />
                                                          </image>
@@ -353,7 +353,7 @@
                                                    <children>
                                                       <ImageView fx:id="jk" fitHeight="67.0" fitWidth="63.0" layoutX="21.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../JK/Montant.png" />
+                                                            <Image url="@../JK/Front_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -376,7 +376,7 @@
                                                    <children>
                                                       <ImageView fx:id="d" fitHeight="67.0" fitWidth="63.0" layoutX="23.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../D/Montant.png" />
+                                                            <Image url="@../D/Front_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -399,7 +399,7 @@
                                                    <children>
                                                       <ImageView fx:id="rs" fitHeight="67.0" fitWidth="63.0" layoutX="21.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../RST/Montant.png" />
+                                                            <Image url="@../RST/Front_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -422,7 +422,7 @@
                                                    <children>
                                                       <ImageView fx:id="t" fitHeight="67.0" fitWidth="58.0" layoutX="24.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../T/Montant.png" />
+                                                            <Image url="@../T/Front_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -445,7 +445,7 @@
                                                    <children>
                                                       <ImageView fx:id="cpt" fitHeight="42.0" fitWidth="91.0" layoutX="7.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../Compteur/4Montant.png" />
+                                                            <Image url="@../Compteur/4Front_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -468,7 +468,7 @@
                                                    <children>
                                                       <ImageView fx:id="registreDecalge" fitHeight="54.0" fitWidth="86.0" layoutX="14.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../RegistreDecalage/2DroiteMontant.png" />
+                                                            <Image url="@../RegistreDecalage/2DroiteFront_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>

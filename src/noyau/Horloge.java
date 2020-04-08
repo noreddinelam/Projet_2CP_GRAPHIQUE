@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Horloge extends Composant implements ElementHorloge,Runnable{
 	
-	private EtatLogique etat = EtatLogique.ONE;
+	private EtatLogique etat = EtatLogique.ZERO;
 	private long temps;
 	private boolean active = true;// on met l'horloge toujours active pour le test
 	
@@ -43,7 +43,8 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 
 
 	@Override
-	public void run() {	
+	public void run() {
+		etat = EtatLogique.ONE;
 		this.evaluer();
 		Circuit.initialiser();
 		while(this.active)// tant que l'horloge est active
@@ -80,6 +81,13 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 	       
 		}
 	}
-	
+	@Override
+	public String generatePath() {
+		// TODO Auto-generated method stub
+		if (etat == EtatLogique.ONE) {
+			return "Horloge/1.png";
+		}
+		return "Horloge/0.png";
+	}
 	
 }
