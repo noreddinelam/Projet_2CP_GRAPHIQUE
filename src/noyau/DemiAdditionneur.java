@@ -20,4 +20,9 @@ public class DemiAdditionneur extends Additionneur{
 		numToFils(Integer.parseInt(Integer.toBinaryString(s1))); //affecter le resultats aux sorties	
 	}
 	
+	@Override
+	public String generatePath() {
+		// TODO Auto-generated method stub
+		return this.getClass().getSimpleName() + "/" + String.valueOf(getNombreEntree() / 2)+".png";
+	}
 }

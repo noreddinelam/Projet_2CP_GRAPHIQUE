@@ -72,6 +72,24 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		}
 	}
 	
+	@Override
+	public String generatePath() {
+		// TODO Auto-generated method stub
+		String path;
+		switch (etat) {
+		case ONE:{
+			path = "Pin/1";
+		}break;
+
+		default:{
+			path = "Pin/0";
+		}break;
+		}
+		if (input) {
+			return path + "Input" +".png";
+		}
+		return path + "Output" +".png";
+	}
 	public boolean isInput() {
 		return input;
 	}

@@ -153,6 +153,19 @@ public class RegistreDecalage extends Sequentiels {
 			etatPrec[i] = entrees[i].getEtatLogiqueFil();
 		}
 	}
+	
+	@Override
+	public String generatePath() {
+		// TODO Auto-generated method stub
+		String path = "RegistreDecalage/"+String.valueOf(taille);
+		if (decalageDroite) {
+			path = path + "Droite";
+		}
+		else {
+			path = path + "Gauche";
+		}
+		return path+front.toString()+".png";
+	}
 
 	public void setTaille(int taille) {
 		this.taille = taille;

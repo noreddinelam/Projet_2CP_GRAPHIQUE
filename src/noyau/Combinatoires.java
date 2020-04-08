@@ -10,5 +10,9 @@ public abstract class Combinatoires extends Composant {
 	public abstract void genererSorties(); 
 	public abstract boolean valider();
 	
-
+	@Override
+	public String generatePath() {
+		// TODO Auto-generated method stub
+		return this.getClass().getSimpleName() + "/" + String.valueOf(getNombreEntree())+"X"+String.valueOf(getNombreSortie())+".png";
+	}
 }
