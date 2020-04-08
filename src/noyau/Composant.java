@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 import javax.management.relation.Role;
 
+import javafx.scene.image.ImageView;
+
 
 public abstract class Composant implements Serializable{
 	/*--------- Attributs -------------*/
@@ -25,7 +27,7 @@ public abstract class Composant implements Serializable{
 		this.nombreEntree = nombreEntree;
 		this.nom =nom;
 		Arrays.fill(etatFinal, EtatLogique.HAUTE_IMPEDANCE);
-		Circuit.ajouterComposant(this);
+		//Circuit.ajouterComposant(this,generatePath());
 	}
 	/*--------- setters & getters--------------*/
 	public String getNom() {
@@ -60,6 +62,12 @@ public abstract class Composant implements Serializable{
 		this.nombreEntree = nombreEntree;
 	}
 	
+	public int getNombreSortie() {
+		return nombreSortie;
+	}
+	public void setNombreSortie(int nombreSortie) {
+		this.nombreSortie = nombreSortie;
+	}
 	/*--------- Methodes --------------*/
 	public void evaluer() {
 		if(valider()) // si le composant est pret 
@@ -146,5 +154,7 @@ public abstract class Composant implements Serializable{
 			entrees[i].addEtages(etage);
 		}
 	}
+	
+	public abstract String generatePath();
 	
 }

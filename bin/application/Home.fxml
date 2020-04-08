@@ -353,7 +353,7 @@
                                                    <children>
                                                       <ImageView fx:id="jk" fitHeight="67.0" fitWidth="63.0" layoutX="21.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../JK/Montant.png" />
+                                                            <Image url="@../JK/Front_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -376,7 +376,7 @@
                                                    <children>
                                                       <ImageView fx:id="d" fitHeight="67.0" fitWidth="63.0" layoutX="23.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../D/Montant.png" />
+                                                            <Image url="@../D/Front_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -399,7 +399,7 @@
                                                    <children>
                                                       <ImageView fx:id="rs" fitHeight="67.0" fitWidth="63.0" layoutX="21.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../RST/Montant.png" />
+                                                            <Image url="@../RST/Front_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -422,7 +422,7 @@
                                                    <children>
                                                       <ImageView fx:id="t" fitHeight="67.0" fitWidth="58.0" layoutX="24.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../T/Montant.png" />
+                                                            <Image url="@../T/Front_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -445,7 +445,7 @@
                                                    <children>
                                                       <ImageView fx:id="cpt" fitHeight="42.0" fitWidth="91.0" layoutX="7.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../Compteur/4Montant.png" />
+                                                            <Image url="@../Compteur/4Front_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -468,7 +468,7 @@
                                                    <children>
                                                       <ImageView fx:id="registreDecalge" fitHeight="54.0" fitWidth="86.0" layoutX="14.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../RegistreDecalage/2DroiteMontant.png" />
+                                                            <Image url="@../RegistreDecalage/2DroiteFront_Montant.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>

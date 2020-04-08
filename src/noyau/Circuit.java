@@ -4,10 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
+import javafx.scene.image.ImageView;
 
 public class Circuit implements Serializable{
 	
-	private static ArrayList<Composant> compUtilises = new ArrayList<Composant>(); // tout les composants du circuit
+	private static HashMap<Composant, ImageView> compUtilises = new HashMap<Composant,ImageView>();
+	//private static ArrayList<Composant> compUtilises = new ArrayList<Composant>(); // tout les composants du circuit
 	private static ArrayList<Fil> filUtilises = new ArrayList<Fil>(); // tout les fils du circuit
 	private static ArrayList<Pin> entreesCircuit = new ArrayList<Pin>(); // toutes les entrees du circuit
 	private static ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>(); // toutes les sorties du circuit
@@ -16,8 +22,9 @@ public class Circuit implements Serializable{
 	private static int nbEtages = 0; // nombre des etages
 	
 	
-	public static void ajouterComposant(Composant comp) { // ajouter un composant à la liste des composants utilisés
-		compUtilises.add(comp);
+	public static void ajouterComposant(Composant comp,ImageView img) { // ajouter un composant à la liste des composants utilisés
+		//compUtilises.add(comp);
+		compUtilises.putIfAbsent(comp, img);
 	}
 	public static void ajouterFil(Fil fil) { // ajouter un fil à la liste des fils 
 		filUtilises.add(fil);
@@ -145,9 +152,20 @@ public class Circuit implements Serializable{
 		}
 		
 	}
-	public static ArrayList<Composant> getCompUtilises() {
-		return compUtilises;
+	public static ImageView getImageFromComp(Composant comp) { // recuperer l'image associé à un composant .
+		return compUtilises.get(comp);
 	}
+	public static Composant getCompFromImage(ImageView img) { // recuperer le composant associé à une image .
+		Composant composant = null;
+		for (Entry<Composant, ImageView> entry : compUtilises.entrySet()) {
+			if (entry.getValue() == img) {
+				composant = entry.getKey();
+				break;
+			}
+		}
+		return composant;
+	}
+	
 	public static ArrayList<Fil> getFilUtilises() {
 		return filUtilises;
 	}
@@ -172,7 +190,10 @@ public class Circuit implements Serializable{
 	public static void setNbEtages(int nbEtages) {
 		Circuit.nbEtages = nbEtages;
 	}
-	public static void setCompUtilises(ArrayList<Composant> compUtilises) {
+	public static HashMap<Composant, ImageView> getCompUtilises() {
+		return compUtilises;
+	}
+	public static void setCompUtilises(HashMap<Composant, ImageView> compUtilises) {
 		Circuit.compUtilises = compUtilises;
 	}
 	public static void setFilUtilises(ArrayList<Fil> filUtilises) {

@@ -7,10 +7,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import javafx.scene.image.ImageView;
 
 public class Sauvegarde implements Serializable {
 
-	private  ArrayList<Composant> compUtilises = new ArrayList<Composant>();
+	private static HashMap<Composant, ImageView> compUtilises = new HashMap<Composant,ImageView>();
 	private  ArrayList<Fil> filUtilises = new ArrayList<Fil>();
 	private  ArrayList<Pin> entreesCircuit = new ArrayList<Pin>();
 	private  ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>();
@@ -57,7 +60,6 @@ public class Sauvegarde implements Serializable {
 			fichier = new FileInputStream(nomFichier);
 			oo = new ObjectInputStream(fichier);
 			circuitSauv= (Sauvegarde) oo.readObject();
-
 			Circuit.setCompUtilises(circuitSauv.getCompUtilises());
 			Circuit.setFilUtilises(circuitSauv.getFilUtilises());
 			Circuit.setEntreesCircuit(circuitSauv.getEntreesCircuit());
@@ -82,12 +84,15 @@ public class Sauvegarde implements Serializable {
 
 	}
 
-	public ArrayList<Composant> getCompUtilises() {
+	
+	public static HashMap<Composant, ImageView> getCompUtilises() {
 		return compUtilises;
 	}
-	public void setCompUtilises(ArrayList<Composant> compUtilises) {
-		this.compUtilises = compUtilises;
+
+	public static void setCompUtilises(HashMap<Composant, ImageView> compUtilises) {
+		Sauvegarde.compUtilises = compUtilises;
 	}
+
 	public ArrayList<Fil> getFilUtilises() {
 		return filUtilises;
 	}

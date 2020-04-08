@@ -79,6 +79,12 @@ public abstract class Bascule extends Sequentiels{
 		return f;
 	}
 	
+	@Override
+	public String generatePath() {
+		// TODO Auto-generated method stub
+		return this.getClass().getSimpleName() + "/" + front.toString() + ".png";
+	}
+	
 	public Fil getPreset() {
 		return preset;
 	}

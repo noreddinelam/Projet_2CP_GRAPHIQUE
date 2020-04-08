@@ -17,8 +17,10 @@ import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -28,6 +30,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import noyau.*;
 
 
 
@@ -35,6 +38,7 @@ public class HomeController implements Initializable {
 	
     Map<ImageView,Label> elemanrsMapFillMap;
     Node dragItem;
+    
     
     @FXML
     private Tab comonents;
@@ -223,6 +227,7 @@ public class HomeController implements Initializable {
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
 		ajouterGestWorkSpace();/////Les gestes De drag and drop 
 		tracerLesGuides();//Initialisation des files de guide
 		//initialisation des coordones de X et Y a 0
@@ -252,6 +257,8 @@ public class HomeController implements Initializable {
     		put(enco, tEnc);
     		put(addcomplet, tAddc);
     		put(demiAdd, tDadd);}};
+    		
+    
     		
     	////Ajouter pour chaque Composant les gestes de drag and drop
     		
@@ -384,11 +391,11 @@ public class HomeController implements Initializable {
 	    	            	guideY.setLayoutY(0);
 	    	            	guideXp.setLayoutX(0);
 	    	            	guideYp.setLayoutY(0);
-	    	            	 afficheurX.setText("X : 0");
-		    	                afficheurY.setText("Y :0");
+	    	            	afficheurX.setText("X : 0");
+		    	            afficheurY.setText("Y : 0");
 	    	            	}
 	    	     
-	    	        
+	    	            
 	    	            e.consume();
 	    	        }
 	    	    });
@@ -399,12 +406,18 @@ public class HomeController implements Initializable {
 	    	            dragItem = null;
 	    	            
 	    	            dragImageView.setMouseTransparent(false);
-	    	          
+	    	           
 	    	            elementAdrager.setMouseTransparent(false);
 	    	            elementAdrager.setCursor(Cursor.DEFAULT);
 	    	            if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670)
 	    	            	workSpace.getChildren().remove(dragImageView);
-	    	            else ajouterLeGestApresCollage(dragImageView);
+	    	            else 
+	    	            {
+	    	            	instanceComposant(elementAdrager);
+	    	            	dragImageView.setImage(new Image(Circuit.getCompFromImage(elementAdrager).generatePath()));
+	    	            	ajouterLeGestApresCollage(dragImageView);
+	    	            	
+	    	            }
 	    	        }
 	    	    });
 	            
@@ -414,7 +427,7 @@ public class HomeController implements Initializable {
 
 	}
 	
-	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
+	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
 		
 		
@@ -479,7 +492,7 @@ public class HomeController implements Initializable {
 	    	            	guideXp.setLayoutX(0);
 	    	            	guideYp.setLayoutY(0);
 	    	              	afficheurX.setText("X : 0");
-		    	            afficheurY.setText("Y :0");
+		    	            afficheurY.setText("Y : 0");
 	    	            	}	    	        
 	    	            e.consume();
 	    	        }
@@ -487,7 +500,7 @@ public class HomeController implements Initializable {
 	            
 	            eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
-	    	            dragItem = null;  	            
+	    	            dragItem = null;  	 
 	    	            eleementAdrager.setMouseTransparent(false);
 	    	            eleementAdrager.setMouseTransparent(false);
 	    	            eleementAdrager.setCursor(Cursor.DEFAULT);
@@ -674,12 +687,8 @@ public class HomeController implements Initializable {
 	    
 	        rotate.setOnFinished(new EventHandler<ActionEvent>() {
 				@Override
-				public void handle(ActionEvent arg0) {
-					       	     
-				         
+				public void handle(ActionEvent arg0) {			         
 				        logo.setRotate(0);
-				    
-					
 				}
 			});
 	     
@@ -727,6 +736,81 @@ public class HomeController implements Initializable {
         guideYp.setEndY(0);
         
         
+	}
+	private void instanceComposant(ImageView img) {
+		Composant comp;
+		switch (img.getId()) {
+		case "hex" :{
+			comp = new AfficheurSegment("");
+		}break;
+		case "pin" :{
+			comp = new Pin(true, "");
+		}break;
+		case "clock" :{
+			comp = new Horloge("", 1000);
+		}break;
+		case "vcc" :{
+			comp = new SourceConstante(EtatLogique.ONE, "");
+		}break;
+		case "mass" :{
+			comp = new SourceConstante(EtatLogique.ZERO, "");
+		}break;
+		case "and" :{
+			comp = new And(2, "");
+		}break;
+		case "or" :{
+			comp = new Or(2, "");
+		}break;
+		case "xor" :{
+			comp = new Xor(2, "");
+		}break;
+		case "nand" :{
+			comp = new Nand(2, "");
+		}break;
+		case "nor" :{
+			comp = new Nor(2, "");
+		}break;
+		case "not" :{
+			comp = new Not("");
+		}break;
+		case "jk" :{
+			comp = new JK("", Front.Front_Montant);
+		}break;
+		case "d" :{
+			comp = new D("", Front.Front_Montant);
+		}break;
+		case "rs" :{
+			comp = new RST("", Front.Front_Montant);
+		}break;
+		case "t" :{
+			comp = new T("", Front.Front_Montant);
+		}break;
+		case "cpt" :{
+			comp = new Compteur(2, "", Front.Front_Montant);
+		}break;
+		case "registreDecalge" :{
+			comp = new RegistreDecalage(2, "", true, Front.Front_Montant);
+		}break;
+		case "mux" :{
+			comp = new Multiplexeur(2, "");
+		}break;
+		case "dmux" :{
+			comp = new Demultiplexeur(1, "");
+		}break;
+		case "dec" :{
+			comp = new Decodeur(1, "");
+		}break;
+		case "addcomplet" :{
+			comp = new AdditionneurN_Bites(1, "");
+		}break;
+		case "demiAdd" :{
+			comp = new DemiAdditionneur(1, "");
+		}break;
+		default : {
+			comp = new Encodeur(2, "");
+		}
+		}
+		Circuit.ajouterComposant(comp, img);
 	}
 	
 }

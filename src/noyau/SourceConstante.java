@@ -23,5 +23,13 @@ public class SourceConstante extends Composant{
 		// TODO Auto-generated method stub
 		return true;
 	}
-
+	
+@Override
+public String generatePath() {
+	// TODO Auto-generated method stub
+	if (etatLogique == EtatLogique.ONE) {
+		return "SourceConstante/VCC.png";
+	}
+	return "SourceConstante/MASSE.png";
+}
 }
