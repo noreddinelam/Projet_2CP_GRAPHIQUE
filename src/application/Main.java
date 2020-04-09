@@ -2,6 +2,7 @@ package application;
 	
 
 import java.awt.Desktop;
+
 import java.net.URL;
 
 import javafx.animation.FadeTransition;
@@ -38,13 +39,13 @@ public class Main extends Application {
 //		        fade.play();  
 //			scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 //
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("About.fxml"));
+			/*FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("About.fxml"));
 
 			Parent root = fxmlLoader.load();
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/about.css").toExternalForm());
 			primaryStage.setScene(scene);
-			primaryStage.show();
+			primaryStage.show();*/
 			
 			
 //			fxmlLoader = new FXMLLoader(getClass().getResource("PageEntree.fxml"));
@@ -56,8 +57,8 @@ public class Main extends Application {
 			
 					/*FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/application/PageEntree.fxml"));*/
-			/*			Parent root = FXMLLoader.load(getClass().getResource("/application/PageEntree.fxml"));
-					 	FadeTransition fade = new FadeTransition();  
+						Parent root = FXMLLoader.load(getClass().getResource("/application/Home.fxml"));
+					 /*	FadeTransition fade = new FadeTransition();  
 			         	fade.setDuration(Duration.millis(1000)); 
 			         	fade.setDelay(Duration.millis(4000));
 				        fade.setFromValue(10);  
@@ -85,18 +86,18 @@ public class Main extends Application {
 //				        fade.setToValue(0.1);    
 //				        fade.setCycleCount(0);  
 //				        fade.setAutoReverse(true);     
-//				        fade.setNode(root);  
-//				        
-//				     
-//				          
-//				        //playing the transition   
-//				        fade.play(); 
-//					Scene scene = new Scene(root);
-//					scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-//					primaryStage.setScene(scene);
-//					primaryStage.initStyle(StageStyle.UNDECORATED);
-//					primaryStage.setResizable(false);
-//					primaryStage.show();
+	//			        fade.setNode(root);  
+				        
+				     
+				          
+				        //playing the transition   
+				        //fade.play(); 
+					Scene scene = new Scene(root);
+					scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+					primaryStage.setScene(scene);
+					//primaryStage.initStyle(StageStyle.UNDECORATED);
+					primaryStage.setResizable(false);
+					primaryStage.show();
 		
 			
 				
