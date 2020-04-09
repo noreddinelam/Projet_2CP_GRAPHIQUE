@@ -1,18 +1,20 @@
 package controllers;
 
+import java.awt.Button;
 import java.io.IOException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXDrawersStack;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
@@ -24,6 +26,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -152,6 +155,20 @@ public class HomeController implements Initializable {
     @FXML
     private JFXDrawer helpDrawer;
     
+    @FXML
+    private Tab outils;
+    
+    @FXML
+    private Tab portes;
+    
+    @FXML
+    private Tab seq;
+    
+    @FXML
+    private Tab comb;
+    
+    @FXML
+    private TabPane tabPane;
 
    
     
@@ -220,15 +237,7 @@ public class HomeController implements Initializable {
     ajouterLeGest(cpt);
     ajouterLeGest(registreDecalge);
     
-    Tooltip.install(fichier, new Tooltip("fichier"));
-	Tooltip.install(edition, new Tooltip("edition"));
-	Tooltip.install(simulation, new Tooltip("simulation"));
-	Tooltip.install(affichage, new Tooltip("affichage"));
-	Tooltip.install(aide, new Tooltip("aide"));
-	
-	
-	
-	
+    tooltipInitialize();
 	rightbar(fichier, fichierDrawer,editionDrawer,affichageDrawer,helpDrawer,"/application/Fichier.fxml" );
 	rightbar(edition, editionDrawer,affichageDrawer,fichierDrawer,helpDrawer,"/application/Edition.fxml" );
 	rightbar(affichage, affichageDrawer,editionDrawer,fichierDrawer,helpDrawer,"/application/Affichage.fxml" );
@@ -244,6 +253,7 @@ public class HomeController implements Initializable {
 				
 				affichageDrawer.close();
 				affichageDrawer.setOpacity(0);
+				
 				
 				helpDrawer.close();
 				helpDrawer.setOpacity(0);
@@ -292,25 +302,76 @@ public class HomeController implements Initializable {
 			        fade.setNode(elementName);      
 			        fade.play();	
 			        elementName.open();
-			        //elementName.setViewOrder(1);
+			        elementName.setViewOrder(1);
 			        element1Hide.close();
 			        element1Hide.setOpacity(0);
-			        //element1Hide.setViewOrder(4);
+			        element1Hide.setViewOrder(4);
 					
 			        element2Hide.close();
 			        element2Hide.setOpacity(0);
-			       // element2Hide.setViewOrder(4);
+			        element2Hide.setViewOrder(4);
 
-			        
+			      
 			        element3Hide.close();
 			        element3Hide.setOpacity(0);
-			       // element3Hide.setViewOrder(4);
+			        element3Hide.setViewOrder(4);
 
 
 				}
 			});
 			
 		
+	}
+	
+	
+	
+	public void tooltipInitialize() {
+
+	    Tooltip fich = new Tooltip("fichier");
+	    fich.setShowDelay(Duration.millis(0));
+	    Tooltip.install(fichier, fich);
+	    
+	        
+	    Tooltip edi = new Tooltip("edition");
+	    edi.setShowDelay(Duration.millis(0));
+		Tooltip.install(edition, edi);
+		
+		Tooltip sim = new Tooltip("simulation");
+	    sim.setShowDelay(Duration.millis(0));
+		Tooltip.install(simulation, sim);
+		
+		Tooltip aff = new Tooltip("affichage");
+	    aff.setShowDelay(Duration.millis(0));
+		Tooltip.install(affichage, aff);
+		
+		Tooltip aid = new Tooltip("aide");
+	    aid.setShowDelay(Duration.millis(0));
+		Tooltip.install(aide, aid);
+		
+		
+		/*-------------------------------------*/
+		
+		Tooltip com = new Tooltip("Combinatoires");
+		com.setShowDelay(Duration.millis(0));
+		comb.setTooltip(com);
+			
+		Tooltip se = new Tooltip("Sequentiels");
+		se.setShowDelay(Duration.millis(0));
+		seq.setTooltip(se);
+		
+		Tooltip out = new Tooltip("Outils");
+		out.setShowDelay(Duration.millis(0));
+		outils.setTooltip(out);
+		
+		Tooltip por = new Tooltip("Portes");
+		por.setShowDelay(Duration.millis(0));
+		portes.setTooltip(por);
+		
+		/*------------------------------*/
+		
+		
+		
+	
 	}
 	
 	
@@ -405,7 +466,6 @@ public class HomeController implements Initializable {
 	    	            SnapshotParameters snapParams = new SnapshotParameters();
 	    	            snapParams.setFill(Color.TRANSPARENT);
 	    	            eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
-	    	            workSpace.getChildren().add(eleementAdrager);
 
 	    	            eleementAdrager.startFullDrag();
 	    	            e.consume();
