@@ -1,5 +1,7 @@
 package noyau;
 import java.lang.Math;
+
+import javafx.scene.shape.Polyline;
 public class Compteur extends Sequentiels{
 
 	private int valeur = 0 ;
@@ -13,6 +15,7 @@ public class Compteur extends Sequentiels{
 		load = new Fil(null);
 		load.setEtatLogiqueFil(EtatLogique.ONE);
 		this.nombreSortie = nombreEntree ;
+		lesCoordonnees = new LesCoordonnees(nombreEntree, nombreSortie, 0);
 		Double entreeDouble = Math.pow(2, nombreEntree);
 		this.valeurMax = ( Integer.valueOf(entreeDouble.intValue())) -1 ;
 		initSorties();
@@ -127,6 +130,65 @@ public class Compteur extends Sequentiels{
 	public String generatePath() {
 		// TODO Auto-generated method stub
 		return "Compteur/"+String.valueOf((int) Math.pow(2, nombreEntree)) + front.toString() + ".png";
+	}
+	
+	@Override
+	public void setCord() {
+		// TODO Auto-generated method stub
+		switch (nombreEntree) {
+		case 2:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(70.3, 0), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(42, 0), 1);
+			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(70.3, 55), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(42, 55), 1);
+			
+			lesCoordonnees.setCordHorloge(new Coordonnees(0, 20.8));
+			
+			lesCoordonnees.setCordLoad(new Coordonnees(119, 16.9));
+			
+			lesCoordonnees.setCordClear(new Coordonnees(119, 35.6));
+			
+		}break;
+		case 3:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(107.5, 0), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(78.9, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(70.3, 0), 2);
+			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(107.5, 68), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78.9, 68), 1);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(70.3, 68), 2);
+			
+			lesCoordonnees.setCordHorloge(new Coordonnees(0, 20.2));
+			
+			lesCoordonnees.setCordLoad(new Coordonnees(148, 23));
+			
+			lesCoordonnees.setCordClear(new Coordonnees(148, 42.2));
+		}break;
+		case 4:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(140, 0), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(108, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(76.3, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(44.5, 0), 3);
+			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(140, 68), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(108, 68), 1);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(76.3, 68), 2);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(44.5, 68), 3);
+			
+			lesCoordonnees.setCordHorloge(new Coordonnees(0, 20.6));
+			
+			lesCoordonnees.setCordLoad(new Coordonnees(185, 27));
+			
+			lesCoordonnees.setCordClear(new Coordonnees(185, 53.8));
+		}break;
+		}
+	}
+	
+	@Override
+	public Polyline generatePolyline(double x,double y) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	public Fil getLoad() {

@@ -2,6 +2,8 @@ package noyau;
 
 import java.util.Arrays;
 
+import javafx.scene.shape.Polyline;
+
 public class RegistreDecalage extends Sequentiels {
 	
 	private int taille;
@@ -19,6 +21,7 @@ public class RegistreDecalage extends Sequentiels {
 		Arrays.fill(valeur, EtatLogique.ZERO);
 		sorties[0] = new Fil(this);
 		sorties[0].setEtatLogiqueFil(EtatLogique.HAUTE_IMPEDANCE);
+		lesCoordonnees = new LesCoordonnees(nombreEntree, 1, 0);
 	}
 
 	public void genererSorties() { // executer une des fonction du registre ( decalage a droite , remise a zero )
@@ -145,7 +148,7 @@ public class RegistreDecalage extends Sequentiels {
 		}
 		return f;
 	}
-
+	
 	@Override
 	public void initialiser() {// initialiser les etats precedents qui servent si le load à 0
 		// TODO Auto-generated method stub
@@ -166,7 +169,19 @@ public class RegistreDecalage extends Sequentiels {
 		}
 		return path+front.toString()+".png";
 	}
+	
+	@Override
+	public Polyline generatePolyline(double x,double y) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public void setCord() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public void setTaille(int taille) {
 		this.taille = taille;
 	}

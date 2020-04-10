@@ -2,6 +2,9 @@ package noyau;
 
 import java.util.ArrayList;
 
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polyline;
+
 public class Horloge extends Composant implements ElementHorloge,Runnable{
 	
 	private EtatLogique etat = EtatLogique.ZERO;
@@ -13,6 +16,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 		nombreSortie = 1;
 		sorties[0] = new Fil(this);
 		this.temps=temps;
+		lesCoordonnees = new LesCoordonnees(0, 1, 0);
 	}
 
 	
@@ -81,6 +85,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 	       
 		}
 	}
+	
 	@Override
 	public String generatePath() {
 		// TODO Auto-generated method stub
@@ -88,6 +93,19 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 			return "Horloge/1.png";
 		}
 		return "Horloge/0.png";
+	}
+	
+	@Override
+	public void setCord() {
+		// TODO Auto-generated method stub
+		ImageView img = Circuit.getImageFromComp(this);
+		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(), img.getBoundsInLocal().getHeight() / 2), 0);
+	}
+	
+	@Override
+	public Polyline generatePolyline(double x,double y) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

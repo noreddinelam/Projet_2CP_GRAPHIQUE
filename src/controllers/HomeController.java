@@ -448,7 +448,14 @@ public class HomeController implements Initializable {
 	    	            	Circuit.removeCompFromImage(dragImageView);
 	    	            }
 	    	            else 
-	    	            {    	            	
+	    	            {
+	    	            	Polyline polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+	    	            	polyline.setStrokeWidth(4);
+	    	        		polyline.setSmooth(true);
+	    	        		polyline.setStrokeType(StrokeType.CENTERED);
+	    	        		polyline.setCursor(Cursor.HAND);
+	    	            	workSpace.getChildren().add(polyline);
+	    	            	ajouterGeste(polyline);
 	    	            	ajouterLeGestApresCollage(dragImageView);
 	    	            }
 	    	        }
@@ -462,9 +469,6 @@ public class HomeController implements Initializable {
 	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
-		
-		Polyline a = AjouterLignesInitiale(eleementAdrager);
-		workSpace.getChildren().add(a);
 			
 	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
@@ -515,7 +519,7 @@ public class HomeController implements Initializable {
 	    	            );
 	    	            double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth() - 2;
 	    	        	double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2 - 1;
-	    	        	a.relocate(x, y);
+	    	        	//polyline.relocate(x, y);
 	    	            String xString=String.valueOf(eleementAdrager.getLayoutX());
     	                String yString=String.valueOf(eleementAdrager.getLayoutY());
     	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<1066 )&&(eleementAdrager.getLayoutY()>17))
@@ -786,8 +790,6 @@ public class HomeController implements Initializable {
         guideYp.setStartY(0);
         guideYp.setEndX(1130);
         guideYp.setEndY(0);
-        
-        
 	}
 	private void instanceComposant(ImageView img) {
 		Composant comp;
@@ -867,7 +869,7 @@ public class HomeController implements Initializable {
 	private Polyline AjouterLignesInitiale(ImageView composant) {
     	double x=composant.getLayoutX()+composant.getBoundsInLocal().getWidth();
     	double y=composant.getLayoutY()+composant.getBoundsInLocal().getHeight()/2;
-    	Polyline a = new Polyline(x,y,x+8,y); //(x,y,x+12,y) avec x,y coordonnees de la sortie
+    	Polyline a = new Polyline(x,y,x+8,y); //(x,y,x+8,y) avec x,y coordonnees de la sortie
 		a.setStrokeWidth(3);
 		a.setSmooth(true);
 		a.setStrokeType(StrokeType.CENTERED);

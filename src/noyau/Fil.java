@@ -11,7 +11,7 @@ public class Fil implements Serializable{
 	public Fil(Composant source) { // constructeur 
 		this.source = source; 
 		destination =new ArrayList<Composant>();
-		Circuit.ajouterFil(this);
+		//Circuit.ajouterFil(this);
 	}
 
 	public void evaluer() {  

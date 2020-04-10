@@ -21,8 +21,7 @@ public abstract class Composant implements Serializable{
 	protected int nombreSortie;
 	protected boolean sleep = false;
 	protected Direction direction = Direction.Est;
-	protected Coordonnees cordEntree[] = new Coordonnees[32];
-	protected Coordonnees cordSorties[] = new Coordonnees[32];
+	protected LesCoordonnees lesCoordonnees ;
 	
 	
 	
@@ -159,6 +158,16 @@ public abstract class Composant implements Serializable{
 	
 	public abstract String generatePath();
 	
-	public abstract Polyline generatePolyline();
+	public abstract Polyline generatePolyline(double x,double y);
+	
+	public abstract void setCord();
+	public LesCoordonnees getLesCoordonnees() {
+		return lesCoordonnees;
+	}
+	public void setLesCoordonnees(LesCoordonnees lesCoordonnees) {
+		this.lesCoordonnees = lesCoordonnees;
+	}
+	
+	
 	
 }

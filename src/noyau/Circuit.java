@@ -171,7 +171,7 @@ public class Circuit implements Serializable{
 	public static Polyline getPolylineFromFil(Fil fil) { // recuperer l'image associé à un composant .
 		return filUtilises.get(fil);
 	}
-	public static Fil getCompFromImage(Polyline ligne) { // recuperer le composant associé à une image .
+	public static Fil getFilFromPolyline(Polyline ligne) { // recuperer le composant associé à une image .
 		Fil fil = null;
 		for (Entry<Fil, Polyline> entry : filUtilises.entrySet()) {
 			if (entry.getValue() == ligne) {
