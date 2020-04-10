@@ -352,7 +352,7 @@ public class HomeController implements Initializable {
 
 	}
     
-	private void ajouterLeGest( ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
+	private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
 		//est ajoute dans le workSpace
 	
 	
@@ -456,15 +456,14 @@ public class HomeController implements Initializable {
 	    	        		polyline.setCursor(Cursor.HAND);
 	    	            	workSpace.getChildren().add(polyline);
 	    	            	ajouterGeste(polyline);
+	    	            {    	            	
 	    	            	ajouterLeGestApresCollage(dragImageView);
 	    	            }
 	    	        }
-	    	    });
+	    	    }});
 	            
 	        }
 	    });
-	
-
 	}
 	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
@@ -567,8 +566,6 @@ public class HomeController implements Initializable {
 	            
 	        }
 	    });
-	
-
 	}
 	public void transitionDesComposants(Node composants) {// Methode d'animation de 'Shake'
 	    int duration = 100;

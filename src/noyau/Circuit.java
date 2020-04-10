@@ -168,6 +168,7 @@ public class Circuit implements Serializable{
 		}
 		return composant;
 	}
+
 	public static Polyline getPolylineFromFil(Fil fil) { // recuperer l'image associé à un composant .
 		return filUtilises.get(fil);
 	}
@@ -188,7 +189,7 @@ public class Circuit implements Serializable{
 	public static void removeCompFromImage(ImageView img) { // recuperer le composant associé à une image .
 		compUtilises.remove(getCompFromImage(img));
 	}
-	
+
 	
 	public static HashMap<Fil, Polyline> getFilUtilises() {
 		return filUtilises;
