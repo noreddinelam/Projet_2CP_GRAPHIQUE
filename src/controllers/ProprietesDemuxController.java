@@ -5,29 +5,32 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import noyau.Circuit;
 import noyau.Composant;
+import noyau.Demultiplexeur;
 import noyau.Direction;
 
 public class ProprietesDemuxController extends ProprietesController{
 	
-	String bddNbEntrees[] = {"1X2","1X4","1X8","1X16","1X32"};
+	String bddNbEntrees[] = {"1X2","1X4","1X8","1X16"};
 	int i;
 	private Direction bddDirection[] = {Direction.Nord,Direction.Est,Direction.West,Direction.Sud};
 	int direct;
     
 	public void initialiser(Composant cmp) {
 		this.cmp = cmp;
-		i=cmp.getNombreEntree();
+		i=((Demultiplexeur)cmp).getNbCommande();
 		direct = 0;
 		label.setText(cmp.getNom());
 		nbEntres.setText(bddNbEntrees[i-1]);
-		if(i==0) {
+		if(i==1) {
 			moinsNbEntrees.setVisible(false);
 			imgMoinsNbEntrees.setVisible(false);
 		}
-		if(i==5){
+		if(i==4){
 			plusNbEntrees.setVisible(false);
 			imgPlusNbEntrees.setVisible(false);
 		}
@@ -80,7 +83,13 @@ public class ProprietesDemuxController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
-
+    	((Demultiplexeur)cmp).setNbCommande(i);
+    	cmp.setNombreSortie((int)Math.pow(2, i));
+    	cmp.setNom(label.getText());
+    	System.out.println(cmp.generatePath());
+    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
@@ -108,7 +117,7 @@ public class ProprietesDemuxController extends ProprietesController{
     	nbEntres.setText(bddNbEntrees[i-1]);
     	moinsNbEntrees.setVisible(true);
 		imgMoinsNbEntrees.setVisible(true);
-		if(i==5){
+		if(i==4){
 			plusNbEntrees.setVisible(false);
 			imgPlusNbEntrees.setVisible(false);
 		}

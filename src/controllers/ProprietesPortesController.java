@@ -104,8 +104,7 @@ public class ProprietesPortesController extends ProprietesController{
     void modifier(ActionEvent event) {
     	cmp.setNombreEntree(i);
     	cmp.setNom(label.getText());
-    	String path ="/"+composant.getText()+"/"+nbEntres.getText()+".png";
-    	Circuit.getImageFromComp(cmp).setImage(new Image(path));
+    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

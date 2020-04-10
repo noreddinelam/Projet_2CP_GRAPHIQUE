@@ -9,13 +9,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import noyau.Composant;
+import javafx.stage.Stage;
 
 public class ProprietesDecodeurController extends ProprietesController{
 
-	private String bddNbEntrees[] = {"1X2","2X4","3X8","4X16","5X32"};
+	private String bddNbEntrees[] = {"1X2","2X4","3X8","4X16"};
 	private int i;
 	private Direction bddDirection[] = {Direction.Nord,Direction.Est,Direction.West,Direction.Sud};
 	private int direct;
@@ -35,11 +36,11 @@ public class ProprietesDecodeurController extends ProprietesController{
 		direct = 0;
 		label.setText(cmp.getNom());
 		nbEntres.setText(bddNbEntrees[i-1]);
-		if(i==0) {
+		if(i==1) {
 			moinsNbEntrees.setVisible(false);
 			imgMoinsNbEntrees.setVisible(false);
 		}
-		if(i==5){
+		if(i==4){
 			plusNbEntrees.setVisible(false);
 			imgPlusNbEntrees.setVisible(false);
 		}
@@ -92,12 +93,19 @@ public class ProprietesDecodeurController extends ProprietesController{
 
     @FXML
     void annuler(ActionEvent event) {
-
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
     void modifier(ActionEvent event) {
-
+    	cmp.setNombreEntree(i);
+    	cmp.setNombreSortie((int)Math.pow(2, i));
+    	cmp.setNom(label.getText());
+    	System.out.println(cmp.generatePath());
+    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
@@ -125,7 +133,7 @@ public class ProprietesDecodeurController extends ProprietesController{
     	nbEntres.setText(bddNbEntrees[i-1]);
     	moinsNbEntrees.setVisible(true);
 		imgMoinsNbEntrees.setVisible(true);
-		if(i==5){
+		if(i==4){
 			plusNbEntrees.setVisible(false);
 			imgPlusNbEntrees.setVisible(false);
 		}

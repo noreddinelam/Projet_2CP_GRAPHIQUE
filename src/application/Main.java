@@ -16,6 +16,7 @@ public class Main extends Application {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Home.fxml"));
 			Parent root = fxmlLoader.load();
+			//ImgController c = new ImgController();
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			primaryStage.setScene(scene);

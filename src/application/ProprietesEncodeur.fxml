@@ -27,7 +27,7 @@
                         <Font name="Calisto MT" size="16.0" />
                      </font>
                   </Text>
-                  <Text fill="#e4e4e4" layoutX="19.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre d'entrées ">
+                  <Text fill="#e4e4e4" layoutX="19.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de sorties">
                      <font>
                         <Font name="Calisto MT" size="16.0" />
                      </font>

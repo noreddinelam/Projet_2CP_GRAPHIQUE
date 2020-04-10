@@ -6,7 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class ProprietesRegistreController extends ProprietesController{
 
@@ -31,14 +33,14 @@ public class ProprietesRegistreController extends ProprietesController{
 			nbBits.setText(Integer.toString(i));
 			frnt=((RegistreDecalage)cmp).getFront().ordinal();
 			front.setText(bddFront[frnt]);
-			dcl = (((RegistreDecalage)cmp).isDecalageDroite() == true) ? 0 : 1 ;
+			dcl = (((RegistreDecalage)cmp).isDecalageDroite() == true) ? 1 : 0 ;
 			Decalage.setText(bddDecalage[dcl]);
 			
-			if(i==0) {
+			if(i==1) {
 				moinsNbBits.setVisible(false);
 				imgMoinsNbBits.setVisible(false);
 			}
-			if(i==5){
+			if(i==8){
 				plusNbBits.setVisible(false);
 				imgPlusNbBits.setVisible(false);
 			}
@@ -99,12 +101,27 @@ public class ProprietesRegistreController extends ProprietesController{
 
     @FXML
     void annuler(ActionEvent event) {
-
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
     void modifier(ActionEvent event) {
-
+    	cmp.setNom(label.getText());
+    	((RegistreDecalage)cmp).setTaille(i);
+    	if(frnt == 0)
+    		((RegistreDecalage)cmp).setFront(Front.Front_Montant);
+    	else
+    		((RegistreDecalage)cmp).setFront(Front.Front_Descendant);
+    	
+    	if(dcl == 0)
+    		((RegistreDecalage)cmp).setDecalageDroite(false);
+    	else
+    		((RegistreDecalage)cmp).setDecalageDroite(true);
+    	
+    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
@@ -113,7 +130,7 @@ public class ProprietesRegistreController extends ProprietesController{
     	nbBits.setText(Integer.toString(i));
     	plusNbBits.setVisible(true);
 		imgPlusNbBits.setVisible(true);
-    	if(i==0) {
+    	if(i==1) {
 			moinsNbBits.setVisible(false);
 			imgMoinsNbBits.setVisible(false);
     	}
@@ -139,7 +156,7 @@ public class ProprietesRegistreController extends ProprietesController{
     	nbBits.setText(Integer.toString(i));
     	moinsNbBits.setVisible(true);
 		imgMoinsNbBits.setVisible(true);
-		if(i==5){
+		if(i==8){
 			plusNbBits.setVisible(false);
 			imgPlusNbBits.setVisible(false);
 		}

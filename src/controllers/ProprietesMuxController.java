@@ -5,14 +5,19 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import noyau.Circuit;
 import noyau.Composant;
+import noyau.Demultiplexeur;
 import noyau.Direction;
+import noyau.Multiplexeur;
 
 public class ProprietesMuxController extends ProprietesController {
 
-	String bddNbEntrees[] = {"2X1","4X1","8X1","16X1","32X1"};
+	String bddNbEntrees[] = {"2X1","4X1","8X1","16X1"};
 	int i;
 	private Direction bddDirection[] = {Direction.Nord,Direction.Est,Direction.West,Direction.Sud};
 	int direct;
@@ -28,15 +33,15 @@ public class ProprietesMuxController extends ProprietesController {
 
 	public void initialiser(Composant cmp) {
 		this.cmp = cmp;
-		i=cmp.getNombreEntree();
+		i=((Multiplexeur)cmp).getNbCommande();
 		direct = 0;
 		label.setText(cmp.getNom());
 		nbEntres.setText(bddNbEntrees[i-1]);
-		if(i==0) {
+		if(i==1) {
 			moinsNbEntrees.setVisible(false);
 			imgMoinsNbEntrees.setVisible(false);
 		}
-		if(i==5){
+		if(i==4){
 			plusNbEntrees.setVisible(false);
 			imgPlusNbEntrees.setVisible(false);
 		}
@@ -89,12 +94,19 @@ public class ProprietesMuxController extends ProprietesController {
 
     @FXML
     void annuler(ActionEvent event) {
-
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
     void modifier(ActionEvent event) {
-
+    	((Multiplexeur)cmp).setNbCommande(i);
+    	cmp.setNombreEntree((int)Math.pow(2, i));
+    	cmp.setNom(label.getText());
+    	System.out.println(cmp.generatePath());
+    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
@@ -122,7 +134,7 @@ public class ProprietesMuxController extends ProprietesController {
     	nbEntres.setText(bddNbEntrees[i-1]);
     	moinsNbEntrees.setVisible(true);
 		imgMoinsNbEntrees.setVisible(true);
-		if(i==5){
+		if(i==4){
 			plusNbEntrees.setVisible(false);
 			imgPlusNbEntrees.setVisible(false);
 		}

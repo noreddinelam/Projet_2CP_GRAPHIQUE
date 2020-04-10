@@ -6,7 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class ProprietesCompteurController extends ProprietesController{
 
@@ -35,11 +37,11 @@ public class ProprietesCompteurController extends ProprietesController{
 		cmpt = (((Compteur)cmp).getCompter() == true) ? 0 : 1 ;
 		compteur.setText(bddCmp[cmpt]);
 		
-		if(i==0) {
+		if(i==2) {
 			moinsNbBits.setVisible(false);
 			imgMoinsNbBits.setVisible(false);
 		}
-		if(i==5){
+		if(i==4){
 			plusNbBits.setVisible(false);
 			imgPlusNbBits.setVisible(false);
 		}
@@ -108,7 +110,20 @@ public class ProprietesCompteurController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
-
+    	cmp.setNom(label.getText());
+    	cmp.setNombreEntree(i);
+    	if(frnt == 0)
+    		((Compteur)cmp).setFront(Front.Front_Montant);
+    	else
+    		((Compteur)cmp).setFront(Front.Front_Descendant);
+    	if(cmpt == 0)
+    		((Compteur)cmp).setCompter(true);
+    	else
+    		((Compteur)cmp).setCompter(false);
+    	
+    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
@@ -117,7 +132,7 @@ public class ProprietesCompteurController extends ProprietesController{
     	nbBits.setText(Integer.toString(i));
     	plusNbBits.setVisible(true);
 		imgPlusNbBits.setVisible(true);
-    	if(i==0) {
+    	if(i==2) {
 			moinsNbBits.setVisible(false);
 			imgMoinsNbBits.setVisible(false);
     	}
@@ -143,7 +158,7 @@ public class ProprietesCompteurController extends ProprietesController{
     	nbBits.setText(Integer.toString(i));
     	moinsNbBits.setVisible(true);
 		imgMoinsNbBits.setVisible(true);
-		if(i==5){
+		if(i==4){
 			plusNbBits.setVisible(false);
 			imgPlusNbBits.setVisible(false);
 		}

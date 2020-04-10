@@ -165,6 +165,12 @@ public class Circuit implements Serializable{
 		}
 		return composant;
 	}
+	public static void removeImageFromComp(Composant comp) {
+		compUtilises.remove(comp);
+	}
+	public static void removeCompFromImage(ImageView img) { // recuperer le composant associé à une image .
+		compUtilises.remove(getCompFromImage(img));
+	}
 	
 	public static ArrayList<Fil> getFilUtilises() {
 		return filUtilises;

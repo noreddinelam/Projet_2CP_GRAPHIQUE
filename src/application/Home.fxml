@@ -659,7 +659,7 @@
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="716.0" prefWidth="52.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="716.0" prefWidth="52.0" style="-fx-background-color: #303337;" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>

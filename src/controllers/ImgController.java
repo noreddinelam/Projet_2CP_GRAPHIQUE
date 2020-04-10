@@ -37,7 +37,7 @@ public class ImgController implements Initializable{
 
 	@FXML
 	void press(MouseEvent event) {
-		int i = line.getPoints().size()-4;
+		int i = line.getPoints().size()-2;
 		x = event.getX();
 		y = event.getY();
 		System.out.println(x);
@@ -109,7 +109,7 @@ public class ImgController implements Initializable{
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				int i = line.getPoints().size()-4;
+				int i = line.getPoints().size()-2;
 				x = event.getX();
 				y = event.getY();
 				System.out.println(x);

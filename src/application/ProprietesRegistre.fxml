@@ -43,9 +43,9 @@
                   </Text>
                </children></Pane>
             <Pane layoutX="201.0" layoutY="36.0" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #7c7878;" />
-            <TextField fx:id="label" alignment="TOP_CENTER" layoutX="206.0" layoutY="7.0" prefHeight="23.0" prefWidth="191.0" promptText="Label" style="-fx-background-color: #303337;">
+            <TextField fx:id="label" alignment="TOP_CENTER" layoutX="206.0" layoutY="7.0" prefHeight="23.0" prefWidth="191.0" style="-fx-background-color: #303337;">
                <cursor>
-                  <Cursor fx:constant="SW_RESIZE" />
+                  <Cursor fx:constant="TEXT" />
                </cursor>
                <font>
                   <Font name="Calisto MT" size="15.0" />

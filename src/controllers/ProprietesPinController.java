@@ -85,7 +85,6 @@ public class ProprietesPinController extends ProprietesController{
     	cmp.setNom(label.getText());
     	String path;
     	int vlr = ((Pin)cmp).getEtat().getNum();
-    	//..\Pin\1Output.png
     	if(putInt == 0){
     		((Pin)cmp).setInput(true);
     		path = "/pin/"+Integer.toString(vlr)+bddPut[putInt]+".png";

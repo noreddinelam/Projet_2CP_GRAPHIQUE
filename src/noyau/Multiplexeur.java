@@ -47,6 +47,18 @@ public class Multiplexeur extends Combinatoires {
 		}
 		return EtatLogique.ONE;
 	}
+
+
+
+	public int getNbCommande() {
+		return nbCommande;
+	}
+
+
+
+	public void setNbCommande(int nbCommande) {
+		this.nbCommande = nbCommande;
+	}
 	
 
 }

@@ -4,6 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+import noyau.Circuit;
 import noyau.Composant;
 
 public class ProprietesHorlogeController extends ProprietesController{
@@ -22,12 +25,16 @@ public class ProprietesHorlogeController extends ProprietesController{
 
     @FXML
     void annuler(ActionEvent event) {
-
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
     void modifier(ActionEvent event) {
-
+    	cmp.setNom(label.getText());
+    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
 	@Override

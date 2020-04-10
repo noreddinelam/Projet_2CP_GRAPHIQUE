@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="pane_proprietes" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="211.0" prefWidth="439.0" style="-fx-background-color: #303337;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProprietesEncodeurController">
+<Pane fx:id="pane_proprietes" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="211.0" prefWidth="439.0" style="-fx-background-color: #303337;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProprietesMuxController">
    <children>
       <Pane layoutY="27.0" prefHeight="179.0" prefWidth="439.0" style="-fx-background-color: #303337;">
          <children>
@@ -38,7 +38,7 @@
                </children></Pane>
             <Pane layoutX="201.0" layoutY="36.0" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #7c7878;" />
             <Pane layoutX="202.0" layoutY="69.0" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #7c7878;" />
-            <TextField fx:id="label" alignment="TOP_CENTER" layoutX="203.0" layoutY="7.0" prefHeight="23.0" prefWidth="191.0" promptText="Label" style="-fx-background-color: #303337;">
+            <TextField fx:id="label" alignment="TOP_CENTER" layoutX="203.0" layoutY="7.0" prefHeight="23.0" prefWidth="191.0" style="-fx-background-color: #303337;">
                <cursor>
                   <Cursor fx:constant="TEXT" />
                </cursor>

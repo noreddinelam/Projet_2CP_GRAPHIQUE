@@ -6,7 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class ProprietesBasculesController extends ProprietesController {
 
@@ -59,11 +61,21 @@ public class ProprietesBasculesController extends ProprietesController {
 
     @FXML
     void annuler(ActionEvent event) {
-    	
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
     void modifier(ActionEvent event) {
+    	cmp.setNom(label.getText());
+    	if(i == 0)
+    		((Bascule)cmp).setFront(Front.Front_Montant);
+    	else
+    		((Bascule)cmp).setFront(Front.Front_Descendant);
+    	
+    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
