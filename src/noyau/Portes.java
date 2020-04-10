@@ -38,7 +38,7 @@ public abstract class Portes extends Composant {
 		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX() ;
 		double posY = y + lesCoordonnees.getCordSortieInIndex(0).getY();
 		Polyline polyline = new Polyline(posX ,posY,posX+5,posY);
-		Circuit.ajouterFil(new Fil(this), polyline);
+		Circuit.ajouterFil(sorties[0], polyline);
 		return polyline;
 	}
 }

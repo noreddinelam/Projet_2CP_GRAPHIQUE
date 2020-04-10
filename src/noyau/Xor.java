@@ -23,7 +23,7 @@ public class Xor extends Portes {
 		switch (nombreEntree) {
 		case 2:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 16.5), 0);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 50.3), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 66.6), 1);
 		}break;
 		case 3:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 16.9), 0);
