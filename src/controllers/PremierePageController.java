@@ -38,11 +38,8 @@ public class PremierePageController implements Initializable{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
-
 		}
-
 	}
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -72,7 +69,6 @@ public class PremierePageController implements Initializable{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-;
 						
 						Scene scene = new Scene(root);
 						Stage stage = new Stage();

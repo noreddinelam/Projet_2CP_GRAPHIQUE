@@ -1,11 +1,10 @@
 package controllers;
 
+
 import java.awt.Button;
 import java.io.IOException;
-
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXDrawersStack;
 import javafx.fxml.FXML;
@@ -34,6 +33,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 
 
 public class HomeController implements Initializable {
@@ -236,27 +236,31 @@ public class HomeController implements Initializable {
     ajouterLeGest(rs);
     ajouterLeGest(cpt);
     ajouterLeGest(registreDecalge);
-    
+    fichierDrawer.setDisable(true);//mettre tout les drawers en mode disable
+    editionDrawer.setDisable(true);
+    affichageDrawer.setDisable(true);
+    helpDrawer.setDisable(true);
+
     tooltipInitialize();
 	rightbar(fichier, fichierDrawer,editionDrawer,affichageDrawer,helpDrawer,"/application/Fichier.fxml" );
 	rightbar(edition, editionDrawer,affichageDrawer,fichierDrawer,helpDrawer,"/application/Edition.fxml" );
 	rightbar(affichage, affichageDrawer,editionDrawer,fichierDrawer,helpDrawer,"/application/Affichage.fxml" );
 	rightbar(aide, helpDrawer,affichageDrawer,fichierDrawer,editionDrawer,"/application/Aide.fxml" );
 
-		workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{
+		workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{//pour fermer les drawer en cliquant sur la souris
 			if(fichierDrawer.isOpened() ||editionDrawer.isOpened() ||affichageDrawer.isOpened() || helpDrawer.isOpened()) {
-				fichierDrawer.close();
-				fichierDrawer.setOpacity(0);
-				
-				editionDrawer.close();
-				editionDrawer.setOpacity(0);
-				
-				affichageDrawer.close();
-				affichageDrawer.setOpacity(0);
-				
-				
-				helpDrawer.close();
-				helpDrawer.setOpacity(0);
+					fichierDrawer.close();
+					fichierDrawer.setOpacity(0);
+					editionDrawer.close();
+					editionDrawer.setOpacity(0);
+					affichageDrawer.close();
+					affichageDrawer.setOpacity(0);
+					helpDrawer.close();
+					helpDrawer.setOpacity(0);
+				 	fichierDrawer.setDisable(true);
+				    editionDrawer.setDisable(true);
+				    affichageDrawer.setDisable(true);
+				    helpDrawer.setDisable(true);
 			}
 			
 		
@@ -277,57 +281,45 @@ public class HomeController implements Initializable {
 		}
 		elementName.setSidePane(lay);
 		elementName.setOpacity(0);
-
-			icon.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
+		icon.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
 				if(elementName.isOpened()) {
-					FadeTransition fade = new FadeTransition();  
-		         	fade.setDuration(Duration.millis(200)); 
-		         	fade.setDelay(Duration.millis(200));
-			        fade.setFromValue(10);  
-			        fade.setToValue(0);    
-			        fade.setCycleCount(0);  
-			        fade.setAutoReverse(true);     
-			        fade.setNode(elementName);    
-			        fade.play();
+					elementName.setOpacity(0);
 			        elementName.close();
+			        elementName.setViewOrder(10);
+			        elementName.setDisable(true);
 				}
-				else {
-					FadeTransition fade = new FadeTransition();  
-		         	fade.setDuration(Duration.millis(200)); 
-		         	fade.setDelay(Duration.millis(200));
-			        fade.setFromValue(0);  
-			        fade.setToValue(10);    
-			        fade.setCycleCount(0);  
-			        fade.setAutoReverse(true);     
-			        fade.setNode(elementName);      
-			        fade.play();	
+				
+				else {	
+					elementName.setOpacity(1);
 			        elementName.open();
 			        elementName.setViewOrder(1);
+			        elementName.setDisable(false);
 			        element1Hide.close();
 			        element1Hide.setOpacity(0);
 			        element1Hide.setViewOrder(4);
-					
+			        element1Hide.setDisable(true);	
 			        element2Hide.close();
 			        element2Hide.setOpacity(0);
 			        element2Hide.setViewOrder(4);
-
-			      
+			        element2Hide.setDisable(true);
 			        element3Hide.close();
 			        element3Hide.setOpacity(0);
 			        element3Hide.setViewOrder(4);
+			        element3Hide.setDisable(true);
 
 
 				}
 			});
-			
 		
 	}
 	
 	
 	
-	public void tooltipInitialize() {
+	public void tooltipInitialize() {//utiliser pour les effets hover ou nous avons un texte en mettant la souris sur les elements
 
 	    Tooltip fich = new Tooltip("fichier");
+	   
+	    
 	    fich.setShowDelay(Duration.millis(0));
 	    Tooltip.install(fichier, fich);
 	    
@@ -369,9 +361,6 @@ public class HomeController implements Initializable {
 		
 		/*------------------------------*/
 		
-		
-		
-	
 	}
 	
 	
