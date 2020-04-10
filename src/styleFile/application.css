@@ -1,5 +1,9 @@
 .comb, .seq, .portes, .outils{
 	-fx-background-color : #e0e0d1;
+	-fx-focus-color: transparent;  
+	-fx-faint-focus-color: transparent;
+	  	
+	
     }
     
     
@@ -17,5 +21,4 @@
     
     .comb:selected, .seq:selected, .portes:selected, .outils:selected {
     	    		-fx-background-color :  #303337;
-    	
     }

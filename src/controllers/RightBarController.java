@@ -5,15 +5,20 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,6 +29,10 @@ public class RightBarController implements Initializable {
 	@FXML
     private Button fermer;
 	
+
+    @FXML
+    private Button supprimerTout;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		// TODO Auto-generated method stub
@@ -31,7 +40,7 @@ public class RightBarController implements Initializable {
 	}
 	
 	
-	public void enligne(String lien) {
+	public void enligne(String lien) {//une methode utilise pour ouvrir un lien dans le navigateur par defaut
 		try {
 			Desktop.getDesktop().browse(new URL(lien).toURI());
 		} catch (MalformedURLException e) {
@@ -70,9 +79,7 @@ public class RightBarController implements Initializable {
 		        stage.setTitle("About SimulINI");
 		        stage.setResizable(false);
 			    stage.initModality(Modality.APPLICATION_MODAL);
-
 		        stage.show();
-		       //stage.showAndWait();
 		    } catch(Exception e) {
 		        e.printStackTrace();
 		    }
@@ -119,7 +126,12 @@ public class RightBarController implements Initializable {
 	
 	public void fermer(ActionEvent event) {
 		Stage stage = (Stage) fermer.getScene().getWindow();
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setContentText("Voullez vous vraimment quitter ! ");
+		Optional<ButtonType> result = alert.showAndWait();	    		
+		if(result.get() == ButtonType.OK){
 		stage.close();
+		}
 	}
 	
 	public void nouveau(ActionEvent event) {
@@ -137,6 +149,25 @@ public class RightBarController implements Initializable {
 		        e.printStackTrace();
 		    }
 		 
+	}
+	
+	
+	public void supprimerTout(ActionEvent event) {
+		Parent root = null;
+		try {
+			root = FXMLLoader.load(getClass().getResource("/application/Home.fxml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
+		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+		window.setScene(scene);
+		window.show();
 	}
 
 	

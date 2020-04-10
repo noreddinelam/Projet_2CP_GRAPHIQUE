@@ -1,10 +1,6 @@
 package application;
-	
-
 import java.awt.Desktop;
-
 import java.net.URL;
-
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import noyau.*;
+
 
 
 public class Main extends Application {
@@ -57,7 +54,7 @@ public class Main extends Application {
 			
 					/*FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/application/PageEntree.fxml"));*/
-						Parent root = FXMLLoader.load(getClass().getResource("/application/Home.fxml"));
+						//Parent root = FXMLLoader.load(getClass().getResource("/application/Home.fxml"));
 					 /*	FadeTransition fade = new FadeTransition();  
 			         	fade.setDuration(Duration.millis(1000)); 
 			         	fade.setDelay(Duration.millis(4000));
@@ -78,32 +75,23 @@ public class Main extends Application {
 						primaryStage.show();*/
 //					/*FXMLLoader loader = new FXMLLoader();
 //					loader.setLocation(getClass().getResource("/application/PageEntree.fxml"));*/
-//						Parent root = FXMLLoader.load(getClass().getResource("/application/PageEntree.fxml"));
-//					 	FadeTransition fade = new FadeTransition();  
-//			         	fade.setDuration(Duration.millis(1000)); 
-//			         	fade.setDelay(Duration.millis(4000));
-//				        fade.setFromValue(10);  
-//				        fade.setToValue(0.1);    
-//				        fade.setCycleCount(0);  
-//				        fade.setAutoReverse(true);     
-	//			        fade.setNode(root);  
-				        
-				     
-				          
-				        //playing the transition   
-				        //fade.play(); 
-					Scene scene = new Scene(root);
-					scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-					primaryStage.setScene(scene);
-					//primaryStage.initStyle(StageStyle.UNDECORATED);
-					primaryStage.setResizable(false);
-					primaryStage.show();
-		
-			
-				
-				
-					
-			
+						Parent root = FXMLLoader.load(getClass().getResource("/application/PageEntree.fxml"));
+					 	FadeTransition fade = new FadeTransition();  
+			         	fade.setDuration(Duration.millis(1000)); 
+			         	fade.setDelay(Duration.millis(4000));
+				        fade.setFromValue(10);  
+				        fade.setToValue(0.1);    
+				        fade.setCycleCount(0);  
+				        fade.setAutoReverse(true);     
+				        fade.setNode(root);  
+				        fade.play(); 
+						Scene scene = new Scene(root);
+						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+						primaryStage.setScene(scene);
+						primaryStage.initStyle(StageStyle.UNDECORATED);
+						primaryStage.setResizable(false);
+						primaryStage.show();
+
 			
 			
 			

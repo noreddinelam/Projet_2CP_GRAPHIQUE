@@ -38,11 +38,8 @@ public class PremierePageController implements Initializable{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
-
 		}
-
 	}
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -72,11 +69,10 @@ public class PremierePageController implements Initializable{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-;
 						
 						Scene scene = new Scene(root);
 						Stage stage = new Stage();
-						//scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						stage.setScene(scene);
 						stage.show();
 						pane.getScene().getWindow().hide();	

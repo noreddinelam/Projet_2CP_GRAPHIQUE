@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -753,7 +754,10 @@
                   </ImageView>
                </children>
             </AnchorPane>
-         </children></VBox>
+         </children>
+         <effect>
+            <InnerShadow blurType="ONE_PASS_BOX" color="#303337" height="0.0" offsetX="10.0" radius="11.9" width="49.6" />
+         </effect></VBox>
    </right>
    <center>
       <AnchorPane fx:id="workSpace" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER">
