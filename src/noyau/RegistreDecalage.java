@@ -179,7 +179,80 @@ public class RegistreDecalage extends Sequentiels {
 	@Override
 	public void setCord() {
 		// TODO Auto-generated method stub
-		
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 21.1), 0);
+		lesCoordonnees.setCordHorloge(new Coordonnees(0, 44.5));
+		switch (taille) {
+		case 2:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(72.9, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(20.6, 0), 2);
+			
+			lesCoordonnees.setCordLoad(new Coordonnees(37.5, 66));
+			lesCoordonnees.setCordClear(new Coordonnees(65, 66));
+		}break;
+		case 3:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(73.1, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(47.9, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(22.9, 0), 3);
+			
+			lesCoordonnees.setCordLoad(new Coordonnees(37.5, 66));
+			lesCoordonnees.setCordClear(new Coordonnees(65, 66));
+		}break;
+		case 4:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(95.2, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(69.9, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(44.5, 0), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(19.4, 0), 4);
+			
+			lesCoordonnees.setCordLoad(new Coordonnees(38.7, 66));
+			lesCoordonnees.setCordClear(new Coordonnees(76.6, 66));
+		}break;
+		case 5:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(95, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(76.9, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(58.6, 0), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(40.5, 0), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(22.2, 0), 5);
+			
+			lesCoordonnees.setCordLoad(new Coordonnees(38.6, 66));
+			lesCoordonnees.setCordClear(new Coordonnees(76.4, 66));
+		}break;
+		case 6:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(112.8, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(94.9, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(76.5, 0), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(58.4, 0), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(39.7, 0), 5);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(21.6, 0), 6);
+			
+			lesCoordonnees.setCordLoad(new Coordonnees(39.5, 66));
+			lesCoordonnees.setCordClear(new Coordonnees(88.3, 66));
+		}break;
+		case 7:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(130.9, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(112.8, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(94.4, 0), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(76.5, 0), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(57.9, 0), 5);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(39.5, 0), 6);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(21.3, 0), 6);
+			
+			lesCoordonnees.setCordLoad(new Coordonnees(52.5, 66));
+			lesCoordonnees.setCordClear(new Coordonnees(101.3, 66));
+		}break;
+		case 8:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(131, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(114.8, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(99.3, 0), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(83.4, 0), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(67.1, 0), 5);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(51.2, 0), 6);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(35.13, 0), 6);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(18.8, 0), 7);
+			
+			lesCoordonnees.setCordLoad(new Coordonnees(52.5, 66));
+			lesCoordonnees.setCordClear(new Coordonnees(101.3, 66));
+		}break;
+		}
 	}
 	
 	public void setTaille(int taille) {

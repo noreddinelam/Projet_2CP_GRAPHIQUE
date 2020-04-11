@@ -116,7 +116,7 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		double posY = y+lesCoordonnees.getCordSortieInIndex(0).getY();
 		if (input) {
 			Polyline polyline = new Polyline(posX,posY,posX,posY+5);
-			Circuit.ajouterFil(new Fil(this), polyline);
+			Circuit.ajouterFil(sorties[0], polyline);
 			return polyline;
 		}		
 		return null;

@@ -69,59 +69,59 @@ public class Multiplexeur extends Combinatoires {
 		ImageView img = Circuit.getImageFromComp(this);
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(), img.getBoundsInLocal().getHeight() / 2), 0);
 		switch (nbCommande) {
-		case 1:{
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 0);
+		case 1:{			
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 16.8), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 48.1), 1);
 			
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 0);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 1);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(25.1, 75), 0);
 		}break;
 		case 2:{
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 0);
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 14.9), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 31.3), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 48.1), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 65), 3);
 			
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 0);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 1);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 2);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 3);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(15.6, 88), 0);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(34.7, 88), 1);
 			
 		}break;
 		case 3:{
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 0);
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 1);
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 14), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 27.2), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 39.3), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 52.2), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 64), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 76.2), 5);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 89.2), 6);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 101.2), 7);
 			
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 0);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 1);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 2);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 3);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 4);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 5);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 6);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 7);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(16.3, 122), 0);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(32, 122), 1);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(47.5, 122), 2);
 			
 		}break;
 		case 4:{
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 0);
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 1);
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 2);
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 6.7), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 18.6), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 30.5), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 42.4), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 55), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 66.5), 5);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 78.4), 6);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 90.4), 7);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 101), 8);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 113.4), 9);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 126), 10);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 137.4), 11);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 149.3), 12);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 161.9), 13);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 173.8), 14);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 185.7), 15);
 			
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 0);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 1);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 2);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 3);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 4);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 5);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 6);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 7);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 8);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 9);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 10);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 11);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 12);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 13);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 14);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 15);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(18.1, 202), 0);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(34, 202), 1);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(50.1, 202), 2);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(66.1, 202), 3);
 			
 		}break;
 		}

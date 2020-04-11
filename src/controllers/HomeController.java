@@ -435,8 +435,7 @@ public class HomeController implements Initializable {
 	    	            	afficheurX.setText("X : 0");
 		    	            afficheurY.setText("Y : 0");
 	    	            	}
-	    	     
-	    	            
+	    	    	    	            
 	    	            e.consume();
 	    	        }
 	    	    });
