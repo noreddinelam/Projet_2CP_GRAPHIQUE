@@ -1151,10 +1151,11 @@ public class HomeController implements Initializable {
 		if(( Xfil >= XImg  )  &&  (XImg+imgCmp.getFitWidth() > Xfil) && ( Yfil >= Yimg)  &&  (Yimg+imgCmp.getFitHeight() > Yfil) ) {
 			Composant cmp = Circuit.getCompFromImage(imgCmp);
 			Coordonnees tabEntrees[] = cmp.getLesCoordonnees().getCordEntree();
+			int nbCord = cmp.getLesCoordonnees().getNbCordEntree();
 			Coordonnees crd = new Coordonnees(Xfil,Yfil);
 			boolean trouve = false;
 			int i = 0;
-			while( i < tabEntrees.length && trouve == false) {
+			while( i < nbCord && trouve == false) {
 				//double xTab = tabEntrees[i].getX() + imgCmp.getLayoutX(); 
 				//double yTab = tabEntrees[i].getY() + imgCmp.getLayoutY(); 
 				Coordonnees crdTab = new Coordonnees(tabEntrees[i].getX() + imgCmp.getLayoutX(), tabEntrees[i].getY() + imgCmp.getLayoutY());

@@ -25,17 +25,20 @@ public class Or extends Portes{
 		case 2:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 17.5), 0);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 65.5), 1);
+			
 		}break;
 		case 3:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 17.1), 0);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 41.5), 1);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 65.1), 2);
+			
 		}break;
 		case 4:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 17.1), 0);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 33.3), 1);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 49.9), 2);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 65.3), 3);
+			
 		}break;
 		case 5:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 17.4), 0);
@@ -43,6 +46,7 @@ public class Or extends Portes{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 41.5), 2);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 53.3), 3);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 65.3), 4);
+			
 		}break;
 		}
 	}
