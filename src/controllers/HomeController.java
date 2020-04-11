@@ -240,6 +240,8 @@ public class HomeController implements Initializable {
     editionDrawer.setDisable(true);
     affichageDrawer.setDisable(true);
     helpDrawer.setDisable(true);
+    
+   
 
     tooltipInitialize();
 	rightbar(fichier, fichierDrawer,editionDrawer,affichageDrawer,helpDrawer,"/application/Fichier.fxml" );
@@ -265,7 +267,9 @@ public class HomeController implements Initializable {
 			
 		
 		});
-
+		
+		
+		
 	    
 	}
 	
@@ -275,18 +279,26 @@ public class HomeController implements Initializable {
 		Pane lay = null;
 		try {
 			lay = FXMLLoader.load(getClass().getResource(s));
+			lay.setViewOrder(0);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		elementName.setSidePane(lay);
 		elementName.setOpacity(0);
+			      
+		
+		
 		icon.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
 				if(elementName.isOpened()) {
 					elementName.setOpacity(0);
 			        elementName.close();
 			        elementName.setViewOrder(10);
 			        elementName.setDisable(true);
+			        for(Node n : workSpace.getChildren()) {
+			        	if(!(n.equals(elementName)))
+			        		n.setOpacity(1);
+			        }
 				}
 				
 				else {	
@@ -294,22 +306,39 @@ public class HomeController implements Initializable {
 			        elementName.open();
 			        elementName.setViewOrder(1);
 			        elementName.setDisable(false);
+			        elementName.setVisible(true);
+			        for(Node n : workSpace.getChildren()) {
+			        	if(!(n.equals(elementName)))
+			        		n.setOpacity(0.2);
+			        }
+
+			        
+			        
 			        element1Hide.close();
-			        element1Hide.setOpacity(0);
+			        //element1Hide.setOpacity(0);
 			        element1Hide.setViewOrder(4);
-			        element1Hide.setDisable(true);	
+			        element1Hide.setDisable(true);
+			        element1Hide.setVisible(false);
+			        
 			        element2Hide.close();
 			        element2Hide.setOpacity(0);
 			        element2Hide.setViewOrder(4);
 			        element2Hide.setDisable(true);
+			        element2Hide.setVisible(false);
+
+			        
 			        element3Hide.close();
 			        element3Hide.setOpacity(0);
 			        element3Hide.setViewOrder(4);
 			        element3Hide.setDisable(true);
+			        element3Hide.setVisible(false);
+
 
 
 				}
 			});
+		
+		
 		
 	}
 	
