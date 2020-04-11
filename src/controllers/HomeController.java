@@ -1,5 +1,8 @@
 package controllers;
 
+
+import java.awt.Button;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,8 +20,18 @@ import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXDrawersStack;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
+import javafx.animation.FadeTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -29,9 +42,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
+import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -43,6 +56,9 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import noyau.*;
+import javafx.stage.PopupWindow;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 
 
@@ -221,9 +237,12 @@ public class HomeController implements Initializable {
 
     @FXML
     private ImageView darkMode;
-
+    
     @FXML
     private AnchorPane workSpace;
+    
+    @FXML
+    private AnchorPane work;
     
     @FXML
     private ImageView logo;
@@ -236,6 +255,37 @@ public class HomeController implements Initializable {
 	private Line guideFilX = new Line();
 	private Line guideFilY = new Line();
     ///////////////////////////////////////////////
+    
+    @FXML
+    private JFXDrawer fichierDrawer;
+    
+    @FXML
+    private JFXDrawer editionDrawer;
+    
+    @FXML
+    private VBox vbar;
+    
+    @FXML
+    private JFXDrawer affichageDrawer;
+    
+    @FXML
+    private JFXDrawer helpDrawer;
+    
+    @FXML
+    private Tab outils;
+    
+    @FXML
+    private Tab portes;
+    
+    @FXML
+    private Tab seq;
+    
+    @FXML
+    private Tab comb;
+    
+    @FXML
+    private TabPane tabPane;
+
     @FXML
     private Label afficheurX;
 
@@ -250,7 +300,6 @@ public class HomeController implements Initializable {
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
 		ajouterGestWorkSpace();/////Les gestes De drag and drop 
 		tracerLesGuides();//Initialisation des files de guide
 		//initialisation des coordones de X et Y a 0
@@ -363,8 +412,135 @@ public class HomeController implements Initializable {
 					  }
 				  }
 			  });		
+	
+    fichierDrawer.setDisable(true);//mettre tout les drawers en mode disable
+    editionDrawer.setDisable(true);
+    affichageDrawer.setDisable(true);
+    helpDrawer.setDisable(true);
+    
+    
 
+    tooltipInitialize();
+	rightbar(fichier, fichierDrawer,editionDrawer,affichageDrawer,helpDrawer,"/application/Fichier.fxml" );
+	rightbar(edition, editionDrawer,affichageDrawer,fichierDrawer,helpDrawer,"/application/Edition.fxml" );
+	rightbar(affichage, affichageDrawer,editionDrawer,fichierDrawer,helpDrawer,"/application/Affichage.fxml" );
+	rightbar(aide, helpDrawer,affichageDrawer,fichierDrawer,editionDrawer,"/application/Aide.fxml" );
+
+		workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{//pour fermer les drawer en cliquant sur la souris
+			if(fichierDrawer.isOpened() ||editionDrawer.isOpened() ||affichageDrawer.isOpened() || helpDrawer.isOpened()) {
+					fichierDrawer.close();
+					fichierDrawer.setOpacity(0);
+					editionDrawer.close();
+					editionDrawer.setOpacity(0);
+					affichageDrawer.close();
+					affichageDrawer.setOpacity(0);
+					helpDrawer.close();
+					helpDrawer.setOpacity(0);
+				 	fichierDrawer.setDisable(true);
+				    editionDrawer.setDisable(true);
+				    affichageDrawer.setDisable(true);
+				    helpDrawer.setDisable(true);
+			}
+			
+		
+		});
 	}
+	
+	
+	
+	public void rightbar(ImageView icon,JFXDrawer elementName, JFXDrawer element1Hide, JFXDrawer element2Hide, JFXDrawer element3Hide, String s) {
+		Pane lay = null;
+		try {
+			lay = FXMLLoader.load(getClass().getResource(s));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		elementName.setSidePane(lay);
+		elementName.setOpacity(0);
+		icon.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
+				if(elementName.isOpened()) {
+					elementName.setOpacity(0);
+			        elementName.close();
+			        elementName.setViewOrder(10);
+			        elementName.setDisable(true);
+				}
+				
+				else {
+					elementName.setOpacity(1);
+			        elementName.open();
+			        elementName.setViewOrder(1);
+			        elementName.setDisable(false);
+			        element1Hide.close();
+			        element1Hide.setOpacity(0);
+			        element1Hide.setViewOrder(4);
+			        element1Hide.setDisable(true);	
+			        element2Hide.close();
+			        element2Hide.setOpacity(0);
+			        element2Hide.setViewOrder(4);
+			        element2Hide.setDisable(true);
+			        element3Hide.close();
+			        element3Hide.setOpacity(0);
+			        element3Hide.setViewOrder(4);
+			        element3Hide.setDisable(true);
+
+				}
+			});
+		
+	}
+	
+	
+	
+	public void tooltipInitialize() {//utiliser pour les effets hover ou nous avons un texte en mettant la souris sur les elements
+
+	    Tooltip fich = new Tooltip("fichier");
+	   
+	    
+	    fich.setShowDelay(Duration.millis(0));
+	    Tooltip.install(fichier, fich);
+	    
+	        
+	    Tooltip edi = new Tooltip("edition");
+	    edi.setShowDelay(Duration.millis(0));
+		Tooltip.install(edition, edi);
+		
+		Tooltip sim = new Tooltip("simulation");
+	    sim.setShowDelay(Duration.millis(0));
+		Tooltip.install(simulation, sim);
+		
+		Tooltip aff = new Tooltip("affichage");
+	    aff.setShowDelay(Duration.millis(0));
+		Tooltip.install(affichage, aff);
+		
+		Tooltip aid = new Tooltip("aide");
+	    aid.setShowDelay(Duration.millis(0));
+		Tooltip.install(aide, aid);
+		
+		
+		/*-------------------------------------*/
+		
+		Tooltip com = new Tooltip("Combinatoires");
+		com.setShowDelay(Duration.millis(0));
+		comb.setTooltip(com);
+			
+		Tooltip se = new Tooltip("Sequentiels");
+		se.setShowDelay(Duration.millis(0));
+		seq.setTooltip(se);
+		
+		Tooltip out = new Tooltip("Outils");
+		out.setShowDelay(Duration.millis(0));
+		outils.setTooltip(out);
+		
+		Tooltip por = new Tooltip("Portes");
+		por.setShowDelay(Duration.millis(0));
+		portes.setTooltip(por);
+		
+		/*------------------------------*/
+		
+	}
+	
+	
+	
     
 	private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
 		//est ajoute dans le workSpace
@@ -675,7 +851,7 @@ public class HomeController implements Initializable {
 	    transition3.play();
 	}
 	 void tracerLesregles(AnchorPane w) {// Methode de tracage des Regles
-
+		 System.out.println(w.getPrefHeight());
 	        boolean v = true;
 	        for (int i = 0; i <= workSpace.getPrefWidth(); i += 25) {
 
@@ -805,9 +981,6 @@ public class HomeController implements Initializable {
 	            w.getChildren().add(p);
 	        }
 	    }
-	 
-	 
-	
 	     
 	private void rotationDelogo(ImageView image,int nombreDeboucle,int vitesse) {// Methode de rotation de logo
 
