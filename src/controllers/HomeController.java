@@ -253,16 +253,29 @@ public class HomeController implements Initializable {
 			if(fichierDrawer.isOpened() ||editionDrawer.isOpened() ||affichageDrawer.isOpened() || helpDrawer.isOpened()) {
 					fichierDrawer.close();
 					fichierDrawer.setOpacity(0);
+					fichierDrawer.setVisible(false);
+
 					editionDrawer.close();
 					editionDrawer.setOpacity(0);
+					editionDrawer.setVisible(false);
+
 					affichageDrawer.close();
 					affichageDrawer.setOpacity(0);
+					affichageDrawer.setVisible(false);
+
 					helpDrawer.close();
 					helpDrawer.setOpacity(0);
+					helpDrawer.setVisible(false);
+
 				 	fichierDrawer.setDisable(true);
 				    editionDrawer.setDisable(true);
 				    affichageDrawer.setDisable(true);
 				    helpDrawer.setDisable(true);
+				    
+				    for(Node n : workSpace.getChildren()) {
+			        		n.setOpacity(1);
+			        }
+				    
 			}
 			
 		
