@@ -2,6 +2,9 @@ package noyau;
 
 import java.util.ArrayList;
 
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polyline;
+
 public class Pin extends Composant implements Affichage,ElementHorloge{
 	private boolean input ; // INPUT= vrai ->  entree // faux -> sortie 
 	private EtatLogique etat = EtatLogique.ZERO;
@@ -19,10 +22,12 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 			nombreSortie = 1;
 			sorties[0] = new Fil(this);
 			Circuit.ajouterEntree(this);
+			lesCoordonnees = new LesCoordonnees(0,1,0);
 		}else {
 			nombreEntree = 1;
 			nombreSortie = 0;
 			Circuit.ajouterSortie(this);
+			lesCoordonnees = new LesCoordonnees(1,0,0);
 		}
 	}
 	
@@ -89,6 +94,32 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 			return path + "Input" +".png";
 		}
 		return path + "Output" +".png";
+	}
+	
+	@Override
+	public void setCord() {
+		// TODO Auto-generated method stub
+		ImageView img = Circuit.getImageFromComp(this);
+		if (input) {
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth() / 2, img.getBoundsInLocal().getHeight()), 0);
+		}
+		else {
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(img.getBoundsInLocal().getWidth() / 2, img.getBoundsInLocal().getHeight()), 0);
+		}
+	}
+	
+	@Override
+	public Polyline generatePolyline(double x,double y) {
+		// TODO Auto-generated method stub
+		setCord();
+		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX();
+		double posY = y+lesCoordonnees.getCordSortieInIndex(0).getY();
+		if (input) {
+			Polyline polyline = new Polyline(posX,posY,posX,posY+5);
+			Circuit.ajouterFil(new Fil(this), polyline);
+			return polyline;
+		}		
+		return null;
 	}
 	public boolean isInput() {
 		return input;

@@ -1,5 +1,7 @@
 package noyau;
 
+import javafx.scene.shape.Polyline;
+
 public abstract class Bascule extends Sequentiels{
 	
 	protected Fil preset = null;
@@ -11,6 +13,7 @@ public abstract class Bascule extends Sequentiels{
 		nombreSortie = 2; 
 		// initialiser les etats des fils de sorties de bascules car le probleme c'est que si deux bascules sont au meme etage et relier
 		// directement alors il y'aura un probleme dans l'execution .
+		lesCoordonnees = new LesCoordonnees(nombreEntree, 2, 0);
 		sorties[0] = new Fil(this);
 		sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
 		sorties[1] = new Fil(this);
@@ -83,6 +86,22 @@ public abstract class Bascule extends Sequentiels{
 	public String generatePath() {
 		// TODO Auto-generated method stub
 		return this.getClass().getSimpleName() + "/" + front.toString() + ".png";
+	}
+	@Override
+	public void setCord() {
+		// TODO Auto-generated method stub
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 32.1), 0);
+		lesCoordonnees.setCordClear(new Coordonnees(37.8, 0));
+		lesCoordonnees.setCordPreset(new Coordonnees(61.4, 0));
+		lesCoordonnees.setCordHorloge(new Coordonnees(50.5,103));
+		lesCoordonnees.setCordSortieInIndex(new Coordonnees(102, 32.3), 0);
+		lesCoordonnees.setCordSortieInIndex(new Coordonnees(102, 68.6), 1);
+	}
+	
+	@Override
+	public Polyline generatePolyline(double x,double y) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	public Fil getPreset() {

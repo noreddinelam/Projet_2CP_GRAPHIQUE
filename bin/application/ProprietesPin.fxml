@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="439.0" style="-fx-background-color: #303337;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProprietesPinController">
+   <children>
+      <Pane layoutY="24.0" prefHeight="152.0" prefWidth="439.0" style="-fx-background-color: #303337;">
+         <children>
+            <Pane layoutX="6.0" layoutY="6.0" prefHeight="127.0" prefWidth="162.0" style="-fx-background-color: #303337;">
+               <children>
+                  <Pane layoutX="11.0" layoutY="3.0" prefHeight="110.0" prefWidth="2.0" style="-fx-background-color: #E4E4E4;" />
+                  <Text fill="#e4e4e4" layoutX="20.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Label">
+                     <font>
+                        <Font name="Calisto MT" size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#e4e4e4" layoutX="22.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In/Out Put">
+                     <font>
+                        <Font name="Calisto MT" size="16.0" />
+                     </font>
+                  </Text>
+                  <Pane layoutX="17.0" layoutY="30.0" prefHeight="2.0" prefWidth="140.0" style="-fx-background-color: #7c7878;" />
+                  <Pane layoutX="18.0" layoutY="68.0" prefHeight="2.0" prefWidth="140.0" style="-fx-background-color: #7c7878;" />
+                  <Pane layoutX="18.0" layoutY="103.0" prefHeight="2.0" prefWidth="140.0" style="-fx-background-color: #7c7878;" />
+                  <Text fill="#e4e4e4" layoutX="22.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Direction">
+                     <font>
+                        <Font name="Calisto MT" size="16.0" />
+                     </font>
+                  </Text>
+               </children></Pane>
+            <Pane layoutX="201.0" layoutY="36.0" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #7c7878;" />
+            <TextField fx:id="label" alignment="TOP_CENTER" layoutX="204.0" layoutY="7.0" prefHeight="23.0" prefWidth="191.0" promptText="Label" style="-fx-background-color: #303337;">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+               <font>
+                  <Font name="Calisto MT" size="15.0" />
+               </font>
+            </TextField>
+            <Pane layoutX="201.0" layoutY="74.0" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #7c7878;" />
+            <Button fx:id="nextput" layoutX="346.0" layoutY="41.0" mnemonicParsing="false" onAction="#nextput" prefHeight="29.0" prefWidth="30.0" />
+            <Button fx:id="previousput" layoutX="225.0" layoutY="41.0" mnemonicParsing="false" onAction="#previousput" prefHeight="29.0" prefWidth="30.0" />
+            <Button fx:id="mdf" layoutX="314.0" layoutY="130.0" mnemonicParsing="false" onAction="#modifier" prefHeight="30.0" prefWidth="88.0" text="Modifier" textFill="#e4e4e4">
+               <font>
+                  <Font name="Calisto MT" size="14.0" />
+               </font></Button>
+            <Button fx:id="annuler" layoutX="212.0" layoutY="129.0" mnemonicParsing="false" onAction="#annuler" prefHeight="30.0" prefWidth="88.0" text="Annuler" textFill="#c62222">
+               <font>
+                  <Font name="Calisto MT" size="14.0" />
+               </font></Button>
+            <Label fx:id="put" alignment="CENTER" layoutX="247.0" layoutY="47.0" prefHeight="19.0" prefWidth="107.0" text="Input" textFill="#b2b2b2">
+               <font>
+                  <Font name="Calisto MT" size="15.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="imgNextput" fitHeight="30.0" fitWidth="25.0" layoutX="351.0" layoutY="41.0">
+               <image>
+                  <Image url="@../pageEntreeIcones/next.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgPreviousput" fitHeight="30.0" fitWidth="25.0" layoutX="226.0" layoutY="41.0">
+               <image>
+                  <Image url="@../pageEntreeIcones/previous.png" />
+               </image>
+            </ImageView>
+            <Pane layoutX="200.0" layoutY="110.0" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #7c7878;" />
+            <Button fx:id="nextDirection" layoutX="345.0" layoutY="79.0" mnemonicParsing="false" onAction="#nextDirection" prefHeight="29.0" prefWidth="30.0" />
+            <Button fx:id="previousDirection" layoutX="225.0" layoutY="80.0" mnemonicParsing="false" onAction="#previousDirection" prefHeight="29.0" prefWidth="30.0" />
+            <ImageView fx:id="imgPreviousput1" fitHeight="30.0" fitWidth="25.0" layoutX="226.0" layoutY="80.0">
+               <image>
+                  <Image url="@../pageEntreeIcones/previous.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgNextput1" fitHeight="30.0" fitWidth="25.0" layoutX="350.0" layoutY="79.0">
+               <image>
+                  <Image url="@../pageEntreeIcones/next.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="direction" alignment="CENTER" layoutX="247.0" layoutY="85.0" prefHeight="19.0" prefWidth="107.0" text="Nord" textFill="#b2b2b2">
+               <font>
+                  <Font name="Calisto MT" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label layoutX="196.0" layoutY="4.0" prefHeight="30.0" prefWidth="64.0" text="PIN" textFill="#e4e4e4">
+         <font>
+            <Font name="Calisto MT" size="25.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

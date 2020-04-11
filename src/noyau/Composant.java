@@ -7,6 +7,7 @@ import java.util.Arrays;
 import javax.management.relation.Role;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polyline;
 
 
 public abstract class Composant implements Serializable{
@@ -20,6 +21,7 @@ public abstract class Composant implements Serializable{
 	protected int nombreSortie;
 	protected boolean sleep = false;
 	protected Direction direction = Direction.Est;
+	protected LesCoordonnees lesCoordonnees ;
 	
 	
 	
@@ -27,7 +29,6 @@ public abstract class Composant implements Serializable{
 		this.nombreEntree = nombreEntree;
 		this.nom =nom;
 		Arrays.fill(etatFinal, EtatLogique.HAUTE_IMPEDANCE);
-		//Circuit.ajouterComposant(this,generatePath());
 	}
 	/*--------- setters & getters--------------*/
 	public String getNom() {
@@ -156,5 +157,23 @@ public abstract class Composant implements Serializable{
 	}
 	
 	public abstract String generatePath();
+	
+	public abstract Polyline generatePolyline(double x,double y);
+	
+	public abstract void setCord();
+	public LesCoordonnees getLesCoordonnees() {
+		return lesCoordonnees;
+	}
+	public void setLesCoordonnees(LesCoordonnees lesCoordonnees) {
+		this.lesCoordonnees = lesCoordonnees;
+	}
+	
+	public Fil getFilSortie(int i) {
+		if(i < sorties.length) {
+			return sorties[i];
+		}else {
+			return null;
+		}
+	}
 	
 }

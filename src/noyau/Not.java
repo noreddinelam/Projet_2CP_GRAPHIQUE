@@ -16,5 +16,11 @@ public class Not extends Portes{
 		// TODO Auto-generated method stub
 		return "Not/Not.png";
 	}
+	
+	@Override
+	public void setCord() {
+		// TODO Auto-generated method stub
+		super.setCord();
+	}
 
 }

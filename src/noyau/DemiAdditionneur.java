@@ -4,6 +4,7 @@ public class DemiAdditionneur extends Additionneur{
 	
 	public DemiAdditionneur(int nombreEntree,String nom) { // constructeur
 		super(nombreEntree*2,nom);
+		nombreSortie = nombreEntree + 1 ;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -24,5 +25,77 @@ public class DemiAdditionneur extends Additionneur{
 	public String generatePath() {
 		// TODO Auto-generated method stub
 		return this.getClass().getSimpleName() + "/" + String.valueOf(getNombreEntree() / 2)+".png";
+	}
+	
+	@Override
+	public void setCord() {
+		// TODO Auto-generated method stub
+		switch (nombreEntree) {
+		case 2:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 18.6), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 49), 1);
+			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(60, 32.4), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(61, 11.4), 1);
+		}break;
+		case 4:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 12), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 24), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 50.4), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 61.6), 3);
+			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(67, 32.4), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(67, 44.6), 1);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(68, 8.5), 2);
+		}break;
+		case 6:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 7.4), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 19.3), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 31.3), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 67.8), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 80.7), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 92.4), 5);
+			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 35.7), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 49.8), 1);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 63.6), 2);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 11.6), 3);
+		}break;
+		case 9:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 9.3), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 23.1), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 36.9), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 50.5), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 87.8), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 101.6), 5);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0,115.2), 6);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 128.5), 7);
+			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 49.2), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 62.7), 1);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 75.7), 2);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 90), 3);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 14.9), 4);
+		}break;
+		case 11:{
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 9.5), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 23.1), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 36.7), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 50.4), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 63), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 94.2), 5);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0,107.9), 6);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 121.5), 7);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 135.1), 8);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 149.7), 9);
+			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(89, 48.9), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(89, 62.5), 1);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(89, 76.1), 2);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(89, 89.7), 3);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(89, 103.8), 4);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(90, 15.7), 5);
+		}break;
+		}
 	}
 }

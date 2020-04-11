@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Polyline?>
+
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="604.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ImgController">
+   <children>
+      <ImageView fx:id="img" fitHeight="84.0" fitWidth="80.0" layoutX="139.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../and/2.png" />
+         </image>
+      </ImageView>
+      <Polyline fx:id="line" fill="#ffffff00" layoutX="344.0" layoutY="270.0" onMouseDragged="#dragg" onMousePressed="#press" points="-127.0, -147.0, -122.0, -147.0, 0.0, 60.0, -122.0, 18.0" strokeWidth="3.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Polyline>
+      <ImageView fx:id="img1" fitHeight="84.0" fitWidth="80.0" layoutX="340.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../and/2.png" />
+         </image>
+      </ImageView>
+   </children>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
+</Pane>

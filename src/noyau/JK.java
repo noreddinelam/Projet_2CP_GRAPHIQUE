@@ -45,6 +45,13 @@ public class JK extends Bascule{
 		etatPrec[1] = entrees[1].getEtatLogiqueFil();
 	}
 
+	@Override
+	public void setCord() {
+		// TODO Auto-generated method stub
+		super.setCord();
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 68.6), 1);
+	}
+
 
  
 }

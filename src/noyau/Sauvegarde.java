@@ -26,7 +26,7 @@ public class Sauvegarde implements Serializable {
 		ObjectOutputStream oo = null;
 		Sauvegarde circuitSauv = new Sauvegarde();
 		circuitSauv.setCompUtilises(Circuit.getCompUtilises());
-		circuitSauv.setFilUtilises(Circuit.getFilUtilises());
+		//circuitSauv.setFilUtilises(Circuit.getFilUtilises());
 		circuitSauv.setEntreesCircuit(Circuit.getEntreesCircuit());
 		circuitSauv.setListeEtages(Circuit.getListeEtages());
 		circuitSauv.setNbEtages(Circuit.getNbEtages());
@@ -61,7 +61,7 @@ public class Sauvegarde implements Serializable {
 			oo = new ObjectInputStream(fichier);
 			circuitSauv= (Sauvegarde) oo.readObject();
 			Circuit.setCompUtilises(circuitSauv.getCompUtilises());
-			Circuit.setFilUtilises(circuitSauv.getFilUtilises());
+			//Circuit.setFilUtilises(circuitSauv.getFilUtilises());
 			Circuit.setEntreesCircuit(circuitSauv.getEntreesCircuit());
 			Circuit.setListeEtages(circuitSauv.getListeEtages());
 			Circuit.setNbEtages(circuitSauv.getNbEtages());

@@ -1,5 +1,7 @@
 package noyau;
 
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polyline;
 
 public class Multiplexeur extends Combinatoires {
 	
@@ -14,6 +16,7 @@ public class Multiplexeur extends Combinatoires {
 		nombreSortie = 1;//le multiplexeur possede une seule sortie
 		Fil fil = new Fil(this);
 		sorties[0]=fil;
+		lesCoordonnees = new LesCoordonnees(nombreEntree, 0, nbCommande);
 	}
 	
 	
@@ -58,6 +61,76 @@ public class Multiplexeur extends Combinatoires {
 
 	public void setNbCommande(int nbCommande) {
 		this.nbCommande = nbCommande;
+	}
+	
+	@Override
+	public void setCord() {
+		// TODO Auto-generated method stub
+		ImageView img = Circuit.getImageFromComp(this);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(), img.getBoundsInLocal().getHeight() / 2), 0);
+		switch (nbCommande) {
+		case 1:{
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 0);
+			
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 1);
+		}break;
+		case 2:{
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 0);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 1);
+			
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 3);
+			
+		}break;
+		case 3:{
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 0);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 1);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 2);
+			
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 5);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 6);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 7);
+			
+		}break;
+		case 4:{
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 0);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 1);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 2);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 4);
+			
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 0);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 3);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 4);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 5);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 6);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 7);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 8);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 9);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 10);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 11);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 12);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 13);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 14);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 0), 15);
+			
+		}break;
+		}
+	}
+	
+	@Override
+	public Polyline generatePolyline(double x,double y) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

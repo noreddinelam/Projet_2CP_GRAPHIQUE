@@ -366,7 +366,7 @@ public class HomeController implements Initializable {
 
 	}
     
-	private void ajouterLeGest( ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
+	private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
 		//est ajoute dans le workSpace
 	
 	
@@ -462,23 +462,26 @@ public class HomeController implements Initializable {
 	    	            	Circuit.removeCompFromImage(dragImageView);
 	    	            }
 	    	            else 
+	    	            {
+	    	            	Polyline polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+	    	            	polyline.setStrokeWidth(4);
+	    	        		polyline.setSmooth(true);
+	    	        		polyline.setStrokeType(StrokeType.CENTERED);
+	    	        		polyline.setCursor(Cursor.HAND);
+	    	            	workSpace.getChildren().add(polyline);
+	    	            	ajouterGeste(polyline);
 	    	            {    	            	
 	    	            	ajouterLeGestApresCollage(dragImageView);
 	    	            }
 	    	        }
-	    	    });
+	    	    }});
 	            
 	        }
 	    });
-	
-
 	}
 	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
-		
-		Polyline a = AjouterLignesInitiale(eleementAdrager);
-		workSpace.getChildren().add(a);
 			
 	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
@@ -546,6 +549,7 @@ public class HomeController implements Initializable {
 	    	            double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth() - 2;
 	    	        	double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2 - 1;
 	    	        	//a.relocate(x, y);
+	    	        	//polyline.relocate(x, y);
 	    	            String xString=String.valueOf(eleementAdrager.getLayoutX());
     	                String yString=String.valueOf(eleementAdrager.getLayoutY());
     	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<1066 )&&(eleementAdrager.getLayoutY()>17))
@@ -576,6 +580,8 @@ public class HomeController implements Initializable {
 	    	            //supprimer les noueds doublees : 
 	    	           //ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
 	    	          
+	    	            testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
+	    	            System.out.println("polyyyyyyyyyyyyyyyyyyyyy"+Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
 	    	            double x2 = e.getSceneX()-180;
 	    	            int i = 0;
 						double y2 = e.getSceneY();
@@ -643,8 +649,6 @@ public class HomeController implements Initializable {
 	            
 	        }
 	    });
-	
-
 	}
 	public void transitionDesComposants(Node composants) {// Methode d'animation de 'Shake'
 	    int duration = 100;
@@ -965,7 +969,7 @@ public class HomeController implements Initializable {
 	private Polyline AjouterLignesInitiale(ImageView composant) {
     	double x=composant.getLayoutX()+composant.getBoundsInLocal().getWidth()-5;
     	double y=composant.getLayoutY()+composant.getBoundsInLocal().getHeight()/2;
-    	Polyline a = new Polyline(x,y,x+12,y); //(x,y,x+12,y) avec x,y coordonnees de la sortie
+    	Polyline a = new Polyline(x,y,x+8,y); //(x,y,x+8,y) avec x,y coordonnees de la sortie
 		a.setStrokeWidth(3);
 		a.setSmooth(true);
 		a.setStrokeType(StrokeType.CENTERED);
@@ -1144,10 +1148,26 @@ public class HomeController implements Initializable {
 		Double XImg = imgCmp.getLayoutX();
 		Double Yimg = imgCmp.getLayoutY();
 		
-		System.out.println(x+"   "+y+"    "+XImg+"    "+Yimg);
-		if(( Xfil > XImg )  &&  (XImg+imgCmp.getFitWidth() > Xfil) && ( Yfil > Yimg)  &&  (Yimg+imgCmp.getFitHeight() > Yfil) ) {
-			return true;
+		//System.out.println(x+"   "+y+"    "+XImg+"    "+Yimg);
+		if(( Xfil >= XImg  )  &&  (XImg+imgCmp.getFitWidth() > Xfil) && ( Yfil >= Yimg)  &&  (Yimg+imgCmp.getFitHeight() > Yfil) ) {
+			Composant cmp = Circuit.getCompFromImage(imgCmp);
+			Coordonnees tabEntrees[] = cmp.getLesCoordonnees().getCordEntree();
+			Coordonnees crd = new Coordonnees(Xfil,Yfil);
+			boolean trouve = false;
+			int i = 0;
+			while( i < tabEntrees.length && trouve == false) {
+				//double xTab = tabEntrees[i].getX() + imgCmp.getLayoutX(); 
+				//double yTab = tabEntrees[i].getY() + imgCmp.getLayoutY(); 
+				Coordonnees crdTab = new Coordonnees(tabEntrees[i].getX() + imgCmp.getLayoutX(), tabEntrees[i].getY() + imgCmp.getLayoutY());
+				
+				System.out.println(Xfil+" "+crdTab.getX()+" "+Yfil+" "+crdTab.getY()+"layaoutx"+imgCmp.getLayoutX()+"layaouty"+imgCmp.getLayoutY());
+				if( crdTab.equals(crd) ) trouve =true;
+				i++;
+			}
+			System.out.println("trouuuuuuuuuuuuuuuuuuuuuuuuuuve"+trouve);
+			return (!trouve);
 		}else return false;
+		
 	}
 	
 	public int nbOccPoint(Polyline line,double x, double y) {

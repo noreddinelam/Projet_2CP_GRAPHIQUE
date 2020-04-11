@@ -1,5 +1,7 @@
 package noyau;
 
+import javafx.scene.shape.Polyline;
+
 public class SourceConstante extends Composant{
 	
 	private EtatLogique etatLogique ;
@@ -10,6 +12,7 @@ public class SourceConstante extends Composant{
 		this.etatLogique = etatLogique;
 		sorties[0] = new Fil(this);
 		sorties[0].setEtatLogiqueFil(etatLogique);
+		lesCoordonnees = new LesCoordonnees(0, 1, 0);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -24,12 +27,24 @@ public class SourceConstante extends Composant{
 		return true;
 	}
 	
-@Override
-public String generatePath() {
-	// TODO Auto-generated method stub
-	if (etatLogique == EtatLogique.ONE) {
-		return "SourceConstante/VCC.png";
+	@Override
+	public String generatePath() {
+		// TODO Auto-generated method stub
+		if (etatLogique == EtatLogique.ONE) {
+			return "SourceConstante/VCC.png";
+		}
+		return "SourceConstante/MASSE.png";
 	}
-	return "SourceConstante/MASSE.png";
-}
+	
+	@Override
+	public Polyline generatePolyline(double x,double y) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void setCord() {
+		// TODO Auto-generated method stub
+		lesCoordonnees.setCordSortieInIndex(new Coordonnees(Circuit.getImageFromComp(this).getBoundsInLocal().getWidth() / 2, Circuit.getImageFromComp(this).getBoundsInLocal().getHeight()), 0);
+	}
 }
