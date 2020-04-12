@@ -143,6 +143,7 @@ public class RightBarController implements Initializable {
 		        Scene scene = new Scene(root);
 		        stage.setScene(scene);  
 		        stage.setResizable(false);
+		        scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 
 		        stage.show();
 		    } catch(Exception e) {
