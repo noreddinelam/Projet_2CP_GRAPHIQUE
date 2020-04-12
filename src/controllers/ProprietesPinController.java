@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import noyau.*;
 
@@ -87,11 +88,22 @@ public class ProprietesPinController extends ProprietesController{
     	int vlr = ((Pin)cmp).getEtat().getNum();
     	if(putInt == 0){
     		((Pin)cmp).setInput(true);
+    		cmp.setNombreEntree(0);
+    		cmp.setNombreSortie(1);
+    		cmp.getLesCoordonnees().setNbCordEntree(0);
+    		cmp.getLesCoordonnees().setNbCordSorties(1);
     		path = "/pin/"+Integer.toString(vlr)+bddPut[putInt]+".png";
     	}else {
     		((Pin)cmp).setInput(false);
+    		Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0);
+    		line.getPoints().clear(); 
+    		cmp.setNombreEntree(1);
+    		cmp.setNombreSortie(0);
+    		cmp.getLesCoordonnees().setNbCordEntree(1);
+    		cmp.getLesCoordonnees().setNbCordSorties(0);
     		path = "/pin/"+Integer.toString(vlr)+bddPut[putInt]+".png";
     	}
+    	cmp.setCord();
     	Circuit.getImageFromComp(cmp).setImage(new Image(path));
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();

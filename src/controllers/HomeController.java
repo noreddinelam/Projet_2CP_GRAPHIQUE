@@ -1,14 +1,20 @@
 package controllers;
 
-
 import java.io.IOException;
 import java.net.URL;
+import java.io.File;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import application.ClickDroit;
 import javafx.animation.Interpolator;
@@ -36,20 +42,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import noyau.*;
 import javafx.stage.PopupWindow;
@@ -63,8 +66,9 @@ public class HomeController implements Initializable {
     Map<ImageView,Label> elemanrsMapFillMap;
     ImageView dragItem;
     private ClickDroit clickDroitFenetre;
-    private Double x,y;
-    private int switching = 0;
+    private double x,y;
+    private int switching = 0; 
+
     private boolean simul = false;
     
     // utilisé dans la sauvegarde des coordonnées 
@@ -252,6 +256,14 @@ public class HomeController implements Initializable {
 	private Line guideFilX = new Line();
 	private Line guideFilY = new Line();
     ///////////////////////////////////////////////
+	//relier
+	 private Composant source;
+	 private Composant destination;
+	 private int entree;
+	 private int sortie;
+	 private int rel;
+	 //////////////////
+
     
     @FXML
     private JFXDrawer fichierDrawer;
@@ -518,8 +530,6 @@ public class HomeController implements Initializable {
 		Tooltip aid = new Tooltip("aide");
 	    aid.setShowDelay(Duration.millis(0));
 		Tooltip.install(aide, aid);
-		
-		
 		/*-------------------------------------*/
 		
 		Tooltip com = new Tooltip("Combinatoires");
@@ -660,6 +670,25 @@ public class HomeController implements Initializable {
 	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
+		if(!simul) {
+	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
+	        public void handle(MouseEvent e) {
+	            eleementAdrager.setCursor(Cursor.HAND);   
+	        }
+	    });
+	    
+	    eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
+	        public void handle(MouseEvent e) {
+	        /*	double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth()-5;
+	        	double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2;
+	        	testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
+	        	testPoly.getPoints().remove(0);testPoly.getPoints().remove(0);
+	        	testPoly.getPoints().remove(0);testPoly.getPoints().remove(0);
+	        	testPoly.getPoints().addAll(x,y,x+8,y);*/
+	        	//teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest  
+	           /* ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
+=======
+>>>>>>> 05928f96416e78d8b66c6969720b0cfd4fdd4109
 		if (! simul){	
 			eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 				public void handle(MouseEvent e) {
@@ -672,6 +701,10 @@ public class HomeController implements Initializable {
 
 					//teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest  
 					/* ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
+<<<<<<< HEAD
+=======
+>>>>>>> fbbc9e52a48718863fbb52bbcdade72c49092722
+>>>>>>> 05928f96416e78d8b66c6969720b0cfd4fdd4109
 	            for(int k=0;k < list.size();k++)
 	            {
 	            		while(list.indexOf(list.get(k)) != list.lastIndexOf(list.get(k)))
@@ -760,7 +793,7 @@ public class HomeController implements Initializable {
 								//supprimer les noueds doublees : 
 								//ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
 
-								//testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
+								testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0)).get(0);
 								System.out.println("polyyyyyyyyyyyyyyyyyyyyy"+Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
 								double x2 = e.getSceneX()-180;
 								int i = 0;
@@ -809,6 +842,131 @@ public class HomeController implements Initializable {
 							}
 						}
 					});
+	            ///////////////////////////////////////////////////////////////////
+	        //	testPoly.getPoints().add(0, e.getSceneY());
+			//	testPoly.getPoints().add(0, e.getSceneX()-180);
+				//testPoly.getPoints().add(0, e.getSceneY());
+				//testPoly.getPoints().add(0, e.getSceneX()-180);
+	        	posX = eleementAdrager.getLayoutX();
+	   		 	posY = eleementAdrager.getLayoutY();
+	        
+	        	if(e.getButton() != MouseButton.SECONDARY)
+	        	{
+	            dragItem = eleementAdrager;
+	  
+	            eleementAdrager.setMouseTransparent(true);
+	            eleementAdrager.setMouseTransparent(true);
+	            eleementAdrager.setCursor(Cursor.CLOSED_HAND);
+	            
+	            
+	            eleementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
+	    	        public void handle(MouseEvent e) {
+	    	       
+	    	            SnapshotParameters snapParams = new SnapshotParameters();
+	    	            snapParams.setFill(Color.TRANSPARENT);
+	    	            eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
+	    	            eleementAdrager.startFullDrag();
+	    	            e.consume();
+	    	        }
+	    	    });
+	            
+	        	}else
+	        	{
+	        		double clicDroitX,clicDroitY;
+	        		clicDroitX = e.getScreenX();
+	        		clicDroitY = e.getScreenY();
+	        		clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY);
+
+	        	}
+	            eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
+	    	        public void handle(MouseEvent e) {
+	    	            Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+	    	            eleementAdrager.relocate(
+	    	                    (int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
+	    	                    (int)(localPoint.getY() - eleementAdrager.getBoundsInLocal().getHeight()/2 )
+	    	            );
+	    	            double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth() - 2;
+	    	        	double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2 - 1;
+	    	        	//a.relocate(x, y);
+	    	        	//polyline.relocate(x, y);
+	    	            String xString=String.valueOf(eleementAdrager.getLayoutX());
+    	                String yString=String.valueOf(eleementAdrager.getLayoutY());
+    	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<1066 )&&(eleementAdrager.getLayoutY()>17))
+	    	            {
+	    	                guideX.setLayoutX(eleementAdrager.getLayoutX());
+	    	                guideY.setLayoutY(eleementAdrager.getLayoutY());
+	    	                guideXp.setLayoutX(eleementAdrager.getLayoutX()+ eleementAdrager.getBoundsInLocal().getWidth()+1);
+	    	                guideYp.setLayoutY(eleementAdrager.getLayoutY()+ eleementAdrager.getBoundsInLocal().getHeight()+1);
+
+	    	         
+	    	                afficheurX.setText("X : "+xString);
+	    	                afficheurY.setText("Y : "+yString);
+	    	            }
+	    	            
+	    	       
+	    	            else 
+	    	            	{
+	    	            	guideX.setLayoutX(0);
+	    	               	guideY.setLayoutY(0);
+	    	            	guideXp.setLayoutX(0);
+	    	            	guideYp.setLayoutY(0);
+	    	              	afficheurX.setText("X : 0");
+		    	            afficheurY.setText("Y : 0");
+	    	            	}	    	        
+	    	            e.consume();
+	    	            
+	    	           /*teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest*/
+	    	            //supprimer les noueds doublees : 
+	    	           //ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
+	    	          
+	    	            testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0)).get(0);
+	    	           // System.out.println("polyyyyyyyyyyyyyyyyyyyyy"+Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
+	    	            //double x2 = e.getSceneX()-180;
+						//double y2 = e.getSceneY();
+	    	            double x2 = eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth()-5;
+	    	            double y2 = eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2;
+	    	            int i = 0;
+	    	            System.out.println(testPoly.getPoints().size());
+	    	            if(testPoly.getPoints().size()<5) {
+	    	            	testPoly.getPoints().addAll(testPoly.getPoints().get(2),testPoly.getPoints().get(3));
+	    	            }
+						x = testPoly.getPoints().get(4);
+						y = testPoly.getPoints().get(5);
+	    				for (i = 0; i < 4; i++) {
+							testPoly.getPoints().remove((0));
+						}
+	    				/*if(nbOccPoint(testPoly, testPoly.getPoints().get(2), testPoly.getPoints().get(3)) == 1){
+	    					System.out.println("dkhal supprimihaa");
+	    					i = testPoly.getPoints().indexOf(x2);
+	    					if((testPoly.getPoints().contains(x2) ) && (Math.abs(testPoly.getPoints().get(i+1)-y2)<5)) {
+	    						testPoly.getPoints().remove(i);
+	    						testPoly.getPoints().remove(i);
+	    					}
+	    					else {
+	    						i = testPoly.getPoints().indexOf(y2);
+	    						if( testPoly.getPoints().contains(y2) && (Math.abs(testPoly.getPoints().get(i-1)-x2)<5)) {
+	    							testPoly.getPoints().remove(i-1);
+	    							testPoly.getPoints().remove(i-1);
+	    						}
+	    					}
+	    				}*/
+	    				
+						if(Math.abs(x2-x)<10) { 
+							if(Math.abs(y2-y)<10) switching = 0; 
+							else switching = 1;
+						}else {
+							if(Math.abs(y2-y)<10) switching = 0;
+						} 		
+						if(switching == 0) {
+							//testPoly.getPoints().addAll(x2,y,x2,y2);
+							testPoly.getPoints().add(0, x2);
+							testPoly.getPoints().add(1, y2);
+							testPoly.getPoints().add(2, x2);
+							testPoly.getPoints().add(3, y);
+						}
+	    	        }
+	    	        });
+	            
 
 					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
@@ -816,7 +974,6 @@ public class HomeController implements Initializable {
 							eleementAdrager.setMouseTransparent(false);
 							eleementAdrager.setMouseTransparent(false);
 							eleementAdrager.setCursor(Cursor.DEFAULT);
-							//if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670 || intersectionComposant(eleementAdrager))
 							System.out.println(e.getSceneX() + eleementAdrager.getBoundsInLocal().getWidth() / 2 +"------------");
 							if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>670 || intersectionComposant(eleementAdrager))
 							{
@@ -1178,6 +1335,18 @@ public class HomeController implements Initializable {
 		testPoly = a;
 		return a;
     }
+	public Polyline initialser(double x, double y) {
+		Polyline a = new Polyline(x,y,x,y,x,y); 
+		a.setStrokeWidth(3);
+		a.setSmooth(true);
+		a.setStrokeType(StrokeType.CENTERED);
+		a.setCursor(Cursor.HAND);
+    	workSpace.getChildren().add(a);
+    	ajouterGeste(a);
+		return a;
+	}
+	//AudioClip player = new AudioClip(this.getClass().getResource("audio.mp3").toString());
+		
 	 public void ajouterGeste(Polyline line)
 		{
 		 if (! simul) {
@@ -1219,6 +1388,11 @@ public class HomeController implements Initializable {
                     workSpace.getChildren().add(guideFilY);
                     guideFilX.setLayoutX(event.getSceneX()-180);
 					guideFilY.setLayoutY(event.getSceneY());
+					//relier
+					
+					/*source = Circuit.getFilFromPolyline(line).getSource();
+					sortie = 0; 	
+					//
                     
 					int i = line.getPoints().size()-2;
 					x = event.getX();
@@ -1241,7 +1415,44 @@ public class HomeController implements Initializable {
 						if(Math.abs(y - line.getPoints().get(i+1)) < 5) {
 							line.getPoints().addAll(x1,y1,x,y1,x,y1,x,y1);
 						}
+					}*/
+					source = Circuit.getFilFromPolyline(line).getSource();
+					x = event.getX();
+					y = event.getY();
+					Polyline line2 = initialser(x, y);
+					line2.getPoints().clear();
+					line2.getPoints().addAll(line.getPoints());
+					//workSpace.getChildren().add(line2);
+					ArrayList<Double> list = new ArrayList<Double>(line.getPoints());
+					int i = 0;
+					boolean trouve = false ;
+					
+					while((!trouve) && i<list.size()) {
+						if((Math.abs(x - list.get(i)) < 5) && (Math.abs(y - list.get(i+1)) < 5)) {
+							trouve = true;
+							x = list.get(i);
+							y = list.get(i+1);
+						}
+						i = i+2;
 					}
+					i = 0;
+					if(!trouve) {
+						while((!trouve) && i<list.size()) {
+							if(Math.abs(x - list.get(i)) < 5 ) {
+								trouve = true;
+								x = list.get(i);
+							}else if (Math.abs(y - list.get(i+1)) < 5) {
+								trouve = true;
+								y = list.get(i+1);
+							}
+						i = i + 2;
+						}
+					}
+					line2 = initialser(x, y);
+					line.getPoints().clear();
+					line.getPoints().addAll(line2.getPoints());
+					//ajouterGeste(line2);
+					ajouterGeste(line2);					
 				}
 				
 			};
@@ -1257,14 +1468,27 @@ public class HomeController implements Initializable {
 		  			workSpace.getChildren().remove(guideFilY);
 
 					int	der =  line.getPoints().size()-1;
-					if(intersectionFilComposants(arg0.getSceneX()-180,arg0.getSceneY())) {
+					if(intersectionFilComposants(arg0.getSceneX()-180,arg0.getSceneY()) != null) {
 					//if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der))) {
-					line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
-				}else {
+						//System.out.println("reeeeeeeeel"+rel);
+					if(rel == 0) {
+						line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
+					}if(rel == 1) {
+						destination = intersectionFilComposants(arg0.getSceneX()-180,arg0.getSceneY());
+						Coordonnees crd = new Coordonnees(arg0.getSceneX()-180,arg0.getSceneY());
+						//entree = destination.getLesCoordonnees().indexCoord(crd);
+						Circuit.relier(source, destination, sortie, entree);
+						//souuund
+						System.out.println("trabtooo");
+						playSound();
+						if(source.getClass().getSimpleName().equals("Pin")) ((Pin)source).setEtat(EtatLogique.ZERO);
+					}
+					}else {
 					der =  line.getPoints().size()-1;
 					if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3))< 10) {
 						line.getPoints().remove(der);line.getPoints().remove(der-1);}
 				}
+					System.out.println(line.getPoints().size());
 				}
 			});
 		}
@@ -1278,7 +1502,17 @@ public class HomeController implements Initializable {
 			}
 		});*/
 		}
-	 
+	 public void playSound() {
+		    try {
+		        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/1.wav").getAbsoluteFile());
+		        Clip clip = AudioSystem.getClip();
+		        clip.open(audioInputStream);
+		        clip.start();
+		    } catch(Exception ex) {
+		        System.out.println("Error with playing sound.");
+		        ex.printStackTrace();
+		    }
+		}
 	 private boolean intersectionComposant(ImageView image) {
 		 boolean trouv = false;
 		Collection<ImageView> list = Circuit.getCompUtilises().values();
@@ -1293,21 +1527,22 @@ public class HomeController implements Initializable {
 		return trouv;
 	}
 	 
-	 private boolean intersectionFilComposants(Double x, Double y) {
+	 private Composant intersectionFilComposants(Double x, Double y) {
+		 Composant cmp = null;
 		 boolean trouv = false;
 		Collection<ImageView> list = Circuit.getCompUtilises().values();
-		System.out.println(list);
 		Iterator<ImageView> iterator = list.iterator();
 		ImageView img;
 		while(iterator.hasNext() && ! trouv) {
 			img = iterator.next();
-			System.out.println(img);
-			if (intersectionFilComposant(img, x, y)) {
+			if (intersectionFilComposant(img, x, y) != -1) {
 				trouv = true;
-				System.out.println("dkhal");
+				cmp = Circuit.getCompFromImage(img);
+				rel = intersectionFilComposant(img, x, y);
+				System.out.println(rel);
 			}
 		}
-		return trouv;
+		return cmp;
 	}
 	 
 	private boolean intersectionCoordone(ImageView origin,ImageView copie) {
@@ -1345,8 +1580,7 @@ public class HomeController implements Initializable {
 		}
 		return false;
 	}
-	
-	public boolean intersectionFilComposant(ImageView imgCmp,double Xfil,double Yfil) {
+	public int intersectionFilComposant(ImageView imgCmp,double Xfil,double Yfil) {
 		Double XImg = imgCmp.getLayoutX();
 		Double Yimg = imgCmp.getLayoutY();
 		
@@ -1364,20 +1598,19 @@ public class HomeController implements Initializable {
 				Coordonnees crdTab = new Coordonnees(tabEntrees[i].getX() + imgCmp.getLayoutX(), tabEntrees[i].getY() + imgCmp.getLayoutY());
 				
 				System.out.println(Xfil+" "+crdTab.getX()+" "+Yfil+" "+crdTab.getY()+"layaoutx"+imgCmp.getLayoutX()+"layaouty"+imgCmp.getLayoutY());
-				if( crdTab.equals(crd) ) trouve =true;
+				if( crdTab.equals(crd) ) { trouve =true;entree=i; }
 				i++;
 			}
-			System.out.println("trouuuuuuuuuuuuuuuuuuuuuuuuuuve"+trouve);
-			return (!trouve);
-		}else return false;
+			if(trouve)
+				return 1;
+			else return 0;
+		}else return -1;
 		
 	}
 	
 	public int nbOccPoint(Polyline line,double x, double y) {
-		System.out.println("dkhaaal nb occ");
 		ArrayList<Double> list = new ArrayList<Double>(line.getPoints());
 		int i = 0, nb=0;
-		System.out.println(list.get(0) +""+ x +""+ list.get(i+1) +""+ y);
 		while(i < list.size()) {
 			if((list.get(i)==x) && (list.get(i+1)==y ))
 				{
@@ -1385,8 +1618,135 @@ public class HomeController implements Initializable {
 				}
 		i=i+2;
 		}
-		System.out.println(nb+" "+list.size() );
 		return nb;
+	}
+	
+	public void ajouterGesteDragg(Polyline line)
+	{
+	 EventHandler<MouseEvent> event1 = new javafx.event.EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				//les guides :
+				guideFilX.setLayoutX(event.getSceneX()-180);
+				guideFilY.setLayoutY(event.getSceneY());
+				//////////////////
+				double x2 = event.getX();
+				double y2 = event.getY();
+			//	Double x2 = event.getSceneX()-180;
+			//	Double y2 = event.getSceneY();
+				//if(intersectionFilComposants(event.getSceneX()-180,event.getSceneY())) {
+				for (int i = 0; i < 4; i++) {
+					line.getPoints().remove((line.getPoints().size()-1));
+				}
+				if(Math.abs(x2-x)<10) { 
+					if(Math.abs(y2-y)<10) switching = 0; 
+					else switching = 1;
+				}else {
+					if(Math.abs(y2-y)<10) switching = 0;
+				} 		
+				if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
+				else line.getPoints().addAll(x,y2,x2,y2);
+			
+			}
+			
+		};
+		
+		EventHandler<MouseEvent> event = new javafx.event.EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				workSpace.getChildren().add(guideFilX);
+                workSpace.getChildren().add(guideFilY);
+                guideFilX.setLayoutX(event.getSceneX()-180);
+				guideFilY.setLayoutY(event.getSceneY());
+				//relier
+				
+				/*source = Circuit.getFilFromPolyline(line).getSource();
+				sortie = 0; 	
+				//
+                
+				int i = line.getPoints().size()-2;
+				x = event.getX();
+				y = event.getY();
+				while((i!=0) && ((Math.abs(x-line.getPoints().get(i))>5) && ((Math.abs(y - line.getPoints().get(i+1)) >=5 ))))
+				{
+					line.getPoints().addAll(line.getPoints().get(i),line.getPoints().get(i+1));
+					i=i-2;
+				}
+
+				double x1 = line.getPoints().get(i),y1 = line.getPoints().get(i+1);
+				if(Math.abs(x-line.getPoints().get(i)) < 5) {
+					if(Math.abs(y - line.getPoints().get(i+1)) < 5) {
+						line.getPoints().addAll(x1,y1,x1,y1,x1,y1);
+					}
+					else {
+						line.getPoints().addAll(x1,y1,x1,y,x1,y,x1,y);
+					}	
+				}else{
+					if(Math.abs(y - line.getPoints().get(i+1)) < 5) {
+						line.getPoints().addAll(x1,y1,x,y1,x,y1,x,y1);
+					}
+				}*/
+				x = event.getX();
+				y = event.getY();
+				Polyline line2 = initialser(x, y);
+				//ajouterGeste(line2);
+				line2.setOnMouseDragged(event1);
+				
+			}
+			
+		};
+		//line.setOnMousePressed(event);
+		//a.addEventHandler(MouseEvent.MOUSE_DRAGGED, event1);
+		line.setOnMouseDragged(event1);
+		line.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				workSpace.getChildren().remove(guideFilX);
+	  			workSpace.getChildren().remove(guideFilY);
+
+				int	der =  line.getPoints().size()-1;
+				if(intersectionFilComposants(arg0.getSceneX()-180,arg0.getSceneY()) != null) {
+				//if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der))) {
+					//System.out.println("reeeeeeeeel"+rel);
+				if(rel == 0) {
+					line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
+				}if(rel == 1) {
+					destination = intersectionFilComposants(arg0.getSceneX()-180,arg0.getSceneY());
+					Coordonnees crd = new Coordonnees(arg0.getSceneX()-180,arg0.getSceneY());
+					//entree = destination.getLesCoordonnees().indexCoord(crd);
+					Circuit.relier(source, destination, sortie, entree);
+					//souuund
+					
+				/*	String bip = "audio.mp3";
+					Media hit = new Media(new File(bip).toURI().toString());
+					MediaPlayer mediaPlayer = new MediaPlayer(hit);
+					mediaPlayer.play();*/
+					System.out.println("trabtooo");
+					playSound();
+					if(source.getClass().getSimpleName().equals("Pin")) ((Pin)source).setEtat(EtatLogique.ZERO);
+				}
+				}else {
+				der =  line.getPoints().size()-1;
+				if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3))< 10) {
+					line.getPoints().remove(der);line.getPoints().remove(der-1);}
+			}
+			ajouterGeste(line);
+			}
+		});
+	/*line.setOnMouseDragEntered(new EventHandler<MouseEvent>() {
+
+		@Override
+		public void handle(MouseEvent event) {
+			// TODO Auto-generated method stub
+		      guideFilX.setLayoutX(event.getX());
+		      guideFilY.setLayoutY(event.getY());
+		}
+	});*/
 	}
 }
 

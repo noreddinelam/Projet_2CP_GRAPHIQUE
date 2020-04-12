@@ -7,7 +7,7 @@ public class LesCoordonnees {
 	private int nbCordEntree ;
 	private Coordonnees cordSorties[] = new Coordonnees[32]; // coordonees des sorties
 	private int nbCordSorties ;
-	private Coordonnees cordCommandes[]= new Coordonnees[32]; // coordonees des cmd
+	private Coordonnees cordCommandes[] = new Coordonnees[32]; // coordonees des cmd
 	private int nbCordCommandes;
 	private Coordonnees cordLoad = null;
 	private Coordonnees cordClear = null;
@@ -17,6 +17,7 @@ public class LesCoordonnees {
 		this.nbCordEntree = nbCordEntree;
 		this.nbCordSorties = nbCordSorties;
 		this.nbCordCommandes = nbCordCommandes;
+
 //		cordEntree=new Coordonnees[nbCordEntree];
 //		cordSorties=new Coordonnees[nbCordSorties];
 //		cordCommandes=new Coordonnees[nbCordCommandes];
@@ -90,20 +91,38 @@ public class LesCoordonnees {
 	public int getNbCordCommandes() {
 		return nbCordCommandes;
 	}
+	
+	public int indexCoord(Coordonnees crd) {
+		int i = 0;
+		while(i < nbCordEntree) {
+			if(cordEntree[i].equals(crd))
+				return i;
+		}
+		return -1;
+	}
+
+	public void setCordEntree(Coordonnees[] cordEntree) {
+		this.cordEntree = cordEntree;
+	}
 
 	public void setNbCordEntree(int nbCordEntree) {
 		this.nbCordEntree = nbCordEntree;
+	}
+
+	public void setCordSorties(Coordonnees[] cordSorties) {
+		this.cordSorties = cordSorties;
 	}
 
 	public void setNbCordSorties(int nbCordSorties) {
 		this.nbCordSorties = nbCordSorties;
 	}
 
+	public void setCordCommandes(Coordonnees[] cordCommandes) {
+		this.cordCommandes = cordCommandes;
+	}
+
 	public void setNbCordCommandes(int nbCordCommandes) {
 		this.nbCordCommandes = nbCordCommandes;
 	}
-	
-	
-	
 	
 }

@@ -58,8 +58,11 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 	public void genererSorties() { // executer la fonction du pin 
 		if(input) // si pin est une entree ( pour definir les entrees du circuit ) 
 			sorties[0].setEtatLogiqueFil(etat); // transferer l'etat du pin au fil de sortie 
-		else  // si pin est une sortie ( pour affichage de la valeur de la sortie du circuit )
+		else {  // si pin est une sortie ( pour affichage de la valeur de la sortie du circuit )
 			etat = entrees[0].getEtatLogiqueFil(); // transferer l'etat du fil de sortie au pin 
+			ImageView img = Circuit.getImageFromComp(this);
+			img.setImage(new Image(generatePath()));
+		}
 	}
 	
 	public boolean valider() {
