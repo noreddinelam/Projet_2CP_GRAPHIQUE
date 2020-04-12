@@ -68,7 +68,8 @@ public class HomeController implements Initializable {
     ImageView dragItem;
     private ClickDroit clickDroitFenetre;
     private Double x,y;
-    private int switching = 0; 
+    private int switching = 0;
+    private boolean simul = false;
     
     // utilisé dans la sauvegarde des coordonnées 
     Double posX ;
@@ -298,6 +299,11 @@ public class HomeController implements Initializable {
     	rotationDelogo(logo,1,500);
     }
     
+    @FXML
+    void onSimuler(MouseEvent event) {
+    	simul = (!simul);
+    }
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ajouterGestWorkSpace();/////Les gestes De drag and drop 
@@ -361,6 +367,38 @@ public class HomeController implements Initializable {
     	    ////////////// tracer les regles 
   
     	    tracerLesregles(workSpace);
+    	    
+    	    fichierDrawer.setDisable(true);//mettre tout les drawers en mode disable
+    	    editionDrawer.setDisable(true);
+    	    affichageDrawer.setDisable(true);
+    	    helpDrawer.setDisable(true);
+    	    
+    	    
+
+    	    tooltipInitialize();
+    		rightbar(fichier, fichierDrawer,editionDrawer,affichageDrawer,helpDrawer,"/application/Fichier.fxml" );
+    		rightbar(edition, editionDrawer,affichageDrawer,fichierDrawer,helpDrawer,"/application/Edition.fxml" );
+    		rightbar(affichage, affichageDrawer,editionDrawer,fichierDrawer,helpDrawer,"/application/Affichage.fxml" );
+    		rightbar(aide, helpDrawer,affichageDrawer,fichierDrawer,editionDrawer,"/application/Aide.fxml" );
+
+    			workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{//pour fermer les drawer en cliquant sur la souris
+    				if(fichierDrawer.isOpened() ||editionDrawer.isOpened() ||affichageDrawer.isOpened() || helpDrawer.isOpened()) {
+    						fichierDrawer.close();
+    						fichierDrawer.setOpacity(0);
+    						editionDrawer.close();
+    						editionDrawer.setOpacity(0);
+    						affichageDrawer.close();
+    						affichageDrawer.setOpacity(0);
+    						helpDrawer.close();
+    						helpDrawer.setOpacity(0);
+    					 	fichierDrawer.setDisable(true);
+    					    editionDrawer.setDisable(true);
+    					    affichageDrawer.setDisable(true);
+    					    helpDrawer.setDisable(true);
+    				}
+    				
+    			
+    			});
 	}
 	private void ajouterGestWorkSpace() {////Methodes pour Ajouter l'interaction avec le drag and drop et les guides
 		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
@@ -413,37 +451,6 @@ public class HomeController implements Initializable {
 				  }
 			  });		
 	
-    fichierDrawer.setDisable(true);//mettre tout les drawers en mode disable
-    editionDrawer.setDisable(true);
-    affichageDrawer.setDisable(true);
-    helpDrawer.setDisable(true);
-    
-    
-
-    tooltipInitialize();
-	rightbar(fichier, fichierDrawer,editionDrawer,affichageDrawer,helpDrawer,"/application/Fichier.fxml" );
-	rightbar(edition, editionDrawer,affichageDrawer,fichierDrawer,helpDrawer,"/application/Edition.fxml" );
-	rightbar(affichage, affichageDrawer,editionDrawer,fichierDrawer,helpDrawer,"/application/Affichage.fxml" );
-	rightbar(aide, helpDrawer,affichageDrawer,fichierDrawer,editionDrawer,"/application/Aide.fxml" );
-
-		workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{//pour fermer les drawer en cliquant sur la souris
-			if(fichierDrawer.isOpened() ||editionDrawer.isOpened() ||affichageDrawer.isOpened() || helpDrawer.isOpened()) {
-					fichierDrawer.close();
-					fichierDrawer.setOpacity(0);
-					editionDrawer.close();
-					editionDrawer.setOpacity(0);
-					affichageDrawer.close();
-					affichageDrawer.setOpacity(0);
-					helpDrawer.close();
-					helpDrawer.setOpacity(0);
-				 	fichierDrawer.setDisable(true);
-				    editionDrawer.setDisable(true);
-				    affichageDrawer.setDisable(true);
-				    helpDrawer.setDisable(true);
-			}
-			
-		
-		});
 	}
 	
 	
@@ -544,131 +551,131 @@ public class HomeController implements Initializable {
     
 	private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
 		//est ajoute dans le workSpace
-	
-	
-	    elementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
-	        public void handle(MouseEvent e) {
-	            elementAdrager.setCursor(Cursor.HAND);
-	            elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#000000;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
-	            transitionDesComposants(elementAdrager);
+			
+		
+			elementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+					elementAdrager.setCursor(Cursor.HAND);
+					elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#000000;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
+					transitionDesComposants(elementAdrager);
 				}
-        
-	    });
-	    elementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() {
-	    	public void handle(MouseEvent e) {
-	    		  elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#303337;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
-	    	}
-		});
-	    
-	    elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
-	        public void handle(MouseEvent e) {
-	        	ImageView dragImageView = new ImageView();
-	            System.out.println(elementAdrager.getId());
-	            dragImageView.setMouseTransparent(true);
-	            elementAdrager.setMouseTransparent(true);
-	            elementAdrager.setCursor(Cursor.CLOSED_HAND);
-	            
-	            elementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	            SnapshotParameters snapParams = new SnapshotParameters();
-	    	            snapParams.setFill(Color.TRANSPARENT);
-	    	            dragImageView.setImage(elementAdrager.snapshot(snapParams, null));
-	    	            workSpace.getChildren().add(dragImageView);
-	    	            dragImageView.startFullDrag();
-	    	            e.consume();
-	    	        }
-	    	    });
-	            
-	            elementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	        	Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
-	    	            dragImageView.relocate(
-	    	                    (int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2),
-	    	                    (int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2 )
-	    	            );
-	    	            
-	    	            String xString=String.valueOf(dragImageView.getLayoutX());
-    	                String yString=String.valueOf(dragImageView.getLayoutY());
-	    	            if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<1066 )&&(dragImageView.getLayoutY()>17))
-	    	            {
-	    	                guideX.setLayoutX(dragImageView.getLayoutX());
-	    	                guideY.setLayoutY(dragImageView.getLayoutY());
-	    	                guideXp.setLayoutX(dragImageView.getLayoutX()+ elementAdrager.getBoundsInLocal().getWidth()+1);
-	    	                guideYp.setLayoutY(dragImageView.getLayoutY()+ elementAdrager.getBoundsInLocal().getHeight()+1);
-	    	                
-	    	        
-	    	                afficheurX.setText("X : "+xString);
-	    	                afficheurY.setText("Y : "+yString);
-	    	                
-	    	            }
-	    	      
-	    	            else 
-	    	            	{
-	    	            	guideX.setLayoutX(0);
-	    	            	guideY.setLayoutY(0);
-	    	            	guideXp.setLayoutX(0);
-	    	            	guideYp.setLayoutY(0);
-	    	            	afficheurX.setText("X : 0");
-		    	            afficheurY.setText("Y : 0");
-	    	            	}
-	    	    	    	            
-	    	            e.consume();
-	    	        }
-	    	    });
-	            
-	            elementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	        	
-	    	            dragItem = null;
-	    	            
-	    	            dragImageView.setMouseTransparent(false);
-	    	           
-	    	            elementAdrager.setMouseTransparent(false);
-	    	            elementAdrager.setCursor(Cursor.DEFAULT);
-	    	            dragImageView.setId(elementAdrager.getId());
-    	            	instanceComposant(dragImageView);
-    	            	Image img = new Image(Circuit.getCompFromImage(dragImageView).generatePath());
-    	            	dragImageView.setImage(img);
-    	            	dragImageView.setFitHeight(img.getHeight());
-    	            	dragImageView.setFitWidth(img.getWidth());
-	    	            if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670 || intersectionComposant(dragImageView))
-	    	            {
-	    	            	workSpace.getChildren().remove(dragImageView);
-	    	            	Circuit.removeCompFromImage(dragImageView);
-	    	            }
-	    	            else 
-	    	            {
-	    	            	Polyline polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-	    	            	polyline.setStrokeWidth(4);
-	    	        		polyline.setSmooth(true);
-	    	        		polyline.setStrokeType(StrokeType.CENTERED);
-	    	        		polyline.setCursor(Cursor.HAND);
-	    	            	workSpace.getChildren().add(polyline);
-	    	            	ajouterGeste(polyline);
-	    	            {    	            	
-	    	            	ajouterLeGestApresCollage(dragImageView);
-	    	            }
-	    	        }
-	    	    }});
-	            
-	        }
-	    });
+
+			});
+			elementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+					elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#303337;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
+				}
+			});
+
+			elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+					ImageView dragImageView = new ImageView();
+					System.out.println(elementAdrager.getId());
+					dragImageView.setMouseTransparent(true);
+					elementAdrager.setMouseTransparent(true);
+					elementAdrager.setCursor(Cursor.CLOSED_HAND);
+
+					elementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent e) {
+							SnapshotParameters snapParams = new SnapshotParameters();
+							snapParams.setFill(Color.TRANSPARENT);
+							dragImageView.setImage(elementAdrager.snapshot(snapParams, null));
+							workSpace.getChildren().add(dragImageView);
+							dragImageView.startFullDrag();
+							e.consume();
+						}
+					});
+
+					elementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent e) {
+							
+							Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+							dragImageView.relocate(
+									(int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2),
+									(int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2 )
+									);
+
+							String xString=String.valueOf(dragImageView.getLayoutX());
+							String yString=String.valueOf(dragImageView.getLayoutY());
+							if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<1066 )&&(dragImageView.getLayoutY()>17))
+							{
+								guideX.setLayoutX(dragImageView.getLayoutX());
+								guideY.setLayoutY(dragImageView.getLayoutY());
+								guideXp.setLayoutX(dragImageView.getLayoutX()+ elementAdrager.getBoundsInLocal().getWidth()+1);
+								guideYp.setLayoutY(dragImageView.getLayoutY()+ elementAdrager.getBoundsInLocal().getHeight()+1);
+
+
+								afficheurX.setText("X : "+xString);
+								afficheurY.setText("Y : "+yString);
+
+							}
+
+							else 
+							{
+								guideX.setLayoutX(0);
+								guideY.setLayoutY(0);
+								guideXp.setLayoutX(0);
+								guideYp.setLayoutY(0);
+								afficheurX.setText("X : 0");
+								afficheurY.setText("Y : 0");
+							}
+
+							e.consume();
+						}
+					});
+
+					elementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent e) {
+
+							dragItem = null;
+
+							dragImageView.setMouseTransparent(false);
+
+							elementAdrager.setMouseTransparent(false);
+							elementAdrager.setCursor(Cursor.DEFAULT);
+							dragImageView.setId(elementAdrager.getId());
+							instanceComposant(dragImageView);
+							Image img = new Image(Circuit.getCompFromImage(dragImageView).generatePath());
+							dragImageView.setImage(img);
+							dragImageView.setFitHeight(img.getHeight());
+							dragImageView.setFitWidth(img.getWidth());							
+							if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>670 || intersectionComposant(dragImageView))
+							{
+								workSpace.getChildren().remove(dragImageView);
+								Circuit.removeCompFromImage(dragImageView);
+							}
+							else 
+							{
+								Polyline polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+								polyline.setStrokeWidth(4);
+								polyline.setSmooth(true);
+								polyline.setStrokeType(StrokeType.CENTERED);
+								polyline.setCursor(Cursor.HAND);
+								workSpace.getChildren().add(polyline);
+								ajouterGeste(polyline);
+								ajouterLeGestApresCollage(dragImageView);								
+							}
+						}});
+
+				}
+			});
+		
 	}
 	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
-			
-	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
-	        public void handle(MouseEvent e) {
-	            eleementAdrager.setCursor(Cursor.HAND);   
-	        }
-	    });
-	    
-	    eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
-	        public void handle(MouseEvent e) {
-	        	
-	        	//teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest  
-	           /* ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
+		if (! simul){	
+			eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+					eleementAdrager.setCursor(Cursor.HAND);   
+				}
+			});
+
+			eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+
+					//teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest  
+					/* ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
 	            for(int k=0;k < list.size();k++)
 	            {
 	            		while(list.indexOf(list.get(k)) != list.lastIndexOf(list.get(k)))
@@ -678,152 +685,177 @@ public class HomeController implements Initializable {
 	            }
 	            testPoly.getPoints().clear();
 	            testPoly.getPoints().addAll(list);*/
-	            ///////////////////////////////////////////////////////////////////
-	        //	testPoly.getPoints().add(0, e.getSceneY());
-			//	testPoly.getPoints().add(0, e.getSceneX()-180);
-				//testPoly.getPoints().add(0, e.getSceneY());
-				//testPoly.getPoints().add(0, e.getSceneX()-180);
-	        	posX = eleementAdrager.getLayoutX();
-	   		 	posY = eleementAdrager.getLayoutY();
-	        
-	        	if(e.getButton() != MouseButton.SECONDARY)
-	        	{
-	            dragItem = eleementAdrager;
-	       
-	            eleementAdrager.setMouseTransparent(true);
-	            eleementAdrager.setMouseTransparent(true);
-	            eleementAdrager.setCursor(Cursor.CLOSED_HAND);
-	            
-	            
-	            eleementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	       
-	    	            SnapshotParameters snapParams = new SnapshotParameters();
-	    	            snapParams.setFill(Color.TRANSPARENT);
-	    	            eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
-	    	            eleementAdrager.startFullDrag();
-	    	            e.consume();
-	    	        }
-	    	    });
-	            
-	        	}else
-	        	{
-	        		double clicDroitX,clicDroitY;
-	        		clicDroitX = e.getScreenX();
-	        		clicDroitY = e.getScreenY();
-	        		clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY);
+					///////////////////////////////////////////////////////////////////
+					//	testPoly.getPoints().add(0, e.getSceneY());
+					//	testPoly.getPoints().add(0, e.getSceneX()-180);
+					//testPoly.getPoints().add(0, e.getSceneY());
+					//testPoly.getPoints().add(0, e.getSceneX()-180);
+					posX = eleementAdrager.getLayoutX();
+					posY = eleementAdrager.getLayoutY();
 
-	        	}
-	            eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	            Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
-	    	            eleementAdrager.relocate(
-	    	                    (int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
-	    	                    (int)(localPoint.getY() - eleementAdrager.getBoundsInLocal().getHeight()/2 )
-	    	            );
-	    	            double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth() - 2;
-	    	        	double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2 - 1;
-	    	        	//a.relocate(x, y);
-	    	        	//polyline.relocate(x, y);
-	    	            String xString=String.valueOf(eleementAdrager.getLayoutX());
-    	                String yString=String.valueOf(eleementAdrager.getLayoutY());
-    	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<1066 )&&(eleementAdrager.getLayoutY()>17))
-	    	            {
-	    	                guideX.setLayoutX(eleementAdrager.getLayoutX());
-	    	                guideY.setLayoutY(eleementAdrager.getLayoutY());
-	    	                guideXp.setLayoutX(eleementAdrager.getLayoutX()+ eleementAdrager.getBoundsInLocal().getWidth()+1);
-	    	                guideYp.setLayoutY(eleementAdrager.getLayoutY()+ eleementAdrager.getBoundsInLocal().getHeight()+1);
+					if(e.getButton() != MouseButton.SECONDARY)
+					{
+						dragItem = eleementAdrager;
 
-	    	         
-	    	                afficheurX.setText("X : "+xString);
-	    	                afficheurY.setText("Y : "+yString);
-	    	            }
-	    	            
-	    	       
-	    	            else 
-	    	            	{
-	    	            	guideX.setLayoutX(0);
-	    	               	guideY.setLayoutY(0);
-	    	            	guideXp.setLayoutX(0);
-	    	            	guideYp.setLayoutY(0);
-	    	              	afficheurX.setText("X : 0");
-		    	            afficheurY.setText("Y : 0");
-	    	            	}	    	        
-	    	            e.consume();
-	    	            
-	    	           /*teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest*/
-	    	            //supprimer les noueds doublees : 
-	    	           //ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
-	    	          
-	    	            testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
-	    	            System.out.println("polyyyyyyyyyyyyyyyyyyyyy"+Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
-	    	            double x2 = e.getSceneX()-180;
-	    	            int i = 0;
-						double y2 = e.getSceneY();
-						x = testPoly.getPoints().get(4);
-						y = testPoly.getPoints().get(5);
-	    				for (i = 0; i < 4; i++) {
-							testPoly.getPoints().remove((0));
+						eleementAdrager.setMouseTransparent(true);
+						eleementAdrager.setMouseTransparent(true);
+						eleementAdrager.setCursor(Cursor.CLOSED_HAND);
+
+
+						eleementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
+							public void handle(MouseEvent e) {
+
+								SnapshotParameters snapParams = new SnapshotParameters();
+								snapParams.setFill(Color.TRANSPARENT);
+								eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
+								eleementAdrager.startFullDrag();
+								e.consume();
+							}
+						});
+
+					}else
+					{
+						double clicDroitX,clicDroitY;
+						clicDroitX = e.getScreenX();
+						clicDroitY = e.getScreenY();
+						clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY);
+
+					}
+					eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent e) {
+							System.out.println("-----------------------------------------------------> " + simul);
+							if (e.getButton() ==MouseButton.PRIMARY) {
+								Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+								eleementAdrager.relocate(
+										(int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
+										(int)(localPoint.getY() - eleementAdrager.getBoundsInLocal().getHeight()/2 )
+										);
+								double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth() - 2;
+								double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2 - 1;
+								//a.relocate(x, y);
+								//polyline.relocate(x, y);
+								String xString=String.valueOf(eleementAdrager.getLayoutX());
+								String yString=String.valueOf(eleementAdrager.getLayoutY());
+								if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<1066 )&&(eleementAdrager.getLayoutY()>17))
+								{
+									guideX.setLayoutX(eleementAdrager.getLayoutX());
+									guideY.setLayoutY(eleementAdrager.getLayoutY());
+									guideXp.setLayoutX(eleementAdrager.getLayoutX()+ eleementAdrager.getBoundsInLocal().getWidth()+1);
+									guideYp.setLayoutY(eleementAdrager.getLayoutY()+ eleementAdrager.getBoundsInLocal().getHeight()+1);
+
+
+									afficheurX.setText("X : "+xString);
+									afficheurY.setText("Y : "+yString);
+								}
+
+
+								else 
+								{
+									guideX.setLayoutX(0);
+									guideY.setLayoutY(0);
+									guideXp.setLayoutX(0);
+									guideYp.setLayoutY(0);
+									afficheurX.setText("X : 0");
+									afficheurY.setText("Y : 0");
+								}	    	        
+								e.consume();
+
+								/*teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest*/
+								//supprimer les noueds doublees : 
+								//ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
+
+								//testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
+								System.out.println("polyyyyyyyyyyyyyyyyyyyyy"+Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
+								double x2 = e.getSceneX()-180;
+								int i = 0;
+								double y2 = e.getSceneY();
+//								x = testPoly.getPoints().get(4);
+//								y = testPoly.getPoints().get(5);
+//								for (i = 0; i < 4; i++) {
+//									testPoly.getPoints().remove((0));
+//								}
+//								if(nbOccPoint(testPoly, testPoly.getPoints().get(2), testPoly.getPoints().get(3)) == 1){
+//									System.out.println("dkhal supprimihaa");
+//									i = testPoly.getPoints().indexOf(x2);
+//									if((testPoly.getPoints().contains(x2) ) && (Math.abs(testPoly.getPoints().get(i+1)-y2)<5)) {
+//										testPoly.getPoints().remove(i);
+//										testPoly.getPoints().remove(i);
+//									}
+//									else {
+//										i = testPoly.getPoints().indexOf(y2);
+//										if( testPoly.getPoints().contains(y2) && (Math.abs(testPoly.getPoints().get(i-1)-x2)<5)) {
+//											testPoly.getPoints().remove(i-1);
+//											testPoly.getPoints().remove(i-1);
+//										}
+//									}
+//								}
+//
+//								if(Math.abs(x2-x)<10) { 
+//									if(Math.abs(y2-y)<10) switching = 0; 
+//									else switching = 1;
+//								}else {
+//									if(Math.abs(y2-y)<10) switching = 0;
+//								} 		
+//								if(switching == 0) {
+//									//testPoly.getPoints().addAll(x2,y,x2,y2);
+//									testPoly.getPoints().add(0, x2);
+//									testPoly.getPoints().add(1, y2);
+//									testPoly.getPoints().add(2, x2);
+//									testPoly.getPoints().add(3, y);
+//								}
+//								else {
+//									//testPoly.getPoints().addAll(x,y2,x2,y2);
+//									testPoly.getPoints().add(0, x2);
+//									testPoly.getPoints().add(1, y2);
+//									testPoly.getPoints().add(2, x);
+//									testPoly.getPoints().add(3, y2);
+//								}
+							}
 						}
-	    				if(nbOccPoint(testPoly, testPoly.getPoints().get(2), testPoly.getPoints().get(3)) == 1){
-	    					System.out.println("dkhal supprimihaa");
-	    					i = testPoly.getPoints().indexOf(x2);
-	    					if((testPoly.getPoints().contains(x2) ) && (Math.abs(testPoly.getPoints().get(i+1)-y2)<5)) {
-	    						testPoly.getPoints().remove(i);
-	    						testPoly.getPoints().remove(i);
-	    					}
-	    					else {
-	    						i = testPoly.getPoints().indexOf(y2);
-	    						if( testPoly.getPoints().contains(y2) && (Math.abs(testPoly.getPoints().get(i-1)-x2)<5)) {
-	    							testPoly.getPoints().remove(i-1);
-	    							testPoly.getPoints().remove(i-1);
-	    						}
-	    					}
-	    				}
-	    				
-						if(Math.abs(x2-x)<10) { 
-							if(Math.abs(y2-y)<10) switching = 0; 
-							else switching = 1;
-						}else {
-							if(Math.abs(y2-y)<10) switching = 0;
-						} 		
-						if(switching == 0) {
-							//testPoly.getPoints().addAll(x2,y,x2,y2);
-							testPoly.getPoints().add(0, x2);
-							testPoly.getPoints().add(1, y2);
-							testPoly.getPoints().add(2, x2);
-							testPoly.getPoints().add(3, y);
+					});
+
+					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent e) {
+							dragItem = null;  	 
+							eleementAdrager.setMouseTransparent(false);
+							eleementAdrager.setMouseTransparent(false);
+							eleementAdrager.setCursor(Cursor.DEFAULT);
+							//if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670 || intersectionComposant(eleementAdrager))
+							System.out.println(e.getSceneX() + eleementAdrager.getBoundsInLocal().getWidth() / 2 +"------------");
+							if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>670 || intersectionComposant(eleementAdrager))
+							{
+								eleementAdrager.setLayoutX(posX);
+								eleementAdrager.setLayoutY(posY);
+							}
+							else {
+								posX = eleementAdrager.getLayoutX();
+								posY = eleementAdrager.getLayoutY();
+							}
 						}
-						else {
-							//testPoly.getPoints().addAll(x,y2,x2,y2);
-							testPoly.getPoints().add(0, x2);
-							testPoly.getPoints().add(1, y2);
-							testPoly.getPoints().add(2, x);
-							testPoly.getPoints().add(3, y2);
+					});
+				}
+			});
+		}else {
+			if (eleementAdrager.getId().equals("pin")) {
+				Pin pin = (Pin) Circuit.getCompFromImage(eleementAdrager);
+				if (pin.getInput()) {
+					eleementAdrager.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent e) {
+							// TODO Auto-generated method stub
+
+							if (pin.getEtat() == EtatLogique.ONE) {
+								pin.setEtat(EtatLogique.ZERO);
+							} 
+							else {
+								pin.setEtat(EtatLogique.ONE);
+							}
+							eleementAdrager.setCursor(Cursor.HAND);
 						}
-	    	        }
-	    	    });
-	            
-	            eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	            dragItem = null;  	 
-	    	            eleementAdrager.setMouseTransparent(false);
-	    	            eleementAdrager.setMouseTransparent(false);
-	    	            eleementAdrager.setCursor(Cursor.DEFAULT);
-	    	            if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670 || intersectionComposant(eleementAdrager))
-	    	            {
-	    	            	eleementAdrager.setLayoutX(posX);
-	    	            	eleementAdrager.setLayoutY(posY);
-	    	            }
-	    	            else {
-							posX = eleementAdrager.getLayoutX();
-							posY = eleementAdrager.getLayoutY();
-						}
-	    	        }
-	    	    });
-	            
-	        }
-	    });
+					});
+				}
+			}
+		}
 	}
 	public void transitionDesComposants(Node composants) {// Methode d'animation de 'Shake'
 	    int duration = 100;
@@ -1152,6 +1184,7 @@ public class HomeController implements Initializable {
     }
 	 public void ajouterGeste(Polyline line)
 		{
+		 if (! simul) {
 		 EventHandler<MouseEvent> event1 = new javafx.event.EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
@@ -1238,6 +1271,7 @@ public class HomeController implements Initializable {
 				}
 				}
 			});
+		}
 		/*line.setOnMouseDragEntered(new EventHandler<MouseEvent>() {
 
 			@Override
