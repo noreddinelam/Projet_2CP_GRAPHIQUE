@@ -411,10 +411,11 @@ public class HomeController implements Initializable {
 	private void ajouterGestWorkSpace() {////Methodes pour Ajouter l'interaction avec le drag and drop et les guides
 		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
 	   	        public void handle(MouseDragEvent e) {
-                       workSpace.getChildren().add(guideX);
-                       workSpace.getChildren().add(guideXp);
-                       workSpace.getChildren().add(guideY);
-                       workSpace.getChildren().add(guideYp);
+                       if (! workSpace.getChildren().contains(guideX)) workSpace.getChildren().add(guideX);
+                    	   
+                       if (! workSpace.getChildren().contains(guideXp)) workSpace.getChildren().add(guideXp);
+                       if (! workSpace.getChildren().contains(guideY)) workSpace.getChildren().add(guideY);
+                       if (! workSpace.getChildren().contains(guideYp)) workSpace.getChildren().add(guideYp);
                        //sari
                      //  workSpace.getChildren().add(guideFilX);
                      //  workSpace.getChildren().add(guideFilY);
@@ -575,6 +576,9 @@ public class HomeController implements Initializable {
 
 			elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
 				public void handle(MouseEvent e) {
+					if (! simul) {
+						
+					
 					ImageView dragImageView = new ImageView();
 					System.out.println(elementAdrager.getId());
 					dragImageView.setMouseTransparent(true);
@@ -653,16 +657,22 @@ public class HomeController implements Initializable {
 							else 
 							{
 								Polyline polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+								if (polyline != null) {
+									
+								
 								polyline.setStrokeWidth(4);
 								polyline.setSmooth(true);
 								polyline.setStrokeType(StrokeType.CENTERED);
 								polyline.setCursor(Cursor.HAND);
 								workSpace.getChildren().add(polyline);
 								ajouterGeste(polyline);
-								ajouterLeGestApresCollage(dragImageView);								
+								
+								}
+								ajouterLeGestApresCollage(dragImageView);
 							}
 						}});
 
+				}
 				}
 			});
 		
@@ -670,7 +680,7 @@ public class HomeController implements Initializable {
 	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
-		if(!simul) {
+		
 	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	            eleementAdrager.setCursor(Cursor.HAND);   
@@ -679,6 +689,7 @@ public class HomeController implements Initializable {
 	    
 	    eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
+	        	if (! simul) {		
 	        /*	double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth()-5;
 	        	double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2;
 	        	testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
@@ -687,24 +698,12 @@ public class HomeController implements Initializable {
 	        	testPoly.getPoints().addAll(x,y,x+8,y);*/
 	        	//teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest  
 	           /* ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
-=======
->>>>>>> 05928f96416e78d8b66c6969720b0cfd4fdd4109
-		if (! simul){	
-			eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
-				public void handle(MouseEvent e) {
-					eleementAdrager.setCursor(Cursor.HAND);   
-				}
-			});
 
 			eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
 				public void handle(MouseEvent e) {
 
 					//teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest  
 					/* ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
-<<<<<<< HEAD
-=======
->>>>>>> fbbc9e52a48718863fbb52bbcdade72c49092722
->>>>>>> 05928f96416e78d8b66c6969720b0cfd4fdd4109
 	            for(int k=0;k < list.size();k++)
 	            {
 	            		while(list.indexOf(list.get(k)) != list.lastIndexOf(list.get(k)))
@@ -964,10 +963,15 @@ public class HomeController implements Initializable {
 							testPoly.getPoints().add(2, x2);
 							testPoly.getPoints().add(3, y);
 						}
+						else {
+							//testPoly.getPoints().addAll(x,y2,x2,y2);
+							testPoly.getPoints().add(0, x2);
+							testPoly.getPoints().add(1, y2);
+							testPoly.getPoints().add(2, x);
+							testPoly.getPoints().add(3, y2);
+						}
 	    	        }
 	    	        });
-	            
-
 					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
 							dragItem = null;  	 
@@ -986,29 +990,30 @@ public class HomeController implements Initializable {
 							}
 						}
 					});
-				}
-			});
-		}else {
-			if (eleementAdrager.getId().equals("pin")) {
-				Pin pin = (Pin) Circuit.getCompFromImage(eleementAdrager);
-				if (pin.getInput()) {
-					eleementAdrager.setOnMouseClicked(new EventHandler<MouseEvent>() {
-						@Override
-						public void handle(MouseEvent e) {
-							// TODO Auto-generated method stub
+				}else {
+					if (eleementAdrager.getId().equals("pin")) {
+						Pin pin = (Pin) Circuit.getCompFromImage(eleementAdrager);
+						if (pin.getInput()) {
+							eleementAdrager.setOnMouseClicked(new EventHandler<MouseEvent>() {
+								@Override
+								public void handle(MouseEvent e) {
+									// TODO Auto-generated method stub
 
-							if (pin.getEtat() == EtatLogique.ONE) {
-								pin.setEtat(EtatLogique.ZERO);
-							} 
-							else {
-								pin.setEtat(EtatLogique.ONE);
-							}
-							eleementAdrager.setCursor(Cursor.HAND);
+									if (pin.getEtat() == EtatLogique.ONE) {
+										pin.setEtat(EtatLogique.ZERO);
+									} 
+									else {
+										pin.setEtat(EtatLogique.ONE);
+									}
+									eleementAdrager.setCursor(Cursor.HAND);
+								}
+							});
 						}
-					});
+					}
 				}
-			}
-		}
+	    	}
+	    });
+		
 	}
 	public void transitionDesComposants(Node composants) {// Methode d'animation de 'Shake'
 	    int duration = 100;
@@ -1345,7 +1350,6 @@ public class HomeController implements Initializable {
     	ajouterGeste(a);
 		return a;
 	}
-	//AudioClip player = new AudioClip(this.getClass().getResource("audio.mp3").toString());
 		
 	 public void ajouterGeste(Polyline line)
 		{
@@ -1357,7 +1361,6 @@ public class HomeController implements Initializable {
 					//les guides :
 					guideFilX.setLayoutX(event.getSceneX()-180);
 					guideFilY.setLayoutY(event.getSceneY());
-					//////////////////
 					double x2 = event.getX();
 					double y2 = event.getY();
 				//	Double x2 = event.getSceneX()-180;
@@ -1454,7 +1457,6 @@ public class HomeController implements Initializable {
 					//ajouterGeste(line2);
 					ajouterGeste(line2);					
 				}
-				
 			};
 			line.setOnMousePressed(event);
 			//a.addEventHandler(MouseEvent.MOUSE_DRAGGED, event1);
@@ -1478,7 +1480,6 @@ public class HomeController implements Initializable {
 						Coordonnees crd = new Coordonnees(arg0.getSceneX()-180,arg0.getSceneY());
 						//entree = destination.getLesCoordonnees().indexCoord(crd);
 						Circuit.relier(source, destination, sortie, entree);
-						//souuund
 						System.out.println("trabtooo");
 						playSound();
 						if(source.getClass().getSimpleName().equals("Pin")) ((Pin)source).setEtat(EtatLogique.ZERO);
@@ -1584,7 +1585,6 @@ public class HomeController implements Initializable {
 		Double XImg = imgCmp.getLayoutX();
 		Double Yimg = imgCmp.getLayoutY();
 		
-		//System.out.println(x+"   "+y+"    "+XImg+"    "+Yimg);
 		if(( Xfil >= XImg  )  &&  (XImg+imgCmp.getFitWidth() > Xfil) && ( Yfil >= Yimg)  &&  (Yimg+imgCmp.getFitHeight() > Yfil) ) {
 			Composant cmp = Circuit.getCompFromImage(imgCmp);
 			Coordonnees tabEntrees[] = cmp.getLesCoordonnees().getCordEntree();
@@ -1592,13 +1592,13 @@ public class HomeController implements Initializable {
 			Coordonnees crd = new Coordonnees(Xfil,Yfil);
 			boolean trouve = false;
 			int i = 0;
-			while( i < nbCord && trouve == false) {
-				//double xTab = tabEntrees[i].getX() + imgCmp.getLayoutX(); 
-				//double yTab = tabEntrees[i].getY() + imgCmp.getLayoutY(); 
-				Coordonnees crdTab = new Coordonnees(tabEntrees[i].getX() + imgCmp.getLayoutX(), tabEntrees[i].getY() + imgCmp.getLayoutY());
-				
+			while( i < nbCord && trouve == false) { 
+				Coordonnees crdTab = new Coordonnees(tabEntrees[i].getX() + imgCmp.getLayoutX(), tabEntrees[i].getY() + imgCmp.getLayoutY());				
 				System.out.println(Xfil+" "+crdTab.getX()+" "+Yfil+" "+crdTab.getY()+"layaoutx"+imgCmp.getLayoutX()+"layaouty"+imgCmp.getLayoutY());
-				if( crdTab.equals(crd) ) { trouve =true;entree=i; }
+				if( crdTab.equals(crd) ) { 
+					trouve =true;
+					entree=i; 
+				}
 				i++;
 			}
 			if(trouve)
@@ -1619,134 +1619,6 @@ public class HomeController implements Initializable {
 		i=i+2;
 		}
 		return nb;
-	}
-	
-	public void ajouterGesteDragg(Polyline line)
-	{
-	 EventHandler<MouseEvent> event1 = new javafx.event.EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				//les guides :
-				guideFilX.setLayoutX(event.getSceneX()-180);
-				guideFilY.setLayoutY(event.getSceneY());
-				//////////////////
-				double x2 = event.getX();
-				double y2 = event.getY();
-			//	Double x2 = event.getSceneX()-180;
-			//	Double y2 = event.getSceneY();
-				//if(intersectionFilComposants(event.getSceneX()-180,event.getSceneY())) {
-				for (int i = 0; i < 4; i++) {
-					line.getPoints().remove((line.getPoints().size()-1));
-				}
-				if(Math.abs(x2-x)<10) { 
-					if(Math.abs(y2-y)<10) switching = 0; 
-					else switching = 1;
-				}else {
-					if(Math.abs(y2-y)<10) switching = 0;
-				} 		
-				if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
-				else line.getPoints().addAll(x,y2,x2,y2);
-			
-			}
-			
-		};
-		
-		EventHandler<MouseEvent> event = new javafx.event.EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				workSpace.getChildren().add(guideFilX);
-                workSpace.getChildren().add(guideFilY);
-                guideFilX.setLayoutX(event.getSceneX()-180);
-				guideFilY.setLayoutY(event.getSceneY());
-				//relier
-				
-				/*source = Circuit.getFilFromPolyline(line).getSource();
-				sortie = 0; 	
-				//
-                
-				int i = line.getPoints().size()-2;
-				x = event.getX();
-				y = event.getY();
-				while((i!=0) && ((Math.abs(x-line.getPoints().get(i))>5) && ((Math.abs(y - line.getPoints().get(i+1)) >=5 ))))
-				{
-					line.getPoints().addAll(line.getPoints().get(i),line.getPoints().get(i+1));
-					i=i-2;
-				}
-
-				double x1 = line.getPoints().get(i),y1 = line.getPoints().get(i+1);
-				if(Math.abs(x-line.getPoints().get(i)) < 5) {
-					if(Math.abs(y - line.getPoints().get(i+1)) < 5) {
-						line.getPoints().addAll(x1,y1,x1,y1,x1,y1);
-					}
-					else {
-						line.getPoints().addAll(x1,y1,x1,y,x1,y,x1,y);
-					}	
-				}else{
-					if(Math.abs(y - line.getPoints().get(i+1)) < 5) {
-						line.getPoints().addAll(x1,y1,x,y1,x,y1,x,y1);
-					}
-				}*/
-				x = event.getX();
-				y = event.getY();
-				Polyline line2 = initialser(x, y);
-				//ajouterGeste(line2);
-				line2.setOnMouseDragged(event1);
-				
-			}
-			
-		};
-		//line.setOnMousePressed(event);
-		//a.addEventHandler(MouseEvent.MOUSE_DRAGGED, event1);
-		line.setOnMouseDragged(event1);
-		line.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				workSpace.getChildren().remove(guideFilX);
-	  			workSpace.getChildren().remove(guideFilY);
-
-				int	der =  line.getPoints().size()-1;
-				if(intersectionFilComposants(arg0.getSceneX()-180,arg0.getSceneY()) != null) {
-				//if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der))) {
-					//System.out.println("reeeeeeeeel"+rel);
-				if(rel == 0) {
-					line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
-				}if(rel == 1) {
-					destination = intersectionFilComposants(arg0.getSceneX()-180,arg0.getSceneY());
-					Coordonnees crd = new Coordonnees(arg0.getSceneX()-180,arg0.getSceneY());
-					//entree = destination.getLesCoordonnees().indexCoord(crd);
-					Circuit.relier(source, destination, sortie, entree);
-					//souuund
-					
-				/*	String bip = "audio.mp3";
-					Media hit = new Media(new File(bip).toURI().toString());
-					MediaPlayer mediaPlayer = new MediaPlayer(hit);
-					mediaPlayer.play();*/
-					System.out.println("trabtooo");
-					playSound();
-					if(source.getClass().getSimpleName().equals("Pin")) ((Pin)source).setEtat(EtatLogique.ZERO);
-				}
-				}else {
-				der =  line.getPoints().size()-1;
-				if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3))< 10) {
-					line.getPoints().remove(der);line.getPoints().remove(der-1);}
-			}
-			ajouterGeste(line);
-			}
-		});
-	/*line.setOnMouseDragEntered(new EventHandler<MouseEvent>() {
-
-		@Override
-		public void handle(MouseEvent event) {
-			// TODO Auto-generated method stub
-		      guideFilX.setLayoutX(event.getX());
-		      guideFilY.setLayoutY(event.getY());
-		}
-	});*/
 	}
 }
 

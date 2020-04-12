@@ -97,6 +97,7 @@ public class LesCoordonnees {
 		while(i < nbCordEntree) {
 			if(cordEntree[i].equals(crd))
 				return i;
+			i++;
 		}
 		return -1;
 	}
