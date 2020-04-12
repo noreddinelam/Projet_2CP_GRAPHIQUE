@@ -103,7 +103,10 @@ public class ProprietesDecodeurController extends ProprietesController{
     	cmp.setNombreSortie((int)Math.pow(2, i));
     	cmp.setNom(label.getText());
     	System.out.println(cmp.generatePath());
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	Image img = new Image(cmp.generatePath());
+    	Circuit.getImageFromComp(cmp).setImage(img);
+    	Circuit.getImageFromComp(cmp).setFitHeight(img.getHeight());
+    	Circuit.getImageFromComp(cmp).setFitWidth(img.getWidth());
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }
