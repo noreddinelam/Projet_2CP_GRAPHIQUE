@@ -157,6 +157,7 @@ public abstract class Composant implements Serializable{
 	}
 	
 	public abstract String generatePath();
+	public abstract void resetPolyline(Polyline line , double x,double y);
 	
 	public abstract Polyline generatePolyline(double x,double y);
 	
@@ -176,6 +177,15 @@ public abstract class Composant implements Serializable{
 		}
 	}
 	public int numCmpEntrees(Fil fil) {
+		int i = 0;
+		while(i<nombreSortie) {
+			if(fil == sorties[i])
+				return i;
+		}
+		return 0;
+	}
+	
+	public int numCmpSorties(Fil fil) {
 		int i = 0;
 		while(i<nombreSortie) {
 			if(fil == sorties[i])

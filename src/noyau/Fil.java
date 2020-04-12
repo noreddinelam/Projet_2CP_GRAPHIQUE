@@ -68,12 +68,14 @@ public class Fil implements Serializable{
 
 	public void setEtatLogiqueFil(EtatLogique etat) {
 		this.etat = etat;
-		Polyline line = Circuit.getPolylineFromFil(this);
+		ArrayList<Polyline> List = Circuit.getPolylineFromFil(this);
+		for (Polyline line : List) {
 		if(etat.getNum() == 1) {
 			line.setStroke(Color.DARKGREEN);
 		}
 		if(etat.getNum() == 0){
 			line.setStroke(Color.DARKRED);
+		}
 		}
 	}
 
@@ -95,6 +97,22 @@ public class Fil implements Serializable{
 
 	public void addEtages(ArrayList<Integer> etage) {
 		source.addEtages(etage);
+	}
+	public Polyline polylineParPoint(Coordonnees crdrech) {
+		Coordonnees crd = new Coordonnees(0, 0);
+		ArrayList<Polyline> list = Circuit.getPolylineFromFil(this);
+		for (Polyline line : list) {
+			int i = 0;
+			while(i < line.getPoints().size()) {
+				crd.setX(line.getPoints().get(i));
+				crd.setY(line.getPoints().get(i+1));
+				if(crd.equals(crdrech)){
+					return line;
+				}
+				i=i+2;
+			}
+		}
+		return null;
 	}
 	
 }
