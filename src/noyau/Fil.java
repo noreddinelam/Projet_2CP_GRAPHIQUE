@@ -3,6 +3,10 @@ package noyau;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Polyline;
+
 public class Fil implements Serializable{
 	private Composant source = null;
 	private ArrayList<Composant> destination = null;
@@ -63,8 +67,14 @@ public class Fil implements Serializable{
 	}
 
 	public void setEtatLogiqueFil(EtatLogique etat) {
-
 		this.etat = etat;
+		Polyline line = Circuit.getPolylineFromFil(this);
+		if(etat.getNum() == 1) {
+			line.setStroke(Color.DARKGREEN);
+		}
+		if(etat.getNum() == 0){
+			line.setStroke(Color.DARKRED);
+		}
 	}
 
 	public Composant getSource() {

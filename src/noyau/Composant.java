@@ -175,5 +175,25 @@ public abstract class Composant implements Serializable{
 			return null;
 		}
 	}
+	public int numCmpEntrees(Fil fil) {
+		int i = 0;
+		while(i<nombreSortie) {
+			if(fil == sorties[i])
+				return i;
+		}
+		return 0;
+	}
+	public Fil[] getEntrees() {
+		return entrees;
+	}
+	public void setEntrees(Fil[] entrees) {
+		this.entrees = entrees;
+	}
+	public Fil[] getSorties() {
+		return sorties;
+	}
+	public void setSorties(Fil[] sorties) {
+		this.sorties = sorties;
+	}
 	
 }

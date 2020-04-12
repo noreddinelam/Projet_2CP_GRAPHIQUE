@@ -14,6 +14,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import noyau.Circuit;
 
 public class ClickDroitController extends Controller implements Initializable{
 
@@ -98,6 +99,7 @@ public class ClickDroitController extends Controller implements Initializable{
 
 	@FXML
 	void supprimer(ActionEvent event) {
+		Circuit.initialiser();
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
 	}

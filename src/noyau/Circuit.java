@@ -39,7 +39,7 @@ public class Circuit implements Serializable{
 	public static void ajouterSortie(Affichage compAff) { // ajouter une sorties à la liste des sorties
 		sortiesCircuit.add(compAff);
 	}
-	public void relier(Composant compS,Composant compD, int s, int e) {// pour relier deux composants 
+	public static  void relier(Composant compS,Composant compD, int s, int e) {// pour relier deux composants 
 		Fil f = compS.sorties[s]; // recuperer le fil de sortie du composant source
 		compD.entrees[e] = f; // mettre le fil dans l'entree e du composant de destination 
 		f.addDestination(compD); // ajouter une destination au fil
@@ -137,10 +137,10 @@ public class Circuit implements Serializable{
 	}
 	public static void initialiser() {// à completer au fur et mesure .
 		for (Pin pin : entreesCircuit) { // initialiser les pins d'entrees pour le commencement de la simulation
-			pin.evaluer();
+			if(pin.getInput() == true) pin.evaluer();  //a na7i
 		}
 		
-		ArrayList<Integer> etage = new ArrayList<Integer>();
+	/*	ArrayList<Integer> etage = new ArrayList<Integer>();
 		ArrayList<Integer> tmp = null ;
 		int max;
 		for (int i = 0; i < listeEtages.size(); i++) { // former les étages du circuit pour l'execution et la generation du chronogramme
@@ -152,7 +152,7 @@ public class Circuit implements Serializable{
 				b.setEtages(tmp);
 				etage.clear();
 			}
-		}
+		}*/
 		
 	}
 	public static ImageView getImageFromComp(Composant comp) { // recuperer l'image associé à un composant .
