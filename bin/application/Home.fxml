@@ -695,7 +695,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>
-                  <ImageView fx:id="simulation" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="simulation" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" onMouseClicked="#onSimuler" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../homePage_icones/SIMULATION.png" />
                      </image>
@@ -778,7 +778,7 @@
          </children></VBox>
    </right>
    <center>
-      <AnchorPane fx:id="workSpace" maxHeight="700.0" maxWidth="1130.0" minHeight="700.0" minWidth="1130.0" prefHeight="700.0" prefWidth="1130.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="workSpace" maxHeight="700.0" maxWidth="1130.0" minHeight="700.0" minWidth="1130.0" prefHeight="700.0" prefWidth="1130.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER">
       <children>
       <AnchorPane fx:id="work" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER">
          <children>
@@ -788,5 +788,6 @@
             <JFXDrawer fx:id="helpDrawer" defaultDrawerSize="400.0" layoutX="880.0" layoutY="310.0" miniDrawerSize="100.0" opacity="0.0" prefHeight="134.0" prefWidth="242.0" />
          </children></AnchorPane>
      </children>
+     </AnchorPane>
    </center>
 </BorderPane>
