@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaFx11"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JFoenix"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
+	<classpathentry kind="lib" path="C:/Users/sdks/javafx-sdk-11.0.2/lib/jfoenix-9.0.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

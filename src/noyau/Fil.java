@@ -68,12 +68,16 @@ public class Fil implements Serializable{
 
 	public void setEtatLogiqueFil(EtatLogique etat) {
 		this.etat = etat;
-		Polyline line = Circuit.getPolylineFromFil(this);
-		if(etat.getNum() == 1) {
-			line.setStroke(Color.DARKGREEN);
+		ArrayList<Polyline> line = Circuit.getPolylineFromFil(this);
+		for(Polyline  polyline : line)
+		{
+			if(etat.getNum() == 1) {
 		}
+			polyline.setStroke(Color.DARKGREEN);
+		
 		if(etat.getNum() == 0){
-			line.setStroke(Color.DARKRED);
+			polyline.setStroke(Color.DARKRED);
+		}
 		}
 	}
 
