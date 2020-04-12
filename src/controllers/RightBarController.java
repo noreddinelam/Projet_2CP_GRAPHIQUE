@@ -141,6 +141,7 @@ public class RightBarController implements Initializable {
 		        Parent root = fxmlLoader.load();
 		        Stage stage = new Stage();
 		        Scene scene = new Scene(root);
+				scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 		        stage.setScene(scene);  
 		        stage.setResizable(false);
 		        scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());

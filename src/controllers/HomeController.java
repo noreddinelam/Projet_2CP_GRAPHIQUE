@@ -39,6 +39,8 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -293,6 +295,9 @@ public class HomeController implements Initializable {
     private Tab comb;
     
     @FXML
+    private ScrollPane scrollPane;
+    
+    @FXML
     private TabPane tabPane;
 
     @FXML
@@ -375,6 +380,8 @@ public class HomeController implements Initializable {
     	    ////////////// tracer les regles 
   
     	    tracerLesregles(workSpace);
+    	    scrollPane.setHmax(1);
+    	    scrollPane.setVmax(1);
     	    
     	    fichierDrawer.setDisable(true);//mettre tout les drawers en mode disable
     	    editionDrawer.setDisable(true);
@@ -417,7 +424,6 @@ public class HomeController implements Initializable {
                        if (! workSpace.getChildren().contains(guideY)) workSpace.getChildren().add(guideY);
                        if (! workSpace.getChildren().contains(guideYp)) workSpace.getChildren().add(guideYp);
                        
-
 	   	            e.consume();
 	   	        }
 	   	    });
@@ -626,6 +632,7 @@ public class HomeController implements Initializable {
 								afficheurX.setText("X : 0");
 								afficheurY.setText("Y : 0");
 							}
+						
 
 							e.consume();
 						}
@@ -887,7 +894,7 @@ public class HomeController implements Initializable {
 	    	        	//polyline.relocate(x, y);
 	    	            String xString=String.valueOf(eleementAdrager.getLayoutX());
     	                String yString=String.valueOf(eleementAdrager.getLayoutY());
-    	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<1066 )&&(eleementAdrager.getLayoutY()>17))
+    	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<workSpace.getMaxWidth() )&&(eleementAdrager.getLayoutY()>17))
 	    	            {
 	    	                guideX.setLayoutX(eleementAdrager.getLayoutX());
 	    	                guideY.setLayoutY(eleementAdrager.getLayoutY());
@@ -908,7 +915,27 @@ public class HomeController implements Initializable {
 	    	            	guideYp.setLayoutY(0);
 	    	              	afficheurX.setText("X : 0");
 		    	            afficheurY.setText("Y : 0");
-	    	            	}	    	        
+	    	            	}	    
+    	            	if(e.getSceneX() > 1275)
+						{
+							scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+							scrollPane.setHvalue(scrollPane.getHvalue()+0.01);
+						}
+    	            	if(e.getSceneX() < 210)
+						{
+							
+							scrollPane.setHvalue(scrollPane.getHvalue()-0.01);
+						}
+    	            	if(e.getSceneY() > 700)
+						{
+							scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+							scrollPane.setVvalue(scrollPane.getVvalue()+0.01);
+						}
+    	            	if(e.getSceneY() < 0)
+						{
+							
+							scrollPane.setVvalue(scrollPane.getVvalue()-0.01);
+						}
 	    	            e.consume();
 	    	            
 	    	           /*teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest*/
@@ -976,7 +1003,7 @@ public class HomeController implements Initializable {
 							eleementAdrager.setMouseTransparent(false);
 							eleementAdrager.setCursor(Cursor.DEFAULT);
 							System.out.println(e.getSceneX() + eleementAdrager.getBoundsInLocal().getWidth() / 2 +"------------");
-							if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>670 || intersectionComposant(eleementAdrager))
+							if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > workSpace.getMaxWidth() || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>workSpace.getMaxHeight() || intersectionComposant(eleementAdrager))
 							{
 								eleementAdrager.setLayoutX(posX);
 								eleementAdrager.setLayoutY(posY);
@@ -1198,7 +1225,7 @@ public class HomeController implements Initializable {
         guideX.setStartX(0);
         guideX.setStartY(0);
         guideX.setEndX(0);
-        guideX.setEndY(700);	
+        guideX.setEndY(workSpace.getMaxHeight());	
         /////////////////////////////////////////////////////
         guideXp.setStyle("-fx-stroke-width: 0.3px;");
         guideXp.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
@@ -1208,7 +1235,7 @@ public class HomeController implements Initializable {
         guideXp.setStartX(0);
         guideXp.setStartY(0);
         guideXp.setEndX(0);
-        guideXp.setEndY(700);
+        guideXp.setEndY(workSpace.getMaxHeight());
         /////////////////////////////////////////////////////
         guideY.setStyle("-fx-stroke-width: 0.3px;");
         guideY.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
@@ -1217,7 +1244,7 @@ public class HomeController implements Initializable {
     	guideY.setLayoutX(0);
         guideY.setStartX(0);
         guideY.setStartY(0);
-        guideY.setEndX(1130);
+        guideY.setEndX(workSpace.getMaxWidth());
         guideY.setEndY(0);
         /////////////////////////////////////////////////////
         guideYp.setStyle("-fx-stroke-width: 0.3px;");
@@ -1227,7 +1254,7 @@ public class HomeController implements Initializable {
     	guideYp.setLayoutX(0);
         guideYp.setStartX(0);
         guideYp.setStartY(0);
-        guideYp.setEndX(1130);
+        guideYp.setEndX(workSpace.getMaxWidth());
         guideYp.setEndY(0);
         /////////////////////////////////////////////////////
         guideFilX.setStyle("-fx-stroke-width: 0.3px;");
@@ -1238,7 +1265,7 @@ public class HomeController implements Initializable {
         guideFilX.setStartX(0);
         guideFilX.setStartY(0);
         guideFilX.setEndX(0);
-        guideFilX.setEndY(700);
+        guideFilX.setEndY(workSpace.getMaxHeight());
         /////////////////////////////////////////////////////
         guideFilY.setStyle("-fx-stroke-width: 0.3px;");
         guideFilY.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
@@ -1247,7 +1274,7 @@ public class HomeController implements Initializable {
         guideFilY.setLayoutX(0);
         guideFilY.setStartX(0);
         guideFilY.setStartY(0);
-        guideFilY.setEndX(1130);
+        guideFilY.setEndX(workSpace.getMaxWidth());
         guideFilY.setEndY(0);
 	}
 	private void instanceComposant(ImageView img) {

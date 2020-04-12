@@ -71,6 +71,7 @@ public class Fil implements Serializable{
 	public void setEtatLogiqueFil(EtatLogique etat) {
 		this.etat = etat;
 		ArrayList<Polyline> line = Circuit.getPolylineFromFil(this);
+
 		for (Polyline polyline : line) {
 			if(etat.getNum() == 1) {
 				polyline.setStroke(Color.DARKGREEN);
