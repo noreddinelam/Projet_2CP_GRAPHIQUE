@@ -1,5 +1,7 @@
 package controllers;
 
+import java.awt.Button;
+import java.io.IOException;
 import java.net.URL;
 import java.io.File;
 import javafx.scene.media.Media;
@@ -21,8 +23,18 @@ import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXDrawersStack;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
+import javafx.animation.FadeTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -32,9 +44,9 @@ import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import javafx.scene.paint.Color;
@@ -44,6 +56,9 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import noyau.*;
+import javafx.stage.PopupWindow;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 
 
@@ -54,6 +69,8 @@ public class HomeController implements Initializable {
     private ClickDroit clickDroitFenetre;
     private double x,y;
     private int switching = 0; 
+
+    private boolean simul = false;
     
     // utilisé dans la sauvegarde des coordonnées 
     double posX ;
@@ -222,9 +239,12 @@ public class HomeController implements Initializable {
 
     @FXML
     private ImageView darkMode;
-
+    
     @FXML
     private AnchorPane workSpace;
+    
+    @FXML
+    private AnchorPane work;
     
     @FXML
     private ImageView logo;
@@ -244,6 +264,38 @@ public class HomeController implements Initializable {
 	 private int sortie;
 	 private int rel;
 	 //////////////////
+
+    
+    @FXML
+    private JFXDrawer fichierDrawer;
+    
+    @FXML
+    private JFXDrawer editionDrawer;
+    
+    @FXML
+    private VBox vbar;
+    
+    @FXML
+    private JFXDrawer affichageDrawer;
+    
+    @FXML
+    private JFXDrawer helpDrawer;
+    
+    @FXML
+    private Tab outils;
+    
+    @FXML
+    private Tab portes;
+    
+    @FXML
+    private Tab seq;
+    
+    @FXML
+    private Tab comb;
+    
+    @FXML
+    private TabPane tabPane;
+
     @FXML
     private Label afficheurX;
 
@@ -256,9 +308,13 @@ public class HomeController implements Initializable {
     	rotationDelogo(logo,1,500);
     }
     
+    @FXML
+    void onSimuler(MouseEvent event) {
+    	simul = (!simul);
+    }
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
 		ajouterGestWorkSpace();/////Les gestes De drag and drop 
 		tracerLesGuides();//Initialisation des files de guide
 		//initialisation des coordones de X et Y a 0
@@ -320,6 +376,38 @@ public class HomeController implements Initializable {
     	    ////////////// tracer les regles 
   
     	    tracerLesregles(workSpace);
+    	    
+    	    fichierDrawer.setDisable(true);//mettre tout les drawers en mode disable
+    	    editionDrawer.setDisable(true);
+    	    affichageDrawer.setDisable(true);
+    	    helpDrawer.setDisable(true);
+    	    
+    	    
+
+    	    tooltipInitialize();
+    		rightbar(fichier, fichierDrawer,editionDrawer,affichageDrawer,helpDrawer,"/application/Fichier.fxml" );
+    		rightbar(edition, editionDrawer,affichageDrawer,fichierDrawer,helpDrawer,"/application/Edition.fxml" );
+    		rightbar(affichage, affichageDrawer,editionDrawer,fichierDrawer,helpDrawer,"/application/Affichage.fxml" );
+    		rightbar(aide, helpDrawer,affichageDrawer,fichierDrawer,editionDrawer,"/application/Aide.fxml" );
+
+    			workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{//pour fermer les drawer en cliquant sur la souris
+    				if(fichierDrawer.isOpened() ||editionDrawer.isOpened() ||affichageDrawer.isOpened() || helpDrawer.isOpened()) {
+    						fichierDrawer.close();
+    						fichierDrawer.setOpacity(0);
+    						editionDrawer.close();
+    						editionDrawer.setOpacity(0);
+    						affichageDrawer.close();
+    						affichageDrawer.setOpacity(0);
+    						helpDrawer.close();
+    						helpDrawer.setOpacity(0);
+    					 	fichierDrawer.setDisable(true);
+    					    editionDrawer.setDisable(true);
+    					    affichageDrawer.setDisable(true);
+    					    helpDrawer.setDisable(true);
+    				}
+    				
+    			
+    			});
 	}
 	private void ajouterGestWorkSpace() {////Methodes pour Ajouter l'interaction avec le drag and drop et les guides
 		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
@@ -371,124 +459,219 @@ public class HomeController implements Initializable {
 					  }
 				  }
 			  });		
-
+	
 	}
+	
+	
+	
+	public void rightbar(ImageView icon,JFXDrawer elementName, JFXDrawer element1Hide, JFXDrawer element2Hide, JFXDrawer element3Hide, String s) {
+		Pane lay = null;
+		try {
+			lay = FXMLLoader.load(getClass().getResource(s));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		elementName.setSidePane(lay);
+		elementName.setOpacity(0);
+		icon.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
+				if(elementName.isOpened()) {
+					elementName.setOpacity(0);
+			        elementName.close();
+			        elementName.setViewOrder(10);
+			        elementName.setDisable(true);
+				}
+				
+				else {
+					elementName.setOpacity(1);
+			        elementName.open();
+			        elementName.setViewOrder(1);
+			        elementName.setDisable(false);
+			        element1Hide.close();
+			        element1Hide.setOpacity(0);
+			        element1Hide.setViewOrder(4);
+			        element1Hide.setDisable(true);	
+			        element2Hide.close();
+			        element2Hide.setOpacity(0);
+			        element2Hide.setViewOrder(4);
+			        element2Hide.setDisable(true);
+			        element3Hide.close();
+			        element3Hide.setOpacity(0);
+			        element3Hide.setViewOrder(4);
+			        element3Hide.setDisable(true);
+
+				}
+			});
+		
+	}
+	
+	
+	
+	public void tooltipInitialize() {//utiliser pour les effets hover ou nous avons un texte en mettant la souris sur les elements
+
+	    Tooltip fich = new Tooltip("fichier");
+	   
+	    
+	    fich.setShowDelay(Duration.millis(0));
+	    Tooltip.install(fichier, fich);
+	    
+	        
+	    Tooltip edi = new Tooltip("edition");
+	    edi.setShowDelay(Duration.millis(0));
+		Tooltip.install(edition, edi);
+		
+		Tooltip sim = new Tooltip("simulation");
+	    sim.setShowDelay(Duration.millis(0));
+		Tooltip.install(simulation, sim);
+		
+		Tooltip aff = new Tooltip("affichage");
+	    aff.setShowDelay(Duration.millis(0));
+		Tooltip.install(affichage, aff);
+		
+		Tooltip aid = new Tooltip("aide");
+	    aid.setShowDelay(Duration.millis(0));
+		Tooltip.install(aide, aid);
+		/*-------------------------------------*/
+		
+		Tooltip com = new Tooltip("Combinatoires");
+		com.setShowDelay(Duration.millis(0));
+		comb.setTooltip(com);
+			
+		Tooltip se = new Tooltip("Sequentiels");
+		se.setShowDelay(Duration.millis(0));
+		seq.setTooltip(se);
+		
+		Tooltip out = new Tooltip("Outils");
+		out.setShowDelay(Duration.millis(0));
+		outils.setTooltip(out);
+		
+		Tooltip por = new Tooltip("Portes");
+		por.setShowDelay(Duration.millis(0));
+		portes.setTooltip(por);
+		
+		/*------------------------------*/
+		
+	}
+	
+	
+	
     
 	private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
 		//est ajoute dans le workSpace
-	
-	
-	    elementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
-	        public void handle(MouseEvent e) {
-	            elementAdrager.setCursor(Cursor.HAND);
-	            elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#000000;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
-	            transitionDesComposants(elementAdrager);
+			
+		
+			elementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+					elementAdrager.setCursor(Cursor.HAND);
+					elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#000000;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
+					transitionDesComposants(elementAdrager);
 				}
-        
-	    });
-	    elementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() {
-	    	public void handle(MouseEvent e) {
-	    		  elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#303337;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
-	    	}
-		});
-	    
-	    elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
-	        public void handle(MouseEvent e) {
-	        	ImageView dragImageView = new ImageView();
-	            System.out.println(elementAdrager.getId());
-	            dragImageView.setMouseTransparent(true);
-	            elementAdrager.setMouseTransparent(true);
-	            elementAdrager.setCursor(Cursor.CLOSED_HAND);
-	            
-	            elementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	            SnapshotParameters snapParams = new SnapshotParameters();
-	    	            snapParams.setFill(Color.TRANSPARENT);
-	    	            dragImageView.setImage(elementAdrager.snapshot(snapParams, null));
-	    	            workSpace.getChildren().add(dragImageView);
-	    	            dragImageView.startFullDrag();
-	    	            e.consume();
-	    	        }
-	    	    });
-	            
-	            elementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	        	Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
-	    	            dragImageView.relocate(
-	    	                    (int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2),
-	    	                    (int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2 )
-	    	            );
-	    	            
-	    	            String xString=String.valueOf(dragImageView.getLayoutX());
-    	                String yString=String.valueOf(dragImageView.getLayoutY());
-	    	            if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<1066 )&&(dragImageView.getLayoutY()>17))
-	    	            {
-	    	                guideX.setLayoutX(dragImageView.getLayoutX());
-	    	                guideY.setLayoutY(dragImageView.getLayoutY());
-	    	                guideXp.setLayoutX(dragImageView.getLayoutX()+ elementAdrager.getBoundsInLocal().getWidth()+1);
-	    	                guideYp.setLayoutY(dragImageView.getLayoutY()+ elementAdrager.getBoundsInLocal().getHeight()+1);
-	    	                
-	    	        
-	    	                afficheurX.setText("X : "+xString);
-	    	                afficheurY.setText("Y : "+yString);
-	    	                
-	    	            }
-	    	      
-	    	            else 
-	    	            	{
-	    	            	guideX.setLayoutX(0);
-	    	            	guideY.setLayoutY(0);
-	    	            	guideXp.setLayoutX(0);
-	    	            	guideYp.setLayoutY(0);
-	    	            	afficheurX.setText("X : 0");
-		    	            afficheurY.setText("Y : 0");
-	    	            	}
-	    	    	    	            
-	    	            e.consume();
-	    	        }
-	    	    });
-	            
-	            elementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	        	
-	    	            dragItem = null;
-	    	            
-	    	            dragImageView.setMouseTransparent(false);
-	    	           
-	    	            elementAdrager.setMouseTransparent(false);
-	    	            elementAdrager.setCursor(Cursor.DEFAULT);
-	    	            dragImageView.setId(elementAdrager.getId());
-    	            	instanceComposant(dragImageView);
-    	            	Image img = new Image(Circuit.getCompFromImage(dragImageView).generatePath());
-    	            	dragImageView.setImage(img);
-    	            	dragImageView.setFitHeight(img.getHeight());
-    	            	dragImageView.setFitWidth(img.getWidth());
-	    	            if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670 || intersectionComposant(dragImageView))
-	    	            {
-	    	            	workSpace.getChildren().remove(dragImageView);
-	    	            	Circuit.removeCompFromImage(dragImageView);
-	    	            }
-	    	            else 
-	    	            {
-	    	            	Polyline polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-	    	            	polyline.setStrokeWidth(4);
-	    	        		polyline.setSmooth(true);
-	    	        		polyline.setStrokeType(StrokeType.CENTERED);
-	    	        		polyline.setCursor(Cursor.HAND);
-	    	            	workSpace.getChildren().add(polyline);
-	    	            	ajouterGeste(polyline);
-	    	            {    	            	
-	    	            	ajouterLeGestApresCollage(dragImageView);
-	    	            }
-	    	        }
-	    	    }});
-	            
-	        }
-	    });
+
+			});
+			elementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+					elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#303337;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
+				}
+			});
+
+			elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+					ImageView dragImageView = new ImageView();
+					System.out.println(elementAdrager.getId());
+					dragImageView.setMouseTransparent(true);
+					elementAdrager.setMouseTransparent(true);
+					elementAdrager.setCursor(Cursor.CLOSED_HAND);
+
+					elementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent e) {
+							SnapshotParameters snapParams = new SnapshotParameters();
+							snapParams.setFill(Color.TRANSPARENT);
+							dragImageView.setImage(elementAdrager.snapshot(snapParams, null));
+							workSpace.getChildren().add(dragImageView);
+							dragImageView.startFullDrag();
+							e.consume();
+						}
+					});
+
+					elementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent e) {
+							
+							Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+							dragImageView.relocate(
+									(int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2),
+									(int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2 )
+									);
+
+							String xString=String.valueOf(dragImageView.getLayoutX());
+							String yString=String.valueOf(dragImageView.getLayoutY());
+							if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<1066 )&&(dragImageView.getLayoutY()>17))
+							{
+								guideX.setLayoutX(dragImageView.getLayoutX());
+								guideY.setLayoutY(dragImageView.getLayoutY());
+								guideXp.setLayoutX(dragImageView.getLayoutX()+ elementAdrager.getBoundsInLocal().getWidth()+1);
+								guideYp.setLayoutY(dragImageView.getLayoutY()+ elementAdrager.getBoundsInLocal().getHeight()+1);
+
+
+								afficheurX.setText("X : "+xString);
+								afficheurY.setText("Y : "+yString);
+
+							}
+
+							else 
+							{
+								guideX.setLayoutX(0);
+								guideY.setLayoutY(0);
+								guideXp.setLayoutX(0);
+								guideYp.setLayoutY(0);
+								afficheurX.setText("X : 0");
+								afficheurY.setText("Y : 0");
+							}
+
+							e.consume();
+						}
+					});
+
+					elementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent e) {
+
+							dragItem = null;
+
+							dragImageView.setMouseTransparent(false);
+
+							elementAdrager.setMouseTransparent(false);
+							elementAdrager.setCursor(Cursor.DEFAULT);
+							dragImageView.setId(elementAdrager.getId());
+							instanceComposant(dragImageView);
+							Image img = new Image(Circuit.getCompFromImage(dragImageView).generatePath());
+							dragImageView.setImage(img);
+							dragImageView.setFitHeight(img.getHeight());
+							dragImageView.setFitWidth(img.getWidth());							
+							if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>670 || intersectionComposant(dragImageView))
+							{
+								workSpace.getChildren().remove(dragImageView);
+								Circuit.removeCompFromImage(dragImageView);
+							}
+							else 
+							{
+								Polyline polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+								polyline.setStrokeWidth(4);
+								polyline.setSmooth(true);
+								polyline.setStrokeType(StrokeType.CENTERED);
+								polyline.setCursor(Cursor.HAND);
+								workSpace.getChildren().add(polyline);
+								ajouterGeste(polyline);
+								ajouterLeGestApresCollage(dragImageView);								
+							}
+						}});
+
+				}
+			});
+		
 	}
 	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
+		if(!simul) {
 	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	            eleementAdrager.setCursor(Cursor.HAND);   
@@ -505,6 +688,20 @@ public class HomeController implements Initializable {
 	        	testPoly.getPoints().addAll(x,y,x+8,y);*/
 	        	//teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest  
 	           /* ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
+=======
+		if (! simul){	
+			eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+					eleementAdrager.setCursor(Cursor.HAND);   
+				}
+			});
+
+			eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+
+					//teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest  
+					/* ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
+>>>>>>> fbbc9e52a48718863fbb52bbcdade72c49092722
 	            for(int k=0;k < list.size();k++)
 	            {
 	            		while(list.indexOf(list.get(k)) != list.lastIndexOf(list.get(k)))
@@ -525,7 +722,7 @@ public class HomeController implements Initializable {
 	        	if(e.getButton() != MouseButton.SECONDARY)
 	        	{
 	            dragItem = eleementAdrager;
-	       
+	  
 	            eleementAdrager.setMouseTransparent(true);
 	            eleementAdrager.setMouseTransparent(true);
 	            eleementAdrager.setCursor(Cursor.CLOSED_HAND);
@@ -591,7 +788,7 @@ public class HomeController implements Initializable {
 	    	            //supprimer les noueds doublees : 
 	    	           //ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
 	    	          
-	    	            testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
+	    	           // testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
 	    	           // System.out.println("polyyyyyyyyyyyyyyyyyyyyy"+Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
 	    	            //double x2 = e.getSceneX()-180;
 						//double y2 = e.getSceneY();
@@ -636,36 +833,52 @@ public class HomeController implements Initializable {
 							testPoly.getPoints().add(2, x2);
 							testPoly.getPoints().add(3, y);
 						}
-						else {
-							//testPoly.getPoints().addAll(x,y2,x2,y2);
-							testPoly.getPoints().add(0, x2);
-							testPoly.getPoints().add(1, y2);
-							testPoly.getPoints().add(2, x);
-							testPoly.getPoints().add(3, y2);
-						}
 	    	        }
-	    	    });
+	    	        });
 	            
-	            eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	            dragItem = null;  	 
-	    	            eleementAdrager.setMouseTransparent(false);
-	    	            eleementAdrager.setMouseTransparent(false);
-	    	            eleementAdrager.setCursor(Cursor.DEFAULT);
-	    	            if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670 || intersectionComposant(eleementAdrager))
-	    	            {
-	    	            	eleementAdrager.setLayoutX(posX);
-	    	            	eleementAdrager.setLayoutY(posY);
-	    	            }
-	    	            else {
-							posX = eleementAdrager.getLayoutX();
-							posY = eleementAdrager.getLayoutY();
+
+					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent e) {
+							dragItem = null;  	 
+							eleementAdrager.setMouseTransparent(false);
+							eleementAdrager.setMouseTransparent(false);
+							eleementAdrager.setCursor(Cursor.DEFAULT);
+							//if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670 || intersectionComposant(eleementAdrager))
+							System.out.println(e.getSceneX() + eleementAdrager.getBoundsInLocal().getWidth() / 2 +"------------");
+							if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>670 || intersectionComposant(eleementAdrager))
+							{
+								eleementAdrager.setLayoutX(posX);
+								eleementAdrager.setLayoutY(posY);
+							}
+							else {
+								posX = eleementAdrager.getLayoutX();
+								posY = eleementAdrager.getLayoutY();
+							}
 						}
-	    	        }
-	    	    });
-	            
-	        }
-	    });
+					});
+				}
+			});
+		}else {
+			if (eleementAdrager.getId().equals("pin")) {
+				Pin pin = (Pin) Circuit.getCompFromImage(eleementAdrager);
+				if (pin.getInput()) {
+					eleementAdrager.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent e) {
+							// TODO Auto-generated method stub
+
+							if (pin.getEtat() == EtatLogique.ONE) {
+								pin.setEtat(EtatLogique.ZERO);
+							} 
+							else {
+								pin.setEtat(EtatLogique.ONE);
+							}
+							eleementAdrager.setCursor(Cursor.HAND);
+						}
+					});
+				}
+			}
+		}
 	}
 	public void transitionDesComposants(Node composants) {// Methode d'animation de 'Shake'
 	    int duration = 100;
@@ -693,7 +906,7 @@ public class HomeController implements Initializable {
 	    transition3.play();
 	}
 	 void tracerLesregles(AnchorPane w) {// Methode de tracage des Regles
-
+		 System.out.println(w.getPrefHeight());
 	        boolean v = true;
 	        for (int i = 0; i <= workSpace.getPrefWidth(); i += 25) {
 
@@ -823,9 +1036,6 @@ public class HomeController implements Initializable {
 	            w.getChildren().add(p);
 	        }
 	    }
-	 
-	 
-	
 	     
 	private void rotationDelogo(ImageView image,int nombreDeboucle,int vitesse) {// Methode de rotation de logo
 
@@ -1009,6 +1219,7 @@ public class HomeController implements Initializable {
 		
 	 public void ajouterGeste(Polyline line)
 		{
+		 if (! simul) {
 		 EventHandler<MouseEvent> event1 = new javafx.event.EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
@@ -1150,6 +1361,7 @@ public class HomeController implements Initializable {
 					System.out.println(line.getPoints().size());
 				}
 			});
+		}
 		/*line.setOnMouseDragEntered(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -1251,6 +1463,8 @@ public class HomeController implements Initializable {
 			boolean trouve = false;
 			int i = 0;
 			while( i < nbCord && trouve == false) {
+				//double xTab = tabEntrees[i].getX() + imgCmp.getLayoutX(); 
+				//double yTab = tabEntrees[i].getY() + imgCmp.getLayoutY(); 
 				Coordonnees crdTab = new Coordonnees(tabEntrees[i].getX() + imgCmp.getLayoutX(), tabEntrees[i].getY() + imgCmp.getLayoutY());
 				
 				System.out.println(Xfil+" "+crdTab.getX()+" "+Yfil+" "+crdTab.getY()+"layaoutx"+imgCmp.getLayoutX()+"layaouty"+imgCmp.getLayoutY());

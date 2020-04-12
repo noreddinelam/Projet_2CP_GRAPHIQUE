@@ -1,5 +1,7 @@
 package noyau;
 
+import java.util.ArrayList;
+
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
@@ -38,7 +40,9 @@ public abstract class Portes extends Composant {
 		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX() ;
 		double posY = y + lesCoordonnees.getCordSortieInIndex(0).getY();
 		Polyline polyline = new Polyline(posX ,posY,posX+5,posY);
-		Circuit.ajouterFil(sorties[0], polyline);
+		ArrayList<Polyline> listPolylines = new ArrayList<Polyline>();
+		listPolylines.add(polyline);
+		Circuit.ajouterFil(sorties[0], listPolylines);
 		return polyline;
 	}
 }

@@ -118,10 +118,10 @@ public class Demultiplexeur extends Combinatoires{
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(85, 173.8), 14);
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(85, 185.7), 15);
 			
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 0);
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 1);
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 2);
-			lesCoordonnees.setCordCmdInIndex(new Coordonnees(0, 0), 3);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(18.1, 202), 0);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(34, 202), 1);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(50.1, 202), 2);
+			lesCoordonnees.setCordCmdInIndex(new Coordonnees(66.1, 202), 3);
 			
 		}break;
 		}

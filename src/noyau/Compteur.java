@@ -171,10 +171,10 @@ public class Compteur extends Sequentiels{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(76.3, 0), 2);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(44.5, 0), 3);
 			
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(140, 68), 0);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(108, 68), 1);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(76.3, 68), 2);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(44.5, 68), 3);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(140, 82), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(108, 82), 1);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(76.3, 82), 2);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(44.5, 82), 3);
 			
 			lesCoordonnees.setCordHorloge(new Coordonnees(0, 20.6));
 			

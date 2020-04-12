@@ -16,7 +16,7 @@ public class Circuit implements Serializable{
 	private static HashMap<Composant, ImageView> compUtilises = new HashMap<Composant,ImageView>();
 	//private static ArrayList<Composant> compUtilises = new ArrayList<Composant>(); // tout les composants du circuit
 	//private static ArrayList<Fil> filUtilises = new ArrayList<Fil>(); // tout les fils du circuit
-	private static HashMap<Fil, Polyline> filUtilises = new HashMap<Fil,Polyline>();
+	private static HashMap<Fil, ArrayList<Polyline>> filUtilises = new HashMap<Fil,ArrayList<Polyline>>();
 	private static ArrayList<Pin> entreesCircuit = new ArrayList<Pin>(); // toutes les entrees du circuit
 	private static ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>(); // toutes les sorties du circuit
 	private EtatLogique tableVerite[][]; // la table de verite du circuit
@@ -28,7 +28,7 @@ public class Circuit implements Serializable{
 		//compUtilises.add(comp);
 		compUtilises.put(comp, img);
 	}
-	public static void ajouterFil(Fil fil,Polyline polyline) { // ajouter un fil à la liste des fils 
+	public static void ajouterFil(Fil fil,ArrayList<Polyline> polyline) { // ajouter un fil à la liste des fils 
 		//filUtilises.add(fil);
 		filUtilises.put(fil, polyline);
 	}
@@ -169,13 +169,13 @@ public class Circuit implements Serializable{
 		return composant;
 	}
 
-	public static Polyline getPolylineFromFil(Fil fil) { // recuperer l'image associé à un composant .
+	public static ArrayList<Polyline> getPolylineFromFil(Fil fil) { // recuperer l'image associé à un composant .
 		return filUtilises.get(fil);
 	}
 	public static Fil getFilFromPolyline(Polyline ligne) { // recuperer le composant associé à une image .
 		Fil fil = null;
-		for (Entry<Fil, Polyline> entry : filUtilises.entrySet()) {
-			if (entry.getValue() == ligne) {
+		for (Entry<Fil, ArrayList<Polyline>> entry : filUtilises.entrySet()) {
+			if (entry.getValue().contains(ligne)) {
 				fil = entry.getKey();
 				break;
 			}
@@ -191,10 +191,10 @@ public class Circuit implements Serializable{
 	}
 
 	
-	public static HashMap<Fil, Polyline> getFilUtilises() {
+	public static HashMap<Fil, ArrayList<Polyline>> getFilUtilises() {
 		return filUtilises;
 	}
-	public static void setFilUtilises(HashMap<Fil, Polyline> filUtilises) {
+	public static void setFilUtilises(HashMap<Fil, ArrayList<Polyline>> filUtilises) {
 		Circuit.filUtilises = filUtilises;
 	}
 	public static ArrayList<Pin> getEntreesCircuit() {

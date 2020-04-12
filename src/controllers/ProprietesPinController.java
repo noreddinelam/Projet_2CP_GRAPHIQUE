@@ -95,7 +95,7 @@ public class ProprietesPinController extends ProprietesController{
     		path = "/pin/"+Integer.toString(vlr)+bddPut[putInt]+".png";
     	}else {
     		((Pin)cmp).setInput(false);
-    		Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]);
+    		Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0);
     		line.getPoints().clear(); 
     		cmp.setNombreEntree(1);
     		cmp.setNombreSortie(0);

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDrawer?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
@@ -32,9 +34,9 @@
             <VBox prefHeight="990.0" prefWidth="184.0" style="-fx-background-color: #4b535e;">
                <children>
                   <Line endX="139.2928924560547" endY="-0.7070963382720947" startX="-40.0" stroke="#707070" strokeWidth="3.0" />
-                  <TabPane prefHeight="526.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/borderPane.css" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane fx:id="tabPane" prefHeight="526.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" styleClass="tabpane" stylesheets="@../styleFile/borderPane.css" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                        <Tab fx:id="comonents" style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
+                        <Tab fx:id="outils" style="-fx-pref-width: 40; -fx-pref-height: 10; -fx-background-radius: 5 5 5 5;" styleClass="outils">
                            <content>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                            </content>
@@ -171,7 +173,7 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
+                        <Tab fx:id="portes" style="-fx-pref-width: 40; -fx-pref-height: 10; -fx-background-radius: 5 5 5 5;" styleClass="portes">
                            <content>
                               <AnchorPane prefHeight="512.0" prefWidth="185.0" style="-fx-background-color: #4b535e;">
                                  <children>
@@ -327,7 +329,7 @@
                                  </padding>
                               </AnchorPane>
                            </content></Tab>
-                      <Tab style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
+                      <Tab fx:id="seq" style="-fx-pref-width: 40; -fx-pref-height: 10; -fx-background-radius: 5 5 5 5;" styleClass="seq">
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
@@ -486,11 +488,11 @@
                                  </padding>
                               </AnchorPane>
                            </content></Tab>
-                      <Tab style="-fx-pref-width: 40; -fx-pref-height: 8; -fx-background-radius: 5 5 5 5; -fx-background-color: #e0e0d1;">
+                      <Tab fx:id="comb" style="-fx-pref-width: 40; -fx-pref-height: 10; -fx-background-radius: 5 5 5 5;" styleClass="comb">
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefHeight="923.0" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
@@ -659,7 +661,7 @@
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="716.0" prefWidth="52.0" style="-fx-background-color: #303337;" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbar" prefHeight="700.0" prefWidth="65.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>
@@ -667,6 +669,9 @@
                      <image>
                         <Image url="@../homePage_icones/FILE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -679,6 +684,9 @@
                      <image>
                         <Image url="@../homePage_icones/EDIT%20FILE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -687,10 +695,13 @@
             </AnchorPane>
             <AnchorPane prefHeight="43.0" prefWidth="33.0">
                <children>
-                  <ImageView fx:id="simulation" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="simulation" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" onMouseClicked="#onSimuler" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../homePage_icones/SIMULATION.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -703,6 +714,9 @@
                      <image>
                         <Image url="@../homePage_icones/AFFICHAGE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -715,6 +729,9 @@
                      <image>
                         <Image url="@../homePage_icones/AIDE.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -752,12 +769,25 @@
                      <image>
                         <Image url="@../homePage_icones/ON.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
             </AnchorPane>
          </children></VBox>
    </right>
    <center>
-      <AnchorPane fx:id="workSpace" maxHeight="700.0" maxWidth="1130.0" minHeight="700.0" minWidth="1130.0" prefHeight="700.0" prefWidth="1130.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="workSpace" maxHeight="700.0" maxWidth="1130.0" minHeight="700.0" minWidth="1130.0" prefHeight="700.0" prefWidth="1130.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER">
+      <children>
+      <AnchorPane fx:id="work" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER">
+         <children>
+            <JFXDrawer fx:id="fichierDrawer" defaultDrawerSize="400.0" direction="RIGHT" layoutX="880.0" layoutY="40.0" miniDrawerSize="200.0" opacity="0.0" prefHeight="300.0" prefWidth="242.0" viewOrder="6.0" AnchorPane.rightAnchor="0.0" />
+            <JFXDrawer fx:id="editionDrawer" defaultDrawerSize="400.0" direction="RIGHT" layoutX="880.0" layoutY="107.0" miniDrawerSize="200.0" opacity="0.0" prefHeight="315.0" prefWidth="242.0" viewOrder="2.0" />
+            <JFXDrawer fx:id="affichageDrawer" defaultDrawerSize="400.0" layoutX="880.0" layoutY="240.0" miniDrawerSize="100.0" opacity="0.0" prefHeight="93.0" prefWidth="242.0" viewOrder="2.0" />
+            <JFXDrawer fx:id="helpDrawer" defaultDrawerSize="400.0" layoutX="880.0" layoutY="310.0" miniDrawerSize="100.0" opacity="0.0" prefHeight="134.0" prefWidth="242.0" />
+         </children></AnchorPane>
+     </children>
+     </AnchorPane>
    </center>
 </BorderPane>

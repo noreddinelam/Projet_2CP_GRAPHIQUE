@@ -1,6 +1,7 @@
 package noyau;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -120,7 +121,9 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		double posY = y+lesCoordonnees.getCordSortieInIndex(0).getY();
 		if (input) {
 			Polyline polyline = new Polyline(posX,posY,posX,posY+5);
-			Circuit.ajouterFil(sorties[0], polyline);
+			ArrayList<Polyline> listPolylines = new ArrayList<Polyline>();
+			listPolylines.add(polyline);
+			Circuit.ajouterFil(sorties[0], listPolylines);
 			return polyline;
 		}		
 		return null;
@@ -136,6 +139,7 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 	}
 	public void setEtat(EtatLogique etat) {
 		this.etat = etat;
+		Circuit.getImageFromComp(this).setImage(new Image(generatePath()));
 	}
 	
 }
