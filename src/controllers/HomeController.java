@@ -376,6 +376,7 @@ public class HomeController implements Initializable {
     	    ajouterLeGest(rs);
     	    ajouterLeGest(cpt);
     	    ajouterLeGest(registreDecalge);
+    	    tracerLagrill();
 		  
     	    ////////////// tracer les regles 
   
@@ -892,7 +893,7 @@ public class HomeController implements Initializable {
 	    	        	//polyline.relocate(x, y);
 	    	            String xString=String.valueOf(eleementAdrager.getLayoutX());
     	                String yString=String.valueOf(eleementAdrager.getLayoutY());
-    	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<workSpace.getMaxWidth() )&&(eleementAdrager.getLayoutY()>17))
+    	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<workSpace.getMaxWidth() )&&(eleementAdrager.getLayoutY()>0))
 	    	            {
 	    	                guideX.setLayoutX(eleementAdrager.getLayoutX());
 	    	                guideY.setLayoutY(eleementAdrager.getLayoutY());
@@ -1215,9 +1216,9 @@ public class HomeController implements Initializable {
 	}
  
 	private void tracerLesGuides() {//Methode d'initialitaton des guides
-        guideX.setStyle("-fx-stroke-width: 0.3px;");
+        guideX.setStyle("-fx-stroke-width: 1.5px;");
         guideX.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
-        guideX.setStroke(Color.web("ffffff")); 
+        guideX.setStroke(Color.web("303337")); 
         guideX.setOpacity(1);
         guideX.setLayoutY(0);
         guideX.setStartX(0);
@@ -1225,9 +1226,9 @@ public class HomeController implements Initializable {
         guideX.setEndX(0);
         guideX.setEndY(workSpace.getMaxHeight());	
         /////////////////////////////////////////////////////
-        guideXp.setStyle("-fx-stroke-width: 0.3px;");
+        guideXp.setStyle("-fx-stroke-width: 1.5px;");
         guideXp.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
-        guideXp.setStroke(Color.web("ffffff")); 
+        guideXp.setStroke(Color.web("303337")); 
         guideXp.setOpacity(1);
         guideXp.setLayoutY(0);
         guideXp.setStartX(0);
@@ -1235,9 +1236,9 @@ public class HomeController implements Initializable {
         guideXp.setEndX(0);
         guideXp.setEndY(workSpace.getMaxHeight());
         /////////////////////////////////////////////////////
-        guideY.setStyle("-fx-stroke-width: 0.3px;");
+        guideY.setStyle("-fx-stroke-width: 1.5px;");
         guideY.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
-        guideY.setStroke(Color.web("ffffff")); 
+        guideY.setStroke(Color.web("303337")); 
         guideY.setOpacity(1);
     	guideY.setLayoutX(0);
         guideY.setStartX(0);
@@ -1245,9 +1246,9 @@ public class HomeController implements Initializable {
         guideY.setEndX(workSpace.getMaxWidth());
         guideY.setEndY(0);
         /////////////////////////////////////////////////////
-        guideYp.setStyle("-fx-stroke-width: 0.3px;");
+        guideYp.setStyle("-fx-stroke-width: 1.5px;");
         guideYp.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
-        guideYp.setStroke(Color.web("ffffff")); 
+        guideYp.setStroke(Color.web("303337")); 
         guideYp.setOpacity(1);
     	guideYp.setLayoutX(0);
         guideYp.setStartX(0);
@@ -1642,5 +1643,38 @@ public class HomeController implements Initializable {
 		}
 		return nb;
 	}
+	 void tracerLagrill() {
+	        for (int i = 0; i <= workSpace.getPrefWidth(); i += 15 ) {
+	            Line l1 = new Line();
+	            l1.toBack();
+	            l1.setStyle("-fx-stroke-width: 0.5px;");
+	            l1.setStroke(Color.web("ffffff"));
+	            l1.setOpacity(0.8);
+	            l1.setLayoutX(i);
+	            l1.setLayoutY(0);
+	            l1.setStartX(0);
+	            l1.setStartY(0);
+	            l1.setEndX(0);
+	            l1.setEndY(workSpace.getPrefHeight());
+	            l1.getStrokeDashArray().addAll(2.2d);
+	            workSpace.getChildren().add(l1);
+	        }
+	        for (int j = 0; j <= workSpace.getPrefHeight(); j += 15 ) {
+	            Line l2 = new Line();
+	            l2.toBack();
+	            l2.setStyle("-fx-stroke-width: 0.5px;");
+	            l2.setStroke(Color.web("ffffff"));
+	            l2.setOpacity(0.8);
+	            l2.setLayoutX(0);
+	            l2.setLayoutY(j);
+	            l2.setStartX(0);
+	            l2.setStartY(0);
+	            l2.setEndX(workSpace.getPrefWidth());
+	            l2.setEndY(0);
+	            l2.getStrokeDashArray().addAll(2.2d);
+
+	            workSpace.getChildren().add(l2);
+	        }
+	    }
 }
 
