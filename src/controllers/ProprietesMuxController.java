@@ -103,8 +103,11 @@ public class ProprietesMuxController extends ProprietesController {
     	((Multiplexeur)cmp).setNbCommande(i);
     	cmp.setNombreEntree((int)Math.pow(2, i));
     	cmp.setNom(label.getText());
-    	System.out.println(cmp.generatePath());
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	ImageView imageView = Circuit.getImageFromComp(cmp);
+    	Image image = new Image(cmp.generatePath());
+    	imageView.setImage(image);
+    	imageView.setFitHeight(image.getHeight());
+    	imageView.setFitWidth(image.getWidth());
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

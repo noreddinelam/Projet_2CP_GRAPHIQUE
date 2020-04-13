@@ -87,7 +87,11 @@ public class ProprietesDemuxController extends ProprietesController{
     	cmp.setNombreSortie((int)Math.pow(2, i));
     	cmp.setNom(label.getText());
     	System.out.println(cmp.generatePath());
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	Image img = new Image(cmp.generatePath());
+    	ImageView imageView = Circuit.getImageFromComp(cmp);
+    	imageView.setImage(img);
+    	imageView.setFitHeight(img.getHeight());
+    	imageView.setFitWidth(img.getWidth());
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

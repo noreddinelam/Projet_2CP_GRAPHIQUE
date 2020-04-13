@@ -63,8 +63,7 @@ public class ProprietesNotController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
-
-    	//Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	cmp.setNom(label.getText());
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

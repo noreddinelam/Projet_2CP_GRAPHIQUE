@@ -28,15 +28,13 @@ public class ProprietesCompteurController extends ProprietesController{
 
 	public void initialiser(Composant cmp){
 		this.cmp = cmp;
-		label.setText(cmp.getNom());
-		
+		label.setText(cmp.getNom());		
 		i=cmp.getNombreEntree();
 		nbBits.setText(Integer.toString(i));
 		frnt=((Compteur)cmp).getFront().ordinal();
 		front.setText(bddFront[frnt]);
 		cmpt = (((Compteur)cmp).getCompter() == true) ? 0 : 1 ;
-		compteur.setText(bddCmp[cmpt]);
-		
+		compteur.setText(bddCmp[cmpt]);		
 		if(i==2) {
 			moinsNbBits.setVisible(false);
 			imgMoinsNbBits.setVisible(false);
@@ -120,8 +118,11 @@ public class ProprietesCompteurController extends ProprietesController{
     		((Compteur)cmp).setCompter(true);
     	else
     		((Compteur)cmp).setCompter(false);
-    	
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	Image img = new Image(cmp.generatePath());
+    	ImageView imageView = Circuit.getImageFromComp(cmp);
+    	imageView.setImage(img);
+    	imageView.setFitHeight(img.getHeight());
+    	imageView.setFitWidth(img.getWidth());
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

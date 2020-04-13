@@ -1381,12 +1381,12 @@ public class HomeController implements Initializable {
 		
 	 public void ajouterGeste(Polyline line)
 		{
-		 if (! simul) {
 		 EventHandler<MouseEvent> event1 = new javafx.event.EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
 					// TODO Auto-generated method stub
 					//les guides :
+					if (! simul) {
 					guideFilX.setLayoutX(event.getSceneX()-180);
 					guideFilY.setLayoutY(event.getSceneY());
 					double x2 = event.getX();
@@ -1405,7 +1405,7 @@ public class HomeController implements Initializable {
 					} 		
 					if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
 					else line.getPoints().addAll(x,y2,x2,y2);
-				
+					}
 				}
 				
 			};
@@ -1415,6 +1415,7 @@ public class HomeController implements Initializable {
 				@Override
 				public void handle(MouseEvent event) {
 					// TODO Auto-generated method stub
+					if (! simul) {
 					workSpace.getChildren().add(guideFilX);
                     workSpace.getChildren().add(guideFilY);
                     guideFilX.setLayoutX(event.getSceneX()-180);
@@ -1502,7 +1503,8 @@ public class HomeController implements Initializable {
 					line2 = initialser(x, y);
 					line.getPoints().clear();
 					line.getPoints().addAll(line2.getPoints());
-					ajouterGeste(line2);					
+					ajouterGeste(line2);
+				}
 				}
 			};
 			line.setOnMousePressed(event);
@@ -1541,7 +1543,6 @@ public class HomeController implements Initializable {
 					System.out.println(line.getPoints().size());
 				}
 			});
-		}
 		/*line.setOnMouseDragEntered(new EventHandler<MouseEvent>() {
 
 			@Override
