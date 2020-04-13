@@ -255,6 +255,12 @@ public class RegistreDecalage extends Sequentiels {
 		}
 	}
 	
+	@Override
+	public void resetPolyline(Polyline line, double x, double y) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public void setTaille(int taille) {
 		this.taille = taille;
 	}

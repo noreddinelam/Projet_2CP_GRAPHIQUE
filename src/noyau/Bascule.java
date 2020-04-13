@@ -99,6 +99,11 @@ public abstract class Bascule extends Sequentiels{
 	}
 	
 	@Override
+	public void resetPolyline(Polyline line, double x, double y) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
 	public Polyline generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
 		return null;

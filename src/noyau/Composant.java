@@ -162,6 +162,7 @@ public abstract class Composant implements Serializable{
 	}
 	
 	public abstract String generatePath();
+	
 	public abstract void resetPolyline(Polyline line , double x,double y);
 	
 	public abstract Polyline generatePolyline(double x,double y);

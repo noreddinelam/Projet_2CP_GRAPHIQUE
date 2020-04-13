@@ -67,5 +67,11 @@ public class AfficheurSegment extends Composant implements Affichage{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void resetPolyline(Polyline line, double x, double y) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

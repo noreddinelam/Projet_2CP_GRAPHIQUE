@@ -47,4 +47,10 @@ public class SourceConstante extends Composant{
 		// TODO Auto-generated method stub
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(Circuit.getImageFromComp(this).getBoundsInLocal().getWidth() / 2, Circuit.getImageFromComp(this).getBoundsInLocal().getHeight()), 0);
 	}
+	
+	@Override
+	public void resetPolyline(Polyline line, double x, double y) {
+		// TODO Auto-generated method stub
+		
+	}
 }

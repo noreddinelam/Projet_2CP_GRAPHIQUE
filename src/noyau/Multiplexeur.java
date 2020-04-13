@@ -133,5 +133,11 @@ public class Multiplexeur extends Combinatoires {
 		return null;
 	}
 	
+	@Override
+	public void resetPolyline(Polyline line, double x, double y) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 
 }

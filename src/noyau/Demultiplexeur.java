@@ -132,4 +132,10 @@ public class Demultiplexeur extends Combinatoires{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void resetPolyline(Polyline line, double x, double y) {
+		// TODO Auto-generated method stub
+		
+	}
 }
