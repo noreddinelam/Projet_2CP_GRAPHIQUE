@@ -1,7 +1,10 @@
 package controllers;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.awt.Desktop;
 import java.io.File;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -10,24 +13,26 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import application.ClickBarDroite;
 import application.ClickDroit;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXDrawersStack;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BackgroundFill;
@@ -37,7 +42,12 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -57,6 +67,7 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import noyau.*;
+import javafx.stage.Modality;
 import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -68,14 +79,16 @@ public class HomeController implements Initializable {
     Map<ImageView,Label> elemanrsMapFillMap;
     ImageView dragItem;
     private ClickDroit clickDroitFenetre;
+    private ClickBarDroite clickBar;
     private double x,y;
-    private int switching = 0; 
-
+    private int switching = 0;
     private boolean simul = false;
     
     // utilisé dans la sauvegarde des coordonnées 
     double posX ;
 	double posY ;
+	
+	Stage homeWindow;
 	
 	private Polyline testPoly;
     
@@ -267,20 +280,7 @@ public class HomeController implements Initializable {
 	 //////////////////
 
     
-    @FXML
-    private JFXDrawer fichierDrawer;
     
-    @FXML
-    private JFXDrawer editionDrawer;
-    
-    @FXML
-    private VBox vbar;
-    
-    @FXML
-    private JFXDrawer affichageDrawer;
-    
-    @FXML
-    private JFXDrawer helpDrawer;
     
     @FXML
     private Tab outils;
@@ -317,8 +317,27 @@ public class HomeController implements Initializable {
     	simul = (!simul);
     }
     
+    public  void setHomeControllerStage(Stage homeWindow) {
+    	this.homeWindow = homeWindow;
+    }
+    
+    
+    public Stage getHomeStage() {
+    	return this.homeWindow;
+    }
+    
+    
+    
+    
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+	}
+	
+	
+	
+	public void inisialiser() {
 		ajouterGestWorkSpace();/////Les gestes De drag and drop 
 		tracerLesGuides();//Initialisation des files de guide
 		//initialisation des coordones de X et Y a 0
@@ -382,39 +401,80 @@ public class HomeController implements Initializable {
     	    tracerLesregles(workSpace);
     	    scrollPane.setHmax(1);
     	    scrollPane.setVmax(1);
-    	    
-    	    fichierDrawer.setDisable(true);//mettre tout les drawers en mode disable
-    	    editionDrawer.setDisable(true);
-    	    affichageDrawer.setDisable(true);
-    	    helpDrawer.setDisable(true);
-    	    
-    	    
-
     	    tooltipInitialize();
-    		rightbar(fichier, fichierDrawer,editionDrawer,affichageDrawer,helpDrawer,"/application/Fichier.fxml" );
-    		rightbar(edition, editionDrawer,affichageDrawer,fichierDrawer,helpDrawer,"/application/Edition.fxml" );
-    		rightbar(affichage, affichageDrawer,editionDrawer,fichierDrawer,helpDrawer,"/application/Affichage.fxml" );
-    		rightbar(aide, helpDrawer,affichageDrawer,fichierDrawer,editionDrawer,"/application/Aide.fxml" );
+    	    
+    	    if(workSpace != null)
+    	    	System.out.println("the workSpace is not null");
+    	    
+    	    
 
-    			workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{//pour fermer les drawer en cliquant sur la souris
-    				if(fichierDrawer.isOpened() ||editionDrawer.isOpened() ||affichageDrawer.isOpened() || helpDrawer.isOpened()) {
-    						fichierDrawer.close();
-    						fichierDrawer.setOpacity(0);
-    						editionDrawer.close();
-    						editionDrawer.setOpacity(0);
-    						affichageDrawer.close();
-    						affichageDrawer.setOpacity(0);
-    						helpDrawer.close();
-    						helpDrawer.setOpacity(0);
-    					 	fichierDrawer.setDisable(true);
-    					    editionDrawer.setDisable(true);
-    					    affichageDrawer.setDisable(true);
-    					    helpDrawer.setDisable(true);
-    				}
-    				
-    			
-    			});
+
+    	    
+    	    if(homeWindow == null)
+    	    	System.out.println("its nnnnuuuuuullllllllllll");
+    	    else
+    	    	System.out.println("it is not nuuuuuullllllllll");
+    	    
+
+    		
+    	    ClickBarDroite fichierFenetre = new ClickBarDroite(1140, 100, "Fichier.fxml", homeWindow);
+    	    ClickBarDroite editionFenetre = new ClickBarDroite(1140, 180, "Edition.fxml", homeWindow);
+    	    ClickBarDroite affichageFenetre = new ClickBarDroite(1140, 300, "Affichage.fxml", homeWindow);
+    	    ClickBarDroite aideFenetre = new ClickBarDroite(1140, 350, "Aide.fxml", homeWindow);
+    	    
+			  //click = new ClickBar(1000, 100);
+    	    
+    	    ClickBarDroite tableauFenetres[] = {fichierFenetre,editionFenetre, affichageFenetre, aideFenetre };
+    	    
+    	    for(ClickBarDroite click : tableauFenetres) {
+				click.close();
+			}
+    		rightbar(fichier, fichierFenetre, tableauFenetres );
+    		rightbar(edition,editionFenetre ,tableauFenetres );
+    		rightbar(affichage, affichageFenetre ,tableauFenetres);
+    		rightbar(aide, aideFenetre, tableauFenetres );
+
+			
+    	    	    
+    	    workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
+				  @Override
+				  public void handle(MouseEvent event) {
+					for(ClickBarDroite click : tableauFenetres) {
+						click.close();
+						tooltipInitialize();
+					}
+				  }
+			  });	
+    	    
+    	/*    
+    	    workSpace.setOnMouseExited(new EventHandler<MouseEvent>() {
+    	    	
+				  public void handle(MouseEvent event) {
+					if(event.getSceneY() <20) {
+						for(ClickBarDroite click : tableauFenetres) {
+							click.close();
+						}
+					}
+				 
+    	    	
+				  }
+    	    	
+    	    });*/
+    	    
+
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private void ajouterGestWorkSpace() {////Methodes pour Ajouter l'interaction avec le drag and drop et les guides
 		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
 	   	        public void handle(MouseDragEvent e) {
@@ -465,51 +525,49 @@ public class HomeController implements Initializable {
 	
 	
 	
-	public void rightbar(ImageView icon,JFXDrawer elementName, JFXDrawer element1Hide, JFXDrawer element2Hide, JFXDrawer element3Hide, String s) {
-		Pane lay = null;
-		try {
-			lay = FXMLLoader.load(getClass().getResource(s));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		elementName.setSidePane(lay);
-		elementName.setOpacity(0);
-		icon.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
-				if(elementName.isOpened()) {
-					elementName.setOpacity(0);
-			        elementName.close();
-			        elementName.setViewOrder(10);
-			        elementName.setDisable(true);
-				}
-				
-				else {
-					elementName.setOpacity(1);
-			        elementName.open();
-			        elementName.setViewOrder(1);
-			        elementName.setDisable(false);
-			        element1Hide.close();
-			        element1Hide.setOpacity(0);
-			        element1Hide.setViewOrder(4);
-			        element1Hide.setDisable(true);	
-			        element2Hide.close();
-			        element2Hide.setOpacity(0);
-			        element2Hide.setViewOrder(4);
-			        element2Hide.setDisable(true);
-			        element3Hide.close();
-			        element3Hide.setOpacity(0);
-			        element3Hide.setViewOrder(4);
-			        element3Hide.setDisable(true);
+	
+	public void rightbar(ImageView icon,ClickBarDroite cc, ClickBarDroite tableauDeFenetres[]) {
+		  
+		  icon.setOnMousePressed(new EventHandler<MouseEvent>() {
+			  @Override
+			  public void handle(MouseEvent event) {
+				 
+				  for(ClickBarDroite click :tableauDeFenetres ) {
+					  if(cc.equals(click)) {
+						  if(cc.isShowing()) {
+							  cc.close();
+							  
 
-				}
-			});
-		
+						  }
+						  else {
+							  cc.show();
+						//  tooltipInitialize();
+						  }
+					  }
+					  else
+						  click.close();
+				  }
+				  
+			}
+		  
+		});
+	
+	
 	}
+	
+	
+	
+
+		
+	
 	
 	
 	
 	public void tooltipInitialize() {//utiliser pour les effets hover ou nous avons un texte en mettant la souris sur les elements
 
+		
+		
+		
 	    Tooltip fich = new Tooltip("fichier");
 	   
 	    
@@ -1642,5 +1700,255 @@ public class HomeController implements Initializable {
 		}
 		return nb;
 	}
+	
+	/*------------------------------------edition----------------------------*/
+	
+	  @FXML
+	    private Button annuler;
+
+	    @FXML
+	    private Button dupliquer;
+
+	    @FXML
+	    private Button couper;
+
+	    @FXML
+	    private Button selectionnerTout;
+
+	    @FXML
+	    private Button copier;
+
+	    @FXML
+	    private Button supprimer;
+
+	    @FXML
+	    private Button coller;
+
+	    @FXML
+	    private Button supprimerTout;
+
+	    @FXML
+	    void supprimerTout(ActionEvent event) {
+	    	Parent root = null;
+	    	HomeController m =null;
+	    	
+			try {
+				//root = FXMLLoader.load(getClass().getResource("/application/Home.fxml"));
+		        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Home.fxml"));
+		         root =(Parent)fxmlLoader.load();
+		         m =(HomeController)fxmlLoader.getController();
+		        
+				
+				
+				
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
+			Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+			Stage w = (Stage) window.getOwner();
+			window.close();
+			m.setHomeControllerStage(w);
+	        m.inisialiser();
+
+			w.setScene(scene);
+			w.show();
+	    }
+	    
+
+	    /*----------------------fichier------------------------------------*/
+	    
+	    @FXML
+	    private Button nouveau;
+
+	    @FXML
+	    private Button importer;
+
+	    @FXML
+	    private Button ouvrir;
+
+	    @FXML
+	    private Button fermer;
+
+	    @FXML
+	    private Button sauvegarder;
+
+	    @FXML
+	    private Button encapsuler;
+
+	    @FXML
+	    private Button sauvComme;
+
+	    @FXML
+	    void fermer(ActionEvent event) {
+	    	Stage stage = (Stage) fermer.getScene().getWindow();
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setContentText("Voullez vous vraimment quitter ! ");
+			Optional<ButtonType> result = alert.showAndWait();	    		
+			if(result.get() == ButtonType.OK){
+			Stage s = (Stage) stage.getOwner();
+			s.close();
+			
+			}
+	    }
+
+	    @FXML
+	    void nouveau(ActionEvent event) {
+	    	 try {
+	    		 Stage stage = new Stage();
+			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Home.fxml"));
+			        Parent root =(Parent)fxmlLoader.load();
+			        HomeController m =(HomeController)fxmlLoader.getController();
+			        m.setHomeControllerStage(stage);
+			        m.inisialiser();
+			       
+			        Scene scene = new Scene(root);
+					scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+			        stage.setScene(scene);  
+			        stage.setResizable(false);
+
+			        stage.show();
+			    } catch(Exception e) {
+			        e.printStackTrace();
+			    }
+			 
+	    }
+	    
+	    
+	    
+	    /*---------------------------affichage--------------------------------*/
+	    @FXML
+	    private Button tableVerite;
+
+	    @FXML
+	    private Button chronogramme;
+
+	    @FXML
+	    void chronogramme(ActionEvent event) {
+	    	 try {
+			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Chronogramme.fxml"));
+			        Parent root = fxmlLoader.load();
+			        Stage stage = new Stage();
+			        Scene scene = new Scene(root);
+			        stage.setScene(scene);  
+			        stage.setTitle("le chronogramme");
+			        stage.setResizable(false);
+				    stage.initModality(Modality.APPLICATION_MODAL);
+
+			        stage.show();
+			    } catch(Exception e) {
+			        e.printStackTrace();
+			    	}
+
+	    }
+
+	    @FXML
+	    void tableDeVerite(ActionEvent event) {
+	    	 try {
+			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/TableDeVerite.fxml"));
+			        Parent root = fxmlLoader.load();
+			        Stage stage = new Stage();
+			        Scene scene = new Scene(root);
+			        stage.setScene(scene);  
+			        stage.setTitle("la table de verité");
+			        stage.setResizable(false);
+				    stage.initModality(Modality.APPLICATION_MODAL);
+
+			        stage.show();
+			    } catch(Exception e) {
+			        e.printStackTrace();
+			    	}
+
+	    }
+	
+	
+	
+	/*------------------------about --------------------------------*/
+	    
+	    @FXML
+	    private Button lien;
+	    
+	    @FXML
+	    private Button aideOnline;
+
+	    @FXML
+	    private Button guideUser;
+
+	    @FXML
+	    private Button about;
+
+	    @FXML
+	    void aboutSimulIni(ActionEvent event) {
+	    	 try {
+			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/About.fxml"));
+			        Parent root1 = fxmlLoader.load();
+			        Stage stage = new Stage();
+			        Scene scene = new Scene(root1);
+					scene.getStylesheets().add(getClass().getResource("/styleFile/about.css").toExternalForm());
+			        stage.setScene(scene);  
+			        stage.setTitle("About SimulINI");
+			        stage.setResizable(false);
+				    stage.initModality(Modality.APPLICATION_MODAL);
+			        stage.show();
+			    } catch(Exception e) {
+			        e.printStackTrace();
+			    }
+
+	    }
+
+	    
+
+	   
+	public void enligne(String l) {//une methode utilise pour ouvrir un lien dans le navigateur par defaut
+			try {
+				Desktop.getDesktop().browse(new URL(l).toURI());
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		public void siteWeb(ActionEvent event) {
+			enligne("https://simulini.netlify.com");
+		}
+		
+		public void aideEnLigne(ActionEvent event) {
+			enligne("https://simulini.netlify.com/page-2/");
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 

@@ -1,5 +1,8 @@
 package application;
 
+import controllers.HomeController;
+
+import controllers.PremierePageController;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -76,7 +79,23 @@ public class Main extends Application {
 						primaryStage.show();*/
 //					/*FXMLLoader loader = new FXMLLoader();
 //					loader.setLocation(getClass().getResource("/application/PageEntree.fxml"));*/
-						Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
+					//	Parent root = FXMLLoader.load(getClass().getResource("PageEntree.fxml"));
+						
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
+						
+						Parent root = (Parent)loader.load();
+						HomeController controller = (HomeController)loader.getController();
+						controller.setHomeControllerStage(primaryStage);
+						controller.inisialiser();
+						
+						
+						
+						
+						/*FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Home.fxml"));
+		                Parent root = (Parent) fxmlLoader.load();
+						HomeController controller = new HomeController(primaryStage);*/
+						
+
 //					 	FadeTransition fade = new FadeTransition();  
 //			         	fade.setDuration(Duration.millis(1000)); 
 //			         	fade.setDelay(Duration.millis(4000));

@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="93.0" prefWidth="242.0" style="-fx-border-color: #000000; -fx-background-color: #4B535E;" stylesheets="@../styleFile/affichage.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RightBarController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="93.0" prefWidth="242.0" style="-fx-border-color: #000000; -fx-background-color: #4B535E;" stylesheets="@../styleFile/affichage.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HomeController">
    <children>
       <Button fx:id="tableVerite" layoutX="3.0" layoutY="3.0" mnemonicParsing="false" onAction="#tableDeVerite" prefHeight="42.0" prefWidth="236.0" text="Table de vérité                                           ">
          <font>

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="242.0" style="-fx-border-color: #000000; -fx-background-color: #535c68;" stylesheets="@../styleFile/fichier.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RightBarController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="242.0" style="-fx-border-color: #000000; -fx-background-color: #535c68;" stylesheets="@../styleFile/fichier.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HomeController">
    <children>
       <Button fx:id="nouveau" layoutX="3.0" layoutY="4.0" mnemonicParsing="false" onAction="#nouveau" prefHeight="42.0" prefWidth="236.0" text="Nouveau                                                   ">
          <font>

@@ -21,6 +21,14 @@ public class PremierePageController implements Initializable{
 	
 	@FXML
     private Pane pane;
+	
+	private Stage window;
+	
+	
+	
+	public void setStage(Stage window) {
+		this.window = window;
+	}
 
 	class bg_thread implements Runnable
 	{
@@ -64,11 +72,18 @@ public class PremierePageController implements Initializable{
 					public void run() {
 						Parent root = null;
 						try {
-							root = FXMLLoader.load(getClass().getResource("/application/Home.fxml"));
+							//root = FXMLLoader.load(getClass().getResource("/application/Home.fxml"));
+							FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/Home.fxml"));
+							 root = (Parent)loader.load();
+							 
+
+							
+
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						
 						
 						Scene scene = new Scene(root);
 						Stage stage = new Stage();
