@@ -1,7 +1,6 @@
 package controllers;
 
-import java.awt.Button;
-import java.beans.DesignMode;
+
 import java.io.IOException;
 import java.net.URL;
 import java.io.File;
@@ -41,6 +40,8 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -295,6 +296,9 @@ public class HomeController implements Initializable {
     private Tab comb;
     
     @FXML
+    private ScrollPane scrollPane;
+    
+    @FXML
     private TabPane tabPane;
 
     @FXML
@@ -377,6 +381,8 @@ public class HomeController implements Initializable {
     	    ////////////// tracer les regles 
   
     	    tracerLesregles(workSpace);
+    	    scrollPane.setHmax(1);
+    	    scrollPane.setVmax(1);
     	    
     	    fichierDrawer.setDisable(true);//mettre tout les drawers en mode disable
     	    editionDrawer.setDisable(true);
@@ -413,15 +419,10 @@ public class HomeController implements Initializable {
 	private void ajouterGestWorkSpace() {////Methodes pour Ajouter l'interaction avec le drag and drop et les guides
 		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
 	   	        public void handle(MouseDragEvent e) {
-                       workSpace.getChildren().add(guideX);
-                       workSpace.getChildren().add(guideXp);
-                       workSpace.getChildren().add(guideY);
-                       workSpace.getChildren().add(guideYp);
-                       //sari
-                     //  workSpace.getChildren().add(guideFilX);
-                     //  workSpace.getChildren().add(guideFilY);
-                       
-
+                       if (! workSpace.getChildren().contains(guideX)) workSpace.getChildren().add(guideX);                    	   
+                       if (! workSpace.getChildren().contains(guideXp)) workSpace.getChildren().add(guideXp);
+                       if (! workSpace.getChildren().contains(guideY)) workSpace.getChildren().add(guideY);
+                       if (! workSpace.getChildren().contains(guideYp)) workSpace.getChildren().add(guideYp);
 	   	            e.consume();
 	   	        }
 	   	    });
@@ -577,6 +578,9 @@ public class HomeController implements Initializable {
 
 			elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
 				public void handle(MouseEvent e) {
+					if (! simul) {
+						
+					
 					ImageView dragImageView = new ImageView();
 					System.out.println(elementAdrager.getId());
 					dragImageView.setMouseTransparent(true);
@@ -627,6 +631,7 @@ public class HomeController implements Initializable {
 								afficheurX.setText("X : 0");
 								afficheurY.setText("Y : 0");
 							}
+						
 
 							e.consume();
 						}
@@ -655,15 +660,20 @@ public class HomeController implements Initializable {
 							else 
 							{
 								Polyline polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+								if (polyline != null) {
 								polyline.setSmooth(true);
+								polyline.setStrokeWidth(3);
 								polyline.setStrokeType(StrokeType.CENTERED);
 								polyline.setCursor(Cursor.HAND);
 								workSpace.getChildren().add(polyline);
 								ajouterGeste(polyline);
-								ajouterLeGestApresCollage(dragImageView);								
+								
+								}
+								ajouterLeGestApresCollage(dragImageView);
 							}
 						}});
 
+				}
 				}
 			});
 		
@@ -768,7 +778,7 @@ public class HomeController implements Initializable {
 	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
-		if(!simul) {
+		
 	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	            eleementAdrager.setCursor(Cursor.HAND);   
@@ -777,6 +787,7 @@ public class HomeController implements Initializable {
 	    
 	    eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
+	        	if (! simul) {		
 	        	posX = eleementAdrager.getLayoutX();
 	   		 	posY = eleementAdrager.getLayoutY();
 	        
@@ -832,7 +843,7 @@ public class HomeController implements Initializable {
 	    	        	//polyline.relocate(x, y);
 	    	            String xString=String.valueOf(eleementAdrager.getLayoutX());
     	                String yString=String.valueOf(eleementAdrager.getLayoutY());
-    	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<1066 )&&(eleementAdrager.getLayoutY()>17))
+    	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<workSpace.getMaxWidth() )&&(eleementAdrager.getLayoutY()>17))
 	    	            {
 	    	                guideX.setLayoutX(eleementAdrager.getLayoutX());
 	    	                guideY.setLayoutY(eleementAdrager.getLayoutY());
@@ -853,9 +864,28 @@ public class HomeController implements Initializable {
 	    	            	guideYp.setLayoutY(0);
 	    	              	afficheurX.setText("X : 0");
 		    	            afficheurY.setText("Y : 0");
-	    	            	}	    	        
+	    	            	}	    
+    	            	if(e.getSceneX() > 1275)
+						{
+							scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+							scrollPane.setHvalue(scrollPane.getHvalue()+0.01);
+						}
+    	            	if(e.getSceneX() < 210)
+						{
+							
+							scrollPane.setHvalue(scrollPane.getHvalue()-0.01);
+						}
+    	            	if(e.getSceneY() > 700)
+						{
+							scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+							scrollPane.setVvalue(scrollPane.getVvalue()+0.01);
+						}
+    	            	if(e.getSceneY() < 0)
+						{
+							
+							scrollPane.setVvalue(scrollPane.getVvalue()-0.01);
+						}
 	    	            e.consume();
-	    	            
 	    	            Composant cmp = Circuit.getCompFromImage(eleementAdrager);
 	    	            Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0);
 	    	            Coordonnees crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, 0);
@@ -875,20 +905,19 @@ public class HomeController implements Initializable {
 	    	            	}
 	    	            i++;
 	    	            }    
-
 	    	        }
 	    	        });
-	            
-
 					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
 							dragItem = null;  	 
 							eleementAdrager.setMouseTransparent(false);
 							eleementAdrager.setMouseTransparent(false);
 							eleementAdrager.setCursor(Cursor.DEFAULT);
+
 							//if(e.getSceneX() <210 || e.getSceneY()<25||e.getSceneX()>1300|| e.getSceneY()>670 || intersectionComposant(eleementAdrager))
 							//System.out.println(e.getSceneX() + eleementAdrager.getBoundsInLocal().getWidth() / 2 +"------------");
-							if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>670 || intersectionComposant(eleementAdrager))
+
+							if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > workSpace.getMaxWidth() || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>workSpace.getMaxHeight() || intersectionComposant(eleementAdrager))
 							{
 								eleementAdrager.setLayoutX(posX);
 								eleementAdrager.setLayoutY(posY);
@@ -899,29 +928,30 @@ public class HomeController implements Initializable {
 							}
 						}
 					});
-				}
-			});
-		}else {
-			if (eleementAdrager.getId().equals("pin")) {
-				Pin pin = (Pin) Circuit.getCompFromImage(eleementAdrager);
-				if (pin.getInput()) {
-					eleementAdrager.setOnMouseClicked(new EventHandler<MouseEvent>() {
-						@Override
-						public void handle(MouseEvent e) {
-							// TODO Auto-generated method stub
+				}else {
+					if (eleementAdrager.getId().equals("pin")) {
+						Pin pin = (Pin) Circuit.getCompFromImage(eleementAdrager);
+						if (pin.getInput()) {
+							eleementAdrager.setOnMouseClicked(new EventHandler<MouseEvent>() {
+								@Override
+								public void handle(MouseEvent e) {
+									// TODO Auto-generated method stub
 
-							if (pin.getEtat() == EtatLogique.ONE) {
-								pin.setEtat(EtatLogique.ZERO);
-							} 
-							else {
-								pin.setEtat(EtatLogique.ONE);
-							}
-							eleementAdrager.setCursor(Cursor.HAND);
+									if (pin.getEtat() == EtatLogique.ONE) {
+										pin.setEtat(EtatLogique.ZERO);
+									} 
+									else {
+										pin.setEtat(EtatLogique.ONE);
+									}
+									eleementAdrager.setCursor(Cursor.HAND);
+								}
+							});
 						}
-					});
+					}
 				}
-			}
-		}
+	    	}
+	    });
+		
 	}
 	public void transitionDesComposants(Node composants) {// Methode d'animation de 'Shake'
 	    int duration = 100;
@@ -1109,7 +1139,7 @@ public class HomeController implements Initializable {
         guideX.setStartX(0);
         guideX.setStartY(0);
         guideX.setEndX(0);
-        guideX.setEndY(700);	
+        guideX.setEndY(workSpace.getMaxHeight());	
         /////////////////////////////////////////////////////
         guideXp.setStyle("-fx-stroke-width: 0.3px;");
         guideXp.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
@@ -1119,7 +1149,7 @@ public class HomeController implements Initializable {
         guideXp.setStartX(0);
         guideXp.setStartY(0);
         guideXp.setEndX(0);
-        guideXp.setEndY(700);
+        guideXp.setEndY(workSpace.getMaxHeight());
         /////////////////////////////////////////////////////
         guideY.setStyle("-fx-stroke-width: 0.3px;");
         guideY.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
@@ -1128,7 +1158,7 @@ public class HomeController implements Initializable {
     	guideY.setLayoutX(0);
         guideY.setStartX(0);
         guideY.setStartY(0);
-        guideY.setEndX(1130);
+        guideY.setEndX(workSpace.getMaxWidth());
         guideY.setEndY(0);
         /////////////////////////////////////////////////////
         guideYp.setStyle("-fx-stroke-width: 0.3px;");
@@ -1138,7 +1168,7 @@ public class HomeController implements Initializable {
     	guideYp.setLayoutX(0);
         guideYp.setStartX(0);
         guideYp.setStartY(0);
-        guideYp.setEndX(1130);
+        guideYp.setEndX(workSpace.getMaxWidth());
         guideYp.setEndY(0);
         /////////////////////////////////////////////////////
         guideFilX.setStyle("-fx-stroke-width: 0.3px;");
@@ -1149,7 +1179,7 @@ public class HomeController implements Initializable {
         guideFilX.setStartX(0);
         guideFilX.setStartY(0);
         guideFilX.setEndX(0);
-        guideFilX.setEndY(700);
+        guideFilX.setEndY(workSpace.getMaxHeight());
         /////////////////////////////////////////////////////
         guideFilY.setStyle("-fx-stroke-width: 0.3px;");
         guideFilY.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
@@ -1158,7 +1188,7 @@ public class HomeController implements Initializable {
         guideFilY.setLayoutX(0);
         guideFilY.setStartX(0);
         guideFilY.setStartY(0);
-        guideFilY.setEndX(1130);
+        guideFilY.setEndX(workSpace.getMaxWidth());
         guideFilY.setEndY(0);
 	}
 	private void instanceComposant(ImageView img) {
@@ -1257,7 +1287,6 @@ public class HomeController implements Initializable {
     	ajouterGeste(a);
 		return a;
 	}
-	//AudioClip player = new AudioClip(this.getClass().getResource("audio.mp3").toString());
 		
 	 public void ajouterGeste(Polyline line)
 		{
@@ -1269,7 +1298,6 @@ public class HomeController implements Initializable {
 					//les guides :
 					guideFilX.setLayoutX(event.getSceneX()-180);
 					guideFilY.setLayoutY(event.getSceneY());
-					//////////////////
 					double x2 = event.getX();
 					double y2 = event.getY();
 				//	Double x2 = event.getSceneX()-180;
@@ -1408,6 +1436,7 @@ public class HomeController implements Initializable {
 						System.out.println(destination+"       "+entree);
 						Circuit.relier(source, destination, sortie, entree);
  						//souuund
+
 						playSound();
 						System.out.println("trabtooo");
 						if(source.getClass().getSimpleName().equals("Pin")) ((Pin)source).setEtat(EtatLogique.ONE);
@@ -1514,7 +1543,6 @@ public class HomeController implements Initializable {
 		Double XImg = imgCmp.getLayoutX();
 		Double Yimg = imgCmp.getLayoutY();
 		
-		//System.out.println(x+"   "+y+"    "+XImg+"    "+Yimg);
 		if(( Xfil >= XImg  )  &&  (XImg+imgCmp.getFitWidth() > Xfil) && ( Yfil >= Yimg)  &&  (Yimg+imgCmp.getFitHeight() > Yfil) ) {
 			Composant cmp = Circuit.getCompFromImage(imgCmp);
 			Coordonnees tabEntrees[] = cmp.getLesCoordonnees().getCordEntree();
@@ -1522,13 +1550,13 @@ public class HomeController implements Initializable {
 			Coordonnees crd = new Coordonnees(Xfil,Yfil);
 			boolean trouve = false;
 			int i = 0;
-			while( i < nbCord && trouve == false) {
-				//double xTab = tabEntrees[i].getX() + imgCmp.getLayoutX(); 
-				//double yTab = tabEntrees[i].getY() + imgCmp.getLayoutY(); 
-				Coordonnees crdTab = new Coordonnees(tabEntrees[i].getX() + imgCmp.getLayoutX(), tabEntrees[i].getY() + imgCmp.getLayoutY());
-				
+			while( i < nbCord && trouve == false) { 
+				Coordonnees crdTab = new Coordonnees(tabEntrees[i].getX() + imgCmp.getLayoutX(), tabEntrees[i].getY() + imgCmp.getLayoutY());				
 				System.out.println(Xfil+" "+crdTab.getX()+" "+Yfil+" "+crdTab.getY()+"layaoutx"+imgCmp.getLayoutX()+"layaouty"+imgCmp.getLayoutY());
-				if( crdTab.equals(crd) ) { trouve =true;entree=i; }
+				if( crdTab.equals(crd) ) { 
+					trouve =true;
+					entree=i; 
+				}
 				i++;
 			}
 			if(trouve)
