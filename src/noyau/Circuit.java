@@ -191,6 +191,14 @@ public class Circuit implements Serializable{
 		}
 	}
 	
+	public static ArrayList<Polyline> getListFromPolyline(Polyline ligne) { // recuperer le composant associé à une image .
+		for (Entry<Fil, ArrayList<Polyline>> entry : filUtilises.entrySet()) {
+			if (entry.getValue().contains(ligne)) {
+				return entry.getValue();
+			}
+		}
+		return null;
+	}
 	public static void removeImageFromComp(Composant comp) {
 		compUtilises.remove(comp);
 	}

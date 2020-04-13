@@ -87,8 +87,8 @@ public class Fil implements Serializable{
 
 		for (Polyline polyline : line) {
 			polyline.setStroke(Color.BLACK);
+			}
 		}
-	}
 
 	public Composant getSource() {
 		return source;
@@ -108,6 +108,22 @@ public class Fil implements Serializable{
 
 	public void addEtages(ArrayList<Integer> etage) {
 		source.addEtages(etage);
+	}
+	public Polyline polylineParPoint(Coordonnees crdrech) {
+		Coordonnees crd = new Coordonnees(0, 0);
+		ArrayList<Polyline> list = Circuit.getPolylineFromFil(this);
+		for (Polyline line : list) {
+			int i = 0;
+			while(i < line.getPoints().size()) {
+				crd.setX(line.getPoints().get(i));
+				crd.setY(line.getPoints().get(i+1));
+				if(crd.equals(crdrech)){
+					return line;
+				}
+				i=i+2;
+			}
+		}
+		return null;
 	}
 	
 }
