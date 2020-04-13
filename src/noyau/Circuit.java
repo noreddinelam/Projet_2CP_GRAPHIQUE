@@ -140,7 +140,7 @@ public class Circuit implements Serializable{
 			if(pin.getInput() == true) pin.evaluer();  //a na7i
 		}
 		
-	/*	ArrayList<Integer> etage = new ArrayList<Integer>();
+		ArrayList<Integer> etage = new ArrayList<Integer>();
 		ArrayList<Integer> tmp = null ;
 		int max;
 		for (int i = 0; i < listeEtages.size(); i++) { // former les étages du circuit pour l'execution et la generation du chronogramme
@@ -152,7 +152,7 @@ public class Circuit implements Serializable{
 				b.setEtages(tmp);
 				etage.clear();
 			}
-		}*/
+		}
 		
 	}
 	public static ImageView getImageFromComp(Composant comp) { // recuperer l'image associé à un composant .
@@ -181,6 +181,14 @@ public class Circuit implements Serializable{
 			}
 		}
 		return fil;
+	}
+	public static void defaultCompValue() {
+		for (Fil fil : filUtilises.keySet()) {
+			fil.defaultValue();
+		}
+		for(Composant composant : compUtilises.keySet()) {
+			composant.defaultValue();
+		}
 	}
 	
 	public static void removeImageFromComp(Composant comp) {

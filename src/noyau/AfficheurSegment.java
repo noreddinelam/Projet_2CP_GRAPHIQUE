@@ -1,5 +1,7 @@
 package noyau;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
 public class AfficheurSegment extends Composant implements Affichage{
@@ -34,6 +36,16 @@ public class AfficheurSegment extends Composant implements Affichage{
 		
 	}
 	
+	@Override
+	public void defaultValue() {
+		// TODO Auto-generated method stub
+		valeur = 0;
+		ImageView img = Circuit.getImageFromComp(this);
+		Image image = new Image("AfficheurSegment/0.png");
+		img.setImage(image);
+		img.setFitHeight(image.getHeight());
+		img.setFitWidth(image.getWidth());
+	}
 	
 	@Override
 	public String generatePath() {

@@ -128,6 +128,20 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		}		
 		return null;
 	}
+	@Override
+	public void defaultValue() {
+		// TODO Auto-generated method stub
+		if (input) {
+			super.defaultValue();
+		}
+		etat = EtatLogique.ZERO;
+		ImageView img = Circuit.getImageFromComp(this);
+		Image image = new Image("Pin/0Input.png");
+		img.setImage(image);
+		img.setFitHeight(image.getHeight());
+		img.setFitWidth(image.getWidth());
+		
+	}
 	public boolean isInput() {
 		return input;
 	}

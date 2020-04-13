@@ -23,6 +23,15 @@ public class Fil implements Serializable{
 	public void evaluer() {  
 		if(valider()) // si le fil est pret 
 		{
+			ArrayList<Polyline> line = Circuit.getPolylineFromFil(this);
+			for (Polyline polyline : line) {
+				if(etat.getNum() == 1) {
+					polyline.setStroke(Color.DARKGREEN);
+				}
+				if(etat.getNum() == 0){
+					polyline.setStroke(Color.DARKRED);
+				}
+			}
 			for (Composant composant : destination) // parcourir les destinations
 				composant.evaluer(); // evaluer les composants de destination
 		}else
@@ -40,7 +49,7 @@ public class Fil implements Serializable{
 		
 	}
 	
-	public boolean validerEntreeSorties() { 
+	public boolean validerEntreeSorties() { // verifier si une on a relier deux composants sortie avec sortie .
 		for(Composant c: this.destination) {
 			for(Fil f : c.sorties) {
 				if(this.equals(f))
@@ -70,15 +79,14 @@ public class Fil implements Serializable{
 
 	public void setEtatLogiqueFil(EtatLogique etat) {
 		this.etat = etat;
+	}
+	
+	public void defaultValue() {
+		etat = EtatLogique.HAUTE_IMPEDANCE;
 		ArrayList<Polyline> line = Circuit.getPolylineFromFil(this);
 
 		for (Polyline polyline : line) {
-			if(etat.getNum() == 1) {
-				polyline.setStroke(Color.DARKGREEN);
-			}
-			if(etat.getNum() == 0){
-				polyline.setStroke(Color.DARKRED);
-			}
+			polyline.setStroke(Color.BLACK);
 		}
 	}
 

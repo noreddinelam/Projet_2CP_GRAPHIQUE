@@ -155,6 +155,11 @@ public abstract class Composant implements Serializable{
 			entrees[i].addEtages(etage);
 		}
 	}
+	public void defaultValue() {
+		for (int i = 0; i < nombreSortie; i++) {
+			etatFinal[i] = EtatLogique.HAUTE_IMPEDANCE;
+		}
+	}
 	
 	public abstract String generatePath();
 	
