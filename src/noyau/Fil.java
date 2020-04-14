@@ -13,6 +13,8 @@ public class Fil implements Serializable{
 	private Composant source = null;
 	private ArrayList<Composant> destination = null;
 	private EtatLogique etat = EtatLogique.HAUTE_IMPEDANCE;
+	
+	private int switching = 0; //utiliser pour la gestion des fils 
 
 	public Fil(Composant source) { // constructeur 
 		this.source = source; 
@@ -116,6 +118,22 @@ public class Fil implements Serializable{
 			}
 		}
 		return null;
+	}
+
+	public EtatLogique getEtat() {
+		return etat;
+	}
+
+	public void setEtat(EtatLogique etat) {
+		this.etat = etat;
+	}
+
+	public int getSwitching() {
+		return switching;
+	}
+
+	public void setSwitching(int switching) {
+		this.switching = switching;
 	}
 	
 }
