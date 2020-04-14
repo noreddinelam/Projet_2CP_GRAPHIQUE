@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -67,10 +68,13 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import noyau.*;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 
 
 
@@ -1787,7 +1791,7 @@ public class HomeController implements Initializable {
 	    @FXML
 	    void fermer(ActionEvent event) {
 	    	Stage stage = (Stage) fermer.getScene().getWindow();
-			Alert alert = new Alert(AlertType.WARNING);
+			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setContentText("Voullez vous vraimment quitter ! ");
 			Optional<ButtonType> result = alert.showAndWait();	    		
 			if(result.get() == ButtonType.OK){
@@ -1818,8 +1822,84 @@ public class HomeController implements Initializable {
 			    }
 			 
 	    }
+	    @FXML
+	    void ouvrir(ActionEvent event) {
+	    	/*final DirectoryChooser directoryChooser = new DirectoryChooser();
+	            final File selectedDirectory = directoryChooser.showDialog(homeWindow);*/
+	            final FileChooser fileChooser = new FileChooser();
+	            fileChooser.setInitialDirectory(
+	                    new File(System.getProperty("user.home"))
+	                );                 
+	                fileChooser.getExtensionFilters().addAll(
+	                    new FileChooser.ExtensionFilter("BIN", "*.bin")
+	                );
+	            
+	            File f = fileChooser.showOpenDialog(homeWindow);
+	            Circuit circuit = Sauvegarde.loadCiruit(f.getAbsolutePath());
+	            if(circuit != null)
+	            	System.out.println("le circuit est bien charge :)");
+
+	    	
+	    }
 	    
 	    
+	    
+	    
+	    @FXML
+	    void save(ActionEvent event) {
+	    	Alert a = new Alert(AlertType.INFORMATION);
+	    	a.setContentText("le circuit est bien sauvgarde");
+	    	a.show();
+
+	    }
+	    
+	    	
+	    
+	    
+	    @FXML
+	    void saveAs(ActionEvent event) {
+
+            final FileChooser fileChooser = new FileChooser();
+            File f = fileChooser.showSaveDialog(homeWindow);
+            System.out.println("the name of the file is : "+f.getAbsolutePath());
+    		Circuit circuit = new Circuit();
+            Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
+
+	    }
+	    
+	    @FXML
+	    void importer(ActionEvent event) {
+	    	
+	    	 final FileChooser fileChooser = new FileChooser();
+	            fileChooser.setInitialDirectory(
+	                    new File(System.getProperty("user.home"))
+	                );                 
+	                fileChooser.getExtensionFilters().addAll(
+	                    new FileChooser.ExtensionFilter("BIN", "*.bin")
+	                );
+	            
+	            File f = fileChooser.showOpenDialog(homeWindow);
+	            Circuit circuit = Sauvegarde.loadCiruit(f.getAbsolutePath());
+	            if(circuit != null)
+	            	System.out.println("le circuit est bien charge :)");
+
+	    }
+	    
+	    
+	    @FXML
+	    void encapsulerEtSauvgarder(ActionEvent event) {
+	    	final FileChooser fileChooser = new FileChooser();
+            File f = fileChooser.showSaveDialog(homeWindow);
+            System.out.println("the name of the file is : "+f.getAbsolutePath());
+    		Circuit circuit = new Circuit();
+            Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
+
+	    }
+
+	    
+	    
+	    
+
 	    
 	    /*---------------------------affichage--------------------------------*/
 	    @FXML

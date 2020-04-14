@@ -14,14 +14,14 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="importer" alignment="CENTER" layoutX="3.0" layoutY="214.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text=" Importer                                                    ">
+      <Button fx:id="importer" alignment="CENTER" layoutX="3.0" layoutY="214.0" mnemonicParsing="false" onAction="#importer" prefHeight="42.0" prefWidth="236.0" text=" Importer                                                    ">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="ouvrir" layoutX="3.0" layoutY="45.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text=" Ouvrir                                                        ">
+      <Button fx:id="ouvrir" layoutX="3.0" layoutY="45.0" mnemonicParsing="false" onAction="#ouvrir" prefHeight="42.0" prefWidth="236.0" text=" Ouvrir                                                        ">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>
@@ -35,7 +35,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="sauvegarder" layoutX="3.0" layoutY="87.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text="Sauvegarder                                             " textFill="WHITE">
+      <Button fx:id="sauvegarder" layoutX="3.0" layoutY="87.0" mnemonicParsing="false" onAction="#save" prefHeight="42.0" prefWidth="236.0" text="Sauvegarder                                             " textFill="WHITE">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>
@@ -43,7 +43,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="encapsuler" layoutX="3.0" layoutY="172.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text="Encapsuler et sauvegarder                       ">
+      <Button fx:id="encapsuler" layoutX="3.0" layoutY="172.0" mnemonicParsing="false" onAction="#encapsulerEtSauvgarder" prefHeight="42.0" prefWidth="236.0" text="Encapsuler et sauvegarder                       ">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>
@@ -51,7 +51,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="sauvComme" alignment="CENTER" layoutX="3.0" layoutY="130.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text="  Sauvegarder comme...                               ">
+      <Button fx:id="sauvComme" alignment="CENTER" layoutX="3.0" layoutY="130.0" mnemonicParsing="false" onAction="#saveAs" prefHeight="42.0" prefWidth="236.0" text="  Sauvegarder comme...                               ">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>
