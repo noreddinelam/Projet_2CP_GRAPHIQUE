@@ -19,10 +19,14 @@ public class AfficheurSegment extends Composant implements Affichage{
 	}
 	
 	public void evaluer() {
-		
+		if (valider()) {
+			genererSorties();
+		}
 	}
 	public void genererSorties() {
-		
+		valeur = Integer.valueOf(concatener(entrees, 4),2);
+		ImageView imageView = Circuit.getImageFromComp(this);
+		imageView.setImage(new Image(generatePath()));
 	}
 	
 	public boolean valider() {
