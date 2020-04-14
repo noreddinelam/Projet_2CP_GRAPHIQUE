@@ -1,5 +1,6 @@
 package noyau;
 import java.lang.Math;
+import java.util.ArrayList;
 
 import javafx.scene.shape.Polyline;
 public class Compteur extends Sequentiels{
@@ -153,11 +154,11 @@ public class Compteur extends Sequentiels{
 		case 3:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(107.5, 0), 0);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(78.9, 0), 1);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(70.3, 0), 2);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(50, 0), 2);
 			
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(107.5, 68), 0);
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78.9, 68), 1);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(70.3, 68), 2);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(50, 68), 2);
 			
 			lesCoordonnees.setCordHorloge(new Coordonnees(0, 20.2));
 			
@@ -192,9 +193,24 @@ public class Compteur extends Sequentiels{
 	}
 	
 	@Override
-	public Polyline generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
-		return null;
+		setCord();	
+		Polyline polyline = null;
+		double posX ;
+		double posY ;
+		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
+		ArrayList<InfoPolyline> listPolylines ;
+		for (int i = 0; i < nombreSortie; i++) {
+			listPolylines = new ArrayList<InfoPolyline>();
+			posX = x+lesCoordonnees.getCordSortieInIndex(i).getX() ;
+			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
+			polyline = new Polyline(posX ,posY,posX,posY+5);
+			listPolylines.add(new InfoPolyline(polyline));
+			reslut.add(polyline);
+			Circuit.ajouterFil(sorties[i], listPolylines); 
+		}		
+		return reslut;
 	}
 	
 	public Fil getLoad() {

@@ -1,5 +1,7 @@
 package noyau;
 
+import java.util.ArrayList;
+
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
@@ -16,7 +18,7 @@ public class Multiplexeur extends Combinatoires {
 		nombreSortie = 1;//le multiplexeur possede une seule sortie
 		Fil fil = new Fil(this);
 		sorties[0]=fil;
-		lesCoordonnees = new LesCoordonnees(nombreEntree, 0, nbCommande);
+		lesCoordonnees = new LesCoordonnees(nombreEntree, 1, nbCommande);
 	}
 	
 	
@@ -67,7 +69,7 @@ public class Multiplexeur extends Combinatoires {
 	public void setCord() {
 		// TODO Auto-generated method stub
 		ImageView img = Circuit.getImageFromComp(this);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(), img.getBoundsInLocal().getHeight() / 2), 0);
+		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(), (img.getBoundsInLocal().getHeight()-10) / 2), 0);
 		switch (nbCommande) {
 		case 1:{			
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 16.8), 0);
@@ -128,9 +130,18 @@ public class Multiplexeur extends Combinatoires {
 	}
 	
 	@Override
-	public Polyline generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
-		return null;
+		setCord();	
+		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
+		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX() ;
+		double posY = y + lesCoordonnees.getCordSortieInIndex(0).getY();
+		Polyline polyline = new Polyline(posX ,posY,posX+5,posY);
+		ArrayList<InfoPolyline> listPolylines = new ArrayList<InfoPolyline>();
+		listPolylines.add(new InfoPolyline(polyline));
+		reslut.add(polyline);
+		Circuit.ajouterFil(sorties[0], listPolylines);
+		return reslut;
 	}
 	
 	@Override

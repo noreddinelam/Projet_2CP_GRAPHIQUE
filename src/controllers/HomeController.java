@@ -436,7 +436,6 @@ public class HomeController implements Initializable {
 		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
 	   	        public void handle(MouseDragEvent e) {
                        if (! workSpace.getChildren().contains(guideX)) workSpace.getChildren().add(guideX);
-                    	   
                        if (! workSpace.getChildren().contains(guideXp)) workSpace.getChildren().add(guideXp);
                        if (! workSpace.getChildren().contains(guideY)) workSpace.getChildren().add(guideY);
                        if (! workSpace.getChildren().contains(guideYp)) workSpace.getChildren().add(guideYp);
@@ -628,7 +627,7 @@ public class HomeController implements Initializable {
 
 							String xString=String.valueOf(dragImageView.getLayoutX());
 							String yString=String.valueOf(dragImageView.getLayoutY());
-							if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<1066 )&&(dragImageView.getLayoutY()>17))
+							if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<1066 )&&(dragImageView.getLayoutY()>0))
 							{
 								guideX.setLayoutX(dragImageView.getLayoutX());
 								guideY.setLayoutY(dragImageView.getLayoutY());
@@ -674,24 +673,23 @@ public class HomeController implements Initializable {
 							dragImageView.setFitHeight(img.getHeight());
 							dragImageView.setFitWidth(img.getWidth());	
 							System.out.println((e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2)+ "----------------------");
-							if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>670 || intersectionComposant(dragImageView))
+							if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView))
 							{
-								System.out.println("yufdjhglimgflyufjylfj");
 								workSpace.getChildren().remove(dragImageView);
 								Circuit.removeCompFromImage(dragImageView);
 							}
 							else 
 							{
-								Polyline polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-								if (polyline != null) {
-								polyline.setSmooth(true);
-								polyline.setStrokeWidth(3);
-								polyline.setStrokeType(StrokeType.CENTERED);
-								polyline.setCursor(Cursor.HAND);
-								workSpace.getChildren().add(polyline);
-								ajouterGeste(polyline);
-								
+								ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+								for(Polyline line : polyline ) {
+									line.setSmooth(true);
+									line.setStrokeWidth(3);
+									line.setStrokeType(StrokeType.CENTERED);
+									line.setCursor(Cursor.HAND);
+									workSpace.getChildren().add(line);
+									ajouterGeste(line);
 								}
+
 								ajouterLeGestApresCollage(dragImageView);
 							}
 							}
@@ -924,7 +922,7 @@ public class HomeController implements Initializable {
 	    	            //supprimer les noueds doublees : 
 	    	           //ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
 	    	          
-	    	            testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0)).get(0);
+	    	            testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0)).get(0).getLinePrincipale();
 	    	           // System.out.println("polyyyyyyyyyyyyyyyyyyyyy"+Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
 	    	            //double x2 = e.getSceneX()-180;
 						//double y2 = e.getSceneY();
@@ -979,7 +977,7 @@ public class HomeController implements Initializable {
 						}
 	    	        }
 	    	            Composant cmp = Circuit.getCompFromImage(eleementAdrager);
-	    	            Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0);
+	    	            Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale();
 	    	            Coordonnees crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, 0);
 	    	            boolean relocate = false;
 	    	            if(Circuit.getPolylineFromFil(cmp.getSorties()[0]).size() == 1)
@@ -1449,7 +1447,7 @@ public class HomeController implements Initializable {
 						}
 					}*/
 					//source = Circuit.getFilFromPolyline(line).getSource();
-					ArrayList<Polyline> listDePolylines = Circuit.getListFromPolyline(line);
+					ArrayList<InfoPolyline> listDePolylines = Circuit.getListFromPolyline(line);
 					
 					////////////////////relier/////////////////////// 
 					Fil filSorties = Circuit.getFilFromPolyline(line);
@@ -1496,10 +1494,7 @@ public class HomeController implements Initializable {
 						}
 					}
 					
-					//if(AddPoint)
-						//line2.getPoints().addAll(x,y);
-					
-					listDePolylines.add(listDePolylines.indexOf(line), line2);
+					listDePolylines.add(listDePolylines.indexOf(new InfoPolyline(line)), new InfoPolyline(line2));
 					line2 = initialser(x, y);
 					line.getPoints().clear();
 					line.getPoints().addAll(line2.getPoints());

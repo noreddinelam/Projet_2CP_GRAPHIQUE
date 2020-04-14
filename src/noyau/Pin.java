@@ -114,18 +114,20 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 	}
 	
 	@Override
-	public Polyline generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
 		setCord();
 		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX();
 		double posY = y+lesCoordonnees.getCordSortieInIndex(0).getY();
+		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
 		if (input) {
 			Polyline polyline = new Polyline(posX,posY,posX,posY+5);
 			polyline.setStrokeWidth(3);
-			ArrayList<Polyline> listPolylines = new ArrayList<Polyline>();
-			listPolylines.add(polyline);
+			ArrayList<InfoPolyline> listPolylines = new ArrayList<InfoPolyline>();
+			listPolylines.add(new InfoPolyline(polyline));
 			Circuit.ajouterFil(sorties[0], listPolylines);
-			return polyline;
+			reslut.add(polyline);
+			return reslut;
 		}		
 		return null;
 	}

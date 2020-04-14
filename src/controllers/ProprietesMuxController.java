@@ -101,8 +101,12 @@ public class ProprietesMuxController extends ProprietesController {
     @FXML
     void modifier(ActionEvent event) {
     	((Multiplexeur)cmp).setNbCommande(i);
-    	cmp.setNombreEntree((int)Math.pow(2, i));
+    	int nbEntree = (int)Math.pow(2, i);
+    	cmp.setNombreEntree(nbEntree);
     	cmp.setNom(label.getText());
+    	cmp.setCord();
+    	cmp.getLesCoordonnees().setNbCordEntree(nbEntree);
+    	cmp.getLesCoordonnees().setNbCordCommandes(i);
     	ImageView imageView = Circuit.getImageFromComp(cmp);
     	Image image = new Image(cmp.generatePath());
     	imageView.setImage(image);

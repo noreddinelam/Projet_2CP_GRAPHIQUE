@@ -1,5 +1,7 @@
 package noyau;
 
+import java.util.ArrayList;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
@@ -63,8 +65,9 @@ public class AfficheurSegment extends Composant implements Affichage{
 	}
 	
 	@Override
-	public Polyline generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
+		setCord();
 		return null;
 	}
 	

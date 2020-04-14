@@ -165,7 +165,7 @@ public abstract class Composant implements Serializable{
 	
 	public abstract void resetPolyline(Polyline line , double x,double y);
 	
-	public abstract Polyline generatePolyline(double x,double y);
+	public abstract ArrayList<Polyline> generatePolyline(double x,double y);
 	
 	public abstract void setCord();
 	public LesCoordonnees getLesCoordonnees() {

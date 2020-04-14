@@ -100,9 +100,12 @@ public class ProprietesDecodeurController extends ProprietesController{
     @FXML
     void modifier(ActionEvent event) {
     	cmp.setNombreEntree(i);
-    	cmp.setNombreSortie((int)Math.pow(2, i));
+    	int nbSortie = (int)Math.pow(2, i);
+    	cmp.setNombreSortie(nbSortie);
     	cmp.setNom(label.getText());
-    	System.out.println(cmp.generatePath());
+    	cmp.setCord();
+    	cmp.getLesCoordonnees().setNbCordEntree(i);
+    	cmp.getLesCoordonnees().setNbCordSorties(nbSortie);
     	Image img = new Image(cmp.generatePath());
     	Circuit.getImageFromComp(cmp).setImage(img);
     	Circuit.getImageFromComp(cmp).setFitHeight(img.getHeight());

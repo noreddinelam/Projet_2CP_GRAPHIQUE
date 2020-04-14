@@ -109,6 +109,7 @@ public class ProprietesRegistreController extends ProprietesController{
     void modifier(ActionEvent event) {
     	cmp.setNom(label.getText());
     	((RegistreDecalage)cmp).setTaille(i);
+    	((RegistreDecalage)cmp).setNombreEntree(i+1);
     	if(frnt == 0)
     		((RegistreDecalage)cmp).setFront(Front.Front_Montant);
     	else
@@ -118,6 +119,8 @@ public class ProprietesRegistreController extends ProprietesController{
     		((RegistreDecalage)cmp).setDecalageDroite(false);
     	else
     		((RegistreDecalage)cmp).setDecalageDroite(true);
+    	cmp.setCord();
+    	cmp.getLesCoordonnees().setNbCordEntree(i+1);
     	Image image = new Image(cmp.generatePath());
     	ImageView imageView = Circuit.getImageFromComp(cmp);
     	imageView.setImage(image);

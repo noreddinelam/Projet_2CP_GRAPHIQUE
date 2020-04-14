@@ -1,7 +1,9 @@
 package noyau;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
 public class RegistreDecalage extends Sequentiels {
@@ -171,14 +173,25 @@ public class RegistreDecalage extends Sequentiels {
 	}
 	
 	@Override
-	public Polyline generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
-		return null;
+		setCord();
+		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
+		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX() ;
+		double posY = y + lesCoordonnees.getCordSortieInIndex(0).getY();
+		Polyline polyline = new Polyline(posX ,posY,posX+5,posY);
+		ArrayList<InfoPolyline> listPolylines = new ArrayList<InfoPolyline>();
+		listPolylines.add(new InfoPolyline(polyline));
+		Circuit.ajouterFil(sorties[0], listPolylines);
+		reslut.add(polyline);
+		return reslut;	
 	}
 
 	@Override
 	public void setCord() {
 		// TODO Auto-generated method stub
+		ImageView imageView = Circuit.getImageFromComp(this);
+		lesCoordonnees.setCordSortieInIndex(new Coordonnees(imageView.getFitWidth(),imageView.getFitHeight() / 2), 0);
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 21.1), 0);
 		lesCoordonnees.setCordHorloge(new Coordonnees(0, 44.5));
 		switch (taille) {
@@ -234,7 +247,7 @@ public class RegistreDecalage extends Sequentiels {
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(76.5, 0), 4);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(57.9, 0), 5);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(39.5, 0), 6);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(21.3, 0), 6);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(21.3, 0), 7);
 			
 			lesCoordonnees.setCordLoad(new Coordonnees(52.5, 66));
 			lesCoordonnees.setCordClear(new Coordonnees(101.3, 66));
@@ -246,8 +259,8 @@ public class RegistreDecalage extends Sequentiels {
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(83.4, 0), 4);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(67.1, 0), 5);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(51.2, 0), 6);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(35.13, 0), 6);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(18.8, 0), 7);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(35.13, 0), 7);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(18.8, 0), 8);
 			
 			lesCoordonnees.setCordLoad(new Coordonnees(52.5, 66));
 			lesCoordonnees.setCordClear(new Coordonnees(101.3, 66));
