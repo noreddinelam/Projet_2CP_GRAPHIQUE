@@ -127,9 +127,8 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 			listPolylines.add(new InfoPolyline(polyline));
 			Circuit.ajouterFil(sorties[0], listPolylines);
 			reslut.add(polyline);
-			return reslut;
 		}		
-		return null;
+		return reslut;
 	}
 
 	@Override
