@@ -32,8 +32,7 @@ public class ProprietesHorlogeController extends ProprietesController{
     @FXML
     void modifier(ActionEvent event) {
     	cmp.setNom(label.getText());
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
-    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	Stage s = (Stage)mdf.getScene().getWindow(); 
     	s.close();
     }
 

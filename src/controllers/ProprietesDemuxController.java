@@ -84,10 +84,17 @@ public class ProprietesDemuxController extends ProprietesController{
     @FXML
     void modifier(ActionEvent event) {
     	((Demultiplexeur)cmp).setNbCommande(i);
-    	cmp.setNombreSortie((int)Math.pow(2, i));
+    	int nbSortie = (int)Math.pow(2, i);
+    	cmp.setNombreSortie(nbSortie);
     	cmp.setNom(label.getText());
-    	System.out.println(cmp.generatePath());
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	cmp.setCord();
+    	cmp.getLesCoordonnees().setNbCordCommandes(i);
+    	cmp.getLesCoordonnees().setNbCordSorties(nbSortie);
+    	Image img = new Image(cmp.generatePath());
+    	ImageView imageView = Circuit.getImageFromComp(cmp);
+    	imageView.setImage(img);
+    	imageView.setFitHeight(img.getHeight());
+    	imageView.setFitWidth(img.getWidth());
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

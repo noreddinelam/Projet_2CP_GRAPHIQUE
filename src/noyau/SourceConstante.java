@@ -1,5 +1,7 @@
 package noyau;
 
+import java.util.ArrayList;
+
 import javafx.scene.shape.Polyline;
 
 public class SourceConstante extends Composant{
@@ -37,14 +39,29 @@ public class SourceConstante extends Composant{
 	}
 	
 	@Override
-	public Polyline generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
-		return null;
+		setCord();	
+		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
+		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX() ;
+		double posY = y + lesCoordonnees.getCordSortieInIndex(0).getY();
+		Polyline polyline = new Polyline(posX ,posY,posX,posY+5);
+		ArrayList<InfoPolyline> listPolylines = new ArrayList<InfoPolyline>();
+		listPolylines.add(new InfoPolyline(polyline));
+		reslut.add(polyline);
+		Circuit.ajouterFil(sorties[0], listPolylines);
+		return reslut;
 	}
 	
 	@Override
 	public void setCord() {
 		// TODO Auto-generated method stub
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(Circuit.getImageFromComp(this).getBoundsInLocal().getWidth() / 2, Circuit.getImageFromComp(this).getBoundsInLocal().getHeight()), 0);
+	}
+	
+	@Override
+	public void resetPolyline(Polyline line, double x, double y) {
+		// TODO Auto-generated method stub
+		
 	}
 }

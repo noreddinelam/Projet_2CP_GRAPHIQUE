@@ -25,6 +25,15 @@ public class Fil implements Serializable{
 	public void evaluer() {  
 		if(valider()) // si le fil est pret 
 		{
+			ArrayList<InfoPolyline> line = Circuit.getPolylineFromFil(this);
+			for (InfoPolyline polyline : line) {
+				if(etat.getNum() == 1) {
+					polyline.getLinePrincipale().setStroke(Color.DARKGREEN);
+				}
+				if(etat.getNum() == 0){
+					polyline.getLinePrincipale().setStroke(Color.DARKRED);
+				}
+			}
 			for (Composant composant : destination) // parcourir les destinations
 				composant.evaluer(); // evaluer les composants de destination
 		}else
@@ -42,7 +51,7 @@ public class Fil implements Serializable{
 		
 	}
 	
-	public boolean validerEntreeSorties() { 
+	public boolean validerEntreeSorties() { // verifier si une on a relier deux composants sortie avec sortie .
 		for(Composant c: this.destination) {
 			for(Fil f : c.sorties) {
 				if(this.equals(f))
@@ -72,15 +81,14 @@ public class Fil implements Serializable{
 
 	public void setEtatLogiqueFil(EtatLogique etat) {
 		this.etat = etat;
-		ArrayList<Polyline> line = Circuit.getPolylineFromFil(this);
+	}
+	
+	public void defaultValue() {
+		etat = EtatLogique.HAUTE_IMPEDANCE;
+		ArrayList<InfoPolyline> line = Circuit.getPolylineFromFil(this);
 
-		for (Polyline polyline : line) {
-			if(etat.getNum() == 1) {
-				polyline.setStroke(Color.DARKGREEN);
-			}
-			if(etat.getNum() == 0){
-				polyline.setStroke(Color.DARKRED);
-			}
+		for (InfoPolyline polyline : line) {
+			polyline.getLinePrincipale().setStroke(Color.BLACK);
 			}
 		}
 
@@ -105,14 +113,14 @@ public class Fil implements Serializable{
 	}
 	public Polyline polylineParPoint(Coordonnees crdrech) {
 		Coordonnees crd = new Coordonnees(0, 0);
-		ArrayList<Polyline> list = Circuit.getPolylineFromFil(this);
-		for (Polyline line : list) {
+		ArrayList<InfoPolyline> list = Circuit.getPolylineFromFil(this);
+		for (InfoPolyline line : list) {
 			int i = 0;
-			while(i < line.getPoints().size()) {
-				crd.setX(line.getPoints().get(i));
-				crd.setY(line.getPoints().get(i+1));
+			while(i < line.getLinePrincipale().getPoints().size()) {
+				crd.setX(line.getLinePrincipale().getPoints().get(i));
+				crd.setY(line.getLinePrincipale().getPoints().get(i+1));
 				if(crd.equals(crdrech)){
-					return line;
+					return line.getLinePrincipale();
 				}
 				i=i+2;
 			}

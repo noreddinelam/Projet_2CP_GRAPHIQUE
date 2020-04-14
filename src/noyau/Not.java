@@ -1,5 +1,7 @@
 package noyau;
 
+import javafx.scene.image.ImageView;
+
 public class Not extends Portes{
 	
 	public Not(String nom) {
@@ -21,6 +23,8 @@ public class Not extends Portes{
 	public void setCord() {
 		// TODO Auto-generated method stub
 		super.setCord();
+		ImageView img = Circuit.getImageFromComp(this);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0,img.getBoundsInLocal().getHeight()/2), 0) ;
 	}
 
 }
