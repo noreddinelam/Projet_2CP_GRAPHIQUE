@@ -25,6 +25,8 @@ public abstract class Composant implements Serializable{
 	
 	
 	
+	
+	
 	public Composant(int nombreEntree,String nom) {
 		this.nombreEntree = nombreEntree;
 		this.nom =nom;

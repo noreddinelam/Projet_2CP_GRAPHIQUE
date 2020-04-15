@@ -1,5 +1,6 @@
 package application;
 
+
 import controllers.ClickDroitController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,7 @@ public class ClickDroit extends Stage{
 	public ClickDroit(Composant cmp,Double x,Double y) {
 		try
 		{
+			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("ClickDroit.fxml"));
 			Parent root = loader.load();

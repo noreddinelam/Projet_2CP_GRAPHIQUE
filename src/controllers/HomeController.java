@@ -8,10 +8,13 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -22,6 +25,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXDrawersStack;
@@ -48,6 +52,10 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseDragEvent;
@@ -70,7 +78,8 @@ import javafx.util.Duration;
 
 public class HomeController implements Initializable {
 	
-    Map<ImageView,Label> elemanrsMapFillMap;
+    private static final Node scrolPane = null;
+	Map<ImageView,Label> elemanrsMapFillMap;
     ImageView dragItem;
     private ClickDroit clickDroitFenetre;
     private double x,y;
@@ -81,10 +90,15 @@ public class HomeController implements Initializable {
     private double difX = 0;
     
     // utilisé dans la sauvegarde des coordonnées 
+    
     double posX ;
 	double posY ;
 	
 	
+	public static Deque<Donnes> undoDeque=new LinkedList<Donnes>() ;
+	
+	final KeyCombination touchesDundo = new KeyCodeCombination(KeyCode.Z,
+            KeyCombination.CONTROL_DOWN);
 	
 	private Polyline testPoly;
     
@@ -258,6 +272,8 @@ public class HomeController implements Initializable {
     
     @FXML
     private ImageView logo;
+     
+    private static ImageView elementAmodifier;
     /////////////////////////////Les lignes de Guide
 	private Line guideX = new Line();
 	private Line guideXp = new Line();
@@ -278,6 +294,8 @@ public class HomeController implements Initializable {
     
     @FXML
     private JFXDrawer fichierDrawer;
+    
+
     
     @FXML
     private JFXDrawer editionDrawer;
@@ -364,7 +382,10 @@ public class HomeController implements Initializable {
     		put(enco, tEnc);
     		put(addcomplet, tAddc);
     		put(demiAdd, tDadd);}};
-    		
+
+    
+  
+            
     
     		
     	////Ajouter pour chaque Composant les gestes de drag and drop
@@ -432,6 +453,7 @@ public class HomeController implements Initializable {
     			
     			});
 	}
+	@SuppressWarnings("unchecked")
 	private void ajouterGestWorkSpace() {////Methodes pour Ajouter l'interaction avec le drag and drop et les guides
 		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
 	   	        public void handle(MouseDragEvent e) {
@@ -478,7 +500,16 @@ public class HomeController implements Initializable {
 							  clickDroitFenetre.close();
 					  }
 				  }
-			  });		
+			  });
+			  
+			  scrollPane.setOnKeyPressed(new EventHandler<KeyEvent>() {
+				    @Override
+				    public void handle(KeyEvent event) {
+				        if (event.isControlDown() && (event.getCode() == KeyCode.Z)) {
+				            undoChanges();
+				        } 
+				    };
+				});
 	
 	}
 	
@@ -611,7 +642,9 @@ public class HomeController implements Initializable {
 							snapParams.setFill(Color.TRANSPARENT);
 							dragImageView.setImage(elementAdrager.snapshot(snapParams, null));
 							workSpace.getChildren().add(dragImageView);
+						   
 							dragImageView.startFullDrag();
+							
 							e.consume();
 							}
 						}
@@ -625,7 +658,7 @@ public class HomeController implements Initializable {
 									(int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2),
 									(int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2 )
 									);
-
+                      
 							String xString=String.valueOf(dragImageView.getLayoutX());
 							String yString=String.valueOf(dragImageView.getLayoutY());
 							if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<1066 )&&(dragImageView.getLayoutY()>17))
@@ -673,6 +706,7 @@ public class HomeController implements Initializable {
 							dragImageView.setImage(img);
 							dragImageView.setFitHeight(img.getHeight());
 							dragImageView.setFitWidth(img.getWidth());	
+							
 							System.out.println((e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2)+ "----------------------");
 							if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>670 || intersectionComposant(dragImageView))
 							{
@@ -693,6 +727,13 @@ public class HomeController implements Initializable {
 								
 								}
 								ajouterLeGestApresCollage(dragImageView);
+								Donnes sauveGarde=new Donnes();
+								sauveGarde.setTypeDaction(Actions.Creation);
+								sauveGarde.setComposant(dragImageView);
+								sauveGarde.setPosX(dragImageView.getLayoutX());
+								sauveGarde.setPosY(dragImageView.getLayoutY());
+								undoDeque.addFirst(sauveGarde);
+								
 							}
 							}
 						}});
@@ -848,9 +889,11 @@ public class HomeController implements Initializable {
 	        	}else
 	        	{
 	        		double clicDroitX,clicDroitY;
+	        		 Composant composant=Circuit.getCompFromImage(eleementAdrager);
 	        		clicDroitX = e.getScreenX();
 	        		clicDroitY = e.getScreenY();
-	        		clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY);
+	        		elementAmodifier=eleementAdrager;	        		
+	        		clickDroitFenetre = new ClickDroit(composant,clicDroitX,clicDroitY);
 	        	}
 	        	
 	        	listEntrees.clear();
@@ -1002,7 +1045,16 @@ public class HomeController implements Initializable {
 					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
 							if (! simul) {
-							dragItem = null;  	 
+							dragItem = null;  
+							if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
+							{
+							Donnes sauveGarde=new Donnes();
+							sauveGarde.setTypeDaction(Actions.Mouvement);
+							sauveGarde.setComposant(eleementAdrager);
+							sauveGarde.setPosX(posX);
+							sauveGarde.setPosY(posY);
+							undoDeque.addFirst(sauveGarde);
+							}
 							eleementAdrager.setMouseTransparent(false);
 							eleementAdrager.setMouseTransparent(false);
 							eleementAdrager.setCursor(Cursor.DEFAULT);
@@ -1702,5 +1754,56 @@ public class HomeController implements Initializable {
 	            workSpace.getChildren().add(l2);
 	        }
 	    }
+	 private void undoChanges()
+	 {
+	
+		 if(! undoDeque.isEmpty())
+		 {
+			 
+			 Donnes sauveGarde;
+			 sauveGarde= undoDeque.removeFirst();
+			 switch(sauveGarde.getTypeDaction())
+			 {
+	
+			 case Mouvement :
+			 {
+				 sauveGarde.getComposant().setLayoutX(sauveGarde.getPosX());
+				 sauveGarde.getComposant().setLayoutY(sauveGarde.getPosY());
+			 }break;
+			 case Creation :
+			 {
+				 workSpace.getChildren().remove(sauveGarde.getComposant());
+			 }break;
+			 case Modification :
+			 {
+				 ImageView imageDeComposant= sauveGarde.getComposant();
+				 Composant composant= Circuit.getCompFromImage( imageDeComposant);
+				 imageDeComposant.setImage(sauveGarde.getImage());
+	    		 composant.setNombreEntree(sauveGarde.getNombreDesEntrees());
+				 if(imageDeComposant.getId().equals("pin")) ((Pin)composant).setInput(sauveGarde.getTypePin());
+	             if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
+				 
+			 }
+			 
+			default:
+				break;
+			 
+			 }
+		 }
+	 }
+ public static void sauveGarderModification()
+ {
+	 Composant composant=Circuit.getCompFromImage(elementAmodifier);
+		Donnes sauveGarde= new Donnes();
+		sauveGarde.setTypeDaction(Actions.Modification);
+		sauveGarde.setComposant(elementAmodifier);
+		sauveGarde.setImage(elementAmodifier.getImage());
+		sauveGarde.setNombreDesEntrees(composant.getNombreEntree());
+     if(elementAmodifier.getId().equals("pin")) sauveGarde.setTypePin(((Pin)composant).isInput());
+     if(composant.getClass().isAssignableFrom(Sequentiels.class)) sauveGarde.setFront(((Sequentiels)composant).getFront());
+     undoDeque.addFirst(sauveGarde);
+     elementAmodifier=null;
+ }
+	
 }
 

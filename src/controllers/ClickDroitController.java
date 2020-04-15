@@ -71,6 +71,7 @@ public class ClickDroitController extends Controller implements Initializable{
 	@FXML
 	void prop(ActionEvent event) {
 		Stage s = (Stage)prop.getScene().getWindow(); 
+		HomeController.sauveGarderModification();
     	s.close();
 		String nom = cmp.getClass().getSimpleName(), key;
 		
