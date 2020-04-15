@@ -187,7 +187,8 @@ public abstract class Composant implements Serializable{
 		while(i<nombreSortie) {
 			if(fil == sorties[i])
 				return i;
-			i++;
+		i++;
+
 		}
 		return 0;
 	}
@@ -197,7 +198,7 @@ public abstract class Composant implements Serializable{
 		while(i<nombreSortie) {
 			if(fil == sorties[i])
 				return i;
-			i++;
+		i++;
 		}
 		return 0;
 	}
