@@ -340,12 +340,13 @@ public class HomeController implements Initializable {
     
     @FXML
     void onSimuler(MouseEvent event) {
-    	captureEcran();
     	simul = (!simul);
     	if (simul) {
+    		simulation.setImage(new Image("homePage_icones/SIMULATION_OFF.png"));
 			Circuit.initialiser();
 		}
     	else {
+    		simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
 			Circuit.defaultCompValue();
 		}
     }

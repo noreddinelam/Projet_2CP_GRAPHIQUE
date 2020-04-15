@@ -205,7 +205,28 @@ public class Circuit implements Serializable{
 	public static void removeCompFromImage(ImageView img) { // recuperer le composant associé à une image .
 		compUtilises.remove(getCompFromImage(img));
 	}
-
+	
+	public static void supprimerComp(ImageView imageView) {
+		Composant composant = getCompFromImage(imageView);
+		composant.derelierComp();
+		compUtilises.remove(composant);
+		if (composant.getClass().getSimpleName().equals("Pin")) {
+			Pin pin = (Pin)composant;
+			if (pin.isInput()) {
+				entreesCircuit.remove(composant);
+			}
+			else {
+				sortiesCircuit.remove(composant);
+			}
+		}
+		else if (composant.getClass().getSimpleName().equals("SourceConstante")) {
+			entreesCircuit.remove(composant);
+		}
+		else {
+			sortiesCircuit.remove(composant);
+		}
+	}
+	
 	
 	public static HashMap<Fil, ArrayList<InfoPolyline>> getFilUtilises() {
 		return filUtilises;

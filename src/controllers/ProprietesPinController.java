@@ -85,16 +85,21 @@ public class ProprietesPinController extends ProprietesController{
     	
     	cmp.setNom(label.getText());
     	String path;
-    	int vlr = ((Pin)cmp).getEtat().getNum();
+    	Pin pin =((Pin)cmp);
+    	int vlr = pin.getEtat().getNum();
     	if(putInt == 0){
-    		((Pin)cmp).setInput(true);
+    		pin.setInput(true);
+			Circuit.getSortiesCircuit().remove(pin);
+			Circuit.getEntreesCircuit().add(pin);
     		cmp.setNombreEntree(0);
     		cmp.setNombreSortie(1);
     		cmp.getLesCoordonnees().setNbCordEntree(0);
     		cmp.getLesCoordonnees().setNbCordSorties(1);
     		path = "/pin/"+Integer.toString(vlr)+bddPut[putInt]+".png";
     	}else {
-    		((Pin)cmp).setInput(false);
+    		pin.setInput(false);
+			Circuit.getEntreesCircuit().remove(pin);
+			Circuit.getSortiesCircuit().add(pin);
     		Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale();
     		line.getPoints().clear(); 
     		cmp.setNombreEntree(1);

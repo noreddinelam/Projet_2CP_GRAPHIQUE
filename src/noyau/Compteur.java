@@ -213,6 +213,15 @@ public class Compteur extends Sequentiels{
 		return reslut;
 	}
 	
+	@Override
+	public void derelierComp() {
+		// TODO Auto-generated method stub
+		super.derelierComp();
+		if (load != null) {
+			load.derelierCompFromDestination(this);
+		}
+	}
+	
 	public Fil getLoad() {
 		return load;
 	}

@@ -126,6 +126,15 @@ public abstract class Bascule extends Sequentiels{
 		return result;
 	}
 	
+	@Override
+	public void derelierComp() {
+		// TODO Auto-generated method stub
+		super.derelierComp();
+		if (preset != null) {
+			preset.derelierCompFromDestination(this);
+		}
+	}
+	
 	public Fil getPreset() {
 		return preset;
 	}
