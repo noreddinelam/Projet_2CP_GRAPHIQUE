@@ -3,6 +3,11 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.awt.AWTException;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -13,6 +18,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -21,6 +27,7 @@ import application.ClickDroit;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import com.jfoenix.controls.JFXDrawer;
@@ -33,6 +40,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
@@ -55,6 +63,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import javafx.scene.paint.Color;
+
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
@@ -257,6 +266,9 @@ public class HomeController implements Initializable {
     private AnchorPane work;
     
     @FXML
+    private ImageView camera;
+    
+    @FXML
     private ImageView logo;
     /////////////////////////////Les lignes de Guide
 	private Line guideX = new Line();
@@ -322,7 +334,13 @@ public class HomeController implements Initializable {
     }
     
     @FXML
+    void screenShot(MouseEvent event) {
+    	captureEcran();
+    }
+    
+    @FXML
     void onSimuler(MouseEvent event) {
+    	captureEcran();
     	simul = (!simul);
     	if (simul) {
 			Circuit.initialiser();
@@ -803,6 +821,7 @@ public class HomeController implements Initializable {
 	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	            eleementAdrager.setCursor(Cursor.HAND);   
+	            
 	        }
 	    });
 	    
@@ -860,6 +879,7 @@ public class HomeController implements Initializable {
 	        	for(int i = 0; i < cmp.getNombreEntree();i++){
 	        		if(cmp.getEntrees()[i] != null) {
 	        			crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
+	        			System.out.println("6546545423 | "+crdDebut.toString());
 	        			line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
 	        			size = line.getPoints().size();
 	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
@@ -1664,5 +1684,14 @@ public class HomeController implements Initializable {
 	            workSpace.getChildren().add(l2);
 	        }
 	    }
+	 public void captureEcran() {
+		 WritableImage image = workSpace.snapshot(new SnapshotParameters(), null);
+		 File file = new File("D:\\\\Shot.jpg");
+		 try {
+			 ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+		 }catch (IOException e) {
+			 // TODO: handle exception here
+		 }
+	}
 }
 

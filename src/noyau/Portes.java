@@ -38,7 +38,7 @@ public abstract class Portes extends Composant {
 		// TODO Auto-generated method stub
 		setCord();	
 		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
-		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX() ;
+		double posX = x + lesCoordonnees.getCordSortieInIndex(0).getX();
 		double posY = y + lesCoordonnees.getCordSortieInIndex(0).getY();
 		Polyline polyline = new Polyline(posX ,posY,posX+5,posY);
 		ArrayList<InfoPolyline> listPolylines = new ArrayList<InfoPolyline>();

@@ -6,7 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaFx11"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JFoenix"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Javafx"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jeofonix"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
