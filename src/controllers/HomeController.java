@@ -749,26 +749,10 @@ public class HomeController implements Initializable {
 		}
 		System.out.println("hna"+nbOccPoint(line, line.getPoints().get(0), line.getPoints().get(1)));
 		if(nbOccPoint(line, line.getPoints().get(0), line.getPoints().get(1)) == 1){
-			/*System.out.println("dkhal supprimihaa");
-			i = line.getPoints().indexOf(x2);
-			if((line.getPoints().contains(x2) )&& (Math.abs(line.getPoints().get(i+1)-y2)<10)) {
-				line.getPoints().remove(i);
-				line.getPoints().remove(i);
-			}
-			else {
-				if( line.getPoints().contains(y2)) {
-					i = line.getPoints().indexOf(y2);
-					if(Math.abs(line.getPoints().get(i-1)-x2)<10) {
-						line.getPoints().remove(i-1);
-						line.getPoints().remove(i-1);
-					}
-				}
-			}*/
 			if((Math.abs(line.getPoints().get(0)-x2)<10) && (Math.abs(line.getPoints().get(1)-y2)<10)) {
 				line.getPoints().remove(0);
 				line.getPoints().remove(0);
 			}
-
 		}
 
 		if(Math.abs(x2-x)<10) { 
@@ -796,6 +780,7 @@ public class HomeController implements Initializable {
 	}
 //talle3ha lfog
 	private ArrayList<Polyline> listEntrees = new ArrayList<Polyline>();
+	private ArrayList<Polyline> listSorties = new ArrayList<Polyline>();
 	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
@@ -852,12 +837,12 @@ public class HomeController implements Initializable {
 	        	//traitement de pressed ajoutergest apres coallge
 	        	int size = 0;
 	        	Composant cmp = Circuit.getCompFromImage(eleementAdrager);
-	        	Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale();
-	        	line.getPoints().add(2,line.getPoints().get(3));
-	        	line.getPoints().add(2,line.getPoints().get(3));
+	        	Polyline line ;
 	        	listEntrees.clear();
 	        	Coordonnees crdDebut = new Coordonnees(0,0);
-	        	for(int i = 0; i < cmp.getNombreEntree();i++){
+	        	int i = 0;
+	        	for(i = 0; i < cmp.getNombreEntree();i++){
+	        		System.out.println(cmp.getNombreEntree());
 	        		if(cmp.getEntrees()[i] != null) {
 	        			crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
 	        			line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
@@ -866,6 +851,15 @@ public class HomeController implements Initializable {
 	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
 	    	        	listEntrees.add(line);
 	        		}
+	        	}
+	        	listSorties.clear();
+	        	for(i = 0; i < cmp.getNombreSortie();i++){
+	        			//crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, i);
+	        			line = Circuit.getPolylineFromFil(cmp.getSorties()[i]).get(0).getLinePrincipale();
+	        			//size = line.getPoints().size();
+	        			line.getPoints().add(2,line.getPoints().get(3));
+	    	        	line.getPoints().add(2,line.getPoints().get(3));
+	    	        	listSorties.add(line);
 	        	}
 	        	//hna tekmeel
 	            
@@ -927,15 +921,31 @@ public class HomeController implements Initializable {
 	        					e.consume();
 
 	        					Composant cmp = Circuit.getCompFromImage(eleementAdrager);
-	        					Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale();
-	        					Coordonnees crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, 0);
+	        					//Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale();
+	        					//Coordonnees crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, 0);
 	        					boolean relocate = false;
-	        					if(Circuit.getPolylineFromFil(cmp.getSorties()[0]).size() == 1)
+	        					/*if(Circuit.getPolylineFromFil(cmp.getSorties()[0]).size() == 1)
 	        						relocate = true;
-	        					tracerSortieApresCollage(line, crdDebut, relocate);
-	        					relocate = false;
+	        					
+	        					tracerSortieApresCollage(line, crdDebut, relocate);*/
 	        					int i = 0,j = 0 ;
+	        					Coordonnees crdDebut;
 	        					Polyline p;
+	        					while(i < cmp.getNombreSortie()) {
+	        						if(cmp.getSorties()[i] != null) {
+	        							switching = cmp.getSorties()[i].getSwitching();
+	        							p = listSorties.get(j);
+	        							if(Circuit.getPolylineFromFil(cmp.getSorties()[i]).size() == 1)
+	    	        						{relocate = true;}
+	        							j++;
+	        							crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, i);
+	        							tracerSortieApresCollage(p, crdDebut, relocate);
+	        							cmp.getSorties()[i].setSwitching(switching);
+	        						}
+	        						i++;
+	        					}    
+	        					i = 0;j = 0 ;
+	        					relocate = false;
 	        					while(i < cmp.getNombreEntree()) {
 	        						if(cmp.getEntrees()[i] != null) {
 	        							switching = cmp.getEntrees()[i].getSwitching();
@@ -1407,11 +1417,11 @@ public class HomeController implements Initializable {
 					
 					////////////////////relier/////////////////////// 
 					Fil filSorties = Circuit.getFilFromPolyline(line);
-					System.out.println(filSorties);
+					//System.out.println(filSorties);
 					source = filSorties.getSource();
 					sortie = source.numCmpSorties(filSorties);	
-					System.out.println("array"+listDePolylines);
-					System.out.println("source "+source+"sortie  "+sortie);
+					//System.out.println("array"+listDePolylines);
+					//System.out.println("source "+source+"sortie  "+sortie);
 					/////////////////////////////////////////////////
 					x = event.getX();
 					y = event.getY();
@@ -1439,7 +1449,7 @@ public class HomeController implements Initializable {
 					}
 					i = 0;
 					if(!trouve) {
-						while((!trouve)){
+						while((!trouve) && (i<list.size()-2)){
 							if(Math.abs(x - list.get(i)) < 5 ) {
 								trouve = true;
 								x = list.get(i);
@@ -1493,7 +1503,7 @@ public class HomeController implements Initializable {
 
 						playSound();
 						System.out.println("trabtooo");
-						if(source.getClass().getSimpleName().equals("Pin")) ((Pin)source).setEtat(EtatLogique.ONE);
+						//if(source.getClass().getSimpleName().equals("Pin")) ((Pin)source).setEtat(EtatLogique.ONE);
 					}
 					}
 					if(rel != 0 ){
@@ -1501,7 +1511,7 @@ public class HomeController implements Initializable {
 					if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3))< 10) {
 						line.getPoints().remove(der);line.getPoints().remove(der-1);}
 				}
-					System.out.println(line.getPoints().size());
+					//System.out.println(line.getPoints().size());
 				}
 			});
 		/*line.setOnMouseDragEntered(new EventHandler<MouseEvent>() {

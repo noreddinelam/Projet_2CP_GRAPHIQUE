@@ -111,7 +111,8 @@ public class Encodeur extends Combinatoires {
 	@Override
 	public void resetPolyline(Polyline line, double x, double y) {
 		// TODO Auto-generated method stub
-		
+		line.getPoints().clear();
+		line.getPoints().addAll(x,y,x+5,y);
 	}
 	
 
