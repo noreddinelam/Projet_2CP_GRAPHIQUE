@@ -222,6 +222,17 @@ public class Compteur extends Sequentiels{
 		}
 	}
 	
+	@Override
+	public void derelierEntreeFromComp(Fil fil) {
+		// TODO Auto-generated method stub
+		super.derelierEntreeFromComp(fil);
+		if (load != null) {
+			if (load.equals(fil)) {
+				load.derelierCompFromDestination(this);
+			}
+		}
+	}
+	
 	public Fil getLoad() {
 		return load;
 	}

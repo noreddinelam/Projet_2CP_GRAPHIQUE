@@ -28,7 +28,6 @@ public class Main extends Application {
 //				        fade.setNode(root);  
 //				        fade.play(); 
 						Scene scene = new Scene(root);
-						Pin pin = new Pin(true, "fdf");
 						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						primaryStage.setScene(scene);
 						
