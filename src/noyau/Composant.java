@@ -133,7 +133,7 @@ public abstract class Composant implements Serializable{
 	public EtatLogique validerEntrees() { //role :  valider si les entrees du composant sont pretes 
 		int i =0;
 		while(i<nombreEntree) {
-			if(entrees[i]== null) // verifier si toutes les entrees du composants sont reliées a un autre composant 
+			if(entrees[i] == null) // verifier si toutes les entrees du composants sont reliées a un autre composant 
 				return null;
 			if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum()) //  verifier si le fil d'entree est en haute impedence . 
 				return EtatLogique.HAUTE_IMPEDANCE;
@@ -165,8 +165,25 @@ public abstract class Composant implements Serializable{
 	
 	public abstract void resetPolyline(Polyline line , double x,double y);
 	
-	public abstract Polyline generatePolyline(double x,double y);
+	public abstract ArrayList<Polyline> generatePolyline(double x,double y);
 	
+	public  void derelierComp() { // pour supprimer le composant  (le composant à supprimer)
+		for (int i = 0; i < nombreEntree; i++) {
+			if (entrees[i] != null) {
+				entrees[i].derelierCompFromDestination(this);
+			}
+		}
+	}
+	
+	public void derelierEntreeFromComp(Fil fil) { // pour enlever une le fil donné des entrees du composant
+		for (int i = 0; i < nombreEntree; i++) {
+			if (entrees[i] != null) {
+				if (entrees[i].equals(fil)) {
+					entrees[i] = null;
+				}
+			}
+		}
+	}
 	public abstract void setCord();
 	public LesCoordonnees getLesCoordonnees() {
 		return lesCoordonnees;
@@ -176,7 +193,7 @@ public abstract class Composant implements Serializable{
 	}
 	
 	public Fil getFilSortie(int i) {
-		if(i < sorties.length) {
+		if(i < sorties.length) {/// ngoul l sari
 			return sorties[i];
 		}else {
 			return null;
@@ -187,6 +204,8 @@ public abstract class Composant implements Serializable{
 		while(i<nombreSortie) {
 			if(fil == sorties[i])
 				return i;
+		i++;
+
 		}
 		return 0;
 	}
@@ -196,8 +215,12 @@ public abstract class Composant implements Serializable{
 		while(i<nombreSortie) {
 			if(fil == sorties[i])
 				return i;
+		i++;
 		}
 		return 0;
+	}
+	public Fil getFilSortieByNum(int i) {
+		return sorties[i];
 	}
 	public Fil[] getEntrees() {
 		return entrees;

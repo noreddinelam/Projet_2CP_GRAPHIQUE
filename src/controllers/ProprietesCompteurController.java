@@ -110,6 +110,7 @@ public class ProprietesCompteurController extends ProprietesController{
     void modifier(ActionEvent event) {
     	cmp.setNom(label.getText());
     	cmp.setNombreEntree(i);
+    	cmp.setNombreSortie(i);
     	if(frnt == 0)
     		((Compteur)cmp).setFront(Front.Front_Montant);
     	else
@@ -118,6 +119,9 @@ public class ProprietesCompteurController extends ProprietesController{
     		((Compteur)cmp).setCompter(true);
     	else
     		((Compteur)cmp).setCompter(false);
+    	cmp.setCord();
+    	cmp.getLesCoordonnees().setNbCordEntree(i);
+    	cmp.getLesCoordonnees().setNbCordSorties(i);
     	Image img = new Image(cmp.generatePath());
     	ImageView imageView = Circuit.getImageFromComp(cmp);
     	imageView.setImage(img);

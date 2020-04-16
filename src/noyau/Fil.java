@@ -13,6 +13,8 @@ public class Fil implements Serializable{
 	private Composant source = null;
 	private ArrayList<Composant> destination = null;
 	private EtatLogique etat = EtatLogique.HAUTE_IMPEDANCE;
+	
+	private int switching = 0; //utiliser pour la gestion des fils 
 
 	public Fil(Composant source) { // constructeur 
 		this.source = source; 
@@ -23,13 +25,13 @@ public class Fil implements Serializable{
 	public void evaluer() {  
 		if(valider()) // si le fil est pret 
 		{
-			ArrayList<Polyline> line = Circuit.getPolylineFromFil(this);
-			for (Polyline polyline : line) {
+			ArrayList<InfoPolyline> line = Circuit.getPolylineFromFil(this);
+			for (InfoPolyline polyline : line) {
 				if(etat.getNum() == 1) {
-					polyline.setStroke(Color.DARKGREEN);
+					polyline.getLinePrincipale().setStroke(Color.DARKGREEN);
 				}
 				if(etat.getNum() == 0){
-					polyline.setStroke(Color.DARKRED);
+					polyline.getLinePrincipale().setStroke(Color.DARKRED);
 				}
 			}
 			for (Composant composant : destination) // parcourir les destinations
@@ -83,12 +85,21 @@ public class Fil implements Serializable{
 	
 	public void defaultValue() {
 		etat = EtatLogique.HAUTE_IMPEDANCE;
-		ArrayList<Polyline> line = Circuit.getPolylineFromFil(this);
+		ArrayList<InfoPolyline> line = Circuit.getPolylineFromFil(this);
 
-		for (Polyline polyline : line) {
-			polyline.setStroke(Color.BLACK);
+		for (InfoPolyline polyline : line) {
+			polyline.getLinePrincipale().setStroke(Color.BLACK);
 			}
 		}
+	///// les methodes de suppression
+	public void derelierCompFromDestination(Composant composant) {
+		destination.remove(composant);
+	}
+	
+	public void derelierCompFromSource() {
+		source = null;
+	}
+	//////////////////////
 
 	public Composant getSource() {
 		return source;
@@ -111,19 +122,35 @@ public class Fil implements Serializable{
 	}
 	public Polyline polylineParPoint(Coordonnees crdrech) {
 		Coordonnees crd = new Coordonnees(0, 0);
-		ArrayList<Polyline> list = Circuit.getPolylineFromFil(this);
-		for (Polyline line : list) {
+		ArrayList<InfoPolyline> list = Circuit.getPolylineFromFil(this);
+		for (InfoPolyline line : list) {
 			int i = 0;
-			while(i < line.getPoints().size()) {
-				crd.setX(line.getPoints().get(i));
-				crd.setY(line.getPoints().get(i+1));
+			while(i < line.getLinePrincipale().getPoints().size()) {
+				crd.setX(line.getLinePrincipale().getPoints().get(i));
+				crd.setY(line.getLinePrincipale().getPoints().get(i+1));
 				if(crd.equals(crdrech)){
-					return line;
+					return line.getLinePrincipale();
 				}
 				i=i+2;
 			}
 		}
 		return null;
+	}
+
+	public EtatLogique getEtat() {
+		return etat;
+	}
+
+	public void setEtat(EtatLogique etat) {
+		this.etat = etat;
+	}
+
+	public int getSwitching() {
+		return switching;
+	}
+
+	public void setSwitching(int switching) {
+		this.switching = switching;
 	}
 	
 }

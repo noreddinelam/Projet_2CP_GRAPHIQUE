@@ -738,9 +738,21 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </AnchorPane>
+            <AnchorPane prefHeight="35.0" prefWidth="31.0">
+               <children>
+                  <ImageView fx:id="camera" fitHeight="36.0" fitWidth="41.0" onMousePressed="#screenShot" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../homePage_icones/camera.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <VBox.margin>
+                  <Insets left="14.0" top="100.0" />
+               </VBox.margin>
+            </AnchorPane>
             <Label fx:id="afficheurX" prefHeight="28.0" prefWidth="58.0" style="-fx-background-color: #E0E0D1; -fx-background-radius: 18;" text="X : 1203" textFill="#303337">
                <VBox.margin>
-                  <Insets left="4.0" right="2.0" top="220.0" />
+                  <Insets left="4.0" right="2.0" top="90.0" />
                </VBox.margin>
                <font>
                   <Font name="Calisto MT" size="10.0" />

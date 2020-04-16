@@ -33,4 +33,10 @@ public class Coordonnees {
 			return false;
 		}
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "X : "+x+" Y : "+y;
+	}
 }

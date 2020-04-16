@@ -3,6 +3,11 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.awt.AWTException;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -13,6 +18,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -21,6 +27,7 @@ import application.ClickDroit;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import com.jfoenix.controls.JFXDrawer;
@@ -33,6 +40,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
@@ -55,6 +63,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import javafx.scene.paint.Color;
+
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
@@ -257,6 +266,9 @@ public class HomeController implements Initializable {
     private AnchorPane work;
     
     @FXML
+    private ImageView camera;
+    
+    @FXML
     private ImageView logo;
     /////////////////////////////Les lignes de Guide
 	private Line guideX = new Line();
@@ -322,12 +334,19 @@ public class HomeController implements Initializable {
     }
     
     @FXML
+    void screenShot(MouseEvent event) {
+    	captureEcran();
+    }
+    
+    @FXML
     void onSimuler(MouseEvent event) {
     	simul = (!simul);
     	if (simul) {
+    		simulation.setImage(new Image("homePage_icones/SIMULATION_OFF.png"));
 			Circuit.initialiser();
 		}
     	else {
+    		simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
 			Circuit.defaultCompValue();
 		}
     }
@@ -436,7 +455,6 @@ public class HomeController implements Initializable {
 		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
 	   	        public void handle(MouseDragEvent e) {
                        if (! workSpace.getChildren().contains(guideX)) workSpace.getChildren().add(guideX);
-                    	   
                        if (! workSpace.getChildren().contains(guideXp)) workSpace.getChildren().add(guideXp);
                        if (! workSpace.getChildren().contains(guideY)) workSpace.getChildren().add(guideY);
                        if (! workSpace.getChildren().contains(guideYp)) workSpace.getChildren().add(guideYp);
@@ -599,7 +617,6 @@ public class HomeController implements Initializable {
 				public void handle(MouseEvent e) {
 					if (! simul) {
 					ImageView dragImageView = new ImageView();
-					System.out.println(elementAdrager.getId());
 					dragImageView.setMouseTransparent(true);
 					elementAdrager.setMouseTransparent(true);
 					elementAdrager.setCursor(Cursor.CLOSED_HAND);
@@ -628,7 +645,7 @@ public class HomeController implements Initializable {
 
 							String xString=String.valueOf(dragImageView.getLayoutX());
 							String yString=String.valueOf(dragImageView.getLayoutY());
-							if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<1066 )&&(dragImageView.getLayoutY()>17))
+							if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<1066 )&&(dragImageView.getLayoutY()>0))
 							{
 								guideX.setLayoutX(dragImageView.getLayoutX());
 								guideY.setLayoutY(dragImageView.getLayoutY());
@@ -674,24 +691,23 @@ public class HomeController implements Initializable {
 							dragImageView.setFitHeight(img.getHeight());
 							dragImageView.setFitWidth(img.getWidth());	
 							System.out.println((e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2)+ "----------------------");
-							if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>670 || intersectionComposant(dragImageView))
+							if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView))
 							{
-								System.out.println("yufdjhglimgflyufjylfj");
 								workSpace.getChildren().remove(dragImageView);
 								Circuit.removeCompFromImage(dragImageView);
 							}
 							else 
 							{
-								Polyline polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-								if (polyline != null) {
-								polyline.setSmooth(true);
-								polyline.setStrokeWidth(3);
-								polyline.setStrokeType(StrokeType.CENTERED);
-								polyline.setCursor(Cursor.HAND);
-								workSpace.getChildren().add(polyline);
-								ajouterGeste(polyline);
-								
+								ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+								for(Polyline line : polyline ) {
+									line.setSmooth(true);
+									line.setStrokeWidth(3);
+									line.setStrokeType(StrokeType.CENTERED);
+									line.setCursor(Cursor.HAND);
+									workSpace.getChildren().add(line);
+									ajouterGeste(line);
 								}
+
 								ajouterLeGestApresCollage(dragImageView);
 							}
 							}
@@ -704,33 +720,23 @@ public class HomeController implements Initializable {
 	}
 	public void tracerEntrerApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) {
         int i = 0;
-        
         double x2 = crdDebut.getX();
         double y2 = crdDebut.getY();
         if(!relocate) {
-        	/*if(line.getPoints().size()<5)
-        		line.getPoints().addAll(line.getPoints().get(2),line.getPoints().get(3));*/
-		x = line.getPoints().get(0);
-		y = line.getPoints().get(1);
+		x = line.getPoints().get(line.getPoints().size()-6);
+		y = line.getPoints().get(line.getPoints().size()-5);
 		for (i = 0; i < 4; i++) {
 			line.getPoints().remove(line.getPoints().size()-1);
 		}
-		/*if(nbOccPoint(testPoly, testPoly.getPoints().get(2), testPoly.getPoints().get(3)) == 1){
-			System.out.println("dkhal supprimihaa");
-			i = testPoly.getPoints().indexOf(x2);
-			if((testPoly.getPoints().contains(x2) ) && (Math.abs(testPoly.getPoints().get(i+1)-y2)<5)) {
-				testPoly.getPoints().remove(i);
-				testPoly.getPoints().remove(i);
-			}
-			else {
-				i = testPoly.getPoints().indexOf(y2);
-				if( testPoly.getPoints().contains(y2) && (Math.abs(testPoly.getPoints().get(i-1)-x2)<5)) {
-					testPoly.getPoints().remove(i-1);
-					testPoly.getPoints().remove(i-1);
+		int size = line.getPoints().size();
+		if(nbOccPoint(line, line.getPoints().get(size-2), line.getPoints().get(size-1)) == 1 && size != 2)
+			{
+				if((Math.abs(line.getPoints().get(size-2)-x2)<10) && (Math.abs(line.getPoints().get(size-1)-y2)<10)) {
+					line.getPoints().remove(size-2);
+					line.getPoints().remove(size-2);
 				}
 			}
-		}*/
-		
+			
 		if(Math.abs(x2-x)<10) { 
 			if(Math.abs(y2-y)<10) switching = 0; 
 			else switching = 1;
@@ -745,35 +751,29 @@ public class HomeController implements Initializable {
         	Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
         }
 	}
+	
 	public void tracerSortieApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) {
         int i = 0;
 
         double x2 = crdDebut.getX();
         double y2 = crdDebut.getY();
         if(!relocate) {
-        	if(line.getPoints().size()<5)
-        		line.getPoints().addAll(line.getPoints().get(2),line.getPoints().get(3));
+        	/*if(line.getPoints().size()<5)
+        		line.getPoints().addAll(line.getPoints().get(2),line.getPoints().get(3));*/
 		x = line.getPoints().get(4);
 		y = line.getPoints().get(5);
+		
 		for (i = 0; i < 4; i++) {
 			line.getPoints().remove((0));
 		}
-		/*if(nbOccPoint(testPoly, testPoly.getPoints().get(2), testPoly.getPoints().get(3)) == 1){
-			System.out.println("dkhal supprimihaa");
-			i = testPoly.getPoints().indexOf(x2);
-			if((testPoly.getPoints().contains(x2) ) && (Math.abs(testPoly.getPoints().get(i+1)-y2)<5)) {
-				testPoly.getPoints().remove(i);
-				testPoly.getPoints().remove(i);
+		System.out.println("hna"+nbOccPoint(line, line.getPoints().get(0), line.getPoints().get(1)));
+		if(nbOccPoint(line, line.getPoints().get(0), line.getPoints().get(1)) == 1){
+			if((Math.abs(line.getPoints().get(0)-x2)<10) && (Math.abs(line.getPoints().get(1)-y2)<10)) {
+				line.getPoints().remove(0);
+				line.getPoints().remove(0);
 			}
-			else {
-				i = testPoly.getPoints().indexOf(y2);
-				if( testPoly.getPoints().contains(y2) && (Math.abs(testPoly.getPoints().get(i-1)-x2)<5)) {
-					testPoly.getPoints().remove(i-1);
-					testPoly.getPoints().remove(i-1);
-				}
-			}
-		}*/
-		
+		}
+
 		if(Math.abs(x2-x)<10) { 
 			if(Math.abs(y2-y)<10) switching = 0; 
 			else switching = 1;
@@ -799,6 +799,7 @@ public class HomeController implements Initializable {
 	}
 //talle3ha lfog
 	private ArrayList<Polyline> listEntrees = new ArrayList<Polyline>();
+	private ArrayList<Polyline> listSorties = new ArrayList<Polyline>();
 	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
@@ -806,6 +807,7 @@ public class HomeController implements Initializable {
 	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	            eleementAdrager.setCursor(Cursor.HAND);   
+	            
 	        }
 	    });
 	    
@@ -852,153 +854,134 @@ public class HomeController implements Initializable {
 	        		clicDroitY = e.getScreenY();
 	        		clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY);
 	        	}
-	        	
-	        	listEntrees.clear();
+	        	//traitement de pressed ajoutergest apres coallge
+	        	int size = 0;
 	        	Composant cmp = Circuit.getCompFromImage(eleementAdrager);
+	        	Polyline line ;
+	        	listEntrees.clear();
 	        	Coordonnees crdDebut = new Coordonnees(0,0);
-	        	for(int i = 0; i < cmp.getNombreEntree();i++){
+	        	int i = 0;
+	        	for(i = 0; i < cmp.getNombreEntree();i++){
+	        		System.out.println(cmp.getNombreEntree());
 	        		if(cmp.getEntrees()[i] != null) {
 	        			crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
-	    	        	listEntrees.add(cmp.getEntrees()[i].polylineParPoint(crdDebut));
+	        			System.out.println("6546545423 | "+crdDebut.toString());
+	        			line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
+	        			size = line.getPoints().size();
+	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+	    	        	listEntrees.add(line);
 	        		}
 	        	}
+	        	listSorties.clear();
+	        	for(i = 0; i < cmp.getNombreSortie();i++){
+	        			//crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, i);
+	        			line = Circuit.getPolylineFromFil(cmp.getSorties()[i]).get(0).getLinePrincipale();
+	        			//size = line.getPoints().size();
+	        			line.getPoints().add(2,line.getPoints().get(3));
+	    	        	line.getPoints().add(2,line.getPoints().get(3));
+	    	        	listSorties.add(line);
+	        	}
+	        	//hna tekmeel
 	            
 	        	eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	        	if (! simul) {
-						if (e.getButton() == MouseButton.PRIMARY) {
-						
-	    	            Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
-	    	            eleementAdrager.relocate(
-	    	                    (int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
-	    	                    (int)(localPoint.getY() - eleementAdrager.getBoundsInLocal().getHeight()/2 )
-	    	            );
-	    	            double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth() - 2;
-	    	        	double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2 - 1;
-	    	            String xString=String.valueOf(eleementAdrager.getLayoutX());
-    	                String yString=String.valueOf(eleementAdrager.getLayoutY());
-    	                if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<workSpace.getMaxWidth() )&&(eleementAdrager.getLayoutY()>0))
-	    	            {
-	    	                guideX.setLayoutX(eleementAdrager.getLayoutX());
-	    	                guideY.setLayoutY(eleementAdrager.getLayoutY());
-	    	                guideXp.setLayoutX(eleementAdrager.getLayoutX()+ eleementAdrager.getBoundsInLocal().getWidth()+1);
-	    	                guideYp.setLayoutY(eleementAdrager.getLayoutY()+ eleementAdrager.getBoundsInLocal().getHeight()+1);
+	        		public void handle(MouseEvent e) {
+	        			if (! simul) {
+	        				if (e.getButton() == MouseButton.PRIMARY) {
 
-	    	         
-	    	                afficheurX.setText("X : "+xString);
-	    	                afficheurY.setText("Y : "+yString);
-	    	            }
-	    	            
-	    	       
-	    	            else 
-	    	            	{
-	    	            	guideX.setLayoutX(0);
-	    	               	guideY.setLayoutY(0);
-	    	            	guideXp.setLayoutX(0);
-	    	            	guideYp.setLayoutY(0);
-	    	              	afficheurX.setText("X : 0");
-		    	            afficheurY.setText("Y : 0");
-		    	            
-	    	            	}	    
-    	            	if(e.getSceneX() > 1275)
-						{
-							scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-							scrollPane.setHvalue(scrollPane.getHvalue()+0.01);
-						}
-    	            	if(e.getSceneX() < 210)
-						{							
-							scrollPane.setHvalue(scrollPane.getHvalue()-0.01);
-						}
-    	            	if(e.getSceneY() > 700)
-						{
-							scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-							scrollPane.setVvalue(scrollPane.getVvalue()+0.01);
-						}
-    	            	if(e.getSceneY() < 0)
-						{							
-							scrollPane.setVvalue(scrollPane.getVvalue()-0.01);
-						}
-	    	            e.consume();
-	    	            
-	    	           /*teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest*/
-	    	            //supprimer les noueds doublees : 
-	    	           //ArrayList<Double> list = new ArrayList<Double>(testPoly.getPoints());
-	    	          
-	    	            testPoly = Circuit.getPolylineFromFil(Circuit.getCompFromImage(eleementAdrager).getFilSortie(0)).get(0);
-	    	           // System.out.println("polyyyyyyyyyyyyyyyyyyyyy"+Circuit.getCompFromImage(eleementAdrager).getFilSortie(0));
-	    	            //double x2 = e.getSceneX()-180;
-						//double y2 = e.getSceneY();
-	    	            double x2 = eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth()-5;
-	    	            double y2 = eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2;
-	    	            int i = 0;
-	    	            System.out.println(testPoly.getPoints().size());
-	    	            if(testPoly.getPoints().size()<5) {
-	    	            	testPoly.getPoints().addAll(testPoly.getPoints().get(2),testPoly.getPoints().get(3));
-	    	            }
-						x = testPoly.getPoints().get(4);
-						y = testPoly.getPoints().get(5);
-	    				for (i = 0; i < 4; i++) {
-							testPoly.getPoints().remove((0));
-						}
-	    				/*if(nbOccPoint(testPoly, testPoly.getPoints().get(2), testPoly.getPoints().get(3)) == 1){
-	    					System.out.println("dkhal supprimihaa");
-	    					i = testPoly.getPoints().indexOf(x2);
-	    					if((testPoly.getPoints().contains(x2) ) && (Math.abs(testPoly.getPoints().get(i+1)-y2)<5)) {
-	    						testPoly.getPoints().remove(i);
-	    						testPoly.getPoints().remove(i);
-	    					}
-	    					else {
-	    						i = testPoly.getPoints().indexOf(y2);
-	    						if( testPoly.getPoints().contains(y2) && (Math.abs(testPoly.getPoints().get(i-1)-x2)<5)) {
-	    							testPoly.getPoints().remove(i-1);
-	    							testPoly.getPoints().remove(i-1);
-	    						}
-	    					}
-	    				}*/
-	    				
-						if(Math.abs(x2-x)<10) { 
-							if(Math.abs(y2-y)<10) switching = 0; 
-							else switching = 1;
-						}else {
-							if(Math.abs(y2-y)<10) switching = 0;
-						} 		
-						if(switching == 0) {
-							//testPoly.getPoints().addAll(x2,y,x2,y2);
-							testPoly.getPoints().add(0, x2);
-							testPoly.getPoints().add(1, y2);
-							testPoly.getPoints().add(2, x2);
-							testPoly.getPoints().add(3, y);
-						}
-						else {
-							//testPoly.getPoints().addAll(x,y2,x2,y2);
-							testPoly.getPoints().add(0, x2);
-							testPoly.getPoints().add(1, y2);
-							testPoly.getPoints().add(2, x);
-							testPoly.getPoints().add(3, y2);
-						}
-						}
-	    	        }
-	    	            Composant cmp = Circuit.getCompFromImage(eleementAdrager);
-	    	            Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0);
-	    	            Coordonnees crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, 0);
-	    	            boolean relocate = false;
-	    	            if(Circuit.getPolylineFromFil(cmp.getSorties()[0]).size() == 1)
-	    	            	relocate = true;
-	    	            tracerSortieApresCollage(line, crdDebut, relocate);
-	    	            relocate = false;
-	    	            int i = 0,j = 0 ;
-	    	            Polyline p;
-	    	            while(i < cmp.getNombreEntree()) {
-	    	            	if(cmp.getEntrees()[i] != null) {
-	    	            	p = listEntrees.get(j);
-	    	            	j++;
-	    	            	crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
-	    	            	tracerEntrerApresCollage(p, crdDebut, relocate);
-	    	            	}
-	    	            i++;
-	    	            }    
-	    	        }
-	    	        });
+	        					Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+	        					eleementAdrager.relocate(
+	        							(int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
+	        							(int)(localPoint.getY() - eleementAdrager.getBoundsInLocal().getHeight()/2 )
+	        							);
+	        					double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth() - 2;
+	        					double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2 - 1;
+	        					String xString=String.valueOf(eleementAdrager.getLayoutX());
+	        					String yString=String.valueOf(eleementAdrager.getLayoutY());
+	        					if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<workSpace.getMaxWidth() )&&(eleementAdrager.getLayoutY()>0))
+	        					{
+	        						guideX.setLayoutX(eleementAdrager.getLayoutX());
+	        						guideY.setLayoutY(eleementAdrager.getLayoutY());
+	        						guideXp.setLayoutX(eleementAdrager.getLayoutX()+ eleementAdrager.getBoundsInLocal().getWidth()+1);
+	        						guideYp.setLayoutY(eleementAdrager.getLayoutY()+ eleementAdrager.getBoundsInLocal().getHeight()+1);
+
+
+	        						afficheurX.setText("X : "+xString);
+	        						afficheurY.setText("Y : "+yString);
+	        					}
+
+
+	        					else 
+	        					{
+	        						guideX.setLayoutX(0);
+	        						guideY.setLayoutY(0);
+	        						guideXp.setLayoutX(0);
+	        						guideYp.setLayoutY(0);
+	        						afficheurX.setText("X : 0");
+	        						afficheurY.setText("Y : 0");
+
+	        					}	    
+	        					if(e.getSceneX() > 1275)
+	        					{
+	        						scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+	        						scrollPane.setHvalue(scrollPane.getHvalue()+0.01);
+	        					}
+	        					if(e.getSceneX() < 210)
+	        					{							
+	        						scrollPane.setHvalue(scrollPane.getHvalue()-0.01);
+	        					}
+	        					if(e.getSceneY() > 700)
+	        					{
+	        						scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+	        						scrollPane.setVvalue(scrollPane.getVvalue()+0.01);
+	        					}
+	        					if(e.getSceneY() < 0)
+	        					{							
+	        						scrollPane.setVvalue(scrollPane.getVvalue()-0.01);
+	        					}
+	        					e.consume();
+
+	        					Composant cmp = Circuit.getCompFromImage(eleementAdrager);
+	        					//Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale();
+	        					//Coordonnees crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, 0);
+	        					boolean relocate = false;
+	        					/*if(Circuit.getPolylineFromFil(cmp.getSorties()[0]).size() == 1)
+	        						relocate = true;
+	        					
+	        					tracerSortieApresCollage(line, crdDebut, relocate);*/
+	        					int i = 0,j = 0 ;
+	        					Coordonnees crdDebut;
+	        					Polyline p;
+	        					while(i < cmp.getNombreSortie()) {
+	        						if(cmp.getSorties()[i] != null) {
+	        							switching = cmp.getSorties()[i].getSwitching();
+	        							p = listSorties.get(j);
+	        							if(Circuit.getPolylineFromFil(cmp.getSorties()[i]).size() == 1)
+	    	        						{relocate = true;}
+	        							j++;
+	        							crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, i);
+	        							tracerSortieApresCollage(p, crdDebut, relocate);
+	        							cmp.getSorties()[i].setSwitching(switching);
+	        						}
+	        						i++;
+	        					}    
+	        					i = 0;j = 0 ;
+	        					relocate = false;
+	        					while(i < cmp.getNombreEntree()) {
+	        						if(cmp.getEntrees()[i] != null) {
+	        							switching = cmp.getEntrees()[i].getSwitching();
+	        							p = listEntrees.get(j);
+	        							j++;
+	        							crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
+	        							tracerEntrerApresCollage(p, crdDebut, relocate);
+	        							cmp.getEntrees()[i].setSwitching(switching);
+	        						}
+	        						i++;
+	        					}    
+	        				}
+	        			}
+	        		}
+	        	});
 					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
 							if (! simul) {
@@ -1404,8 +1387,10 @@ public class HomeController implements Initializable {
 						if(Math.abs(y2-y)<10) switching = 0;
 					} 		
 					if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
-					else line.getPoints().addAll(x,y2,x2,y2);
-					}
+					else line.getPoints().addAll(x,y2,x2,y2);				
+					Circuit.getFilFromPolyline(line).setSwitching(switching);
+
+				}
 				}
 				
 			};
@@ -1449,17 +1434,16 @@ public class HomeController implements Initializable {
 						}
 					}*/
 					//source = Circuit.getFilFromPolyline(line).getSource();
-					ArrayList<Polyline> listDePolylines = Circuit.getListFromPolyline(line);
+					ArrayList<InfoPolyline> listDePolylines = Circuit.getListFromPolyline(line);
 					
 					////////////////////relier/////////////////////// 
 					Fil filSorties = Circuit.getFilFromPolyline(line);
-					System.out.println(filSorties);
+					//System.out.println(filSorties);
 					source = filSorties.getSource();
 					sortie = source.numCmpSorties(filSorties);	
-					System.out.println("array"+listDePolylines);
-					System.out.println("source "+source+"sortie  "+sortie);
+					//System.out.println("array"+listDePolylines);
+					//System.out.println("source "+source+"sortie  "+sortie);
 					/////////////////////////////////////////////////
-					boolean AddPoint = true; // Pour la suppretion
 					x = event.getX();
 					y = event.getY();
 					Polyline line2 = initialser(x, y);
@@ -1469,6 +1453,7 @@ public class HomeController implements Initializable {
 	
 					ArrayList<Double> list = new ArrayList<Double>(line.getPoints());
 					int i = list.size()-2;
+					
 					boolean trouve = false ;
 					
 					while((!trouve) && i>0) {
@@ -1476,30 +1461,37 @@ public class HomeController implements Initializable {
 							trouve = true;
 							x = list.get(i);
 							y = list.get(i+1);
+							line2.getPoints().add(i, x);
+							line2.getPoints().add(i+1, y);
+							line2.getPoints().add(i, x);
+							line2.getPoints().add(i+1, y);
 						}
 						i = i-2;
 					}
-					if(trouve && (i == (list.size()-4)) ) {
-						AddPoint = false;
-					}
 					i = 0;
 					if(!trouve) {
-						while((!trouve) && i<list.size()) {
+						while((!trouve) && (i<list.size()-2)){
 							if(Math.abs(x - list.get(i)) < 5 ) {
 								trouve = true;
 								x = list.get(i);
+								line2.getPoints().add(i+2, x);
+								line2.getPoints().add(i+3, y);
+								line2.getPoints().add(i+2, x);
+								line2.getPoints().add(i+3, y);	
+								
 							}else if (Math.abs(y - list.get(i+1)) < 5) {
 								trouve = true;
 								y = list.get(i+1);
+								line2.getPoints().add(i+2, x);
+								line2.getPoints().add(i+3, y);
+								line2.getPoints().add(i+2, x);
+								line2.getPoints().add(i+3, y);	
+									
 							}
 						i = i + 2;
 						}
 					}
-					
-					//if(AddPoint)
-						//line2.getPoints().addAll(x,y);
-					
-					listDePolylines.add(listDePolylines.indexOf(line), line2);
+					listDePolylines.add(listDePolylines.indexOf(new InfoPolyline(line)), new InfoPolyline(line2));
 					line2 = initialser(x, y);
 					line.getPoints().clear();
 					line.getPoints().addAll(line2.getPoints());
@@ -1532,7 +1524,7 @@ public class HomeController implements Initializable {
 
 						playSound();
 						System.out.println("trabtooo");
-						if(source.getClass().getSimpleName().equals("Pin")) ((Pin)source).setEtat(EtatLogique.ONE);
+						//if(source.getClass().getSimpleName().equals("Pin")) ((Pin)source).setEtat(EtatLogique.ONE);
 					}
 					}
 					if(rel != 0 ){
@@ -1540,7 +1532,7 @@ public class HomeController implements Initializable {
 					if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3))< 10) {
 						line.getPoints().remove(der);line.getPoints().remove(der-1);}
 				}
-					System.out.println(line.getPoints().size());
+					//System.out.println(line.getPoints().size());
 				}
 			});
 		/*line.setOnMouseDragEntered(new EventHandler<MouseEvent>() {
@@ -1703,5 +1695,14 @@ public class HomeController implements Initializable {
 	            workSpace.getChildren().add(l2);
 	        }
 	    }
+	 public void captureEcran() {
+		 WritableImage image = workSpace.snapshot(new SnapshotParameters(), null);
+		 File file = new File("D:\\\\Shot.jpg");
+		 try {
+			 ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+		 }catch (IOException e) {
+			 // TODO: handle exception here
+		 }
+	}
 }
 
