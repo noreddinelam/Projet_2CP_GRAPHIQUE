@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 
 public class Donnes {
 	Actions typeDaction;
-	ImageView composant;
+	ImageView composantCommeImage;
 	Image image=null;
 	int nombreDesEntrees=0;
 	double posX=0;
@@ -21,10 +21,10 @@ public class Donnes {
 		this.typeDaction = typeDaction;
 	}
 	public ImageView getComposant() {
-		return composant;
+		return composantCommeImage;
 	}
 	public void setComposant(ImageView composant) {
-		this.composant = composant;
+		this.composantCommeImage = composant;
 	}
 	public Image getImage() {
 		return image;

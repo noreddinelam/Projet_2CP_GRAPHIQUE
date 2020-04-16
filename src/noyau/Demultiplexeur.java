@@ -1,5 +1,6 @@
 package noyau;
 import java.lang.Math;
+import java.util.ArrayList;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
@@ -67,7 +68,7 @@ public class Demultiplexeur extends Combinatoires{
 	public void setCord() {
 		// TODO Auto-generated method stub
 		ImageView img = Circuit.getImageFromComp(this);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, img.getBoundsInLocal().getHeight() / 2), 0);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, (img.getBoundsInLocal().getHeight() -10) / 2), 0);
 		switch (nbCommande) {
 		case 1:{
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(50, 16.8), 0);
@@ -128,8 +129,29 @@ public class Demultiplexeur extends Combinatoires{
 	}
 	
 	@Override
-	public Polyline generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
-		return null;
+		setCord();	
+		Polyline polyline = null;
+		double posX ;
+		double posY ;
+		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
+		ArrayList<InfoPolyline> listPolylines ;
+		for (int i = 0; i < nombreSortie; i++) {
+			listPolylines = new ArrayList<InfoPolyline>();
+			posX = x+lesCoordonnees.getCordSortieInIndex(i).getX() ;
+			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
+			polyline = new Polyline(posX ,posY,posX+5,posY);
+			listPolylines.add(new InfoPolyline(polyline));
+			reslut.add(polyline);
+			Circuit.ajouterFil(sorties[i], listPolylines); 
+		}		
+		return reslut;
+	}
+	
+	@Override
+	public void resetPolyline(Polyline line, double x, double y) {
+		// TODO Auto-generated method stub
+		
 	}
 }

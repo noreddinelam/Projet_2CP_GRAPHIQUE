@@ -1,5 +1,7 @@
 package noyau;
 
+import java.util.ArrayList;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
@@ -17,10 +19,14 @@ public class AfficheurSegment extends Composant implements Affichage{
 	}
 	
 	public void evaluer() {
-		
+		if (valider()) {
+			genererSorties();
+		}
 	}
 	public void genererSorties() {
-		
+		valeur = Integer.valueOf(concatener(entrees, 4),2);
+		ImageView imageView = Circuit.getImageFromComp(this);
+		imageView.setImage(new Image(generatePath()));
 	}
 	
 	public boolean valider() {
@@ -63,9 +69,16 @@ public class AfficheurSegment extends Composant implements Affichage{
 	}
 	
 	@Override
-	public Polyline generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
-		return null;
+		setCord();
+		return new ArrayList<Polyline>();
+	}
+	
+	@Override
+	public void resetPolyline(Polyline line, double x, double y) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

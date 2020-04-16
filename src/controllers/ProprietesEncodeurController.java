@@ -99,10 +99,17 @@ public class ProprietesEncodeurController extends ProprietesController{
     @FXML
     void modifier(ActionEvent event) {
     	cmp.setNombreSortie(i);
-       	cmp.setNombreEntree((int)Math.pow(2, i));
+    	int nbEntree = (int)Math.pow(2, i);
+       	cmp.setNombreEntree(nbEntree);
     	cmp.setNom(label.getText());
-    	System.out.println(cmp.generatePath());
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	cmp.setCord();
+    	cmp.getLesCoordonnees().setNbCordEntree(nbEntree);
+    	cmp.getLesCoordonnees().setNbCordSorties(i);
+    	ImageView imageView = Circuit.getImageFromComp(cmp);
+    	Image img = new Image(cmp.generatePath());
+    	imageView.setImage(img);
+    	imageView.setFitHeight(img.getHeight());
+    	imageView.setFitWidth(img.getWidth());
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

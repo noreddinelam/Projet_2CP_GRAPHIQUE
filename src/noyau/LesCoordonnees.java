@@ -137,4 +137,6 @@ public class LesCoordonnees {
 			return new Coordonnees(cordEntree[entre].getX() + image.getLayoutX(), cordEntree[entre].getY() + image.getLayoutY());
 		else return null;
 	}
+	
+	
 }
