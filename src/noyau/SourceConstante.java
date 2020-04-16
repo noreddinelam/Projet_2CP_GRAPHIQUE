@@ -64,4 +64,9 @@ public class SourceConstante extends Composant{
 		// TODO Auto-generated method stub
 		
 	}
+
+	public EtatLogique getEtatLogique() {
+		return etatLogique;
+	}
+	
 }
