@@ -1,5 +1,7 @@
 package noyau;
 
+import java.util.ArrayList;
+
 import javafx.scene.shape.Polyline;
 
 public abstract class Additionneur extends Combinatoires{
@@ -20,9 +22,14 @@ public abstract class Additionneur extends Combinatoires{
 	}
 	
 	@Override
-	public Polyline generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public void resetPolyline(Polyline line, double x, double y) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

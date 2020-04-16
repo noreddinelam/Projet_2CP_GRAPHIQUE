@@ -2,6 +2,7 @@ package noyau;
 
 
 import java.lang.Math;
+import java.util.ArrayList;
 import java.util.spi.LocaleServiceProvider;
 
 import javax.swing.tree.TreePath;
@@ -40,7 +41,7 @@ public class Decodeur extends Combinatoires{
 		switch (nombreEntree) {
 		case 1:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 37.3), 0);
-			
+
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(60, 21.4), 0);
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(60, 53.1), 1);
 		}break;
@@ -97,10 +98,31 @@ public class Decodeur extends Combinatoires{
 	}
 	
 	@Override
-	public Polyline generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
-		return null;
+		setCord();	
+		Polyline polyline = null;
+		double posX ;
+		double posY ;
+		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
+		ArrayList<InfoPolyline> listPolylines ;
+		for (int i = 0; i < nombreSortie; i++) {
+			listPolylines = new ArrayList<InfoPolyline>();
+			posX = x+lesCoordonnees.getCordSortieInIndex(i).getX() ;
+			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
+			polyline = new Polyline(posX ,posY,posX+5,posY);
+			listPolylines.add(new InfoPolyline(polyline));
+			reslut.add(polyline);
+			Circuit.ajouterFil(sorties[i], listPolylines); 
+		}		
+		return reslut;
 	}
 	
+	@Override
+	public void resetPolyline(Polyline line, double x, double y) {
+		// TODO Auto-generated method stub
+		line.getPoints().clear();
+		line.getPoints().addAll(x,y,x+5,y);
+	}
 
 }

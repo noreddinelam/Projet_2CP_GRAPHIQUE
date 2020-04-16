@@ -36,7 +36,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="copier" layoutX="3.0" layoutY="98.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text=" Copier                                 CTRL+C         " textFill="WHITE">
+      <Button fx:id="copier" layoutX="3.0" layoutY="98.0" mnemonicParsing="false" onAction="#copier" prefHeight="42.0" prefWidth="236.0" text=" Copier                                 CTRL+C         " textFill="WHITE">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>
@@ -52,7 +52,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="coller" alignment="CENTER" layoutX="3.0" layoutY="141.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text=" Coller                                  CTRL+V         ">
+      <Button fx:id="coller" alignment="CENTER" layoutX="3.0" layoutY="141.0" mnemonicParsing="false" onAction="#coller" prefHeight="42.0" prefWidth="236.0" text=" Coller                                  CTRL+V         ">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>

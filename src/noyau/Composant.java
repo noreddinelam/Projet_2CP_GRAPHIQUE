@@ -155,10 +155,17 @@ public abstract class Composant implements Serializable{
 			entrees[i].addEtages(etage);
 		}
 	}
+	public void defaultValue() {
+		for (int i = 0; i < nombreSortie; i++) {
+			etatFinal[i] = EtatLogique.HAUTE_IMPEDANCE;
+		}
+	}
 	
 	public abstract String generatePath();
 	
-	public abstract Polyline generatePolyline(double x,double y);
+	public abstract void resetPolyline(Polyline line , double x,double y);
+	
+	public abstract ArrayList<Polyline> generatePolyline(double x,double y);
 	
 	public abstract void setCord();
 	public LesCoordonnees getLesCoordonnees() {
@@ -180,6 +187,17 @@ public abstract class Composant implements Serializable{
 		while(i<nombreSortie) {
 			if(fil == sorties[i])
 				return i;
+		i++;
+		}
+		return 0;
+	}
+	
+	public int numCmpSorties(Fil fil) {
+		int i = 0;
+		while(i<nombreSortie) {
+			if(fil == sorties[i])
+				return i;
+		i++;
 		}
 		return 0;
 	}

@@ -114,19 +114,39 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 	}
 	
 	@Override
-	public Polyline generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
 		setCord();
 		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX();
 		double posY = y+lesCoordonnees.getCordSortieInIndex(0).getY();
+		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
 		if (input) {
 			Polyline polyline = new Polyline(posX,posY,posX,posY+5);
-			ArrayList<Polyline> listPolylines = new ArrayList<Polyline>();
-			listPolylines.add(polyline);
+			polyline.setStrokeWidth(3);
+			ArrayList<InfoPolyline> listPolylines = new ArrayList<InfoPolyline>();
+			listPolylines.add(new InfoPolyline(polyline));
 			Circuit.ajouterFil(sorties[0], listPolylines);
-			return polyline;
+			reslut.add(polyline);
 		}		
-		return null;
+		return reslut;
+	}
+
+	@Override
+	public void defaultValue() {
+		// TODO Auto-generated method stub
+		if (input) {
+			super.defaultValue();
+		}
+		etat = EtatLogique.ZERO;
+		ImageView img = Circuit.getImageFromComp(this);
+		Image image = new Image("Pin/0Input.png");
+		img.setImage(image);
+		img.setFitHeight(image.getHeight());
+		img.setFitWidth(image.getWidth());
+	}
+	public void resetPolyline(Polyline line , double x,double y) {
+		line.getPoints().clear();
+		line.getPoints().addAll(x,y,x,y+5);
 	}
 	public boolean isInput() {
 		return input;

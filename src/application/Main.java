@@ -5,6 +5,7 @@ import controllers.HomeController;
 import controllers.PremierePageController;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -12,6 +13,7 @@ import javafx.util.Duration;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import noyau.*;
 
 public class Main extends Application {
@@ -84,8 +86,13 @@ public class Main extends Application {
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
 						
 						Parent root = (Parent)loader.load();
+						
+						Scene scene = new Scene(root);
+						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+						
 						HomeController controller = (HomeController)loader.getController();
 						controller.setHomeControllerStage(primaryStage);
+						controller.setHomeControllerScene(scene);
 						controller.inisialiser();
 						
 						
@@ -105,8 +112,13 @@ public class Main extends Application {
 //				        fade.setAutoReverse(true);     
 //				        fade.setNode(root);  
 //				        fade.play(); 
-						Scene scene = new Scene(root);
+						//Scene scene = new Scene(root);
 						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+						
+						
+						
+											
+						
 						primaryStage.setScene(scene);
 						//primaryStage.initStyle(StageStyle.UNDECORATED);
 						primaryStage.setResizable(false);

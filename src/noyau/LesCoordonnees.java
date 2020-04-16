@@ -1,6 +1,7 @@
 package noyau;
 
 import javafx.geometry.Point2D;
+import javafx.scene.image.ImageView;
 
 public class LesCoordonnees {
 	private Coordonnees cordEntree[] = new Coordonnees[32]; // coordonees des entrees
@@ -95,9 +96,9 @@ public class LesCoordonnees {
 	public int indexCoord(Coordonnees crd) {
 		int i = 0;
 		while(i < nbCordEntree) {
-			if(cordEntree[i].equals(crd))
-				return i;
-			i++;
+			if(cordEntree[i].equals(crd)) {
+				return i;}
+		i++;
 		}
 		return -1;
 	}
@@ -125,5 +126,17 @@ public class LesCoordonnees {
 	public void setNbCordCommandes(int nbCordCommandes) {
 		this.nbCordCommandes = nbCordCommandes;
 	}
+	public Coordonnees coordReelesSorties(ImageView image,int sortie) {
+		if(sortie < nbCordSorties)
+			return new Coordonnees(cordSorties[sortie].getX() + image.getLayoutX(), cordSorties[sortie].getY() + image.getLayoutY());
+		else return null;
+	}
+	
+	public Coordonnees coordReelesEntrees(ImageView image,int entre) {
+		if(entre < nbCordEntree)
+			return new Coordonnees(cordEntree[entre].getX() + image.getLayoutX(), cordEntree[entre].getY() + image.getLayoutY());
+		else return null;
+	}
+	
 	
 }
