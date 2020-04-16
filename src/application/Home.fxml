@@ -667,7 +667,7 @@
                <children>
                   <ImageView fx:id="fichier" fitHeight="40.0" fitWidth="32.0" layoutX="17.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../homePage_icones/FILE.png" />
+                        <Image url="@../homePage_icones/fichier.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -682,7 +682,7 @@
                <children>
                   <ImageView fx:id="edition" fitHeight="45.0" fitWidth="36.0" layoutX="17.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../homePage_icones/EDIT%20FILE.png" />
+                        <Image url="@../homePage_icones/edition.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -697,7 +697,7 @@
                <children>
                   <ImageView fx:id="simulation" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" onMouseClicked="#onSimuler" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../homePage_icones/SIMULATION.png" />
+                        <Image url="@../homePage_icones/simulation.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -712,7 +712,7 @@
                <children>
                   <ImageView fx:id="affichage" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="14.0">
                      <image>
-                        <Image url="@../homePage_icones/AFFICHAGE.png" />
+                        <Image url="@../homePage_icones/affichage.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -727,7 +727,7 @@
                <children>
                   <ImageView fx:id="aide" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0">
                      <image>
-                        <Image url="@../homePage_icones/AIDE.png" />
+                        <Image url="@../homePage_icones/aide.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />

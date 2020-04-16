@@ -327,6 +327,35 @@ public class HomeController implements Initializable {
     @FXML
     private Label afficheurY;
     
+    void ajouterAnimationBarDroite(ImageView imageView) {
+    	imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			
+			@Override
+			public void handle(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				imageView.setImage(new Image("homePage_icones/"+imageView.getId()+"Hover.png"));
+			}
+		});
+    	imageView.setOnMouseExited(new EventHandler<MouseEvent>() {
+			
+			@Override
+			public void handle(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				imageView.setImage(new Image("homePage_icones/"+imageView.getId() + ".png"));
+			}
+		});
+    }
+    
+    void initialiseAnimationOfBarDroite() {
+    	ajouterAnimationBarDroite(fichier);
+    	ajouterAnimationBarDroite(edition);
+    	ajouterAnimationBarDroite(simulation);
+    	ajouterAnimationBarDroite(affichage);
+    	ajouterAnimationBarDroite(aide);
+    	ajouterAnimationBarDroite(camera);
+    	camera.setCursor(Cursor.HAND);
+    }
+    
 	////////////////////Appliquer l'animation de rotation   
     @FXML
     void mouseEnterLogo(MouseEvent event) {
@@ -413,6 +442,7 @@ public class HomeController implements Initializable {
     	    ajouterLeGest(registreDecalge);
     	    tracerLagrill();
 		  
+    	    
     	    ////////////// tracer les regles 
   
     	    tracerLesregles(workSpace);
@@ -450,6 +480,7 @@ public class HomeController implements Initializable {
     				
     			
     			});
+    		initialiseAnimationOfBarDroite();
 	}
 	private void ajouterGestWorkSpace() {////Methodes pour Ajouter l'interaction avec le drag and drop et les guides
 		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
