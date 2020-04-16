@@ -167,7 +167,7 @@ public abstract class Composant implements Serializable{
 	
 	public abstract ArrayList<Polyline> generatePolyline(double x,double y);
 	
-	public  void derelierComp() { // pour supprimer le composant  (le composant à supprimer)
+	public  void derelierComp() { // pour derelier le composant de ces fils d'entrees  (le composant à supprimer)
 		for (int i = 0; i < nombreEntree; i++) {
 			if (entrees[i] != null) {
 				entrees[i].derelierCompFromDestination(this);
@@ -182,6 +182,12 @@ public abstract class Composant implements Serializable{
 					entrees[i] = null;
 				}
 			}
+		}
+	}
+	
+	public void relierANouveau() { // elle permet de relier à nouveau le composant si il est derelier de ces fils
+		for (int i = 0; i < nombreEntree; i++) {
+			entrees[i].addDestination(this);
 		}
 	}
 	public abstract void setCord();
