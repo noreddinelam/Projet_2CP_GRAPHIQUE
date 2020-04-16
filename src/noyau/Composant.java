@@ -169,14 +169,21 @@ public abstract class Composant implements Serializable{
 	
 	public abstract ArrayList<Polyline> generatePolyline(double x,double y);
 	
-	public  void derelierComp() {
+	public  void derelierComp() { // pour supprimer le composant  (le composant à supprimer)
 		for (int i = 0; i < nombreEntree; i++) {
 			if (entrees[i] != null) {
 				entrees[i].derelierCompFromDestination(this);
 			}
 		}
-		for (int i = 0; i < nombreSortie; i++) {
-			sorties[i].derelierCompFromSource();
+	}
+	
+	public void derelierEntreeFromComp(Fil fil) { // pour enlever une le fil donné des entrees du composant
+		for (int i = 0; i < nombreEntree; i++) {
+			if (entrees[i] != null) {
+				if (entrees[i].equals(fil)) {
+					entrees[i] = null;
+				}
+			}
 		}
 	}
 	public abstract void setCord();
@@ -188,7 +195,7 @@ public abstract class Composant implements Serializable{
 	}
 	
 	public Fil getFilSortie(int i) {
-		if(i < sorties.length) {
+		if(i < sorties.length) {/// ngoul l sari
 			return sorties[i];
 		}else {
 			return null;
@@ -213,6 +220,9 @@ public abstract class Composant implements Serializable{
 		i++;
 		}
 		return 0;
+	}
+	public Fil getFilSortieByNum(int i) {
+		return sorties[i];
 	}
 	public Fil[] getEntrees() {
 		return entrees;
