@@ -163,11 +163,32 @@ public abstract class Composant implements Serializable{
 	
 	public abstract String generatePath();
 	
-	public abstract void resetPolyline(Polyline line , double x,double y);
+	public void resetPolyline(Polyline line , double x,double y) {
+		line.getPoints().clear();
+		line.getPoints().addAll(x,y,x+5,y);
+	}
 	
-	public abstract ArrayList<Polyline> generatePolyline(double x,double y);
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
+		// TODO Auto-generated method stub
+		setCord();	
+		Polyline polyline = null;
+		double posX ;
+		double posY ;
+		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
+		ArrayList<InfoPolyline> listPolylines ;
+		for (int i = 0; i < nombreSortie; i++) {
+			listPolylines = new ArrayList<InfoPolyline>();
+			posX = x+lesCoordonnees.getCordSortieInIndex(i).getX() ;
+			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
+			polyline = new Polyline(posX ,posY,posX+5,posY);
+			listPolylines.add(new InfoPolyline(polyline));
+			reslut.add(polyline);
+			Circuit.ajouterFil(sorties[i], listPolylines); 
+		}		
+		return reslut;
+	}
 	
-	public  void derelierComp() { // pour supprimer le composant  (le composant à supprimer)
+	public  void derelierComp() { // pour derelier le composant de ces fils d'entrees  (le composant à supprimer)
 		for (int i = 0; i < nombreEntree; i++) {
 			if (entrees[i] != null) {
 				entrees[i].derelierCompFromDestination(this);
@@ -184,7 +205,15 @@ public abstract class Composant implements Serializable{
 			}
 		}
 	}
+	
+	public void relierANouveau() { // elle permet de relier à nouveau le composant si il est derelier de ces fils
+		for (int i = 0; i < nombreEntree; i++) {
+			entrees[i].addDestination(this);
+		}
+	}
+
 	public abstract void setCord();
+	
 	public LesCoordonnees getLesCoordonnees() {
 		return lesCoordonnees;
 	}
@@ -219,6 +248,28 @@ public abstract class Composant implements Serializable{
 		}
 		return 0;
 	}
+	
+	public boolean isDessocier() {
+		boolean dessocier = true ;
+		int i = 0;
+		while(( i < nombreEntree) && (dessocier == true)) {
+			if (entrees[i] != null) {
+				dessocier = false;
+			}
+			else i++;
+		}
+		i = 0;
+		while((i < nombreSortie) && (dessocier == true) )
+		{
+			if (sorties[i].getDestination().size() != 0) {
+				dessocier = false ;
+			}
+			else i++;
+		}
+		return dessocier;
+		
+	}
+	
 	public Fil getFilSortieByNum(int i) {
 		return sorties[i];
 	}

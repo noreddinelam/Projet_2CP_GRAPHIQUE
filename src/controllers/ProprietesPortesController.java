@@ -102,11 +102,13 @@ public class ProprietesPortesController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
-    	cmp.setNombreEntree(i);
     	cmp.setNom(label.getText());
-    	cmp.setCord();
-    	cmp.getLesCoordonnees().setNbCordEntree(i);
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	if (cmp.isDessocier()) {
+    		cmp.setNombreEntree(i);
+    		cmp.setCord();
+    		cmp.getLesCoordonnees().setNbCordEntree(i);
+    		Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

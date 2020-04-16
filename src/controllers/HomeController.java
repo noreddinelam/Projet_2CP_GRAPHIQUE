@@ -413,8 +413,7 @@ public class HomeController implements Initializable {
     		put(addcomplet, tAddc);
     		put(demiAdd, tDadd);}};
     		
-    
-    		
+    	
     	////Ajouter pour chaque Composant les gestes de drag and drop
     		
     		ajouterLeGest(hex);
@@ -738,7 +737,6 @@ public class HomeController implements Initializable {
 									workSpace.getChildren().add(line);
 									ajouterGeste(line);
 								}
-
 								ajouterLeGestApresCollage(dragImageView);
 							}
 							}
@@ -896,7 +894,6 @@ public class HomeController implements Initializable {
 	        		System.out.println(cmp.getNombreEntree());
 	        		if(cmp.getEntrees()[i] != null) {
 	        			crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
-	        			System.out.println("6546545423 | "+crdDebut.toString());
 	        			line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
 	        			size = line.getPoints().size();
 	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));

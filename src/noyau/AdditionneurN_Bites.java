@@ -4,7 +4,8 @@ public class AdditionneurN_Bites extends Additionneur {
 	public AdditionneurN_Bites(int nombreEntree,String nom) {
 		super(nombreEntree*2 + 1,nom);
 		nombreSortie = nombreEntree + 1;
-		// TODO Auto-generated constructor stub
+		lesCoordonnees = new LesCoordonnees(nombreEntree, nombreSortie, 0);
+		initSorties();
 	}
 
 	public void genererSorties() {	
@@ -44,6 +45,7 @@ public class AdditionneurN_Bites extends Additionneur {
 			
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(61, 32.4), 0);
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(62, 11.4), 1);
+			
 		}break;
 		case 5:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(1, 12), 0);

@@ -62,7 +62,8 @@ public class SourceConstante extends Composant{
 	@Override
 	public void resetPolyline(Polyline line, double x, double y) {
 		// TODO Auto-generated method stub
-		
+		line.getPoints().clear();
+		line.getPoints().addAll(x,y,x,y+5);
 	}
 
 	public EtatLogique getEtatLogique() {

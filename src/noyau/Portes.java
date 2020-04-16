@@ -33,22 +33,5 @@ public abstract class Portes extends Composant {
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(),img.getBoundsInLocal().getHeight()/2), 0) ;
 	}
 	
-	@Override
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
-		// TODO Auto-generated method stub
-		setCord();	
-		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
-		double posX = x + lesCoordonnees.getCordSortieInIndex(0).getX();
-		double posY = y + lesCoordonnees.getCordSortieInIndex(0).getY();
-		Polyline polyline = new Polyline(posX ,posY,posX+5,posY);
-		ArrayList<InfoPolyline> listPolylines = new ArrayList<InfoPolyline>();
-		listPolylines.add(new InfoPolyline(polyline));
-		Circuit.ajouterFil(sorties[0], listPolylines);
-		reslut.add(polyline);
-		return reslut;
-	}
-	public void resetPolyline(Polyline line , double x,double y) {
-		line.getPoints().clear();
-		line.getPoints().addAll(x,y,x+5,y);
-	}
+	
 }

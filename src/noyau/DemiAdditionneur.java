@@ -5,7 +5,8 @@ public class DemiAdditionneur extends Additionneur{
 	public DemiAdditionneur(int nombreEntree,String nom) { // constructeur
 		super(nombreEntree*2,nom);
 		nombreSortie = nombreEntree + 1 ;
-		// TODO Auto-generated constructor stub
+		lesCoordonnees = new LesCoordonnees(nombreEntree, nombreSortie, 0);
+		initSorties();
 	}
 
 	public void genererSorties() {	

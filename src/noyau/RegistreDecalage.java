@@ -171,21 +171,6 @@ public class RegistreDecalage extends Sequentiels {
 		}
 		return path+front.toString()+".png";
 	}
-	
-	@Override
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
-		// TODO Auto-generated method stub
-		setCord();
-		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
-		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX() ;
-		double posY = y + lesCoordonnees.getCordSortieInIndex(0).getY();
-		Polyline polyline = new Polyline(posX ,posY,posX+5,posY);
-		ArrayList<InfoPolyline> listPolylines = new ArrayList<InfoPolyline>();
-		listPolylines.add(new InfoPolyline(polyline));
-		Circuit.ajouterFil(sorties[0], listPolylines);
-		reslut.add(polyline);
-		return reslut;	
-	}
 
 	@Override
 	public void setCord() {
@@ -269,12 +254,6 @@ public class RegistreDecalage extends Sequentiels {
 	}
 	
 	@Override
-	public void resetPolyline(Polyline line, double x, double y) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
 	public void derelierComp() {
 		// TODO Auto-generated method stub
 		super.derelierComp();
@@ -292,6 +271,25 @@ public class RegistreDecalage extends Sequentiels {
 				load.derelierCompFromDestination(this);
 			}
 		}
+	}
+	
+	@Override
+	public void relierANouveau() {
+		// TODO Auto-generated method stub
+		super.relierANouveau();
+		if(load != null) load.addDestination(this);
+	}
+	
+	@Override
+	public boolean isDessocier() {
+		// TODO Auto-generated method stub
+		boolean dessocier =super.isDessocier();
+		if (dessocier) {
+			if (load != null) {
+				dessocier = false;
+			}
+		}
+		return dessocier;
 	}
 	
 	public void setTaille(int taille) {

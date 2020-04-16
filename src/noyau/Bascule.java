@@ -101,32 +101,6 @@ public abstract class Bascule extends Sequentiels{
 	}
 	
 	@Override
-	public void resetPolyline(Polyline line, double x, double y) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
-		// TODO Auto-generated method stub
-		setCord();	
-		Polyline polyline = null;
-		double posX ;
-		double posY ;
-		ArrayList<Polyline> result = new ArrayList<Polyline>();
-		ArrayList<InfoPolyline> listPolylines ;
-		for (int i = 0; i < 2; i++) {
-			listPolylines = new ArrayList<InfoPolyline>();
-			posX = x+lesCoordonnees.getCordSortieInIndex(i).getX() ;
-			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
-			polyline = new Polyline(posX ,posY,posX+5,posY);
-			listPolylines.add(new InfoPolyline(polyline));
-			result.add(polyline);
-			Circuit.ajouterFil(sorties[i], listPolylines); 
-		}		
-		return result;
-	}
-	
-	@Override
 	public void derelierComp() {
 		// TODO Auto-generated method stub
 		super.derelierComp();
@@ -135,6 +109,24 @@ public abstract class Bascule extends Sequentiels{
 		}
 	}
 	
+	@Override
+	public void relierANouveau() {
+		// TODO Auto-generated method stub
+		super.relierANouveau();
+		if(preset != null) preset.addDestination(this);
+	}
+	
+	@Override
+	public boolean isDessocier() {
+		// TODO Auto-generated method stub
+		boolean dessocier =super.isDessocier();
+		if (dessocier) {
+			if (preset != null) {
+				dessocier = false;
+			}
+		}
+		return dessocier;
+	}
 	public Fil getPreset() {
 		return preset;
 	}
