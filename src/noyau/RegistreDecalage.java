@@ -294,6 +294,13 @@ public class RegistreDecalage extends Sequentiels {
 		}
 	}
 	
+	@Override
+	public void relierANouveau() {
+		// TODO Auto-generated method stub
+		super.relierANouveau();
+		if(load != null) load.addDestination(this);
+	}
+	
 	public void setTaille(int taille) {
 		this.taille = taille;
 	}

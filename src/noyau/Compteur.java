@@ -233,6 +233,13 @@ public class Compteur extends Sequentiels{
 		}
 	}
 	
+	@Override
+	public void relierANouveau() {
+		// TODO Auto-generated method stub
+		super.relierANouveau();
+		if(load != null) load.addDestination(this);
+	}
+	
 	public Fil getLoad() {
 		return load;
 	}

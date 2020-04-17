@@ -36,6 +36,9 @@ public class ClickDroitController extends Controller implements Initializable{
 		BddFenetre.put("Pin","ProprietesPin.fxml");
 		BddFenetre.put("Not","ProprietesNot.fxml");
 		BddFenetre.put("Demultiplexeur","ProprietesDemux.fxml");
+		BddFenetre.put("AdditionneurN_Bites","ProprietesAdditionneur.fxml");
+		BddFenetre.put("DemiAdditionneur","ProprietesAdditionneur.fxml");
+		BddFenetre.put("SourceConstante","ProprietesSourceConstante.fxml");
 	}
 
     @FXML

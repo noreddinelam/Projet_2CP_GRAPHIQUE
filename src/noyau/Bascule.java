@@ -135,6 +135,13 @@ public abstract class Bascule extends Sequentiels{
 		}
 	}
 	
+	@Override
+	public void relierANouveau() {
+		// TODO Auto-generated method stub
+		super.relierANouveau();
+		if(preset != null) preset.addDestination(this);
+	}	
+	
 	public Fil getPreset() {
 		return preset;
 	}
