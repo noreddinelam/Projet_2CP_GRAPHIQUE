@@ -113,5 +113,12 @@ public class ClickDroitController extends Controller implements Initializable{
 		rotationD.setCursor(Cursor.HAND);
 		rotationG.setCursor(Cursor.HAND);
 		prop.setCursor(Cursor.HAND);
+		
+		
+		
+		
+		
+		
+		
 	}
 }

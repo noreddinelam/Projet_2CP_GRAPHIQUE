@@ -503,8 +503,72 @@ public class HomeController implements Initializable {
 						click.close();
 						tooltipInitialize();
 					}
+					
+					  if(event.getButton() == MouseButton.PRIMARY) {
+						  
+						  if (clickDroitFenetre != null) {
+							  Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
+							  Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
+
+							  if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) ) {
+								 // clickDroitFenetre.close();
+
+								  Stage s = (Stage) clickDroitFenetre.getScene().getWindow();
+								  s.close();
+
+								  
+							  }
+						  }
+						  }
+					
+					
+					
+					
+			
 				  }
 			  });	
+    	    
+    	 /*   
+    	    workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
+				  @Override
+				  public void handle(MouseEvent event) {
+					  
+					  if(event.getButton() == MouseButton.PRIMARY) {
+					  
+					  if (clickDroitFenetre != null) {
+						  Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
+						  Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
+
+						  if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) ) {
+							 // clickDroitFenetre.close();
+
+							  Stage s = (Stage) clickDroitFenetre.getScene().getWindow();
+							  s.close();
+
+							  
+						  }
+					  }
+					  }
+
+				  }
+			  });	
+    	    */
+    	    
+    	    
+    	    
+    	    
+    	   
+    	    
+    	    
+    	    
+    	    
+    	   	
+	
+    	    
+    	    
+    	    
+    	    
+    	    
     	    
     	/*    
     	    workSpace.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -569,19 +633,10 @@ public class HomeController implements Initializable {
 		  			  e.consume();
 		  		  }
 		  	  });
-			  
-			  workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
-				  @Override
-				  public void handle(MouseEvent event) {
-					  if (clickDroitFenetre != null) {
-						  Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
-						  Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-
-						  if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) )
-							  clickDroitFenetre.close();
-					  }
-				  }
-			  });		
+		  	  
+		  	  
+			 
+		  	 	
 	
 	}
 	
@@ -951,7 +1006,12 @@ public class HomeController implements Initializable {
 	        		double clicDroitX,clicDroitY;
 	        		clicDroitX = e.getScreenX();
 	        		clicDroitY = e.getScreenY();
-	        		clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY);
+	        		
+	        		if(clickDroitFenetre != null)
+	        			clickDroitFenetre.close();
+	        		
+	        		clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY, homeWindow);
+	        		clickDroitFenetre.show();
 	        	}
 	        	//traitement de pressed ajoutergest apres coallge
 	        	int size = 0;
@@ -2033,6 +2093,7 @@ public class HomeController implements Initializable {
 		    	a.show();
 	    	}
 	    	else
+	    		
 	    	{
 	    		Alert a = new Alert(AlertType.INFORMATION);
 		    	a.setContentText("le circuit est bien sauvgarde");

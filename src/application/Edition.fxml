@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="242.0" style="-fx-border-color: #000000; -fx-background-color: #4B535E;" stylesheets="@../styleFile/edition.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HomeController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="288.0" prefWidth="242.0" style="-fx-border-color: #000000; -fx-background-color: #4B535E;" stylesheets="@../styleFile/edition.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HomeController">
    <children>
       <Button fx:id="annuler" layoutX="3.0" layoutY="4.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text="  Annuler                              CTRL+Z          ">
          <font>
@@ -15,21 +15,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="dupliquer" alignment="CENTER" layoutX="3.0" layoutY="231.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text="Dupliquer                           CTRL+D        ">
-         <font>
-            <Font name="Calisto MT" size="12.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
       <Button fx:id="couper" layoutX="3.0" layoutY="56.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text=" Couper                                CTRL+X         ">
-         <font>
-            <Font name="Calisto MT" size="12.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-      <Button fx:id="selectionnerTout" layoutX="3.0" layoutY="269.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="236.0" text="Sélectionner Tout              CTRL+V        ">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>
@@ -62,7 +48,7 @@
       </Button>
       <Line endX="100.0" layoutX="115.0" layoutY="46.0" startX="-100.0" style="-fx-stroke: #535c68;" />
       <Line endX="100.0" layoutX="115.0" layoutY="189.0" startX="-100.0" style="-fx-stroke: #535c68;" />
-      <Button fx:id="supprimerTout" alignment="BASELINE_LEFT" layoutX="3.0" layoutY="311.0" mnemonicParsing="false" onAction="#supprimerTout" prefHeight="42.0" prefWidth="236.0" text="  Supprimer Tout">
+      <Button fx:id="supprimerTout" alignment="BASELINE_LEFT" layoutX="3.0" layoutY="231.0" mnemonicParsing="false" onAction="#supprimerTout" prefHeight="42.0" prefWidth="236.0" text="  Supprimer Tout">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>
