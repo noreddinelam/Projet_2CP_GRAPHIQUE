@@ -16,5 +16,4 @@ public abstract class Additionneur extends Combinatoires{
 							   // valider si les entrees sont pretes 
 		return ( validerEntrees().getNum() == 1 ) ? true : false; 
 	}
-	
 }

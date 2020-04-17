@@ -1,18 +1,22 @@
 package application;
 
+
 import controllers.ClickDroitController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import noyau.Composant;
 
 public class ClickDroit extends Stage{
 
-	public ClickDroit(Composant cmp,Double x,Double y) {
+	public ClickDroit(Composant cmp,Double x,Double y,AnchorPane workSpace) {
 		try
 		{
+			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("ClickDroit.fxml"));
 			Parent root = loader.load();
@@ -20,6 +24,7 @@ public class ClickDroit extends Stage{
 			ClickDroitController c=loader.getController();
 			System.out.println(cmp);
 			c.setCmp(cmp);
+            c.setWorkSpace(workSpace);
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);

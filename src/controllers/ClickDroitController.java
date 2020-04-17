@@ -12,7 +12,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import noyau.Circuit;
 
@@ -55,6 +58,7 @@ public class ClickDroitController extends Controller implements Initializable{
 
 	@FXML
 	private Button rotationG;
+	 
 
 	@FXML
 	private Button prop;
@@ -74,6 +78,7 @@ public class ClickDroitController extends Controller implements Initializable{
 	@FXML
 	void prop(ActionEvent event) {
 		Stage s = (Stage)prop.getScene().getWindow(); 
+		HomeController.sauveGarderModification();
     	s.close();
 		String nom = cmp.getClass().getSimpleName(), key;
 		
@@ -83,7 +88,6 @@ public class ClickDroitController extends Controller implements Initializable{
 			key = "Bascule";
 		}else {
 			key = nom;
-			System.out.println(key);
 		}
 			Proprietes f = new Proprietes(BddFenetre.get(key), cmp);
 	}
@@ -102,7 +106,15 @@ public class ClickDroitController extends Controller implements Initializable{
 
 	@FXML
 	void supprimer(ActionEvent event) {
-		Circuit.initialiser();
+		
+		ImageView imageDeComposant=Circuit.getImageFromComp(cmp);
+		HomeController.elementAsuprimer=imageDeComposant;
+		HomeController.sauveGarderSupression();		
+		workSpace.getChildren().remove(imageDeComposant);
+		ArrayList<Polyline> lineListe=Circuit.supprimerComp(cmp);	
+		 for(Polyline line : lineListe)
+			  workSpace.getChildren().remove(line);
+		 
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
 	}
@@ -117,4 +129,9 @@ public class ClickDroitController extends Controller implements Initializable{
 		rotationG.setCursor(Cursor.HAND);
 		prop.setCursor(Cursor.HAND);
 	}
+
+	
+
+
+	
 }
