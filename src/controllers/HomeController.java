@@ -328,6 +328,10 @@ public class HomeController implements Initializable {
     
     private static boolean copierActive;
     
+    
+    ClickBarDroite editionFenetre;
+    
+    
 	////////////////////Appliquer l'animation de rotation   
     @FXML
     void mouseEnterLogo(MouseEvent event) {
@@ -474,7 +478,7 @@ public class HomeController implements Initializable {
 
     		
     	    ClickBarDroite fichierFenetre = new ClickBarDroite(1140, 100, "Fichier.fxml", homeWindow, workSpace);
-    	    ClickBarDroite editionFenetre = new ClickBarDroite(1140, 180, "Edition.fxml", homeWindow, workSpace);
+    	     editionFenetre = new ClickBarDroite(1140, 180, "Edition.fxml", homeWindow, workSpace);
     	    ClickBarDroite affichageFenetre = new ClickBarDroite(1140, 300, "Affichage.fxml", homeWindow, workSpace);
     	    ClickBarDroite aideFenetre = new ClickBarDroite(1140, 350, "Aide.fxml", homeWindow, workSpace);
     	    
@@ -517,7 +521,6 @@ public class HomeController implements Initializable {
     	    	
     	    });*/
     	    
-    	    fonctionCoparaison();
     	    
 
 		
@@ -1762,46 +1765,15 @@ public class HomeController implements Initializable {
 
 	    @FXML
 	    void supprimerTout(ActionEvent event) {
-	    	/*Parent root = null;
-	    	HomeController m =null;
 	    	
-	    	
-			try {
-				//root = FXMLLoader.load(getClass().getResource("/application/Home.fxml"));
-		        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Home.fxml"));
-		         root =(Parent)fxmlLoader.load();
-		         m =(HomeController)fxmlLoader.getController();
-		        
-				
-				
-				
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setContentText("Voullez vous vraimment supprmer tout !");
+			Optional<ButtonType> result = alert.showAndWait();	    		
+			if(result.get() == ButtonType.OK){
+				ClickBarDroite.getWorkStageFromRightBar().getChildren().clear();
+				Circuit.getCompUtilises().clear();
+				Circuit.getFilUtilises().clear();
 			}
-
-			
-			
-			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
-			Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-			Stage w = (Stage) window.getOwner();
-			window.close();
-			m.setHomeControllerStage(w);
-	        m.inisialiser();
-
-			w.setScene(scene);
-			w.show();*/
-	    	
-	    	
-	    	
-	    		ClickBarDroite.getWorkStageFromRightBar().getChildren().clear();
-	    		
-	    	
-	    	
-	    	
 	    	
 	    }
 	    
@@ -1812,104 +1784,26 @@ public class HomeController implements Initializable {
 	    @FXML
 	    public void copier(ActionEvent event) {
 					    	System.out.println("l'element est bien selecltionner : "+elementSeclecionner.getId());
-							//setWorkSpace(ClickBarDroite.getWorkStageFromRightBar());
-
 					    	setCopierActive(true);
 
-					    	
-					    	
-	    			
-	
 	    }
 	    
 	    
-	    
-	    public void fonctionCoparaison() {
-	    	if(ClickBarDroite.getWorkStageFromRightBar().equals(workSpace))
-	    		System.out.println("they are equals");
-	    	else
-	    		System.out.println("the are not equals");
-	    }
+	  
 	    
 	    
 	    
 	    
-	    
-	    
+	    static boolean cc;
 	    
 	    public void coller(ActionEvent event) {
-				if(getCopierActive()) {
-					
-					fonctionAutiliserCopier();
-					
-			}
-	    		
+	    		cc = true;
+	   	    	Stage stage = (Stage) coller.getScene().getWindow();
+	   	    	stage.close();
+		
 	    }
 	    
-	    
-	    public void fonctionAutiliserCopier() {
-	    	workSpace = ClickBarDroite.getWorkStageFromRightBar();
-	    	
-	    	
-	    	 workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
-				  @Override
-				  public void handle(MouseEvent event) {
-					 x = (int) event.getSceneX()-200;
-					 y= (int) event.getSceneY();
-					
-				  }
-			  });
-	    	
-	 
-	    	
-	    	ImageView dragImageView = new ImageView();
-			dragImageView.setLayoutX(x);
-			dragImageView.setLayoutY(y);
-			dragImageView.setId(elementSeclecionner.getId());
-			instanceComposant(dragImageView);		
-			Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
-			Composant cmp2 = Circuit.getCompFromImage(dragImageView);
-
-			cmp2.setDirection(cmp.getDirection());
-			cmp2.setIcon(cmp.getIcon());
-			cmp2.setLesCoordonnees(cmp.getLesCoordonnees());
-			cmp2.setNom(cmp.getNom());
-			cmp2.setNombreEntree(cmp.getNombreEntree());
-			cmp2.setNombreSortie(cmp.getNombreSortie());
-			cmp2.setCord();
-			cmp2.generatePolyline(x, y);
-			
-			
-			
-			Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
-			dragImageView.setImage(img);
-			dragImageView.setFitHeight(img.getHeight());
-			dragImageView.setFitWidth(img.getWidth());		
-			workSpace.getChildren().add(dragImageView);
-			
-			
-			
-
-			ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-			for(Polyline line : polyline ) {
-				line.setSmooth(true);
-				line.setStrokeWidth(3);
-				line.setStrokeType(StrokeType.CENTERED);
-				line.setCursor(Cursor.HAND);
-				workSpace.getChildren().add(line);
-				
-				setWorkSpace(workSpace);
-				
-				ajouterGeste(line);
-			}
-
-			ajouterLeGestApresCollage(dragImageView);	
-			
-	    	
-	    	
-	    }
-	    	
-	
+	   
 		
 	    
 	    
@@ -1918,6 +1812,51 @@ public class HomeController implements Initializable {
 	    	final KeyCombination kb1 = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
 	    	final KeyCombination kb2 = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_ANY);
 	    	
+	    	
+	    	workSpace.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
+	    	    if(cc) {	
+	    	    	cc = false;
+	    	    	x = (int) event.getSceneX()-200;
+					 y= (int) event.getSceneY();
+	    	    	ImageView dragImageView = new ImageView();
+					dragImageView.setLayoutX(x);
+					dragImageView.setLayoutY(y);
+					dragImageView.setId(elementSeclecionner.getId());
+					instanceComposant(dragImageView);		
+					Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
+					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
+	
+					cmp2.setDirection(cmp.getDirection());
+					cmp2.setIcon(cmp.getIcon());
+					cmp2.setLesCoordonnees(cmp.getLesCoordonnees());
+					cmp2.setNom(cmp.getNom());
+					cmp2.setNombreEntree(cmp.getNombreEntree());
+					cmp2.setNombreSortie(cmp.getNombreSortie());
+					cmp2.setCord();
+					cmp2.generatePolyline(x, y);	
+					Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
+					dragImageView.setImage(img);
+					dragImageView.setFitHeight(img.getHeight());
+					dragImageView.setFitWidth(img.getWidth());		
+					workSpace.getChildren().add(dragImageView);
+
+					ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+					for(Polyline line : polyline ) {
+						line.setSmooth(true);
+						line.setStrokeWidth(3);
+						line.setStrokeType(StrokeType.CENTERED);
+						line.setCursor(Cursor.HAND);
+						workSpace.getChildren().add(line);
+						ajouterGeste(line);
+					}
+
+					ajouterLeGestApresCollage(dragImageView);	
+						
+	    	    	
+	    	    }
+	    		
+	    	
+	    	});
 	    	
 	    	homeScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 				 public void handle(final KeyEvent keyEvent) {
@@ -1928,17 +1867,23 @@ public class HomeController implements Initializable {
 				    keyEvent.consume();
 				   }
 				   
+				    keyEvent.consume();
+
 				   
 				   
 				   workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
 						  @Override
 						  public void handle(MouseEvent event) {
+							  
 							 x = (int) event.getSceneX()-200;
 							 y= (int) event.getSceneY();
 							
 						  }
 					  });				   
 				   if (kb2.match(keyEvent) && getCopierActive()) {
+
+					   
+					   
 					    System.out.println("control + v are pressed !");	    
 						ImageView dragImageView = new ImageView();
 						dragImageView.setLayoutX(x);
@@ -1975,7 +1920,7 @@ public class HomeController implements Initializable {
 						ajouterLeGestApresCollage(dragImageView);	
 						
 						//ajouterLeGestApresCollage(dragImageView);
-					    keyEvent.consume();
+					    //keyEvent.consume();
 					   }
 					
 				   
@@ -1984,8 +1929,10 @@ public class HomeController implements Initializable {
 				 }
 				 
 				});
-
-
+	    	
+	    	
+	    	
+	    	 
 	    	
 	    }
 	    
@@ -2078,9 +2025,22 @@ public class HomeController implements Initializable {
 	    
 	    @FXML
 	    void save(ActionEvent event) {
-	    	Alert a = new Alert(AlertType.INFORMATION);
-	    	a.setContentText("le circuit est bien sauvgarde");
-	    	a.show();
+	    	
+	    	if(Circuit.getCompUtilises().isEmpty()) {
+	    		Alert a = new Alert(AlertType.INFORMATION);
+		    	a.setContentText("le circuit est vide y a rien a sauvgarder");
+
+		    	a.show();
+	    	}
+	    	else
+	    	{
+	    		Alert a = new Alert(AlertType.INFORMATION);
+		    	a.setContentText("le circuit est bien sauvgarde");
+
+		    	a.show();
+	    	}
+	    	
+	    	
 
 	    }
 	    
