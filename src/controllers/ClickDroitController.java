@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import noyau.Circuit;
 
@@ -55,7 +56,6 @@ public class ClickDroitController extends Controller implements Initializable{
 	@FXML
 	private Button rotationG;
 	 
-	public AnchorPane workSpace;
 
 	@FXML
 	private Button prop;
@@ -103,11 +103,15 @@ public class ClickDroitController extends Controller implements Initializable{
 
 	@FXML
 	void supprimer(ActionEvent event) {
+		
 		ImageView imageDeComposant=Circuit.getImageFromComp(cmp);
-		Circuit.supprimerComp(imageDeComposant);
-		workSpace.getChildren().remove(imageDeComposant);
 		HomeController.elementAsuprimer=imageDeComposant;
-		HomeController.sauveGarderSupression();
+		HomeController.sauveGarderSupression();		
+		workSpace.getChildren().remove(imageDeComposant);
+		ArrayList<Polyline> lineListe=Circuit.supprimerComp(cmp);	
+		 for(Polyline line : lineListe)
+			  workSpace.getChildren().remove(line);
+		 
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
 	}
@@ -123,13 +127,7 @@ public class ClickDroitController extends Controller implements Initializable{
 		prop.setCursor(Cursor.HAND);
 	}
 
-	public AnchorPane getWorkSpace() {
-		return workSpace;
-	}
-
-	public void setWorkSpace(AnchorPane workSpace) {
-		this.workSpace = workSpace;
-	}
+	
 
 
 	

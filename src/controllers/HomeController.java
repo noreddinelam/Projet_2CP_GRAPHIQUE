@@ -472,7 +472,7 @@ public class HomeController implements Initializable {
     			});
 	}
 	@SuppressWarnings("unchecked")
-	private void ajouterGestWorkSpace() {////Methodes pour Ajouter l'interaction avec le drag and drop et les guides
+	private void ajouterGestWorkSpace() {//Methodes pour Ajouter l'interaction avec le drag and drop et les guides
 		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
 	   	        public void handle(MouseDragEvent e) {
                        if (! workSpace.getChildren().contains(guideX)) workSpace.getChildren().add(guideX);
@@ -744,7 +744,8 @@ public class HomeController implements Initializable {
 								ajouterLeGestApresCollage(dragImageView);
 								Donnes sauveGarde=new Donnes();
 								sauveGarde.setTypeDaction(Actions.Creation);
-								sauveGarde.setComposant(dragImageView);
+								sauveGarde.setComposantCommeImage(dragImageView);
+								sauveGarde.setComposant(Circuit.getCompFromImage(dragImageView));
 								sauveGarde.setPosX(dragImageView.getLayoutX());
 								sauveGarde.setPosY(dragImageView.getLayoutY());
 								undoDeque.addFirst(sauveGarde);
@@ -1032,7 +1033,7 @@ public class HomeController implements Initializable {
 							{
 							Donnes sauveGarde=new Donnes();
 							sauveGarde.setTypeDaction(Actions.Mouvement);
-							sauveGarde.setComposant(eleementAdrager);
+							sauveGarde.setComposantCommeImage(eleementAdrager);
 							sauveGarde.setPosX(posX);
 							sauveGarde.setPosY(posY);
 							undoDeque.addFirst(sauveGarde);
@@ -1752,6 +1753,7 @@ public class HomeController implements Initializable {
 	
 		 if(! undoDeque.isEmpty())
 		 {
+			
 			 
 			 Donnes sauveGarde;
 			 sauveGarde= undoDeque.removeFirst();
@@ -1760,17 +1762,24 @@ public class HomeController implements Initializable {
 	
 			 case Mouvement :
 			 {
-				 sauveGarde.getComposant().setLayoutX(sauveGarde.getPosX());
-				 sauveGarde.getComposant().setLayoutY(sauveGarde.getPosY());
+				 sauveGarde.getComposantCommeImage().setLayoutX(sauveGarde.getPosX());
+				 sauveGarde.getComposantCommeImage().setLayoutY(sauveGarde.getPosY());
 			 }break;
 			 case Creation :
 			 {
-				 workSpace.getChildren().remove(sauveGarde.getComposant());
-				 Circuit.supprimerComp(sauveGarde.getComposant());
+				
+				 System.out.println(sauveGarde.getComposant().toString());
+				 workSpace.getChildren().remove(sauveGarde.getComposantCommeImage());
+				 
+				ArrayList<Polyline> lineListe= Circuit.supprimerComp(sauveGarde.getComposant());
+				 for(Polyline line : lineListe)
+					 workSpace.getChildren().remove(line);
+			
+				
 			 }break;
 			 case Modification :
 			 {
-				 ImageView imageDeComposant= sauveGarde.getComposant();
+				 ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
 				 Composant composant= Circuit.getCompFromImage( imageDeComposant);
 				 imageDeComposant.setImage(sauveGarde.getImage());
 	    		 composant.setNombreEntree(sauveGarde.getNombreDesEntrees());
@@ -1780,11 +1789,21 @@ public class HomeController implements Initializable {
 			 }break;
 			 case Supression:
 			 {
-				 ImageView imageDeComposant= sauveGarde.getComposant();
+				 ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
 				 workSpace.getChildren().add(imageDeComposant);
 				 imageDeComposant.setLayoutX(sauveGarde.getPosX());
 				 imageDeComposant.setLayoutY(sauveGarde.getPosY());
-				 instanceComposant(imageDeComposant);
+				 Circuit.ajouterComposant(sauveGarde.getComposant(), imageDeComposant);
+				 ArrayList<Polyline> polyline = Circuit.getCompFromImage(imageDeComposant).generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY());
+					for(Polyline line : polyline ) {
+						
+						line.setSmooth(true);
+						line.setStrokeWidth(3);
+						line.setStrokeType(StrokeType.CENTERED);
+						line.setCursor(Cursor.HAND);
+						workSpace.getChildren().add(line);
+						ajouterGeste(line);
+					}
 			 }break;
 			 
 			 
@@ -1799,7 +1818,7 @@ public class HomeController implements Initializable {
 	 Composant composant=Circuit.getCompFromImage(elementAmodifier);
 		Donnes sauveGarde= new Donnes();
 		sauveGarde.setTypeDaction(Actions.Modification);
-		sauveGarde.setComposant(elementAmodifier);
+		sauveGarde.setComposantCommeImage(elementAmodifier);
 		sauveGarde.setImage(elementAmodifier.getImage());
 		sauveGarde.setNombreDesEntrees(composant.getNombreEntree());
      if(elementAmodifier.getId().equals("pin")) sauveGarde.setTypePin(((Pin)composant).isInput());
@@ -1823,7 +1842,8 @@ public class HomeController implements Initializable {
 
 			Donnes sauveGarde= new Donnes();
 			sauveGarde.setTypeDaction(Actions.Supression);
-			sauveGarde.setComposant(elementAsuprimer);
+			sauveGarde.setComposantCommeImage(elementAsuprimer);
+			sauveGarde.setComposant(Circuit.getCompFromImage(elementAsuprimer));
 			sauveGarde.setPosX(elementAsuprimer.getLayoutX());
 			sauveGarde.setPosY(elementAsuprimer.getLayoutY());
 	        undoDeque.addFirst(sauveGarde);

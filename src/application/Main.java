@@ -1,19 +1,12 @@
 package application;
 
-import com.sun.prism.paint.Color;
-
-import javafx.animation.FadeTransition;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
-import javafx.util.Duration;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import noyau.*;
 
 public class Main extends Application {
@@ -33,9 +26,8 @@ public class Main extends Application {
 						Scene scene = new Scene(root);
 						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						primaryStage.setScene(scene);
-						primaryStage.setTitle("Simul_INI");
-						primaryStage.getIcons().add(new Image("/homePage_icones/LOGO.png"));
-						//primaryStage.initStyle(StageStyle.UNDECORATED);
+					//	primaryStage.setFullScreen(true);
+					//	primaryStage.initStyle(StageStyle.UNDECORATED);
 						primaryStage.setResizable(false);
 						primaryStage.show();
 		

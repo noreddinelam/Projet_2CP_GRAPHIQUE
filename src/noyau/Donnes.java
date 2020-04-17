@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 public class Donnes {
 	Actions typeDaction;
 	ImageView composantCommeImage;
+	Composant composant;
 	Image image=null;
 	int nombreDesEntrees=0;
 	double posX=0;
@@ -20,12 +21,7 @@ public class Donnes {
 	public void setTypeDaction(Actions typeDaction) {
 		this.typeDaction = typeDaction;
 	}
-	public ImageView getComposant() {
-		return composantCommeImage;
-	}
-	public void setComposant(ImageView composant) {
-		this.composantCommeImage = composant;
-	}
+	
 	public Image getImage() {
 		return image;
 	}
@@ -67,6 +63,20 @@ public class Donnes {
 	}
 	public void setFront(Front front) {
 		this.front = front;
+	}
+	public void setComposant(Composant composant) {
+		
+		this.composant = composant;
+	}
+	
+	public Composant getComposant() {
+		return composant;
+	}
+	public ImageView getComposantCommeImage() {
+		return composantCommeImage;
+	}
+	public void setComposantCommeImage(ImageView composantCommeImage) {
+		this.composantCommeImage = composantCommeImage;
 	}
 	
 	

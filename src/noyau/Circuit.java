@@ -241,7 +241,7 @@ public class Circuit implements Serializable{
 	public static ArrayList<Polyline> getListePolylineFromFil(Fil fil) { // recuperer les polylines d'un fil donnee
 		ArrayList<Polyline> result = new ArrayList<Polyline>();
 		for (InfoPolyline polyline : filUtilises.get(fil)) {
-			result.add(polyline.getLineParent());
+			result.add(polyline.getLinePrincipale());
 		}
 		return result;
 	}
