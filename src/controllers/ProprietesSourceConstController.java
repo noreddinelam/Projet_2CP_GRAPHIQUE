@@ -102,9 +102,10 @@ public class ProprietesSourceConstController extends ProprietesController{
     void modifier(ActionEvent event) {
     	
     	cmp.setNom(label.getText());
-    	cmp.setCord();
-    	
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	if(cmp.isDessocier()){
+    		cmp.setCord();       	
+        	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

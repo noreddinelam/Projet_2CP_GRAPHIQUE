@@ -180,7 +180,7 @@ public abstract class Composant implements Serializable{
 		ArrayList<InfoPolyline> listPolylines ;
 		for (int i = 0; i < nombreSortie; i++) {
 			listPolylines = new ArrayList<InfoPolyline>();
-			posX = x+lesCoordonnees.getCordSortieInIndex(i).getX() ;
+			posX = x+ lesCoordonnees.getCordSortieInIndex(i).getX() ;
 			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
 			polyline = new Polyline(posX ,posY,posX+5,posY);
 			listPolylines.add(new InfoPolyline(polyline));
@@ -286,6 +286,12 @@ public abstract class Composant implements Serializable{
 	}
 	public void setSorties(Fil[] sorties) {
 		this.sorties = sorties;
+	}
+	public void setNombreSortieAndUpdateFil(int nombreSortie) {
+		this.nombreSortie = nombreSortie;
+		for (int i = 0; i < nombreSortie; i++) {
+			sorties[i] = new Fil(this);
+		}
 	}
 	
 }

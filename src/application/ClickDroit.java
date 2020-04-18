@@ -15,14 +15,11 @@ public class ClickDroit extends Stage{
 
 	public ClickDroit(Composant cmp,Double x,Double y,AnchorPane workSpace) {
 		try
-		{
-			
+		{			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("ClickDroit.fxml"));
 			Parent root = loader.load();
-			System.out.println(root);
 			ClickDroitController c=loader.getController();
-			System.out.println(cmp);
 			c.setCmp(cmp);
             c.setWorkSpace(workSpace);
 			Scene scene = new Scene(root);

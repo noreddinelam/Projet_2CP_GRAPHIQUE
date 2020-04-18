@@ -257,7 +257,7 @@ public class RegistreDecalage extends Sequentiels {
 	public void derelierComp() {
 		// TODO Auto-generated method stub
 		super.derelierComp();
-		if (load != null) {
+		if (load.getSource() != null) {
 			load.derelierCompFromDestination(this);
 		}
 	}
@@ -266,10 +266,8 @@ public class RegistreDecalage extends Sequentiels {
 	public void derelierEntreeFromComp(Fil fil) {
 		// TODO Auto-generated method stub
 		super.derelierEntreeFromComp(fil);
-		if (load != null) {
-			if (load.equals(fil)) {
-				load.derelierCompFromDestination(this);
-			}
+		if (load.equals(fil)) {
+			load.derelierCompFromDestination(this);
 		}
 	}
 	
@@ -277,7 +275,7 @@ public class RegistreDecalage extends Sequentiels {
 	public void relierANouveau() {
 		// TODO Auto-generated method stub
 		super.relierANouveau();
-		if(load != null) load.addDestination(this);
+		load.addDestination(this);
 	}
 	
 	@Override
@@ -285,7 +283,7 @@ public class RegistreDecalage extends Sequentiels {
 		// TODO Auto-generated method stub
 		boolean dessocier =super.isDessocier();
 		if (dessocier) {
-			if (load != null) {
+			if (load.getSource() != null) {
 				dessocier = false;
 			}
 		}

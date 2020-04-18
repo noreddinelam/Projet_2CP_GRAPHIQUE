@@ -89,7 +89,7 @@ public class ClickDroitController extends Controller implements Initializable{
 		}else {
 			key = nom;
 		}
-			Proprietes f = new Proprietes(BddFenetre.get(key), cmp);
+		Proprietes f = new Proprietes(BddFenetre.get(key), cmp,workSpace);
 	}
 
 	@FXML

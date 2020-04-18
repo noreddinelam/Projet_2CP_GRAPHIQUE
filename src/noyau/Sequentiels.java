@@ -64,7 +64,7 @@ public abstract class Sequentiels extends Composant {
 		// TODO Auto-generated method stub
 		boolean dessocier = super.isDessocier();
 		if (dessocier) {
-			if (clear != null || entreeHorloge != null) {
+			if (clear.getSource() != null || entreeHorloge != null) {
 				dessocier = false;
 			}
 		}

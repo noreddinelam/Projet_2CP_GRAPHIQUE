@@ -90,8 +90,8 @@ public class Decodeur extends Combinatoires{
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 154.8), 11);
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 167.4), 12);
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 180.3), 13);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 182), 14);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 195.6), 15);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 193.8), 14);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 206.2), 15);
 			
 		}break;
 		}

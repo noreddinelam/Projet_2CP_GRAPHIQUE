@@ -34,7 +34,7 @@ public class ProprietesAdditionneurController extends ProprietesController{
 
 	public void initialiser(Composant cmp) {
 		this.cmp = cmp;
-		
+		sauv = cmp.getNombreEntree();
 		i=cmp.getNombreEntree();
 		direct = 0;
 		composant.setText(cmp.getClass().getSimpleName().toString());
@@ -112,26 +112,32 @@ public class ProprietesAdditionneurController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
-    	if(cmp.getClass().getSimpleName().equals("DemiAdditionneur"))
-    	{
-    		cmp.setNombreEntree(i*2);
-    		cmp.getLesCoordonnees().setNbCordEntree(i*2);
-    	}
-    	else {
-    		cmp.setNombreEntree(i*2 + 1);
-    		cmp.getLesCoordonnees().setNbCordEntree(i*2+1);
-    	}
-    	cmp.setNombreSortie(i+1);
     	cmp.setNom(label.getText());
-    	cmp.setCord();
-    	
-    	cmp.getLesCoordonnees().setNbCordSorties(i+1);
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
-    	Image image = new Image(cmp.generatePath());
-    	ImageView imageView = Circuit.getImageFromComp(cmp);
-    	imageView.setImage(image);
-    	imageView.setFitHeight(image.getHeight());
-    	imageView.setFitWidth(image.getWidth());
+    	if((cmp.getNombreEntree() != i*2) && (cmp.getNombreEntree() != i*2+1))
+    	{
+    		if (cmp.isDessocier()) {
+    			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
+    			if(cmp.getClass().getSimpleName().equals("DemiAdditionneur"))
+    			{
+    				cmp.setNombreEntree(i*2);
+    				cmp.getLesCoordonnees().setNbCordEntree(i*2);
+    			}
+    			else {
+    				cmp.setNombreEntree(i*2 + 1);
+    				cmp.getLesCoordonnees().setNbCordEntree(i*2+1);
+    			}   
+    			cmp.getLesCoordonnees().setNbCordSorties(i+1);
+    			Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    			Image image = new Image(cmp.generatePath());
+    			ImageView imageView = Circuit.getImageFromComp(cmp);
+    			imageView.setImage(image);
+    			imageView.setFitHeight(image.getHeight());
+    			imageView.setFitWidth(image.getWidth());
+    			cmp.setNombreSortieAndUpdateFil(i+1);
+    			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
+    			
+    		}
+    	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

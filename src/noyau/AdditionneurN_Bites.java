@@ -83,11 +83,11 @@ public class AdditionneurN_Bites extends Additionneur {
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(1, 128.5), 7);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 69), 8);
 			
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 49.2), 0);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 62.7), 1);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 75.7), 2);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 90), 3);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(79, 14.9), 4);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 49.2), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 62.7), 1);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 75.7), 2);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 90), 3);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(85, 14.9), 4);
 		}break;
 		case 11:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(1, 9.5), 0);

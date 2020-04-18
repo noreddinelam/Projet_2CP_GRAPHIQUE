@@ -246,6 +246,15 @@ public class Circuit implements Serializable{
 		return result;
 	}
 	
+	public static ArrayList<Polyline> supprimerAllPolylinesForCompounent(Composant composant) {
+		ArrayList<Polyline> result = new ArrayList<Polyline>();
+		for (int i = 0; i < composant.getNombreSortie(); i++) {
+			result.addAll(getListePolylineFromFil(composant.getFilSortieByNum(i)));
+			filUtilises.remove(composant.getFilSortieByNum(i));
+		}
+		return result;
+	}
+	
 	public static HashMap<Fil, ArrayList<InfoPolyline>> getFilUtilises() {
 		return filUtilises;
 	}
