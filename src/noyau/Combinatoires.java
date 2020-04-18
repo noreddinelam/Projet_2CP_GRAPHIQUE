@@ -1,7 +1,7 @@
 package noyau;
 
 public abstract class Combinatoires extends Composant {
-	protected Fil [] commande = {null};
+	protected Fil commande[] = new Fil[5];
 	
 	public Combinatoires(int nombreEntree,String nom) { // constructeur
 		super(nombreEntree,nom);

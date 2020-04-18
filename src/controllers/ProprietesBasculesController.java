@@ -68,12 +68,14 @@ public class ProprietesBasculesController extends ProprietesController {
     @FXML
     void modifier(ActionEvent event) {
     	cmp.setNom(label.getText());
-    	if(i == 0)
-    		((Bascule)cmp).setFront(Front.Front_Montant);
-    	else
-    		((Bascule)cmp).setFront(Front.Front_Descendant);
-    	
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	if (cmp.isDessocier()) {
+    		if(i == 0)
+        		((Bascule)cmp).setFront(Front.Front_Montant);
+        	else
+        		((Bascule)cmp).setFront(Front.Front_Descendant);
+        	
+        	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+		}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

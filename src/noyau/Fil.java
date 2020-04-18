@@ -91,6 +91,15 @@ public class Fil implements Serializable{
 			polyline.getLinePrincipale().setStroke(Color.BLACK);
 			}
 		}
+	///// les methodes de suppression
+	public void derelierCompFromDestination(Composant composant) {
+		destination.remove(composant);
+	}
+	
+	public void derelierCompFromSource() {
+		source = null;
+	}
+	//////////////////////
 
 	public Composant getSource() {
 		return source;

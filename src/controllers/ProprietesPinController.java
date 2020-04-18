@@ -84,27 +84,32 @@ public class ProprietesPinController extends ProprietesController{
     void modifier(ActionEvent event) {
     	
     	cmp.setNom(label.getText());
-    	String path;
-    	int vlr = ((Pin)cmp).getEtat().getNum();
-    	if(putInt == 0){
-    		((Pin)cmp).setInput(true);
-    		cmp.setNombreEntree(0);
-    		cmp.setNombreSortie(1);
-    		cmp.getLesCoordonnees().setNbCordEntree(0);
-    		cmp.getLesCoordonnees().setNbCordSorties(1);
-    		path = "/pin/"+Integer.toString(vlr)+bddPut[putInt]+".png";
-    	}else {
-    		((Pin)cmp).setInput(false);
-    		Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale();
-    		line.getPoints().clear(); 
-    		cmp.setNombreEntree(1);
-    		cmp.setNombreSortie(0);
-    		cmp.getLesCoordonnees().setNbCordEntree(1);
-    		cmp.getLesCoordonnees().setNbCordSorties(0);
-    		path = "/pin/"+Integer.toString(vlr)+bddPut[putInt]+".png";
-    	}
-    	cmp.setCord();
-    	Circuit.getImageFromComp(cmp).setImage(new Image(path));
+    	if (cmp.isDessocier()) {
+        	Pin pin =((Pin)cmp);
+        	ImageView imageView = Circuit.getImageFromComp(cmp);
+        	if(putInt == 0){
+        		pin.setInput(true);
+    			Circuit.getSortiesCircuit().remove(pin);
+    			Circuit.getEntreesCircuit().add(pin);
+    			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+        		cmp.setNombreEntree(0);
+        		cmp.setNombreSortie(1);
+        		cmp.getLesCoordonnees().setNbCordEntree(0);
+        		cmp.getLesCoordonnees().setNbCordSorties(1);
+        	}else {
+        		pin.setInput(false);
+    			Circuit.getEntreesCircuit().remove(pin);
+    			Circuit.getSortiesCircuit().add(pin);
+        		Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale();
+        		workSpace.getChildren().remove(line);
+        		cmp.setNombreEntree(1);
+        		cmp.setNombreSortie(0);
+        		cmp.getLesCoordonnees().setNbCordEntree(1);
+        		cmp.getLesCoordonnees().setNbCordSorties(0);
+        	}
+        	cmp.setCord();
+        	imageView.setImage(new Image(cmp.generatePath()));
+		}  	
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

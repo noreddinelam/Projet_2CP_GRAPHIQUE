@@ -98,18 +98,23 @@ public class ProprietesEncodeurController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
-    	cmp.setNombreSortie(i);
-    	int nbEntree = (int)Math.pow(2, i);
-       	cmp.setNombreEntree(nbEntree);
     	cmp.setNom(label.getText());
-    	cmp.setCord();
-    	cmp.getLesCoordonnees().setNbCordEntree(nbEntree);
-    	cmp.getLesCoordonnees().setNbCordSorties(i);
-    	ImageView imageView = Circuit.getImageFromComp(cmp);
-    	Image img = new Image(cmp.generatePath());
-    	imageView.setImage(img);
-    	imageView.setFitHeight(img.getHeight());
-    	imageView.setFitWidth(img.getWidth());
+    	if (i != cmp.getNombreSortie()) {
+    		if (cmp.isDessocier()) {
+    			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
+    			cmp.setNombreSortieAndUpdateFil(i);
+    			int nbEntree = (int)Math.pow(2, i);
+    			cmp.setNombreEntree(nbEntree);    	
+    			cmp.getLesCoordonnees().setNbCordEntree(nbEntree);
+    			cmp.getLesCoordonnees().setNbCordSorties(i);
+    			ImageView imageView = Circuit.getImageFromComp(cmp);
+    			Image img = new Image(cmp.generatePath());
+    			imageView.setImage(img);
+    			imageView.setFitHeight(img.getHeight());
+    			imageView.setFitWidth(img.getWidth());
+    			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
+    		}
+    	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }
@@ -139,7 +144,7 @@ public class ProprietesEncodeurController extends ProprietesController{
     	nbEntres.setText(bddNbEntrees[i-1]);
     	moinsNbEntrees.setVisible(true);
 		imgMoinsNbEntrees.setVisible(true);
-		if(i==5){
+		if(i==4){
 			plusNbEntrees.setVisible(false);
 			imgPlusNbEntrees.setVisible(false);
 		}

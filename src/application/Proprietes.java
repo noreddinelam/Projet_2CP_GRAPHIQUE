@@ -4,12 +4,13 @@ import controllers.ProprietesController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import noyau.Composant;
 
 public class Proprietes extends Stage{
 
-	public Proprietes(String Fenete,Composant cmp) {
+	public Proprietes(String Fenete,Composant cmp,AnchorPane workSpace) {
 		try
 		{
 			FXMLLoader loader = new FXMLLoader();
@@ -17,6 +18,7 @@ public class Proprietes extends Stage{
 			Parent root = loader.load();
 			System.out.println(root);
 			ProprietesController c=loader.getController();
+			c.setWorkSpace(workSpace);
 			c.initialiser(cmp);
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());

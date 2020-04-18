@@ -25,6 +25,8 @@ public abstract class Composant implements Serializable{
 	
 	
 	
+	
+	
 	public Composant(int nombreEntree,String nom) {
 		this.nombreEntree = nombreEntree;
 		this.nom =nom;
@@ -133,7 +135,7 @@ public abstract class Composant implements Serializable{
 	public EtatLogique validerEntrees() { //role :  valider si les entrees du composant sont pretes 
 		int i =0;
 		while(i<nombreEntree) {
-			if(entrees[i]== null) // verifier si toutes les entrees du composants sont reliées a un autre composant 
+			if(entrees[i] == null) // verifier si toutes les entrees du composants sont reliées a un autre composant 
 				return null;
 			if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum()) //  verifier si le fil d'entree est en haute impedence . 
 				return EtatLogique.HAUTE_IMPEDANCE;
@@ -163,11 +165,57 @@ public abstract class Composant implements Serializable{
 	
 	public abstract String generatePath();
 	
-	public abstract void resetPolyline(Polyline line , double x,double y);
+	public void resetPolyline(Polyline line , double x,double y) {
+		line.getPoints().clear();
+		line.getPoints().addAll(x,y,x+5,y);
+	}
 	
-	public abstract ArrayList<Polyline> generatePolyline(double x,double y);
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
+		// TODO Auto-generated method stub
+		setCord();	
+		Polyline polyline = null;
+		double posX ;
+		double posY ;
+		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
+		ArrayList<InfoPolyline> listPolylines ;
+		for (int i = 0; i < nombreSortie; i++) {
+			listPolylines = new ArrayList<InfoPolyline>();
+			posX = x+ lesCoordonnees.getCordSortieInIndex(i).getX() ;
+			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
+			polyline = new Polyline(posX ,posY,posX+5,posY);
+			listPolylines.add(new InfoPolyline(polyline));
+			reslut.add(polyline);
+			Circuit.ajouterFil(sorties[i], listPolylines); 
+		}		
+		return reslut;
+	}
 	
+	public  void derelierComp() { // pour derelier le composant de ces fils d'entrees  (le composant à supprimer)
+		for (int i = 0; i < nombreEntree; i++) {
+			if (entrees[i] != null) {
+				entrees[i].derelierCompFromDestination(this);
+			}
+		}
+	}
+	
+	public void derelierEntreeFromComp(Fil fil) { // pour enlever une le fil donné des entrees du composant
+		for (int i = 0; i < nombreEntree; i++) {
+			if (entrees[i] != null) {
+				if (entrees[i].equals(fil)) {
+					entrees[i] = null;
+				}
+			}
+		}
+	}
+	
+	public void relierANouveau() { // elle permet de relier à nouveau le composant si il est derelier de ces fils
+		for (int i = 0; i < nombreEntree; i++) {
+			entrees[i].addDestination(this);
+		}
+	}
+
 	public abstract void setCord();
+	
 	public LesCoordonnees getLesCoordonnees() {
 		return lesCoordonnees;
 	}
@@ -176,7 +224,7 @@ public abstract class Composant implements Serializable{
 	}
 	
 	public Fil getFilSortie(int i) {
-		if(i < sorties.length) {
+		if(i < sorties.length) {/// ngoul l sari
 			return sorties[i];
 		}else {
 			return null;
@@ -188,6 +236,7 @@ public abstract class Composant implements Serializable{
 			if(fil == sorties[i])
 				return i;
 		i++;
+
 		}
 		return 0;
 	}
@@ -201,6 +250,31 @@ public abstract class Composant implements Serializable{
 		}
 		return 0;
 	}
+	
+	public boolean isDessocier() {
+		boolean dessocier = true ;
+		int i = 0;
+		while(( i < nombreEntree) && (dessocier == true)) {
+			if (entrees[i] != null) {
+				dessocier = false;
+			}
+			else i++;
+		}
+		i = 0;
+		while((i < nombreSortie) && (dessocier == true) )
+		{
+			if (sorties[i].getDestination().size() != 0) {
+				dessocier = false ;
+			}
+			else i++;
+		}
+		return dessocier;
+		
+	}
+	
+	public Fil getFilSortieByNum(int i) {
+		return sorties[i];
+	}
 	public Fil[] getEntrees() {
 		return entrees;
 	}
@@ -212,6 +286,12 @@ public abstract class Composant implements Serializable{
 	}
 	public void setSorties(Fil[] sorties) {
 		this.sorties = sorties;
+	}
+	public void setNombreSortieAndUpdateFil(int nombreSortie) {
+		this.nombreSortie = nombreSortie;
+		for (int i = 0; i < nombreSortie; i++) {
+			sorties[i] = new Fil(this);
+		}
 	}
 	
 }

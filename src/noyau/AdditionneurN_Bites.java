@@ -4,7 +4,8 @@ public class AdditionneurN_Bites extends Additionneur {
 	public AdditionneurN_Bites(int nombreEntree,String nom) {
 		super(nombreEntree*2 + 1,nom);
 		nombreSortie = nombreEntree + 1;
-		// TODO Auto-generated constructor stub
+		lesCoordonnees = new LesCoordonnees(nombreEntree, nombreSortie, 0);
+		initSorties();
 	}
 
 	public void genererSorties() {	
@@ -44,6 +45,7 @@ public class AdditionneurN_Bites extends Additionneur {
 			
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(61, 32.4), 0);
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(62, 11.4), 1);
+			
 		}break;
 		case 5:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(1, 12), 0);
@@ -81,11 +83,11 @@ public class AdditionneurN_Bites extends Additionneur {
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(1, 128.5), 7);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 69), 8);
 			
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 49.2), 0);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 62.7), 1);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 75.7), 2);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 90), 3);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(79, 14.9), 4);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 49.2), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 62.7), 1);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 75.7), 2);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 90), 3);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(85, 14.9), 4);
 		}break;
 		case 11:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(1, 9.5), 0);

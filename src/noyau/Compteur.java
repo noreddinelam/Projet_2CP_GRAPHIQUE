@@ -188,7 +188,8 @@ public class Compteur extends Sequentiels{
 	@Override
 	public void resetPolyline(Polyline line, double x, double y) {
 		// TODO Auto-generated method stub
-		
+		line.getPoints().clear();
+		line.getPoints().addAll(x,y,x,y+5);
 	}
 	
 	@Override
@@ -210,6 +211,44 @@ public class Compteur extends Sequentiels{
 			Circuit.ajouterFil(sorties[i], listPolylines); 
 		}		
 		return reslut;
+	}
+	
+
+	@Override
+	public void derelierComp() {
+		// TODO Auto-generated method stub
+		super.derelierComp();
+		if (load.getSource() != null) {
+			load.derelierCompFromDestination(this);
+		}
+	}
+	
+	@Override
+	public void derelierEntreeFromComp(Fil fil) {
+		// TODO Auto-generated method stub
+		super.derelierEntreeFromComp(fil);
+		if (load.equals(fil)) {
+			load.derelierCompFromDestination(this);
+		}
+	}
+	
+	@Override
+	public void relierANouveau() {
+		// TODO Auto-generated method stub
+		super.relierANouveau();
+		load.addDestination(this);
+	}
+	
+	@Override
+	public boolean isDessocier() {
+		// TODO Auto-generated method stub
+		boolean dessocier = super.isDessocier();
+		if (dessocier) {
+			if (load.getSource() != null) {
+				dessocier = false;
+			}
+		}
+		return dessocier;
 	}
 	
 	public boolean isCompter() {
