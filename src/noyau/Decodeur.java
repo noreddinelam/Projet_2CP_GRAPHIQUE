@@ -90,39 +90,11 @@ public class Decodeur extends Combinatoires{
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 154.8), 11);
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 167.4), 12);
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 180.3), 13);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 182), 14);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 195.6), 15);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 193.8), 14);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(101, 206.2), 15);
 			
 		}break;
 		}
-	}
-	
-	@Override
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
-		// TODO Auto-generated method stub
-		setCord();	
-		Polyline polyline = null;
-		double posX ;
-		double posY ;
-		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
-		ArrayList<InfoPolyline> listPolylines ;
-		for (int i = 0; i < nombreSortie; i++) {
-			listPolylines = new ArrayList<InfoPolyline>();
-			posX = x+lesCoordonnees.getCordSortieInIndex(i).getX() ;
-			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
-			polyline = new Polyline(posX ,posY,posX+5,posY);
-			listPolylines.add(new InfoPolyline(polyline));
-			reslut.add(polyline);
-			Circuit.ajouterFil(sorties[i], listPolylines); 
-		}		
-		return reslut;
-	}
-	
-	@Override
-	public void resetPolyline(Polyline line, double x, double y) {
-		// TODO Auto-generated method stub
-		line.getPoints().clear();
-		line.getPoints().addAll(x,y,x+5,y);
 	}
 
 }

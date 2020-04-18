@@ -69,13 +69,6 @@ public class AfficheurSegment extends Composant implements Affichage{
 	}
 	
 	@Override
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
-		// TODO Auto-generated method stub
-		setCord();
-		return new ArrayList<Polyline>();
-	}
-	
-	@Override
 	public void resetPolyline(Polyline line, double x, double y) {
 		// TODO Auto-generated method stub
 		

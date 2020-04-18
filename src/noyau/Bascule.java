@@ -101,31 +101,39 @@ public abstract class Bascule extends Sequentiels{
 	}
 	
 	@Override
-	public void resetPolyline(Polyline line, double x, double y) {
+	public void derelierComp() {
 		// TODO Auto-generated method stub
-		
+		super.derelierComp();
+		if (preset.getSource() != null) {
+			preset.derelierCompFromDestination(this);
+		}
 	}
 	@Override
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
+	public void derelierEntreeFromComp(Fil fil) {
 		// TODO Auto-generated method stub
-		setCord();	
-		Polyline polyline = null;
-		double posX ;
-		double posY ;
-		ArrayList<Polyline> result = new ArrayList<Polyline>();
-		ArrayList<InfoPolyline> listPolylines ;
-		for (int i = 0; i < 2; i++) {
-			listPolylines = new ArrayList<InfoPolyline>();
-			posX = x+lesCoordonnees.getCordSortieInIndex(i).getX() ;
-			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
-			polyline = new Polyline(posX ,posY,posX+5,posY);
-			listPolylines.add(new InfoPolyline(polyline));
-			result.add(polyline);
-			Circuit.ajouterFil(sorties[i], listPolylines); 
-		}		
-		return result;
+		super.derelierEntreeFromComp(fil);
+		if (preset.equals(fil)) {
+			preset.derelierCompFromDestination(this);
+		}
+	}
+	@Override
+	public void relierANouveau() {
+		// TODO Auto-generated method stub
+		super.relierANouveau();
+		preset.addDestination(this);
 	}
 	
+	@Override
+	public boolean isDessocier() {
+		// TODO Auto-generated method stub
+		boolean dessocier =super.isDessocier();
+		if (dessocier) {
+			if (preset.getSource() != null) {
+				dessocier = false;
+			}
+		}
+		return dessocier;
+	}
 	public Fil getPreset() {
 		return preset;
 	}

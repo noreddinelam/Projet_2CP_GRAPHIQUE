@@ -5,7 +5,8 @@ public class DemiAdditionneur extends Additionneur{
 	public DemiAdditionneur(int nombreEntree,String nom) { // constructeur
 		super(nombreEntree*2,nom);
 		nombreSortie = nombreEntree + 1 ;
-		// TODO Auto-generated constructor stub
+		lesCoordonnees = new LesCoordonnees(nombreEntree, nombreSortie, 0);
+		initSorties();
 	}
 
 	public void genererSorties() {	
@@ -61,7 +62,7 @@ public class DemiAdditionneur extends Additionneur{
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 63.6), 2);
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 11.6), 3);
 		}break;
-		case 9:{
+		case 8:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 9.3), 0);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 23.1), 1);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 36.9), 2);
@@ -71,13 +72,13 @@ public class DemiAdditionneur extends Additionneur{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0,115.2), 6);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 128.5), 7);
 			
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 49.2), 0);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 62.7), 1);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 75.7), 2);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(77, 90), 3);
-			lesCoordonnees.setCordSortieInIndex(new Coordonnees(78, 14.9), 4);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 49.2), 0);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 62.7), 1);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 75.7), 2);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(84, 90), 3);
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(85, 14.9), 4);
 		}break;
-		case 11:{
+		case 10:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 9.5), 0);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 23.1), 1);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 36.7), 2);

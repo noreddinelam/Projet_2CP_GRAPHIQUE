@@ -43,16 +43,16 @@
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.35" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.13" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox fx:id="vBoxComp" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
-                                                <Label fx:id="tHex" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="HEX" textFill="WHITE">
+                                                <Label fx:id="tHex" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" stylesheets="@../styleFile/label.css" text="HEX" textAlignment="CENTER" textFill="WHITE">
                                                    <font>
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="15.0" />
+                                                      <Insets left="13.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -121,7 +121,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="16.0" />
+                                                      <Insets left="13.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -144,7 +144,7 @@
                                                       <Font name="Calisto MT" size="13.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="11.0" />
+                                                      <Insets left="7.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -177,7 +177,7 @@
                            <content>
                               <AnchorPane prefHeight="512.0" prefWidth="185.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="509.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="509.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
@@ -186,7 +186,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="15.0" />
+                                                      <Insets left="12.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -212,7 +212,7 @@
                                                       <Insets left="53.0" top="15.0" />
                                                    </VBox.margin>
                                                    <padding>
-                                                      <Insets left="17.0" />
+                                                      <Insets left="19.0" />
                                                    </padding>
                                                 </Label>
                                                 <AnchorPane prefHeight="99.0" prefWidth="100.0" style="-fx-background-color: #303337; -fx-background-radius: 32; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0) dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);">
@@ -232,7 +232,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="16.0" />
+                                                      <Insets left="14.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -255,7 +255,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="10.0" />
+                                                      <Insets left="7.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -278,7 +278,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="15.0" />
+                                                      <Insets left="14.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -301,7 +301,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="15.0" />
+                                                      <Insets left="14.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -333,7 +333,7 @@
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.54" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefHeight="923.0" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
@@ -342,7 +342,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="23.0" />
+                                                      <Insets left="21.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -368,7 +368,7 @@
                                                       <Insets left="53.0" top="15.0" />
                                                    </VBox.margin>
                                                    <padding>
-                                                      <Insets left="25.0" />
+                                                      <Insets left="23.0" />
                                                    </padding>
                                                    <opaqueInsets>
                                                       <Insets />
@@ -391,7 +391,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="21.0" />
+                                                      <Insets left="20.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -414,7 +414,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="26.0" />
+                                                      <Insets left="24.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -437,7 +437,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="17.0" />
+                                                      <Insets left="15.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -460,7 +460,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="18.0" />
+                                                      <Insets left="16.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -492,7 +492,7 @@
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="0.98" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefHeight="923.0" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
@@ -501,7 +501,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="14.0" />
+                                                      <Insets left="12.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -527,7 +527,7 @@
                                                       <Insets left="53.0" top="15.0" />
                                                    </VBox.margin>
                                                    <padding>
-                                                      <Insets left="10.0" />
+                                                      <Insets left="6.0" />
                                                    </padding>
                                                    <opaqueInsets>
                                                       <Insets />
@@ -550,7 +550,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="17.0" />
+                                                      <Insets left="14.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -573,7 +573,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="12.0" />
+                                                      <Insets left="7.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -596,7 +596,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="11.0" />
+                                                      <Insets left="7.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -619,7 +619,7 @@
                                                       <Font name="Calisto MT" size="14.0" />
                                                    </font>
                                                    <padding>
-                                                      <Insets left="18.0" />
+                                                      <Insets left="14.0" />
                                                    </padding>
                                                    <VBox.margin>
                                                       <Insets left="53.0" top="15.0" />
@@ -667,7 +667,7 @@
                <children>
                   <ImageView fx:id="fichier" fitHeight="40.0" fitWidth="32.0" layoutX="17.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../homePage_icones/FILE.png" />
+                        <Image url="@../homePage_icones/fichier.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -682,7 +682,7 @@
                <children>
                   <ImageView fx:id="edition" fitHeight="45.0" fitWidth="36.0" layoutX="17.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../homePage_icones/EDIT%20FILE.png" />
+                        <Image url="@../homePage_icones/edition.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -697,7 +697,7 @@
                <children>
                   <ImageView fx:id="simulation" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" onMouseClicked="#onSimuler" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../homePage_icones/SIMULATION.png" />
+                        <Image url="@../homePage_icones/simulation.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -712,7 +712,7 @@
                <children>
                   <ImageView fx:id="affichage" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="14.0">
                      <image>
-                        <Image url="@../homePage_icones/AFFICHAGE.png" />
+                        <Image url="@../homePage_icones/affichage.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -727,7 +727,7 @@
                <children>
                   <ImageView fx:id="aide" fitHeight="45.0" fitWidth="36.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0">
                      <image>
-                        <Image url="@../homePage_icones/AIDE.png" />
+                        <Image url="@../homePage_icones/aide.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -738,9 +738,21 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </AnchorPane>
+            <AnchorPane prefHeight="35.0" prefWidth="31.0">
+               <children>
+                  <ImageView fx:id="camera" fitHeight="36.0" fitWidth="41.0" onMousePressed="#screenShot" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../homePage_icones/camera.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <VBox.margin>
+                  <Insets left="14.0" top="100.0" />
+               </VBox.margin>
+            </AnchorPane>
             <Label fx:id="afficheurX" prefHeight="28.0" prefWidth="58.0" style="-fx-background-color: #E0E0D1; -fx-background-radius: 18;" text="X : 1203" textFill="#303337">
                <VBox.margin>
-                  <Insets left="4.0" right="2.0" top="220.0" />
+                  <Insets left="4.0" right="2.0" top="90.0" />
                </VBox.margin>
                <font>
                   <Font name="Calisto MT" size="10.0" />

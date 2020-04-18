@@ -24,6 +24,52 @@ public abstract class Sequentiels extends Composant {
 //		}
 	}
 	
+	@Override
+	public void derelierComp() {
+		// TODO Auto-generated method stub
+		super.derelierComp();
+		if (entreeHorloge != null) {
+			entreeHorloge.derelierCompFromDestination(this);
+		}
+		if (clear != null) {
+			clear.derelierCompFromDestination(this);
+		}
+		
+	}
+	
+	@Override
+	public void derelierEntreeFromComp(Fil fil) {
+		// TODO Auto-generated method stub
+		super.derelierEntreeFromComp(fil);
+		if (entreeHorloge != null) {
+			if (entreeHorloge.equals(fil))
+				entreeHorloge.derelierCompFromDestination(this);
+		}
+		if (clear != null) {
+			if (clear.equals(fil)) 
+				clear.derelierCompFromDestination(this);
+		}
+	}
+	
+	@Override
+	public void relierANouveau() {
+		// TODO Auto-generated method stub
+		super.relierANouveau();
+		if (entreeHorloge != null) entreeHorloge.addDestination(this);
+		if(clear != null) clear.addDestination(this);
+	}
+	
+	@Override
+	public boolean isDessocier() {
+		// TODO Auto-generated method stub
+		boolean dessocier = super.isDessocier();
+		if (dessocier) {
+			if (clear.getSource() != null || entreeHorloge != null) {
+				dessocier = false;
+			}
+		}
+		return dessocier;
+	}
 	
 	public Front getFront() {
 		return front;

@@ -40,6 +40,7 @@
 /ProprietesPortesController.class
 /ProprietesRegistreController.class
 /TableDeProblemesController.class
+<<<<<<< HEAD
 /ImgController$1.class
 /ImgController$2.class
 /HomeController$10$1.class
@@ -95,3 +96,18 @@
 /HomeController$9$1.class
 /HomeController$9$2.class
 /HomeController$9$3.class
+=======
+/ChangeManager.class
+/Changeable.class
+/ChangeManager$Node.class
+/planDeTravaille.class
+>>>>>>> 8dfb22c2dea227d2e766719aea3779e4aedaca72
+/Controller$1.class
+/Controller$2.class
+/Controller$3.class
+/ProprietesAdditionneurController.class
+/ProprietesSourceConstController.class
+/HomeController$15$1.class
+/HomeController$15$2.class
+/HomeController$15$3.class
+/HomeController$15$4.class

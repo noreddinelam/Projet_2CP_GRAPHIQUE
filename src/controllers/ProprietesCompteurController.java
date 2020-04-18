@@ -28,15 +28,13 @@ public class ProprietesCompteurController extends ProprietesController{
 
 	public void initialiser(Composant cmp){
 		this.cmp = cmp;
-		label.setText(cmp.getNom());
-		
+		label.setText(cmp.getNom());		
 		i=cmp.getNombreEntree();
 		nbBits.setText(Integer.toString(i));
 		frnt=((Compteur)cmp).getFront().ordinal();
 		front.setText(bddFront[frnt]);
 		cmpt = (((Compteur)cmp).getCompter() == true) ? 0 : 1 ;
-		compteur.setText(bddCmp[cmpt]);
-		
+		compteur.setText(bddCmp[cmpt]);		
 		if(i==2) {
 			moinsNbBits.setVisible(false);
 			imgMoinsNbBits.setVisible(false);
@@ -111,17 +109,30 @@ public class ProprietesCompteurController extends ProprietesController{
     @FXML
     void modifier(ActionEvent event) {
     	cmp.setNom(label.getText());
-    	cmp.setNombreEntree(i);
-    	if(frnt == 0)
-    		((Compteur)cmp).setFront(Front.Front_Montant);
-    	else
-    		((Compteur)cmp).setFront(Front.Front_Descendant);
-    	if(cmpt == 0)
-    		((Compteur)cmp).setCompter(true);
-    	else
-    		((Compteur)cmp).setCompter(false);
-    	
-    	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    	if (i != cmp.getNombreEntree()) {
+    		if (cmp.isDessocier()) {
+    			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
+        		cmp.setNombreEntree(i);
+            	cmp.setNombreSortieAndUpdateFil(i);
+            	if(frnt == 0)
+            		((Compteur)cmp).setFront(Front.Front_Montant);
+            	else
+            		((Compteur)cmp).setFront(Front.Front_Descendant);
+            	if(cmpt == 0)
+            		((Compteur)cmp).setCompter(true);
+            	else
+            		((Compteur)cmp).setCompter(false);
+            	
+            	cmp.getLesCoordonnees().setNbCordEntree(i);
+            	cmp.getLesCoordonnees().setNbCordSorties(i);
+            	Image img = new Image(cmp.generatePath());
+            	ImageView imageView = Circuit.getImageFromComp(cmp);
+            	imageView.setImage(img);
+            	imageView.setFitHeight(img.getHeight());
+            	imageView.setFitWidth(img.getWidth());
+            	addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
+    		}
+		}	
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

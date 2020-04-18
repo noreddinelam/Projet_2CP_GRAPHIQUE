@@ -13,7 +13,6 @@ public class Demultiplexeur extends Combinatoires{
 	public Demultiplexeur(int nbCommande,String nom) { // constructeur
 		super(1,nom);
 		this.nbCommande = nbCommande;
-		commande=new Fil[nbCommande];
 		Double entreeDouble=Math.pow(2, nbCommande);
 		nombreSortie = Integer.valueOf(entreeDouble.intValue()) ;
 		lesCoordonnees = new LesCoordonnees(1, nombreSortie, nbCommande);
@@ -128,30 +127,50 @@ public class Demultiplexeur extends Combinatoires{
 		}
 	}
 	
-	@Override
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
-		// TODO Auto-generated method stub
-		setCord();	
-		Polyline polyline = null;
-		double posX ;
-		double posY ;
-		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
-		ArrayList<InfoPolyline> listPolylines ;
-		for (int i = 0; i < nombreSortie; i++) {
-			listPolylines = new ArrayList<InfoPolyline>();
-			posX = x+lesCoordonnees.getCordSortieInIndex(i).getX() ;
-			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
-			polyline = new Polyline(posX ,posY,posX+5,posY);
-			listPolylines.add(new InfoPolyline(polyline));
-			reslut.add(polyline);
-			Circuit.ajouterFil(sorties[i], listPolylines); 
-		}		
-		return reslut;
+	public  void derelierComp() { // pour derelier le composant de ces fils de commandes  (le composant à supprimer)
+		super.derelierComp();
+		for (int i = 0; i < nbCommande; i++) {
+			if (commande[i] != null) {
+				commande[i].derelierCompFromDestination(this);
+			}
+		}
 	}
 	
 	@Override
-	public void resetPolyline(Polyline line, double x, double y) {
+	public void derelierEntreeFromComp(Fil fil) {
 		// TODO Auto-generated method stub
-		
+		super.derelierEntreeFromComp(fil);
+		for (int i = 0; i < nbCommande; i++) {
+			if (commande[i] != null) {
+				if (commande[i].equals(fil)) {
+					commande[i].derelierCompFromDestination(this);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void relierANouveau() {
+		// TODO Auto-generated method stub
+		super.relierANouveau();
+		for (int i = 0; i < nbCommande; i++) {
+			if (commande[i] != null)	commande[i].addDestination(this);
+		}
+	}
+	
+	@Override
+	public boolean isDessocier() {
+		// TODO Auto-generated method stub
+		boolean dessocier =  super.isDessocier();
+		if (dessocier) {
+			int i = 0;
+			while ( (i < nbCommande) && (dessocier == true)) {
+				if (commande[i] != null) {
+					dessocier = false;
+				}
+				else i++;
+			}
+		}
+		return dessocier;
 	}
 }

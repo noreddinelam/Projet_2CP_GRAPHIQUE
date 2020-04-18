@@ -14,7 +14,6 @@ public class Multiplexeur extends Combinatoires {
 		// TODO Auto-generated constructor stub
 		
 		this.nbCommande = Integer.toBinaryString(nombreEntree-1).length();//initialiser le nombre de commandes
-		commande=new Fil[this.nbCommande];
 		nombreSortie = 1;//le multiplexeur possede une seule sortie
 		Fil fil = new Fil(this);
 		sorties[0]=fil;
@@ -68,14 +67,15 @@ public class Multiplexeur extends Combinatoires {
 	@Override
 	public void setCord() {
 		// TODO Auto-generated method stub
-		ImageView img = Circuit.getImageFromComp(this);
-		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(), (img.getBoundsInLocal().getHeight()-10) / 2), 0);
+		
 		switch (nbCommande) {
 		case 1:{			
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 16.8), 0);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 48.1), 1);
 			
 			lesCoordonnees.setCordCmdInIndex(new Coordonnees(25.1, 75), 0);
+			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(50, 32.8), 0);
 		}break;
 		case 2:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 14.9), 0);
@@ -85,6 +85,8 @@ public class Multiplexeur extends Combinatoires {
 			
 			lesCoordonnees.setCordCmdInIndex(new Coordonnees(15.6, 88), 0);
 			lesCoordonnees.setCordCmdInIndex(new Coordonnees(34.7, 88), 1);
+			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(52, 40.3), 0);
 			
 		}break;
 		case 3:{
@@ -100,6 +102,8 @@ public class Multiplexeur extends Combinatoires {
 			lesCoordonnees.setCordCmdInIndex(new Coordonnees(16.3, 122), 0);
 			lesCoordonnees.setCordCmdInIndex(new Coordonnees(32, 122), 1);
 			lesCoordonnees.setCordCmdInIndex(new Coordonnees(47.5, 122), 2);
+			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(64, 57.6), 0);
 			
 		}break;
 		case 4:{
@@ -125,30 +129,57 @@ public class Multiplexeur extends Combinatoires {
 			lesCoordonnees.setCordCmdInIndex(new Coordonnees(50.1, 202), 2);
 			lesCoordonnees.setCordCmdInIndex(new Coordonnees(66.1, 202), 3);
 			
+			lesCoordonnees.setCordSortieInIndex(new Coordonnees(85, 98.4), 0);
+			
 		}break;
 		}
 	}
 	
-	@Override
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
-		// TODO Auto-generated method stub
-		setCord();	
-		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
-		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX() ;
-		double posY = y + lesCoordonnees.getCordSortieInIndex(0).getY();
-		Polyline polyline = new Polyline(posX ,posY,posX+5,posY);
-		ArrayList<InfoPolyline> listPolylines = new ArrayList<InfoPolyline>();
-		listPolylines.add(new InfoPolyline(polyline));
-		reslut.add(polyline);
-		Circuit.ajouterFil(sorties[0], listPolylines);
-		return reslut;
+	public  void derelierComp() { // pour derelier le composant de ces fils de commandes  (le composant à supprimer)
+		super.derelierComp();
+		for (int i = 0; i < nbCommande; i++) {
+			if (commande[i] != null) {
+				commande[i].derelierCompFromDestination(this);
+			}
+		}
 	}
 	
 	@Override
-	public void resetPolyline(Polyline line, double x, double y) {
+	public void derelierEntreeFromComp(Fil fil) {
 		// TODO Auto-generated method stub
-		line.getPoints().clear();
-		line.getPoints().addAll(x,y,x+5,y);
+		super.derelierEntreeFromComp(fil);
+		for (int i = 0; i < nbCommande; i++) {
+			if (commande[i] != null) {
+				if (commande[i].equals(fil)) {
+					commande[i].derelierCompFromDestination(this);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void relierANouveau() {
+		// TODO Auto-generated method stub
+		super.relierANouveau();
+		for (int i = 0; i < nbCommande; i++) {
+			if (commande[i] != null)	commande[i].addDestination(this);
+		}
+	}
+	
+	@Override
+	public boolean isDessocier() {
+		// TODO Auto-generated method stub
+		boolean dessocier =  super.isDessocier();
+		if (dessocier) {
+			int i = 0;
+			while ( (i < nbCommande) && (dessocier == true)) {
+				if (commande[i] != null) {
+					dessocier = false;
+				}
+				else i++;
+			}
+		}
+		return dessocier;
 	}
 	
 

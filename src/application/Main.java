@@ -4,84 +4,24 @@ import controllers.HomeController;
 
 import controllers.PremierePageController;
 import javafx.animation.FadeTransition;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.image.Image;
 import noyau.*;
 
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-//			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PageEntree.fxml"));
-//			Parent root = fxmlLoader.load();
-//			Scene scene = new Scene(root);
 //			
-//			 FadeTransition fade = new FadeTransition();  
-//	         fade.setDuration(Duration.millis(1000)); 
-//	         fade.setDelay(Duration.millis(5000));
-//		        fade.setFromValue(10);  
-//		        fade.setToValue(0.1);    
-//		        fade.setCycleCount(0);  
-//		        fade.setAutoReverse(true);     
-//		        fade.setNode(root);  
-//		          
-//		          
-//		        //playing the transition   
-//		        fade.play();  
-//			scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-//
-			/*FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("About.fxml"));
-
-			Parent root = fxmlLoader.load();
-			//ImgController c = new ImgController();
-			Scene scene = new Scene(root);
-<<<<<<< HEAD
-			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
-=======
-			scene.getStylesheets().add(getClass().getResource("/styleFile/about.css").toExternalForm());
->>>>>>> barDroite
-			primaryStage.setScene(scene);
-			primaryStage.show();*/
-			
-			
-//			fxmlLoader = new FXMLLoader(getClass().getResource("PageEntree.fxml"));
-//			root = fxmlLoader.load();
-//			scene = new Scene(root); 
-//			scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-//			primaryStage.setScene(scene);
-//			primaryStage.show();
-			
-					/*FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/application/PageEntree.fxml"));*/
-					 /*	FadeTransition fade = new FadeTransition();  
-			         	fade.setDuration(Duration.millis(1000)); 
-			         	fade.setDelay(Duration.millis(4000));
-				        fade.setFromValue(10);  
-				        fade.setToValue(0.1);    
-				        fade.setCycleCount(0);  
-				        fade.setAutoReverse(true);     
-				        fade.setNode(root);  
-				        
-				         
-				    //playing the transition   
-					    fade.play(); 
-						Scene scene = new Scene(root);
-						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-						primaryStage.setScene(scene);
-						primaryStage.initStyle(StageStyle.UNDECORATED);
-						primaryStage.setResizable(false);
-						primaryStage.show();*/
-//					/*FXMLLoader loader = new FXMLLoader();
-//					loader.setLocation(getClass().getResource("/application/PageEntree.fxml"));*/
-					//	Parent root = FXMLLoader.load(getClass().getResource("PageEntree.fxml"));
 						
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
 						
@@ -113,7 +53,6 @@ public class Main extends Application {
 //				        fade.setNode(root);  
 //				        fade.play(); 
 						//Scene scene = new Scene(root);
-						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						
 						
 						
@@ -123,11 +62,7 @@ public class Main extends Application {
 						//primaryStage.initStyle(StageStyle.UNDECORATED);
 						primaryStage.setResizable(false);
 						primaryStage.show();
-
-			
-			
-			
-			
+		
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
