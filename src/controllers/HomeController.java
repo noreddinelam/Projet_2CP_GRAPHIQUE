@@ -283,7 +283,7 @@ public class HomeController extends Controller implements Initializable {
     @FXML
     private ImageView darkMode;
     
-    private static ImageView elementSeclecionner;
+    public static ImageView elementSeclecionner ;
     
  
     @FXML
@@ -423,12 +423,12 @@ public class HomeController extends Controller implements Initializable {
     }
     
     
-    public void setCopierActive(boolean copierActive) {
-    	this.copierActive = copierActive;
+    public static void setCopierActive(boolean c) {
+    	copierActive = c;
     }
     
-    public boolean getCopierActive() {
-    	return this.copierActive;
+    public static boolean getCopierActive() {
+    	return copierActive;
     }
     
     
@@ -436,9 +436,7 @@ public class HomeController extends Controller implements Initializable {
     
     
     
-    public AnchorPane getWorkSpace() {
-    	return workSpace;
-    }
+   
     
     
    
@@ -626,7 +624,7 @@ public class HomeController extends Controller implements Initializable {
 				    @Override
 				    public void handle(KeyEvent event) {
 				        if (event.isControlDown() && (event.getCode() == KeyCode.Z)) {
-				            undoChanges();
+				            undoChanges(workSpace);
 				        } 
 				    };
 				});
@@ -1613,16 +1611,11 @@ public class HomeController extends Controller implements Initializable {
 
 	    @FXML
 	    void supprimerTout(ActionEvent event) {
-	    	
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setContentText("Voullez vous vraimment supprmer tout !");
-			Optional<ButtonType> result = alert.showAndWait();	    		
-			if(result.get() == ButtonType.OK){
-				ClickBarDroite.getWorkStageFromRightBar().getChildren().clear();
-				Circuit.getCompUtilises().clear();
-				Circuit.getFilUtilises().clear();
-			}
-	    	
+	    	Circuit.getCompUtilises().clear();
+	    	Circuit.getFilUtilises().clear();
+	    	workSpace.getChildren().clear();
+	    	tracerLagrill();
+	    	tracerLesregles(workSpace);	
 	    }
 	    
 	    
@@ -1633,6 +1626,8 @@ public class HomeController extends Controller implements Initializable {
 	    public void copier(ActionEvent event) {
 					    	System.out.println("l'element est bien selecltionner : "+elementSeclecionner.getId());
 					    	setCopierActive(true);
+					    	Stage s = (Stage) copier.getScene().getWindow();
+					    	s.close();
 
 	    }
 	    
@@ -1778,11 +1773,34 @@ public class HomeController extends Controller implements Initializable {
 				 
 				});
 	    	
-	    	
-	    	
-	    	 
-	    	
 	    }
+	    
+	    @FXML
+	    void annuler(ActionEvent event) {
+	    	//System.out.println("le boutton annuler est clique");
+	    	undoChanges(workSpace);
+
+	    }
+	    
+	    
+	    @FXML
+	    void supprimer(ActionEvent event) {
+	    	
+			cmp = Circuit.getCompFromImage(elementSeclecionner);
+			elementAsuprimer = elementSeclecionner;
+			sauveGarderSupression();
+	
+			workSpace.getChildren().remove(elementSeclecionner);
+			ArrayList<Polyline> lineListe=Circuit.supprimerComp(cmp);	
+			 for(Polyline line : lineListe)
+				 workSpace.getChildren().remove(line);
+			 
+			 
+			 
+		 
+	    }
+	    
+	    
 	    
 	    
 	    
@@ -1834,8 +1852,11 @@ public class HomeController extends Controller implements Initializable {
 			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Home.fxml"));
 			        Parent root =(Parent)fxmlLoader.load();
 			        HomeController m =(HomeController)fxmlLoader.getController();
+
 			        m.setHomeControllerStage(stage);
+			        m.setHomeControllerScene(homeScene);
 			        m.inisialiser();
+
 			       
 			        Scene scene = new Scene(root);
 					scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
@@ -1951,6 +1972,8 @@ public class HomeController extends Controller implements Initializable {
 	    @FXML
 	    void chronogramme(ActionEvent event) {
 	    	 try {
+	    		 	Stage s = (Stage) chronogramme.getScene().getWindow();
+	    		 	s.close();
 			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Chronogramme.fxml"));
 			        Parent root = fxmlLoader.load();
 			        Stage stage = new Stage();
@@ -1970,6 +1993,8 @@ public class HomeController extends Controller implements Initializable {
 	    @FXML
 	    void tableDeVerite(ActionEvent event) {
 	    	 try {
+	    		 	Stage s = (Stage) tableVerite.getScene().getWindow();
+	    		 	s.close();
 			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/TableDeVerite.fxml"));
 			        Parent root = fxmlLoader.load();
 			        Stage stage = new Stage();
@@ -2005,6 +2030,9 @@ public class HomeController extends Controller implements Initializable {
 	    @FXML
 	    void aboutSimulIni(ActionEvent event) {
 	    	 try {
+	    		 	Stage s = (Stage) about.getScene().getWindow();
+	    		 	s.close();
+	    		 
 			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/About.fxml"));
 			        Parent root1 = fxmlLoader.load();
 			        Stage stage = new Stage();
@@ -2104,7 +2132,7 @@ public class HomeController extends Controller implements Initializable {
 	        }
 	    }
 
-	 private void undoChanges()
+	 private void undoChanges(AnchorPane workSpace)
 	 {
 	
 		 if(! undoDeque.isEmpty())

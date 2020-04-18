@@ -27,6 +27,7 @@ public class ClickBarDroite extends Stage{
 			Parent root = loader.load();
 			System.out.println(root);
 			HomeController h = loader.getController();
+			h.setWorkSpace(w);
 			Scene scene = new Scene(root);
 			//scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);
