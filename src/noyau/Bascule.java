@@ -104,16 +104,23 @@ public abstract class Bascule extends Sequentiels{
 	public void derelierComp() {
 		// TODO Auto-generated method stub
 		super.derelierComp();
-		if (preset != null) {
+		if (preset.getSource() != null) {
 			preset.derelierCompFromDestination(this);
 		}
 	}
-	
+	@Override
+	public void derelierEntreeFromComp(Fil fil) {
+		// TODO Auto-generated method stub
+		super.derelierEntreeFromComp(fil);
+		if (preset.equals(fil)) {
+			preset.derelierCompFromDestination(this);
+		}
+	}
 	@Override
 	public void relierANouveau() {
 		// TODO Auto-generated method stub
 		super.relierANouveau();
-		if(preset != null) preset.addDestination(this);
+		preset.addDestination(this);
 	}
 	
 	@Override
@@ -121,7 +128,7 @@ public abstract class Bascule extends Sequentiels{
 		// TODO Auto-generated method stub
 		boolean dessocier =super.isDessocier();
 		if (dessocier) {
-			if (preset != null) {
+			if (preset.getSource() != null) {
 				dessocier = false;
 			}
 		}
