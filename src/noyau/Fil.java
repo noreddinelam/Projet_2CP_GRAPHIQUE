@@ -120,6 +120,7 @@ public class Fil implements Serializable{
 				crd.setX(line.getLinePrincipale().getPoints().get(i));
 				crd.setY(line.getLinePrincipale().getPoints().get(i+1));
 				if(crd.equals(crdrech)){
+					System.out.println("dkhal hnaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 					return line.getLinePrincipale();
 				}
 				i=i+2;

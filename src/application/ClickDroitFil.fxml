@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="164.0" style="-fx-border-color: #000000; -fx-background-color: #535c68;" stylesheets="@../styleFile/clickDroit.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClickDroitFilController">
+   <children>
+      <Button fx:id="supprimer" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#supprimer" prefHeight="25.0" prefWidth="164.0" text="        Supprimer" textFill="WHITE">
+         <font>
+            <Font name="Calisto MT" size="14.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="13.0" layoutY="4.0">
+         <image>
+            <Image url="@../pageEntreeIcones/supprimerTous.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="supprimerTous" alignment="TOP_LEFT" layoutY="27.0" mnemonicParsing="false" onAction="#supprimerTous" prefHeight="25.0" prefWidth="164.0" text="       Supprimer tous" textFill="WHITE">
+         <font>
+            <Font name="Calisto MT" size="14.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="13.0" layoutY="31.0">
+         <image>
+            <Image url="@../pageEntreeIcones/delete.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>

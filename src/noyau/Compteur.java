@@ -7,7 +7,6 @@ public class Compteur extends Sequentiels{
 
 	private int valeur = 0 ;
 	private int valeurMax; 
-	private Fil load = null;
 	private boolean compter = true; // true -> compteur /  false ->decompteur	
 	
 
@@ -213,12 +212,6 @@ public class Compteur extends Sequentiels{
 		return reslut;
 	}
 	
-	public Fil getLoad() {
-		return load;
-	}
-	public void setLoad(Fil load) {
-		this.load = load;
-	}
 	public boolean isCompter() {
 		return compter;
 	}
