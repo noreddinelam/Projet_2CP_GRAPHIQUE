@@ -15,4 +15,13 @@ public abstract class Combinatoires extends Composant {
 		// TODO Auto-generated method stub
 		return this.getClass().getSimpleName() + "/" + String.valueOf(getNombreEntree())+"X"+String.valueOf(getNombreSortie())+".png";
 	}
+
+	public Fil[] getCommande() {
+		return commande;
+	}
+
+	public void setCommande(Fil[] commande) {
+		this.commande = commande;
+	}
+	
 }

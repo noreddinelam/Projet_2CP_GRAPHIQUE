@@ -11,7 +11,7 @@ public class RegistreDecalage extends Sequentiels {
 	private int taille;
 	private EtatLogique[] valeur;
 	private boolean decalageDroite; // si true dec droite sinon dec gauche
-	private Fil load ;
+	
 	public RegistreDecalage(int taille,String nom,boolean dec,Front front) { // constructeur 
 		super(taille+1,nom,front);
 		valeur = new EtatLogique[taille];
@@ -302,9 +302,6 @@ public class RegistreDecalage extends Sequentiels {
 		this.decalageDroite = decalageDroite;
 	}
 
-	public void setLoad(Fil load) {
-		this.load = load;
-	}
 	public int getTaille() {
 		return taille;
 	}
