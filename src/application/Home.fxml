@@ -23,7 +23,7 @@
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </VBox.margin>
                <children>
-                  <ImageView id="logo" fx:id="logo" fitHeight="121.0" fitWidth="140.0" layoutY="1.0" onMouseEntered="#mouseEnterLogo" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.8510665893554688" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="20.0">
+                  <ImageView id="logo" fx:id="logo" fitHeight="86.0" fitWidth="115.0" layoutX="19.0" layoutY="22.0" onMouseEntered="#mouseEnterLogo" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="19.0" AnchorPane.rightAnchor="18.01190185546875" AnchorPane.topAnchor="22.0">
                      <image>
                         <Image url="@../homePage_icones/LOGO.png" />
                      </image>
@@ -42,7 +42,7 @@
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.13" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane hvalue="0.13" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox fx:id="vBoxComp" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>

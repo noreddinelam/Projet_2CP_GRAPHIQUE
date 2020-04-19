@@ -23,10 +23,8 @@ public class Coordonnees {
 
 	@Override
 	public boolean equals(Object obj) {
-		System.out.println("equalsfffff");
-		if(  ( Math.abs(((Coordonnees)obj).getX() - this.x)<10)  &&   Math.abs(((Coordonnees)obj).getY() - this.y)<5) {
+		if(  ( Math.abs(((Coordonnees)obj).getX() - this.x)<=10)  &&   Math.abs(((Coordonnees)obj).getY() - this.y)<=10) {
 			{
-				System.out.println("equals");
 				return true;
 			}
 		}else {
@@ -39,4 +37,11 @@ public class Coordonnees {
 		// TODO Auto-generated method stub
 		return "X : "+x+" Y : "+y;
 	}
+
+	 public boolean semiEquals(Coordonnees crd) {
+		 if(   Math.abs(crd.getX() - this.x)<10  ||  Math.abs(crd.getY() - this.y)<5) {
+			 return true;
+		 }else
+			 return false;
+	 }
 }

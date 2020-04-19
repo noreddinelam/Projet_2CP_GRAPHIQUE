@@ -96,8 +96,10 @@ public class ClickDroitController extends Controller implements Initializable{
 		}else if(bddBascules.contains(nom)){
 			key = "Bascule";
 		}else {
+		
 			key = nom;
 		}
+		System.out.println(cmp);
 		Proprietes f = new Proprietes(BddFenetre.get(key), cmp,workSpace);
 	}
 
@@ -119,6 +121,7 @@ public class ClickDroitController extends Controller implements Initializable{
 		ImageView imageDeComposant=Circuit.getImageFromComp(cmp);
 		HomeController.elementAsuprimer=imageDeComposant;
 		HomeController.sauveGarderSupression();		
+		if(imageDeComposant.getId().equals("clock")) HomeController.horloged =false;
 		workSpace.getChildren().remove(imageDeComposant);
 		ArrayList<Polyline> lineListe=Circuit.supprimerComp(cmp);	
 		 for(Polyline line : lineListe)
