@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="134.0" prefWidth="242.0" style="-fx-border-color: #000000; -fx-background-color: #535c68;" stylesheets="@../styleFile/aide.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RightBarController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="134.0" prefWidth="242.0" style="-fx-border-color: #000000; -fx-background-color: #535c68;" stylesheets="@../styleFile/aide.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HomeController">
    <children>
       <Button fx:id="aideOnline" layoutX="3.0" layoutY="4.0" mnemonicParsing="false" onAction="#aideEnLigne" prefHeight="42.0" prefWidth="236.0" text="Aide en ligne                                            ">
          <font>

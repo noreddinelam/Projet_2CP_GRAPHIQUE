@@ -2,7 +2,12 @@ package controllers;
 
 
 import java.io.IOException;
+
+
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.awt.Desktop;
 import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -18,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
@@ -26,6 +32,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import application.ClickBarDroite;
 import application.ClickDroit;
 import application.ClickDroitFil;
 import javafx.animation.Interpolator;
@@ -35,16 +42,12 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXDrawersStack;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
-import com.sun.tools.javac.resources.compiler;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
@@ -55,7 +58,12 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -71,19 +79,22 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-
 import javafx.scene.paint.Color;
-
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import noyau.*;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+
+
 
 
 
@@ -92,7 +103,7 @@ public class HomeController extends Controller implements Initializable {
     Map<ImageView,Label> elemanrsMapFillMap;
     ImageView dragItem;
     private ClickDroit clickDroitFenetre;
-
+    private ClickBarDroite clickBar;
     private double difX = 0;
     
     // utilisé dans la sauvegarde des coordonnées 
@@ -100,6 +111,7 @@ public class HomeController extends Controller implements Initializable {
     double posX ;
 	double posY ;
 	
+	Stage homeWindow;
 	
 	public static Deque<Donnes> undoDeque=new LinkedList<Donnes>() ;
 	
@@ -272,9 +284,18 @@ public class HomeController extends Controller implements Initializable {
     @FXML
     private ImageView darkMode;
     
+    public static ImageView elementSeclecionner ;
     
+ 
     @FXML
     private AnchorPane work;
+    
+    @FXML
+    private Scene homeScene;
+    
+    
+    
+    
     
     @FXML
     private ImageView camera;
@@ -299,23 +320,11 @@ public class HomeController extends Controller implements Initializable {
 	 //////////////////
 	 Stage stage;
     
-    @FXML
-    private JFXDrawer fichierDrawer;
     
-    @FXML
-    private JFXDrawer editionDrawer;
-    
-    @FXML
-    private VBox vbar;
-    
-    @FXML
-    private JFXDrawer affichageDrawer;
-    
-    @FXML
-    private JFXDrawer helpDrawer;
     
     @FXML
     private Tab outils;
+    
     
     @FXML
     private Tab portes;
@@ -333,10 +342,16 @@ public class HomeController extends Controller implements Initializable {
     private TabPane tabPane;
 
     @FXML
-    private Label afficheurX;
+    private  Label afficheurX;
 
     @FXML
-    private Label afficheurY;
+    private  Label afficheurY;
+    
+    private static boolean copierActive;
+    
+    
+    ClickBarDroite editionFenetre;
+    
     
     void ajouterAnimationBarDroite(ImageView imageView) {
     	imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -394,9 +409,53 @@ public class HomeController extends Controller implements Initializable {
 		}
     }
     
+    public  void setHomeControllerStage(Stage homeWindow) {
+    	this.homeWindow = homeWindow;
+    }
+    
+    
+    public void setHomeControllerScene(Scene scene) {
+    	this.homeScene = scene;
+    }
+    
+  
+    public Stage getHomeStage() {
+    	return this.homeWindow;
+    }
+    
+    
+    public static void setCopierActive(boolean c) {
+    	copierActive = c;
+    }
+    
+    public static boolean getCopierActive() {
+    	return copierActive;
+    }
+    
+    
+    
+    
+    
+    
+   
+    
+    
+   
+    
+
+    
+    
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
+	
+	}
+	
+	
+	
+	public void inisialiser() {
+
 		ajouterGestWorkSpace();/////Les gestes De drag and drop 
 		tracerLesGuides();//Initialisation des files de guide
 		//initialisation des coordones de X et Y a 0
@@ -459,41 +518,74 @@ public class HomeController extends Controller implements Initializable {
     	    tracerLesregles(workSpace);
     	    scrollPane.setHmax(1);
     	    scrollPane.setVmax(1);
-    	    
-    	    fichierDrawer.setDisable(true);//mettre tout les drawers en mode disable
-    	    editionDrawer.setDisable(true);
-    	    affichageDrawer.setDisable(true);
-    	    helpDrawer.setDisable(true);
-    	    
-    	    
-
     	    tooltipInitialize();
-    		rightbar(fichier, fichierDrawer,editionDrawer,affichageDrawer,helpDrawer,"/application/Fichier.fxml" );
-    		rightbar(edition, editionDrawer,affichageDrawer,fichierDrawer,helpDrawer,"/application/Edition.fxml" );
-    		rightbar(affichage, affichageDrawer,editionDrawer,fichierDrawer,helpDrawer,"/application/Affichage.fxml" );
-    		rightbar(aide, helpDrawer,affichageDrawer,fichierDrawer,editionDrawer,"/application/Aide.fxml" );
+    	    
+    	    
+    	    copierCollerParBouttons();
+    	    
+    	
+    	   
 
-    			workSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, (ee)->{//pour fermer les drawer en cliquant sur la souris
-    				if(fichierDrawer.isOpened() ||editionDrawer.isOpened() ||affichageDrawer.isOpened() || helpDrawer.isOpened()) {
-    						fichierDrawer.close();
-    						fichierDrawer.setOpacity(0);
-    						editionDrawer.close();
-    						editionDrawer.setOpacity(0);
-    						affichageDrawer.close();
-    						affichageDrawer.setOpacity(0);
-    						helpDrawer.close();
-    						helpDrawer.setOpacity(0);
-    					 	fichierDrawer.setDisable(true);
-    					    editionDrawer.setDisable(true);
-    					    affichageDrawer.setDisable(true);
-    					    helpDrawer.setDisable(true);
-    				}
-    				
-    			
-    			});
-    		initialiseAnimationOfBarDroite();
+    		
+    	    ClickBarDroite fichierFenetre = new ClickBarDroite(1140, 100, "Fichier.fxml", homeWindow, workSpace);
+    	     editionFenetre = new ClickBarDroite(1140, 180, "Edition.fxml", homeWindow, workSpace);
+    	    ClickBarDroite affichageFenetre = new ClickBarDroite(1140, 300, "Affichage.fxml", homeWindow, workSpace);
+    	    ClickBarDroite aideFenetre = new ClickBarDroite(1140, 350, "Aide.fxml", homeWindow, workSpace);
+    	    
+			  //click = new ClickBar(1000, 100);
+    	    
+    	    ClickBarDroite tableauFenetres[] = {fichierFenetre,editionFenetre, affichageFenetre, aideFenetre };
+    	    
+    	    for(ClickBarDroite click : tableauFenetres) {
+				click.close();
+			}
+    	    
+    	    
+    		rightbar(fichier, fichierFenetre, tableauFenetres );
+    		rightbar(edition,editionFenetre ,tableauFenetres );
+    		rightbar(affichage, affichageFenetre ,tableauFenetres);
+    		rightbar(aide, aideFenetre, tableauFenetres );
+
+			
+    	    	    
+    	    workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
+				  @Override
+				  public void handle(MouseEvent event) {
+					for(ClickBarDroite click : tableauFenetres) {
+						click.close();
+						tooltipInitialize();
+					}
+					
+					  if(event.getButton() == MouseButton.PRIMARY) {
+						  
+						  if (clickDroitFenetre != null) {
+							  Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
+							  Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
+
+							  if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) ) {
+								 // clickDroitFenetre.close();
+
+								  Stage s = (Stage) clickDroitFenetre.getScene().getWindow();
+								  s.close();
+
+								  
+							  }
+						  }
+						  }
+					
+					
+					
+					
+			
+				  }
+			  });	
+    	    
+   	    
+    
 	}
-	@SuppressWarnings("unchecked")
+	
+
+	
 	private void ajouterGestWorkSpace() {//Methodes pour Ajouter l'interaction avec le drag and drop et les guides
 		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
 	   	        public void handle(MouseDragEvent e) {
@@ -527,8 +619,7 @@ public class HomeController extends Controller implements Initializable {
 		  			  e.consume();
 		  		  }
 		  	  });
-			  
-			  workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
+		  	  	workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
 				  @Override
 				  public void handle(MouseEvent event) {
 					  if (clickDroitFenetre != null) {
@@ -554,56 +645,43 @@ public class HomeController extends Controller implements Initializable {
 				    @Override
 				    public void handle(KeyEvent event) {
 				        if (event.isControlDown() && (event.getCode() == KeyCode.Z)) {
-				            undoChanges();
+				            undoChanges(workSpace);
 				        } 
 				    };
 				});
-	
 	}
 	
-	
-	
-	public void rightbar(ImageView icon,JFXDrawer elementName, JFXDrawer element1Hide, JFXDrawer element2Hide, JFXDrawer element3Hide, String s) {
-		Pane lay = null;
-		try {
-			lay = FXMLLoader.load(getClass().getResource(s));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		elementName.setSidePane(lay);
-		elementName.setOpacity(0);
-		icon.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
-				if(elementName.isOpened()) {
-					elementName.setOpacity(0);
-			        elementName.close();
-			        elementName.setViewOrder(10);
-			        elementName.setDisable(true);
-				}
-				
-				else {
-					elementName.setOpacity(1);
-			        elementName.open();
-			        elementName.setViewOrder(1);
-			        elementName.setDisable(false);
-			        element1Hide.close();
-			        element1Hide.setOpacity(0);
-			        element1Hide.setViewOrder(4);
-			        element1Hide.setDisable(true);	
-			        element2Hide.close();
-			        element2Hide.setOpacity(0);
-			        element2Hide.setViewOrder(4);
-			        element2Hide.setDisable(true);
-			        element3Hide.close();
-			        element3Hide.setOpacity(0);
-			        element3Hide.setViewOrder(4);
-			        element3Hide.setDisable(true);
 
-				}
-			});
-		
+	public void rightbar(ImageView icon,ClickBarDroite cc, ClickBarDroite tableauDeFenetres[]) {
+		  
+		  icon.setOnMousePressed(new EventHandler<MouseEvent>() {
+			  @Override
+			  public void handle(MouseEvent event) {
+				 
+				  for(ClickBarDroite click :tableauDeFenetres ) {
+					  if(cc.equals(click)) {
+						  if(cc.isShowing()) {
+							  cc.close();
+							  
+
+						  }
+						  else {
+							  cc.show();
+						//  tooltipInitialize();
+						  }
+					  }
+					  else
+						  click.close();
+				  }
+				  
+			}
+		  
+		});
+	
 	}
 	
+			  
+
 	
 	
 	public void tooltipInitialize() {//utiliser pour les effets hover ou nous avons un texte en mettant la souris sur les elements
@@ -655,6 +733,7 @@ public class HomeController extends Controller implements Initializable {
 	
 	
     
+
 	private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
 		//est ajoute dans le workSpace
 			
@@ -681,6 +760,7 @@ public class HomeController extends Controller implements Initializable {
 					dragImageView.setMouseTransparent(true);
 					elementAdrager.setMouseTransparent(true);
 					elementAdrager.setCursor(Cursor.CLOSED_HAND);
+					
 
 					elementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
@@ -753,7 +833,6 @@ public class HomeController extends Controller implements Initializable {
 							dragImageView.setImage(img);
 							dragImageView.setFitHeight(img.getHeight());
 							dragImageView.setFitWidth(img.getWidth());	
-							
 							System.out.println((e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2)+ "----------------------");
 							if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView)||( dragImageView.getId().equals("clock") && ( horloged)))
 							{
@@ -765,6 +844,7 @@ public class HomeController extends Controller implements Initializable {
 								if( dragImageView.getId().equals("clock")  ) horloged =true;
 								
 								ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+			
 								addAllPolylinesToWorkSpace(polyline);
 								ajouterLeGestApresCollage(dragImageView);
 								Donnes sauveGarde=new Donnes();
@@ -778,7 +858,8 @@ public class HomeController extends Controller implements Initializable {
 								
 							}
 							}
-						}});
+							}
+						});
 
 				}
 				}
@@ -889,6 +970,7 @@ public class HomeController extends Controller implements Initializable {
 	private ArrayList<Polyline> listEntrees = new ArrayList<Polyline>();
 	private ArrayList<Polyline> listSorties = new ArrayList<Polyline>();
 	private boolean insererNoedDebut = true;
+	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
 		
@@ -921,7 +1003,7 @@ public class HomeController extends Controller implements Initializable {
 	            eleementAdrager.setMouseTransparent(true);
 	            eleementAdrager.setMouseTransparent(true);
 	            eleementAdrager.setCursor(Cursor.CLOSED_HAND);
-	            
+	            elementSeclecionner = eleementAdrager;
 	            eleementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
 	    	       
@@ -940,8 +1022,15 @@ public class HomeController extends Controller implements Initializable {
 	        		 Composant composant=Circuit.getCompFromImage(eleementAdrager);
 	        		clicDroitX = e.getScreenX();
 	        		clicDroitY = e.getScreenY();
+	        		
+	        		if(clickDroitFenetre != null)
+	        			clickDroitFenetre.close();
+	        		
+	        		//clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY, homeWindow);
+	        		clickDroitFenetre = new ClickDroit(composant,clicDroitX,clicDroitY,workSpace, homeWindow);
+
+	        		clickDroitFenetre.show();
 	        		elementAmodifier=eleementAdrager;	        		
-	        		clickDroitFenetre = new ClickDroit(composant,clicDroitX,clicDroitY,workSpace);
 	        	}
               	//traitement de pressed ajoutergest apres coallge
 	        	int size = 0;
@@ -1039,6 +1128,8 @@ public class HomeController extends Controller implements Initializable {
 	        							);
 	        					double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth() - 2;
 	        					double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2 - 1;
+	
+	        							
 	        					String xString=String.valueOf(eleementAdrager.getLayoutX());
 	        					String yString=String.valueOf(eleementAdrager.getLayoutY());
 	        					if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<workSpace.getMaxWidth() )&&(eleementAdrager.getLayoutY()>0))
@@ -1047,12 +1138,12 @@ public class HomeController extends Controller implements Initializable {
 	        						guideY.setLayoutY(eleementAdrager.getLayoutY());
 	        						guideXp.setLayoutX(eleementAdrager.getLayoutX()+ eleementAdrager.getBoundsInLocal().getWidth()+1);
 	        						guideYp.setLayoutY(eleementAdrager.getLayoutY()+ eleementAdrager.getBoundsInLocal().getHeight()+1);
+	        						afficheurX.setText("X : "+ xString);
+	        						
+	        						afficheurY.setText("Y : "+ yString);
+	        						
 
-
-	        						afficheurX.setText("X : "+xString);
-	        						afficheurY.setText("Y : "+yString);
 	        					}
-
 
 	        					else 
 	        					{
@@ -1093,7 +1184,7 @@ public class HomeController extends Controller implements Initializable {
 					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
 							if (! simul) {
-							dragItem = null;  
+							dragItem = null;  	 
 							if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
 							{
 							Donnes sauveGarde=new Donnes();
@@ -1146,6 +1237,12 @@ public class HomeController extends Controller implements Initializable {
 	    });
 		
 	}
+	
+
+	
+
+	
+	
 	public void transitionDesComposants(Node composants) {// Methode d'animation de 'Shake'
 	    int duration = 100;
 	    int count = 3;
@@ -1536,6 +1633,526 @@ public class HomeController extends Controller implements Initializable {
 		}
 		return nb;
 	}
+	
+	/*------------------------------------edition----------------------------*/
+	
+	  	@FXML
+	    private Button annuler;
+
+	    @FXML
+	    private Button dupliquer;
+	    
+
+	    @FXML
+	    private Button couper;
+
+	    @FXML
+	    private Button selectionnerTout;
+
+	    @FXML
+	    private Button copier;
+
+	    @FXML
+	    private Button supprimer;
+
+	    @FXML
+	    private Button coller;
+
+	    @FXML
+	    private Button supprimerTout;
+
+	    @FXML
+	    void supprimerTout(ActionEvent event) {
+	    	Circuit.getCompUtilises().clear();
+	    	Circuit.getFilUtilises().clear();
+	    	Circuit.getEntreesCircuit().clear();
+	    	Circuit.getSortiesCircuit().clear();
+	    	Circuit.getListeEtages().clear();
+	    	workSpace.getChildren().clear();
+	    	//tracerLagrill();
+	    	tracerLesregles(workSpace);	
+	    }
+	    
+	    
+	    
+	    
+	    
+	    @FXML
+	    public void copier(ActionEvent event) {
+					    	System.out.println("l'element est bien selecltionner : "+elementSeclecionner.getId());
+					    	setCopierActive(true);
+					    	Stage s = (Stage) copier.getScene().getWindow();
+					    	s.close();
+
+	    }
+	    
+	    
+	  
+	    
+	    
+	    
+	    
+	    static boolean cc;
+	    
+	    public void coller(ActionEvent event) {
+	    		cc = true;
+	   	    	Stage stage = (Stage) coller.getScene().getWindow();
+	   	    	stage.close();
+		
+	    }
+	    
+	   
+		
+	    
+	    
+	    
+	    public void copierCollerParBouttons() {
+	    	final KeyCombination kb1 = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
+	    	final KeyCombination kb2 = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_ANY);
+	    	
+	    	
+	    	workSpace.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
+	    	    if(cc) {	
+	    	    	cc = false;
+	    	    	x = (int) event.getSceneX()-200;
+					 y= (int) event.getSceneY();
+	    	    	ImageView dragImageView = new ImageView();
+					dragImageView.setLayoutX(x);
+					dragImageView.setLayoutY(y);
+					dragImageView.setId(elementSeclecionner.getId());
+					instanceComposant(dragImageView);		
+					Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
+					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
+	
+					cmp2.setDirection(cmp.getDirection());
+					cmp2.setIcon(cmp.getIcon());
+					cmp2.setLesCoordonnees(cmp.getLesCoordonnees());
+					cmp2.setNom(cmp.getNom());
+					cmp2.setNombreEntree(cmp.getNombreEntree());
+					cmp2.setNombreSortie(cmp.getNombreSortie());
+					cmp2.setCord();
+					cmp2.generatePolyline(x, y);	
+					Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
+					dragImageView.setImage(img);
+					dragImageView.setFitHeight(img.getHeight());
+					dragImageView.setFitWidth(img.getWidth());		
+					workSpace.getChildren().add(dragImageView);
+
+					ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+					for(Polyline line : polyline ) {
+						line.setSmooth(true);
+						line.setStrokeWidth(3);
+						line.setStrokeType(StrokeType.CENTERED);
+						line.setCursor(Cursor.HAND);
+						workSpace.getChildren().add(line);
+						ajouterGeste(line);
+					}
+
+					ajouterLeGestApresCollage(dragImageView);	
+						
+	    	    	
+	    	    }
+	    		
+	    	
+	    	});
+	    	
+	    	homeScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+				 public void handle(final KeyEvent keyEvent) {
+				   if (kb1.match(keyEvent)) {
+				    System.out.println("control + c are pressed !");
+				    System.out.println("l'element selectionner est : "+ elementSeclecionner.getId());
+				    setCopierActive(true);	  
+				    keyEvent.consume();
+				   }
+				   
+				    keyEvent.consume();
+
+				   
+				   
+				   workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
+						  @Override
+						  public void handle(MouseEvent event) {
+							  
+							 x = (int) event.getSceneX()-200;
+							 y= (int) event.getSceneY();
+							
+						  }
+					  });				   
+				   if (kb2.match(keyEvent) && getCopierActive()) {
+
+					   
+					   
+					    System.out.println("control + v are pressed !");	    
+						ImageView dragImageView = new ImageView();
+						dragImageView.setLayoutX(x);
+						dragImageView.setLayoutY(y);
+						dragImageView.setId(elementSeclecionner.getId());
+						instanceComposant(dragImageView);		
+						Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
+						Composant cmp2 = Circuit.getCompFromImage(dragImageView);
+		
+						cmp2.setDirection(cmp.getDirection());
+						cmp2.setIcon(cmp.getIcon());
+						cmp2.setLesCoordonnees(cmp.getLesCoordonnees());
+						cmp2.setNom(cmp.getNom());
+						cmp2.setNombreEntree(cmp.getNombreEntree());
+						cmp2.setNombreSortie(cmp.getNombreSortie());
+						cmp2.setCord();
+						cmp2.generatePolyline(x, y);	
+						Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
+						dragImageView.setImage(img);
+						dragImageView.setFitHeight(img.getHeight());
+						dragImageView.setFitWidth(img.getWidth());		
+						workSpace.getChildren().add(dragImageView);
+
+						ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+						for(Polyline line : polyline ) {
+							line.setSmooth(true);
+							line.setStrokeWidth(3);
+							line.setStrokeType(StrokeType.CENTERED);
+							line.setCursor(Cursor.HAND);
+							workSpace.getChildren().add(line);
+							ajouterGeste(line);
+						}
+
+						ajouterLeGestApresCollage(dragImageView);	
+						
+						//ajouterLeGestApresCollage(dragImageView);
+					    //keyEvent.consume();
+					   }
+					
+				   
+				   
+				   
+				 }
+				 
+				});
+	    	
+	    }
+	    
+	    @FXML
+	    void annuler(ActionEvent event) {
+	    	//System.out.println("le boutton annuler est clique");
+	    	undoChanges(workSpace);
+
+	    }
+	    
+	    
+	    @FXML
+	    void supprimer(ActionEvent event) {
+	    	
+			cmp = Circuit.getCompFromImage(elementSeclecionner);
+			elementAsuprimer = elementSeclecionner;
+			sauveGarderSupression();
+	
+			workSpace.getChildren().remove(elementSeclecionner);
+			ArrayList<Polyline> lineListe=Circuit.supprimerComp(cmp);	
+			 for(Polyline line : lineListe)
+				 workSpace.getChildren().remove(line);
+			 
+			 
+			 
+		 
+	    }
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+
+	    /*----------------------fichier------------------------------------*/
+	    
+	    @FXML
+	    private Button nouveau;
+
+	    @FXML
+	    private Button importer;
+
+	    @FXML
+	    private Button ouvrir;
+
+	    @FXML
+	    private Button fermer;
+
+	    @FXML
+	    private Button sauvegarder;
+
+	    @FXML
+	    private Button encapsuler;
+
+	    @FXML
+	    private Button sauvComme;
+
+	    @FXML
+	    void fermer(ActionEvent event) {
+	    	Stage stage = (Stage) fermer.getScene().getWindow();
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setContentText("Voullez vous vraimment quitter ! ");
+			Optional<ButtonType> result = alert.showAndWait();	    		
+			if(result.get() == ButtonType.OK){
+			Stage s = (Stage) stage.getOwner();
+			s.close();
+			
+			}
+	    }
+
+	    @FXML
+	    void nouveau(ActionEvent event) {
+	    	 try {
+	    		 Stage stage = new Stage();
+			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Home.fxml"));
+			        Parent root =(Parent)fxmlLoader.load();
+			        HomeController m =(HomeController)fxmlLoader.getController();
+
+			        m.setHomeControllerStage(stage);
+			        m.setHomeControllerScene(homeScene);
+			        m.inisialiser();
+
+			       
+			        Scene scene = new Scene(root);
+					scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+			        stage.setScene(scene);  
+			        stage.setResizable(false);
+
+			        stage.show();
+			    } catch(Exception e) {
+			        e.printStackTrace();
+			    }
+			 
+	    }
+	    @FXML
+	    void ouvrir(ActionEvent event) {
+	    	/*final DirectoryChooser directoryChooser = new DirectoryChooser();
+	            final File selectedDirectory = directoryChooser.showDialog(homeWindow);*/
+	            final FileChooser fileChooser = new FileChooser();
+	            fileChooser.setInitialDirectory(
+	                    new File(System.getProperty("user.home"))
+	                );                 
+	                fileChooser.getExtensionFilters().addAll(
+	                    new FileChooser.ExtensionFilter("BIN", "*.bin")
+	                );
+	            
+	            File f = fileChooser.showOpenDialog(homeWindow);
+	            Circuit circuit = Sauvegarde.loadCiruit(f.getAbsolutePath());
+	            if(circuit != null)
+	            	System.out.println("le circuit est bien charge :)");
+
+	    	
+	    }
+	    
+	    
+	    
+	    
+	    @FXML
+	    void save(ActionEvent event) {
+	    	
+	    	if(Circuit.getCompUtilises().isEmpty()) {
+	    		Alert a = new Alert(AlertType.INFORMATION);
+		    	a.setContentText("le circuit est vide y a rien a sauvgarder");
+
+		    	a.show();
+	    	}
+	    	else
+	    		
+	    	{
+	    		Alert a = new Alert(AlertType.INFORMATION);
+		    	a.setContentText("le circuit est bien sauvgarde");
+
+		    	a.show();
+	    	}
+	    	
+	    	
+
+	    }
+	    
+	    	
+	    
+	    
+	    @FXML
+	    void saveAs(ActionEvent event) {
+
+            final FileChooser fileChooser = new FileChooser();
+            File f = fileChooser.showSaveDialog(homeWindow);
+            System.out.println("the name of the file is : "+f.getAbsolutePath());
+    		Circuit circuit = new Circuit();
+            Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
+
+	    }
+	    
+	    @FXML
+	    void importer(ActionEvent event) {
+	    	
+	    	 final FileChooser fileChooser = new FileChooser();
+	            fileChooser.setInitialDirectory(
+	                    new File(System.getProperty("user.home"))
+	                );                 
+	                fileChooser.getExtensionFilters().addAll(
+	                    new FileChooser.ExtensionFilter("BIN", "*.bin")
+	                );
+	            
+	            File f = fileChooser.showOpenDialog(homeWindow);
+	            Circuit circuit = Sauvegarde.loadCiruit(f.getAbsolutePath());
+	            if(circuit != null)
+	            	System.out.println("le circuit est bien charge :)");
+
+	    }
+	    
+	    
+	    @FXML
+	    void encapsulerEtSauvgarder(ActionEvent event) {
+	    	final FileChooser fileChooser = new FileChooser();
+            File f = fileChooser.showSaveDialog(homeWindow);
+            System.out.println("the name of the file is : "+f.getAbsolutePath());
+    		Circuit circuit = new Circuit();
+            Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
+
+	    }
+
+	    
+	    
+	    
+
+	    
+	    /*---------------------------affichage--------------------------------*/
+	    @FXML
+	    private Button tableVerite;
+
+	    @FXML
+	    private Button chronogramme;
+
+	    @FXML
+	    void chronogramme(ActionEvent event) {
+	    	 try {
+	    		 	Stage s = (Stage) chronogramme.getScene().getWindow();
+	    		 	s.close();
+			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Chronogramme.fxml"));
+			        Parent root = fxmlLoader.load();
+			        Stage stage = new Stage();
+			        Scene scene = new Scene(root);
+			        stage.setScene(scene);  
+			        stage.setTitle("le chronogramme");
+			        stage.setResizable(false);
+				    stage.initModality(Modality.APPLICATION_MODAL);
+
+			        stage.show();
+			    } catch(Exception e) {
+			        e.printStackTrace();
+			    	}
+
+	    }
+
+	    @FXML
+	    void tableDeVerite(ActionEvent event) {
+	    	 try {
+	    		 	Stage s = (Stage) tableVerite.getScene().getWindow();
+	    		 	s.close();
+			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/TableDeVerite.fxml"));
+			        Parent root = fxmlLoader.load();
+			        Stage stage = new Stage();
+			        Scene scene = new Scene(root);
+			        stage.setScene(scene);  
+			        stage.setTitle("la table de verité");
+			        stage.setResizable(false);
+				    stage.initModality(Modality.APPLICATION_MODAL);
+
+			        stage.show();
+			    } catch(Exception e) {
+			        e.printStackTrace();
+			    	}
+
+	    }
+	
+	
+	
+	/*------------------------about --------------------------------*/
+	    
+	    @FXML
+	    private Button lien;
+	    
+	    @FXML
+	    private Button aideOnline;
+
+	    @FXML
+	    private Button guideUser;
+
+	    @FXML
+	    private Button about;
+
+	    @FXML
+	    void aboutSimulIni(ActionEvent event) {
+	    	 try {
+	    		 	Stage s = (Stage) about.getScene().getWindow();
+	    		 	s.close();
+	    		 
+			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/About.fxml"));
+			        Parent root1 = fxmlLoader.load();
+			        Stage stage = new Stage();
+			        Scene scene = new Scene(root1);
+					scene.getStylesheets().add(getClass().getResource("/styleFile/about.css").toExternalForm());
+			        stage.setScene(scene);  
+			        stage.setTitle("About SimulINI");
+			        stage.setResizable(false);
+				    stage.initModality(Modality.APPLICATION_MODAL);
+			        stage.show();
+			    } catch(Exception e) {
+			        e.printStackTrace();
+			    }
+
+	    }
+
+	    
+
+	   
+	public void enligne(String l) {//une methode utilise pour ouvrir un lien dans le navigateur par defaut
+			try {
+				Desktop.getDesktop().browse(new URL(l).toURI());
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		public void siteWeb(ActionEvent event) {
+			enligne("https://simulini.netlify.com");
+		}
+		
+		public void aideEnLigne(ActionEvent event) {
+			enligne("https://simulini.netlify.com/page-2/");
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	 void tracerLagrill() {
 	        for (int i = 0; i <= workSpace.getPrefWidth(); i += 15 ) {
 	            Line l1 = new Line();
@@ -1570,7 +2187,7 @@ public class HomeController extends Controller implements Initializable {
 	        }
 	    }
 
-	 private void undoChanges()
+	 private void undoChanges(AnchorPane workSpace)
 	 {
 	
 		 if(! undoDeque.isEmpty())

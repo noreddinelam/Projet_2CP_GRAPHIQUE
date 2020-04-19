@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="391.0" prefWidth="458.0" style="-fx-background-color: #4B535E;" stylesheets="@../styleFile/about.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RightBarController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="391.0" prefWidth="458.0" style="-fx-background-color: #4B535E;" stylesheets="@../styleFile/about.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HomeController">
    <children>
       <Line endX="211.0" layoutX="240.0" layoutY="79.0" startX="-230.5" style="-fx-stroke: #535c68;" />
       <Text layoutX="156.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SimulINI">
