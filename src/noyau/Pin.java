@@ -139,10 +139,9 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		}
 		etat = EtatLogique.ZERO;
 		ImageView img = Circuit.getImageFromComp(this);
-		Image image = new Image("Pin/0Input.png");
+		Image image = new Image(generatePath());
 		img.setImage(image);
-		img.setFitHeight(image.getHeight());
-		img.setFitWidth(image.getWidth());
+		
 	}
 	public void resetPolyline(Polyline line , double x,double y) {
 		line.getPoints().clear();
