@@ -122,6 +122,8 @@ public class HomeController extends Controller implements Initializable {
 
     @FXML
     private Label tPin;
+    
+    public static boolean horloged=false;
 
     @FXML
     private ImageView pin;
@@ -449,7 +451,7 @@ public class HomeController extends Controller implements Initializable {
     	    ajouterLeGest(rs);
     	    ajouterLeGest(cpt);
     	    ajouterLeGest(registreDecalge);
-    	    tracerLagrill();
+    	 //   tracerLagrill();
 		  
     	    
     	    ////////////// tracer les regles 
@@ -706,7 +708,7 @@ public class HomeController extends Controller implements Initializable {
                       
 							String xString=String.valueOf(dragImageView.getLayoutX());
 							String yString=String.valueOf(dragImageView.getLayoutY());
-							if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<1066 )&&(dragImageView.getLayoutY()>0))
+							if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<workSpace.getMaxWidth() )&&(dragImageView.getLayoutY()>0))
 							{
 								guideX.setLayoutX(dragImageView.getLayoutX());
 								guideY.setLayoutY(dragImageView.getLayoutY());
@@ -753,13 +755,15 @@ public class HomeController extends Controller implements Initializable {
 							dragImageView.setFitWidth(img.getWidth());	
 							
 							System.out.println((e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2)+ "----------------------");
-							if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView))
+							if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView)||( dragImageView.getId().equals("clock") && ( horloged)))
 							{
 								workSpace.getChildren().remove(dragImageView);
 								Circuit.removeCompFromImage(dragImageView);
 							}
 							else 
 							{
+								if( dragImageView.getId().equals("clock")  ) horloged =true;
+								
 								ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
 								addAllPolylinesToWorkSpace(polyline);
 								ajouterLeGestApresCollage(dragImageView);
@@ -770,6 +774,7 @@ public class HomeController extends Controller implements Initializable {
 								sauveGarde.setPosX(dragImageView.getLayoutX());
 								sauveGarde.setPosY(dragImageView.getLayoutY());
 								undoDeque.addFirst(sauveGarde);
+								
 								
 							}
 							}
@@ -1078,97 +1083,9 @@ public class HomeController extends Controller implements Initializable {
 	        						scrollPane.setVvalue(scrollPane.getVvalue()-0.01);
 	        					}
 	        					e.consume();
-	        					
-	        		        	Composant cmp = Circuit.getCompFromImage(eleementAdrager);
-	        					//Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale();
-	        					//Coordonnees crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, 0);
-	        					boolean relocate = false;
-	        					/*if(Circuit.getPolylineFromFil(cmp.getSorties()[0]).size() == 1)
-	        						relocate = true;
-	        					
-	        					tracerSortieApresCollage(line, crdDebut, relocate);*/
-	        					int i = 0, j = 0 ;
-	        					Coordonnees crdDebut;
-	        					Polyline p;
-	        					while(i < cmp.getNombreSortie()) {
-	        						if(cmp.getSorties()[i] != null) {
-	    	        					relocate = false;
-	        							p = listSorties.get(j);
-	        							switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
-	        							if(Circuit.getPolylineFromFil(cmp.getSorties()[i]).size() == 1)
-	    	        						{relocate = true;}
-	        							j++;
-	        							crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, i);
-	        							p = tracerSortieApresCollage(p, crdDebut, relocate);
-	        							Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
-	        						}
-	        						i++;
-	        					}    
-	        					i = 0;j = 0 ;
-	        					relocate = false;
-	        					while(i < cmp.getNombreEntree()) {
-	        						if(cmp.getEntrees()[i] != null) {
-	        							p = listEntrees.get(j);
-	        							switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
-	        							j++;
-	        							crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
-	        							p = tracerEntrerApresCollage(p, crdDebut, relocate);
-	        							Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
-	        						}
-	        						i++;
-	        					}   
-	        					i = 0;
-	        					while(i < cmp.getLesCoordonnees().getNbCordCommandes()) {
-	        						if(((Combinatoires)cmp).getCommande()[i] != null) {
-	        							p = listEntrees.get(j);
-	        							switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
-	        							j++;
-	        							crdDebut = cmp.getLesCoordonnees().coordReelesCommande(eleementAdrager, i);
-	        							p = tracerEntrerApresCollage(p, crdDebut, relocate);
-	        							Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
-	        						}
-	        						i++;
-	        					}
-	        					if(cmp.getLesCoordonnees().getCordHorloge() != null ) {
-	        						if( ((Sequentiels)cmp).getEntreeHorloge() != null) {
-	        							p = listEntrees.get(j);
-	        							switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
-	        							j++;
-	        							crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
-	        							p = tracerEntrerApresCollage(p, crdDebut, relocate);
-	        							Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
-	        						}
-	        					}
-	        					if(cmp.getLesCoordonnees().getCordClear() != null ) {
-	        						if(((Sequentiels)cmp).getClear().getSource() != null) {
-	        							p = listEntrees.get(j);
-	        							switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
-	        							j++;
-	        							crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager, i);
-	        							p = tracerEntrerApresCollage(p, crdDebut, relocate);
-	        							Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
-	        						}
-	        					}
-	        					if(cmp.getLesCoordonnees().getCordPreset() != null ) {
-	        						if(((Bascule)cmp).getPreset().getSource() != null){
-	        							p = listEntrees.get(j);
-	        							switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
-	        							j++;
-	        							crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager, i);
-	        							p = tracerEntrerApresCollage(p, crdDebut, relocate);
-	        							Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
-	        						}
-	        					}
-	        					if(cmp.getLesCoordonnees().getCordLoad() != null ) {
-	        						if(((Sequentiels)cmp).getLoad().getSource()!= null) {
-	        							p = listEntrees.get(j);
-	        							switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
-	        							j++;
-	        							crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager, i);
-	        							p = tracerEntrerApresCollage(p, crdDebut, relocate);
-	        							Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
-	        						}
-	        					}
+
+	        					updatePolyline(eleementAdrager);   
+
 	        				}
 	        			}
 	        		}
@@ -1187,12 +1104,12 @@ public class HomeController extends Controller implements Initializable {
 							undoDeque.addFirst(sauveGarde);
 							}
 							eleementAdrager.setMouseTransparent(false);
-							eleementAdrager.setMouseTransparent(false);
 							eleementAdrager.setCursor(Cursor.DEFAULT);
 							if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(eleementAdrager))
 							{
 								eleementAdrager.setLayoutX(posX);
 								eleementAdrager.setLayoutY(posY);
+							    updatePolyline(eleementAdrager);
 								
 							}
 							else {
@@ -1747,7 +1664,92 @@ public class HomeController extends Controller implements Initializable {
 	        undoDeque.addFirst(sauveGarde);
 	        elementAsuprimer=null;
 	 }
-	 
+	 private void updatePolyline(ImageView eleementAdrager) {
+		 Composant cmp = Circuit.getCompFromImage(eleementAdrager);
+			boolean relocate = false;
+			int i = 0, j = 0 ;
+			Coordonnees crdDebut;
+			Polyline p;
+			while(i < cmp.getNombreSortie()) {
+				if(cmp.getSorties()[i] != null) {
+					relocate = false;
+					p = listSorties.get(j);
+					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
+					if(Circuit.getPolylineFromFil(cmp.getSorties()[i]).size() == 1)
+						{relocate = true;}
+					j++;
+					crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, i);
+					p = tracerSortieApresCollage(p, crdDebut, relocate);
+					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
+				}
+				i++;
+			}    
+			i = 0;j = 0 ;
+			relocate = false;
+			while(i < cmp.getNombreEntree()) {
+				if(cmp.getEntrees()[i] != null) {
+					p = listEntrees.get(j);
+					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
+					j++;
+					crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
+					p = tracerEntrerApresCollage(p, crdDebut, relocate);
+					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
+				}
+				i++;
+			}   
+			i = 0;
+			while(i < cmp.getLesCoordonnees().getNbCordCommandes()) {
+				if(((Combinatoires)cmp).getCommande()[i] != null) {
+					p = listEntrees.get(j);
+					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
+					j++;
+					crdDebut = cmp.getLesCoordonnees().coordReelesCommande(eleementAdrager, i);
+					p = tracerEntrerApresCollage(p, crdDebut, relocate);
+					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
+				}
+				i++;
+			}
+			if(cmp.getLesCoordonnees().getCordHorloge() != null ) {
+				if( ((Sequentiels)cmp).getEntreeHorloge() != null) {
+					p = listEntrees.get(j);
+					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
+					j++;
+					crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
+					p = tracerEntrerApresCollage(p, crdDebut, relocate);
+					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
+				}
+			}
+			if(cmp.getLesCoordonnees().getCordClear() != null ) {
+				if(((Sequentiels)cmp).getClear().getSource() != null) {
+					p = listEntrees.get(j);
+					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
+					j++;
+					crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager, i);
+					p = tracerEntrerApresCollage(p, crdDebut, relocate);
+					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
+				}
+			}
+			if(cmp.getLesCoordonnees().getCordPreset() != null ) {
+				if(((Bascule)cmp).getPreset().getSource() != null){
+					p = listEntrees.get(j);
+					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
+					j++;
+					crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager, i);
+					p = tracerEntrerApresCollage(p, crdDebut, relocate);
+					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
+				}
+			}
+			if(cmp.getLesCoordonnees().getCordLoad() != null ) {
+				if(((Sequentiels)cmp).getLoad().getSource()!= null) {
+					p = listEntrees.get(j);
+					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
+					j++;
+					crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager, i);
+					p = tracerEntrerApresCollage(p, crdDebut, relocate);
+					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
+				}
+			}
+	 }
 
 }
 

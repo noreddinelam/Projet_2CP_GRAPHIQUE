@@ -6,7 +6,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
 public class Horloge extends Composant implements ElementHorloge,Runnable{
-	
 	private EtatLogique etat = EtatLogique.ZERO;
 	private long temps;
 	private boolean active = true;// on met l'horloge toujours active pour le test
@@ -101,5 +100,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 		ImageView img = Circuit.getImageFromComp(this);
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(), img.getBoundsInLocal().getHeight() / 2), 0);
 	}
+
+
 	
 }
