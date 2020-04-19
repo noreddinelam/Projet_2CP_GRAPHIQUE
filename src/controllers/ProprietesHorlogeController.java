@@ -38,7 +38,9 @@ public class ProprietesHorlogeController extends ProprietesController{
 
 	@Override
 	public void initialiser(Composant cmp) {
-		// TODO Auto-generated method stub
+	this.cmp=cmp;
+	label.setText(cmp.getNom());
+	
 		
 	}
 
