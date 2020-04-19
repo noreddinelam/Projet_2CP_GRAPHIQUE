@@ -1,6 +1,7 @@
 package controllers;
 
 import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -62,17 +63,25 @@ public class ClickDroitController extends Controller implements Initializable{
 
 	@FXML
 	private Button prop;
+	
+	static boolean copierColler;
 
 	@FXML
 	void copier(ActionEvent event) {
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
+    	HomeController.setCopierActive(true);
+ 	
 	}
 
 	@FXML
 	void couper(ActionEvent event) {
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
+    	
+    	HomeController.cc = true;
+    	
+    	
 	}
 
 	@FXML
@@ -131,6 +140,13 @@ public class ClickDroitController extends Controller implements Initializable{
 		rotationD.setCursor(Cursor.HAND);
 		rotationG.setCursor(Cursor.HAND);
 		prop.setCursor(Cursor.HAND);
+		
+		
+		
+		
+		
+		
+		
 	}
 
 	

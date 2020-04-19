@@ -141,4 +141,6 @@ public abstract class Bascule extends Sequentiels{
 	public void setPreset(Fil preset) {
 		this.preset = preset;
 	}
+
 }
+

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXDrawer?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
@@ -794,14 +793,7 @@
          <content>
             <AnchorPane fx:id="workSpace" maxHeight="2100.0" maxWidth="3360.0" minHeight="2100.0" minWidth="3360.0" prefHeight="2100.0" prefWidth="3360.0" style="-fx-background-color: #5a6572;">
             <children>
-            <AnchorPane fx:id="work" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5a6572;" BorderPane.alignment="CENTER">
-               <children>
-                  <JFXDrawer fx:id="fichierDrawer" defaultDrawerSize="400.0" direction="RIGHT" layoutX="880.0" layoutY="40.0" miniDrawerSize="200.0" opacity="0.0" prefHeight="300.0" prefWidth="242.0" viewOrder="6.0" AnchorPane.rightAnchor="0.0" />
-                  <JFXDrawer fx:id="editionDrawer" defaultDrawerSize="400.0" direction="RIGHT" layoutX="880.0" layoutY="107.0" miniDrawerSize="200.0" opacity="0.0" prefHeight="315.0" prefWidth="242.0" viewOrder="2.0" />
-                  <JFXDrawer fx:id="affichageDrawer" defaultDrawerSize="400.0" layoutX="880.0" layoutY="240.0" miniDrawerSize="100.0" opacity="0.0" prefHeight="93.0" prefWidth="242.0" viewOrder="2.0" />
-                  <JFXDrawer fx:id="helpDrawer" defaultDrawerSize="400.0" layoutX="880.0" layoutY="310.0" miniDrawerSize="100.0" opacity="0.0" prefHeight="134.0" prefWidth="242.0" />
-               </children>
-                  </AnchorPane>
+            
            </children>
            </AnchorPane>
          </content>
