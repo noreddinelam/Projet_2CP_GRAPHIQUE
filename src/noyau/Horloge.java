@@ -44,7 +44,6 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 		}
 	}
 
-
 	@Override
 	public void run() {
 		etat = EtatLogique.ONE;

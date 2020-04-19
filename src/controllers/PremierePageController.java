@@ -22,9 +22,7 @@ public class PremierePageController implements Initializable{
 	@FXML
     private Pane pane;
 	
-	private Stage window;
-	
-	
+	private Stage window;	
 	
 	public void setStage(Stage window) {
 		this.window = window;
@@ -32,7 +30,6 @@ public class PremierePageController implements Initializable{
 
 	class bg_thread implements Runnable
 	{
-
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
@@ -56,57 +53,35 @@ public class PremierePageController implements Initializable{
 		th.start();
 		new firstScreen().start();
 	}
-	
-	
-	
 	class  firstScreen extends Thread{
 		public void run() {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					Parent root = null;
+					try {
+						//root = FXMLLoader.load(getClass().getResource("/application/Home.fxml"));
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/Home.fxml"));
+						root = (Parent)loader.load();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}					
+					Scene scene = new Scene(root);
+					Stage stage = new Stage();
+					scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+					stage.setScene(scene);
+					stage.show();
+					pane.getScene().getWindow().hide();	
 				}
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						Parent root = null;
-						try {
-							//root = FXMLLoader.load(getClass().getResource("/application/Home.fxml"));
-							FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/Home.fxml"));
-							 root = (Parent)loader.load();
-							 
-
-							
-
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-						
-						Scene scene = new Scene(root);
-						Stage stage = new Stage();
-						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-						stage.setScene(scene);
-						stage.show();
-						pane.getScene().getWindow().hide();	
-						
-						
-
-					}
-				});
-				
-
-			
-		}
-		
-	
-		
-		
-		
-		
+			});	
+		}	
 	}
-	
 
 }

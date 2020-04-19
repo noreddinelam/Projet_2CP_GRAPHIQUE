@@ -193,7 +193,7 @@ public class Circuit implements Serializable{
 				return entry.getValue();
 			}
 		}
-		return new ArrayList<InfoPolyline>();
+		return null;
 	}
 	public static InfoPolyline getInfoPolylineFromPolyline(Polyline ligne) { 
 		for (Entry<Fil, ArrayList<InfoPolyline>> entry : filUtilises.entrySet()) {

@@ -238,7 +238,7 @@ public abstract class Composant implements Serializable{
 		i++;
 
 		}
-		return 0;
+		return -1;
 	}
 	
 	public int numCmpSorties(Fil fil) {
@@ -248,7 +248,7 @@ public abstract class Composant implements Serializable{
 				return i;
 		i++;
 		}
-		return 0;
+		return -1;
 	}
 	
 	public boolean isDessocier() {

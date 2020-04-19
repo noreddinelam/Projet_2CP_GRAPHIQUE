@@ -15,7 +15,6 @@ public class ProprietesBasculesController extends ProprietesController {
 	private String bddNbFront[] = {"Montant","Descendant"};
 	private int i;
 	
-	
 	public Composant getCmp() {
 		return cmp;
 	}
