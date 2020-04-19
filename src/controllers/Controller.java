@@ -90,6 +90,7 @@ public abstract class Controller {
 		}
 	}
 	
+
 	 public void ajouterGeste(Polyline line)
 		{
 		 EventHandler<MouseEvent> event1 = new javafx.event.EventHandler<MouseEvent>() {
@@ -99,8 +100,8 @@ public abstract class Controller {
 					//les guides :
 					if (! simul) {
 						if (event.getButton() == MouseButton.PRIMARY) { 
-							guideFilX.setLayoutX(event.getSceneX()-180);
-							guideFilY.setLayoutY(event.getSceneY());
+							guideFilX.setLayoutX(event.getX());
+							guideFilY.setLayoutY(event.getY());
 							double x2 = event.getX();
 							double y2 = event.getY();
 							switching = Circuit.getInfoPolylineFromPolyline(line).getSwitching();
@@ -122,6 +123,7 @@ public abstract class Controller {
 
 		 };
 			
+
 			EventHandler<MouseEvent> event = new javafx.event.EventHandler<MouseEvent>() {
 
 				@Override
@@ -131,8 +133,8 @@ public abstract class Controller {
 						if (event.getButton() == MouseButton.PRIMARY)  {
 					workSpace.getChildren().add(guideFilX);
                    workSpace.getChildren().add(guideFilY);
-                   guideFilX.setLayoutX(event.getSceneX()-180);
-					guideFilY.setLayoutY(event.getSceneY());
+                   guideFilX.setLayoutX(event.getX());
+					guideFilY.setLayoutY(event.getY());
 					ArrayList<InfoPolyline> listDePolylines = Circuit.getListFromPolyline(line);
 					
 					////////////////////relier/////////////////////// 
@@ -224,15 +226,14 @@ public abstract class Controller {
 					if(arg0.getButton() == MouseButton.PRIMARY) {
 					workSpace.getChildren().remove(guideFilX);
 		  			workSpace.getChildren().remove(guideFilY);
-
 					int	der =  line.getPoints().size()-1;
-					if(intersectionFilComposants(arg0.getSceneX()-180,arg0.getSceneY()) != null) {
+					if(intersectionFilComposants(arg0.getX(),arg0.getY()) != null) {
 					//if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der))) {
 					if(rel == 0) {
 						line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
 					}if(rel == 1){
 						/////////////////////////////relier/////////////////////////////////////
-						destination = intersectionFilComposants(arg0.getSceneX()-180,arg0.getSceneY());
+						destination = intersectionFilComposants(arg0.getX(),arg0.getY());
 						/*   		entree >= 0   :entres
 						 * 		-4 < entree < 0	  :commandes
 						 * 			entree = -4	  :horloge
