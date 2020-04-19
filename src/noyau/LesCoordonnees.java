@@ -1,6 +1,5 @@
 package noyau;
 
-import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 public class LesCoordonnees {
@@ -19,9 +18,6 @@ public class LesCoordonnees {
 		this.nbCordSorties = nbCordSorties;
 		this.nbCordCommandes = nbCordCommandes;
 
-//		cordEntree=new Coordonnees[nbCordEntree];
-//		cordSorties=new Coordonnees[nbCordSorties];
-//		cordCommandes=new Coordonnees[nbCordCommandes];
 	}
 	
 	public void setCordEntreeInIndex(Coordonnees coordonnees,int entree) {
@@ -34,7 +30,7 @@ public class LesCoordonnees {
 		cordCommandes[cmd] = coordonnees;
 	}
 	public void setCordLoad(Coordonnees coordonnees) {
-		cordClear = coordonnees;
+		cordLoad = coordonnees;
 	}
 	public void setCordPreset(Coordonnees coordonnees) {
 		cordPreset = coordonnees;
@@ -57,7 +53,7 @@ public class LesCoordonnees {
 		return cordCommandes[cmd];
 	}
 	public Coordonnees getCordLoad() {
-		return cordClear;
+		return cordLoad;
 	}
 	public Coordonnees getCordPreset() {
 		return cordPreset;
@@ -137,6 +133,29 @@ public class LesCoordonnees {
 			return new Coordonnees(cordEntree[entre].getX() + image.getLayoutX(), cordEntree[entre].getY() + image.getLayoutY());
 		else return null;
 	}
-	
-	
+	public Coordonnees coordReelesCommande(ImageView image,int entre) {
+		if(entre < nbCordCommandes)
+			return new Coordonnees(cordCommandes[entre].getX() + image.getLayoutX(), cordCommandes[entre].getY() + image.getLayoutY());
+		else return null;
+	}
+	public Coordonnees coordReelesHorloge(ImageView image,int entre) {
+		if(cordHorloge != null)
+			return new Coordonnees(cordHorloge.getX() + image.getLayoutX(), cordHorloge.getY() + image.getLayoutY());
+		else return null;
+	}	
+	public Coordonnees coordReelesClear(ImageView image,int entre) {
+		if(cordClear != null)
+			return new Coordonnees(cordClear.getX() + image.getLayoutX(), cordClear.getY() + image.getLayoutY());
+		else return null;
+	}	
+	public Coordonnees coordReelesPreset(ImageView image,int entre) {
+		if(cordPreset != null)
+			return new Coordonnees(cordPreset.getX() + image.getLayoutX(), cordPreset.getY() + image.getLayoutY());
+		else return null;
+	}	
+	public Coordonnees coordReelesLoad(ImageView image,int entre) {
+		if(cordLoad != null)
+			return new Coordonnees(cordLoad.getX() + image.getLayoutX(), cordLoad.getY() + image.getLayoutY());
+		else return null;
+	}	
 }

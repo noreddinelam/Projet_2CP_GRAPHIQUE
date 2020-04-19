@@ -43,12 +43,12 @@ public class Circuit implements Serializable{
 		f.addDestination(compD); // ajouter une destination au fil
 		
 	}
-	public void relierCommand(Composant compS,Combinatoires compD, int s, int e) { // pour relier une commande pour mux et demux
+	public static void relierCommand(Composant compS,Combinatoires compD, int s, int e) { // pour relier une commande pour mux et demux
 		Fil f = compS.sorties[s];
 		compD.commande[e] = f;
 		f.addDestination(compD);		
 	}
-	public void relierHorloge(Sequentiels composant,Composant horloge,int sortie) { // pour relier une horloge pour les elts sequentiels
+	public static void relierHorloge(Sequentiels composant,Composant horloge,int sortie) { // pour relier une horloge pour les elts sequentiels
 		Fil fil = horloge.sorties[sortie];
 		composant.entreeHorloge = fil;
 		fil.addDestination(composant);
@@ -56,12 +56,12 @@ public class Circuit implements Serializable{
 			listeEtages.add(composant);
 		}
 	}
-	public void relierClear(Sequentiels composant,Composant clear,int sortie) { // pour relier un clear pour les elts sequentiels
+	public static void relierClear(Sequentiels composant,Composant clear,int sortie) { // pour relier un clear pour les elts sequentiels
 		Fil fil = clear.sorties[sortie];
 		composant.clear = fil;
 		fil.addDestination(composant);
 	}
-	public void relierLoad(Sequentiels composant,Composant load,int sortie) { // pour relier un load pour les registre decalage et compteur
+	public static void relierLoad(Sequentiels composant,Composant load,int sortie) { // pour relier un load pour les registre decalage et compteur
 		Fil fil = load.sorties[sortie];
 		if (composant.getClass().getSimpleName().equals("RegistreDecalage")) {
 			((RegistreDecalage)composant).setLoad(fil);
@@ -71,7 +71,7 @@ public class Circuit implements Serializable{
 		}
 		fil.addDestination(composant);
 	}
-	public void relierPreset(Bascule bascule,Composant preset,int sortie) { // pour relier un preset pour les bascules
+	public static void relierPreset(Bascule bascule,Composant preset,int sortie) { // pour relier un preset pour les bascules
 		Fil fil = preset.sorties[sortie];
 		bascule.setPreset(fil);
 		fil.addDestination(bascule);
@@ -197,6 +197,18 @@ public class Circuit implements Serializable{
 		}
 		return null;
 	}
+	public static InfoPolyline getInfoPolylineFromPolyline(Polyline ligne) { 
+		for (Entry<Fil, ArrayList<InfoPolyline>> entry : filUtilises.entrySet()) {
+			if (entry.getValue().contains(new InfoPolyline(ligne))) {
+				for (InfoPolyline info : entry.getValue()) {
+					if(info.equals(new InfoPolyline(ligne))) {
+						return info;
+					}
+				}
+			}
+		}
+		return null;
+	}
 	public static void removeImageFromComp(Composant comp) {
 		compUtilises.remove(comp);
 	}
@@ -298,6 +310,14 @@ public class Circuit implements Serializable{
 	public void setTableVerite(EtatLogique[][] tableVerite) {
 		this.tableVerite = tableVerite;
 	}
-	
+	public static void remplacerPere(Polyline line1, Polyline line2) {
+		for (Entry<Fil, ArrayList<InfoPolyline>> entry : filUtilises.entrySet()) {
+				for (InfoPolyline info : entry.getValue()) {
+					if(info.getLineParent() == line1) {
+						info.setLineParent(line2);
+					}
+				}
+		}
+	}
 	
 }

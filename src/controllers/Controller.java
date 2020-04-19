@@ -9,25 +9,34 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import application.ClickDroitFil;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
+import noyau.Bascule;
 import noyau.Circuit;
+import noyau.Combinatoires;
 import noyau.Composant;
 import noyau.Coordonnees;
 import noyau.Fil;
 import noyau.InfoPolyline;
+import noyau.Sequentiels;
 
 public abstract class Controller {
 	protected int sauv;
 	
 	protected Composant cmp;
+    protected ClickDroitFil clickDroitFilFenetre;
+    protected Polyline lineDroit;
+
 	//protected AnchorPane workSpace;
 	
 	protected double x,y;
@@ -81,192 +90,205 @@ public abstract class Controller {
 		}
 	}
 	
-	public void ajouterGeste(Polyline line)
-	{
-	 EventHandler<MouseEvent> event1 = new javafx.event.EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				//les guides :
-				if (! simul) {
-				guideFilX.setLayoutX(event.getX());
-				guideFilY.setLayoutY(event.getY());
-				double x2 = event.getX();
-				double y2 = event.getY();
-			//	Double x2 = event.getSceneX()-180;
-			//	Double y2 = event.getSceneY();
-				//if(intersectionFilComposants(event.getSceneX()-180,event.getSceneY())) {
-				for (int i = 0; i < 4; i++) {
-					line.getPoints().remove((line.getPoints().size()-1));
-				}
-				if(Math.abs(x2-x)<10) { 
-					if(Math.abs(y2-y)<10) switching = 0; 
-					else switching = 1;
-				}else {
-					if(Math.abs(y2-y)<10) switching = 0;
-				} 		
-				if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
-				else line.getPoints().addAll(x,y2,x2,y2);				
-				Circuit.getFilFromPolyline(line).setSwitching(switching);
 
-			}
-			}
-			
-		};
-		
-		EventHandler<MouseEvent> event = new javafx.event.EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				if (! simul) {
-				workSpace.getChildren().add(guideFilX);
-                workSpace.getChildren().add(guideFilY);
-                guideFilX.setLayoutX(event.getX());
-				guideFilY.setLayoutY(event.getY());
-				//relier
-				
-				/*source = Circuit.getFilFromPolyline(line).getSource();
-				sortie = 0; 	
-				//
-                
-				int i = line.getPoints().size()-2;
-				x = event.getX();
-				y = event.getY();
-				while((i!=0) && ((Math.abs(x-line.getPoints().get(i))>5) && ((Math.abs(y - line.getPoints().get(i+1)) >=5 ))))
-				{
-					line.getPoints().addAll(line.getPoints().get(i),line.getPoints().get(i+1));
-					i=i-2;
-				}
-
-				double x1 = line.getPoints().get(i),y1 = line.getPoints().get(i+1);
-				if(Math.abs(x-line.getPoints().get(i)) < 5) {
-					if(Math.abs(y - line.getPoints().get(i+1)) < 5) {
-						line.getPoints().addAll(x1,y1,x1,y1,x1,y1);
-					}
-					else {
-						line.getPoints().addAll(x1,y1,x1,y,x1,y,x1,y);
-					}	
-				}else{
-					if(Math.abs(y - line.getPoints().get(i+1)) < 5) {
-						line.getPoints().addAll(x1,y1,x,y1,x,y1,x,y1);
-					}
-				}*/
-				//source = Circuit.getFilFromPolyline(line).getSource();
-				ArrayList<InfoPolyline> listDePolylines = Circuit.getListFromPolyline(line);
-				
-				////////////////////relier/////////////////////// 
-				Fil filSorties = Circuit.getFilFromPolyline(line);
-				//System.out.println(filSorties);
-				source = filSorties.getSource();
-				sortie = source.numCmpSorties(filSorties);	
-				//System.out.println("array"+listDePolylines);
-				//System.out.println("source "+source+"sortie  "+sortie);
-				/////////////////////////////////////////////////
-				x = event.getX();
-				y = event.getY();
-				Polyline line2 = initialser(x, y);
-		    	workSpace.getChildren().add(line2);
-				line2.getPoints().clear();
-				line2.getPoints().addAll(line.getPoints());
-
-				ArrayList<Double> list = new ArrayList<Double>(line.getPoints());
-				int i = list.size()-2;
-				
-				boolean trouve = false ;
-				
-				while((!trouve) && i>0) {
-					if((Math.abs(x - list.get(i)) < 5) && (Math.abs(y - list.get(i+1)) < 5)) {
-						trouve = true;
-						x = list.get(i);
-						y = list.get(i+1);
-						line2.getPoints().add(i, x);
-						line2.getPoints().add(i+1, y);
-						line2.getPoints().add(i, x);
-						line2.getPoints().add(i+1, y);
-					}
-					i = i-2;
-				}
-				i = 0;
-				if(!trouve) {
-					while((!trouve) && (i<list.size()-2)){
-						if(Math.abs(x - list.get(i)) < 5 ) {
-							trouve = true;
-							x = list.get(i);
-							line2.getPoints().add(i+2, x);
-							line2.getPoints().add(i+3, y);
-							line2.getPoints().add(i+2, x);
-							line2.getPoints().add(i+3, y);	
-							
-						}else if (Math.abs(y - list.get(i+1)) < 5) {
-							trouve = true;
-							y = list.get(i+1);
-							line2.getPoints().add(i+2, x);
-							line2.getPoints().add(i+3, y);
-							line2.getPoints().add(i+2, x);
-							line2.getPoints().add(i+3, y);	
-								
+	 public void ajouterGeste(Polyline line)
+		{
+		 EventHandler<MouseEvent> event1 = new javafx.event.EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					// TODO Auto-generated method stub
+					//les guides :
+					if (! simul) {
+						if (event.getButton() == MouseButton.PRIMARY) { 
+							guideFilX.setLayoutX(event.getX());
+							guideFilY.setLayoutY(event.getY());
+							double x2 = event.getX();
+							double y2 = event.getY();
+							switching = Circuit.getInfoPolylineFromPolyline(line).getSwitching();
+							for (int i = 0; i < 4; i++) {
+								line.getPoints().remove((line.getPoints().size()-1));
+							}
+							if(Math.abs(x2-x)<10) { 
+								if(Math.abs(y2-y)<10) switching = 0; 
+								else switching = 1;
+							}else {
+								if(Math.abs(y2-y)<10) switching = 0;
+							} 		
+							if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
+							else line.getPoints().addAll(x,y2,x2,y2);				
+							Circuit.getInfoPolylineFromPolyline(line).setSwitching(switching);
 						}
-					i = i + 2;
 					}
 				}
-				listDePolylines.add(listDePolylines.indexOf(new InfoPolyline(line)), new InfoPolyline(line2));
-				line2 = initialser(x, y);
-				line.getPoints().clear();
-				line.getPoints().addAll(line2.getPoints());
-				ajouterGeste(line2);
-			}
-			}
-		};
-		line.setOnMousePressed(event);
-		line.setOnMouseDragged(event1);
-		line.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+		 };
+			
+
+			EventHandler<MouseEvent> event = new javafx.event.EventHandler<MouseEvent>() {
+
+				@Override
+				public void handle(MouseEvent event) {
+					// TODO Auto-generated method stub
+					if (! simul) {
+						if (event.getButton() == MouseButton.PRIMARY)  {
+					workSpace.getChildren().add(guideFilX);
+                   workSpace.getChildren().add(guideFilY);
+                   guideFilX.setLayoutX(event.getX());
+					guideFilY.setLayoutY(event.getY());
+					ArrayList<InfoPolyline> listDePolylines = Circuit.getListFromPolyline(line);
+					
+					////////////////////relier/////////////////////// 
+					Fil filSorties = Circuit.getFilFromPolyline(line);
+					source = filSorties.getSource();
+					sortie = source.numCmpSorties(filSorties);	
+					/////////////////////////////////////////////////
+					x = event.getX();
+					y = event.getY();
+					Polyline line2 = initialser(x, y);
+			    	workSpace.getChildren().add(line2);
+					line2.getPoints().clear();
+					line2.getPoints().addAll(line.getPoints());
+					Circuit.remplacerPere(line, line2);
+	
+					ArrayList<Double> list = new ArrayList<Double>(line.getPoints());
+					int i = list.size()-2;
+					
+					boolean trouve = false ;
+					
+					while((!trouve) && i>0) {
+						if((Math.abs(x - list.get(i)) < 5) && (Math.abs(y - list.get(i+1)) < 5)) {
+							trouve = true;
+							System.out.println("dkhal 1");
+							x = list.get(i);
+							y = list.get(i+1);
+							line2.getPoints().add(i, x);
+							line2.getPoints().add(i+1, y);
+							line2.getPoints().add(i, x);
+							line2.getPoints().add(i+1, y);
+						}
+						i = i-2;
+					}
+					i = 0;
+					if(!trouve) {
+						while((!trouve)){
+							if(Math.abs(x - list.get(i)) < 5 ) {
+								trouve = true;
+								System.out.println("dkhal 1");
+								x = list.get(i);
+								line2.getPoints().add(i+2, x);
+								line2.getPoints().add(i+3, y);
+								line2.getPoints().add(i+2, x);
+								line2.getPoints().add(i+3, y);	
+								
+							}else if (Math.abs(y - list.get(i+1)) < 5) {
+								trouve = true;
+								System.out.println("dkhal 1");
+								y = list.get(i+1);
+								line2.getPoints().add(i+2, x);
+								line2.getPoints().add(i+3, y);
+								line2.getPoints().add(i+2, x);
+								line2.getPoints().add(i+3, y);	
+									
+							}
+						i = i + 2;
+						}
+					}
+					InfoPolyline infoLine1 = Circuit.getInfoPolylineFromPolyline(line);
+					InfoPolyline infoLine2 = new InfoPolyline(line2,infoLine1.getLineParent(),0,infoLine1.getNbFils()+1); //line2 est pere , donc incrementer le nombre de fils
+					infoLine2.copierRelierInfo(infoLine1);
+					infoLine1.setLineParent(line2); //line 2 est le pere de line 1
+					infoLine1.setNbFils(0);
+					
+					listDePolylines.add(listDePolylines.indexOf(infoLine1), infoLine2);
+					Polyline line3 = initialser(x, y);
+					line.getPoints().clear();
+					line.getPoints().addAll(line3.getPoints());
+					ajouterGeste(line2);
+					}else {
+						 double clicDroitX,clicDroitY;
+					 		clicDroitX = event.getScreenX();
+					 		clicDroitY = event.getScreenY();
+					 		lineDroit = line;
+					 		line.setStroke(Color.web("00000070"));
+					 		clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY);
+					}
+				}
+				}
+			};
+			line.setOnMousePressed(event);
+			line.setOnMouseDragged(event1);
+			line.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+				@Override
+				public void handle(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					if(arg0.getButton() == MouseButton.PRIMARY) {
+					workSpace.getChildren().remove(guideFilX);
+		  			workSpace.getChildren().remove(guideFilY);
+					int	der =  line.getPoints().size()-1;
+					if(intersectionFilComposants(arg0.getX(),arg0.getY()) != null) {
+					//if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der))) {
+					if(rel == 0) {
+						line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
+					}if(rel == 1){
+						/////////////////////////////relier/////////////////////////////////////
+						destination = intersectionFilComposants(arg0.getX(),arg0.getY());
+						/*   		entree >= 0   :entres
+						 * 		-4 < entree < 0	  :commandes
+						 * 			entree = -4	  :horloge
+						 * 			entree = -5	  :clear
+						 * 			entree = -6   :preset
+						 * 			entree = -7   :load*/
+						if(entree >= 0) {
+							Circuit.relier(source, destination, sortie, entree);
+							System.out.println("trabtooo entre");
+							playSound();
+						}else if(-5 < entree) {
+							Circuit.relierCommand(source,((Combinatoires)destination), sortie, Math.abs(entree)-1);
+							System.out.println("trabtooo commande");
+							playSound();
+						}else if(entree == -5) {
+							Circuit.relierHorloge(((Sequentiels)destination), source, sortie);
+							System.out.println("trabtooo horloge");
+							playSound();
+						}else if(entree == -6) {
+							Circuit.relierClear(((Sequentiels)destination), source, sortie);
+							System.out.println("trabtooo clear");	
+							playSound();
+						}else if(entree == -7) {
+							Circuit.relierPreset(((Bascule)destination), source, sortie);
+							System.out.println("trabtooo preset");
+							playSound();
+						}else if(entree == -8) {
+							Circuit.relierLoad(((Sequentiels)destination), source, sortie);
+							System.out.println("trabtooo load");
+							playSound();
+						}
+						InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
+						infoLine.setRelier(true);
+						infoLine.setDestination(destination);
+						infoLine.setEntre(entree);
+						//souuund
+					}
+					}else {
+					der =  line.getPoints().size()-1;
+					if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3))< 10) {
+						line.getPoints().remove(der);line.getPoints().remove(der-1);}
+				}
+					//System.out.println(line.getPoints().size());
+				}
+				}
+			});
+		/*line.setOnMouseDragEntered(new EventHandler<MouseEvent>() {
 
 			@Override
-			public void handle(MouseEvent arg0) {
+			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				workSpace.getChildren().remove(guideFilX);
-	  			workSpace.getChildren().remove(guideFilY);
-
-				int	der =  line.getPoints().size()-1;
-				if(intersectionFilComposants(arg0.getX(),arg0.getY()) != null) {
-				//if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der))) {
-				if(rel == 0) {
-					line.getPoints().remove(der);
-					line.getPoints().remove(der-1);
-					line.getPoints().remove(der-2);
-					line.getPoints().remove(der-3);
-				}if(rel == 1){
-					/////////////////////////////relier/////////////////////////////////////
-					destination = intersectionFilComposants(arg0.getX(),arg0.getY());
-					Coordonnees crd = new Coordonnees(arg0.getX(),arg0.getY());
-					System.out.println(destination+"       "+entree);
-					Circuit.relier(source, destination, sortie, entree);
-						//souuund
-
-					playSound();
-					System.out.println("trabtooo");
-					//if(source.getClass().getSimpleName().equals("Pin")) ((Pin)source).setEtat(EtatLogique.ONE);
-				}
-				}
-				if(rel != 0 ){
-				der =  line.getPoints().size()-1;
-				if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3))< 10) {
-					line.getPoints().remove(der);line.getPoints().remove(der-1);}
+			      guideFilX.setLayoutX(event.getX());
+			      guideFilY.setLayoutY(event.getY());
 			}
-				//System.out.println(line.getPoints().size());
-			}
-		});
-	/*line.setOnMouseDragEntered(new EventHandler<MouseEvent>() {
-
-		@Override
-		public void handle(MouseEvent event) {
-			// TODO Auto-generated method stub
-		      guideFilX.setLayoutX(event.getX());
-		      guideFilY.setLayoutY(event.getY());
+		});*/
 		}
-	});*/
-	}
 	
 	public void playSound() {
 		try {
@@ -299,24 +321,72 @@ public abstract class Controller {
 	}
 	
 	public int intersectionFilComposant(ImageView imgCmp,double Xfil,double Yfil) {
+	/*   		entree >= 0   :entres
+	 * 	  -4 =< entree  < 0	  :commandes
+	 * 			entree = -5	  :horloge
+	 * 			entree = -6	  :clear
+	 * 			entree = -7   :preset
+	 * 			entree = -8   :load
+	 */
 		Double XImg = imgCmp.getLayoutX();
 		Double Yimg = imgCmp.getLayoutY();
 		
 		if(( Xfil >= XImg  )  &&  (XImg+imgCmp.getFitWidth() > Xfil) && ( Yfil >= Yimg)  &&  (Yimg+imgCmp.getFitHeight() > Yfil) ) {
 			Composant cmp = Circuit.getCompFromImage(imgCmp);
-			Coordonnees tabEntrees[] = cmp.getLesCoordonnees().getCordEntree();
+			Coordonnees tabCoord[] = cmp.getLesCoordonnees().getCordEntree();
 			int nbCord = cmp.getLesCoordonnees().getNbCordEntree();
 			Coordonnees crd = new Coordonnees(Xfil,Yfil);
 			boolean trouve = false;
 			int i = 0;
 			while( i < nbCord && trouve == false) { 
-				Coordonnees crdTab = new Coordonnees(tabEntrees[i].getX() + imgCmp.getLayoutX(), tabEntrees[i].getY() + imgCmp.getLayoutY());				
-				System.out.println(Xfil+" "+crdTab.getX()+" "+Yfil+" "+crdTab.getY()+"layaoutx"+imgCmp.getLayoutX()+"layaouty"+imgCmp.getLayoutY());
+				Coordonnees crdTab = new Coordonnees(tabCoord[i].getX() + imgCmp.getLayoutX(), tabCoord[i].getY() + imgCmp.getLayoutY());				
 				if( crdTab.equals(crd) ) { 
 					trouve =true;
 					entree=i; 
 				}
 				i++;
+			}
+			if(!trouve) {
+				i=0;
+				tabCoord = cmp.getLesCoordonnees().getCordCommandes();
+				nbCord = cmp.getLesCoordonnees().getNbCordCommandes();
+				while( i < nbCord && trouve == false) { 
+					Coordonnees crdTab = new Coordonnees(tabCoord[i].getX() + imgCmp.getLayoutX(), tabCoord[i].getY() + imgCmp.getLayoutY());				
+					if( crdTab.equals(crd) ) { 
+						trouve =true;
+						entree= -i-1; 
+					}
+					i++;
+				}
+				Coordonnees crdTab ;
+				if(cmp.getLesCoordonnees().getCordHorloge() != null && !trouve) {
+					crdTab = new Coordonnees(cmp.getLesCoordonnees().getCordHorloge().getX() + imgCmp.getLayoutX(), cmp.getLesCoordonnees().getCordHorloge().getY() + imgCmp.getLayoutY());				
+					if( crdTab.equals(crd) ) { 
+						trouve =true;
+						entree= -5; 
+					}
+				}
+				if(cmp.getLesCoordonnees().getCordClear() != null && !trouve) {
+					crdTab = new Coordonnees(cmp.getLesCoordonnees().getCordClear().getX() + imgCmp.getLayoutX(), cmp.getLesCoordonnees().getCordClear().getY() + imgCmp.getLayoutY());				
+					if( crdTab.equals(crd) ) { 
+						trouve =true;
+						entree= -6; 
+					}
+				}
+				if(cmp.getLesCoordonnees().getCordPreset() != null && !trouve) {
+					crdTab = new Coordonnees(cmp.getLesCoordonnees().getCordPreset().getX() + imgCmp.getLayoutX(), cmp.getLesCoordonnees().getCordPreset().getY() + imgCmp.getLayoutY());				
+					if( crdTab.equals(crd) ) { 
+						trouve =true;
+						entree= -7; 
+					}
+				}
+				if(cmp.getLesCoordonnees().getCordLoad() != null && !trouve) {
+					crdTab = new Coordonnees(cmp.getLesCoordonnees().getCordLoad().getX() + imgCmp.getLayoutX(), cmp.getLesCoordonnees().getCordLoad().getY() + imgCmp.getLayoutY());				
+					if( crdTab.equals(crd) ) { 
+						trouve =true;
+						entree= -8; 
+					}
+				}
 			}
 			if(trouve)
 				return 1;
