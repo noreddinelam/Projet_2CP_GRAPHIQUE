@@ -1,11 +1,19 @@
 package application;
 
+import controllers.HomeController;
+
+import controllers.PremierePageController;
+import javafx.animation.FadeTransition;
+
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.image.Image;
 import noyau.*;
 
@@ -13,7 +21,28 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-						Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
+//			
+						
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
+						
+						Parent root = (Parent)loader.load();
+						
+						Scene scene = new Scene(root);
+						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+						
+						HomeController controller = (HomeController)loader.getController();
+						controller.setHomeControllerStage(primaryStage);
+						controller.setHomeControllerScene(scene);
+						controller.inisialiser();
+						
+						
+						
+						
+						/*FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Home.fxml"));
+		                Parent root = (Parent) fxmlLoader.load();
+						HomeController controller = new HomeController(primaryStage);*/
+						
+
 //					 	FadeTransition fade = new FadeTransition();  
 //			         	fade.setDuration(Duration.millis(1000)); 
 //			         	fade.setDelay(Duration.millis(4000));
@@ -23,9 +52,14 @@ public class Main extends Application {
 //				        fade.setAutoReverse(true);     
 //				        fade.setNode(root);  
 //				        fade.play(); 
-						Scene scene = new Scene(root);
-						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+						//Scene scene = new Scene(root);
+						
+						
+						
+											
+						
 						primaryStage.setScene(scene);
+						
 						//primaryStage.initStyle(StageStyle.UNDECORATED);
 						primaryStage.setResizable(false);
 						primaryStage.show();

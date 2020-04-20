@@ -37,6 +37,7 @@ public class Coordonnees {
 		// TODO Auto-generated method stub
 		return "X : "+x+" Y : "+y;
 	}
+
 	 public boolean semiEquals(Coordonnees crd) {
 		 if(   Math.abs(crd.getX() - this.x)<10  ||  Math.abs(crd.getY() - this.y)<5) {
 			 return true;

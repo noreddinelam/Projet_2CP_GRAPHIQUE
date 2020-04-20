@@ -18,9 +18,6 @@ public class LesCoordonnees {
 		this.nbCordSorties = nbCordSorties;
 		this.nbCordCommandes = nbCordCommandes;
 
-//		cordEntree=new Coordonnees[nbCordEntree];
-//		cordSorties=new Coordonnees[nbCordSorties];
-//		cordCommandes=new Coordonnees[nbCordCommandes];
 	}
 	
 	public void setCordEntreeInIndex(Coordonnees coordonnees,int entree) {

@@ -1,6 +1,7 @@
 package controllers;
 
 import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -62,17 +63,25 @@ public class ClickDroitController extends Controller implements Initializable{
 
 	@FXML
 	private Button prop;
+	
+	static boolean copierColler;
 
 	@FXML
 	void copier(ActionEvent event) {
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
+    	HomeController.setCopierActive(true);
+ 	
 	}
 
 	@FXML
 	void couper(ActionEvent event) {
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
+    	
+    	HomeController.cc = true;
+    	
+    	
 	}
 
 	@FXML
@@ -87,8 +96,10 @@ public class ClickDroitController extends Controller implements Initializable{
 		}else if(bddBascules.contains(nom)){
 			key = "Bascule";
 		}else {
+		
 			key = nom;
 		}
+		System.out.println(cmp);
 		Proprietes f = new Proprietes(BddFenetre.get(key), cmp,workSpace);
 	}
 
@@ -110,6 +121,7 @@ public class ClickDroitController extends Controller implements Initializable{
 		ImageView imageDeComposant=Circuit.getImageFromComp(cmp);
 		HomeController.elementAsuprimer=imageDeComposant;
 		HomeController.sauveGarderSupression();		
+		if(imageDeComposant.getId().equals("clock")) HomeController.horloged =false;
 		workSpace.getChildren().remove(imageDeComposant);
 		ArrayList<Polyline> lineListe=Circuit.supprimerComp(cmp);	
 		 for(Polyline line : lineListe)
@@ -127,11 +139,6 @@ public class ClickDroitController extends Controller implements Initializable{
 		supprimer.setCursor(Cursor.HAND);
 		rotationD.setCursor(Cursor.HAND);
 		rotationG.setCursor(Cursor.HAND);
-		prop.setCursor(Cursor.HAND);
+		prop.setCursor(Cursor.HAND);	
 	}
-
-	
-
-
-	
 }

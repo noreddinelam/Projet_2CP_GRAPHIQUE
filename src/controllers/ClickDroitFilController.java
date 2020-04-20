@@ -24,8 +24,6 @@ public class ClickDroitFilController {
 	
 	private AnchorPane workSpace;
 	
-	
-	
     public AnchorPane getPane() {
 		return workSpace;
 	}
@@ -63,11 +61,13 @@ public class ClickDroitFilController {
     @FXML
     void supprimerTous(ActionEvent event) {
     	ArrayList<InfoPolyline> list = Circuit.getListFromPolyline(line);
+    	System.out.println("contenu : "+ list);
     	int i = list.size()-1;
     	while(i >= 0) {
     		InfoPolyline infoLine = list.get(i);
     		supprimer(infoLine);
-    		  i--;
+    	  i--;
+
 		}
 		Stage s = (Stage)supprimer.getScene().getWindow(); 
     	s.close();
