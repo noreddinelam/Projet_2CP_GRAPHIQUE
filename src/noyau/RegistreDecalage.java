@@ -97,6 +97,7 @@ public class RegistreDecalage extends Sequentiels {
 	@Override
 	public void genererSortiesSyncho() { // pour generer la sortie en mode synchrone ou load à 0
 		// TODO Auto-generated method stub
+
 		if (this.load.getEtatLogiqueFil().getNum() == 0) {
 			for (int i = 1; i < nombreEntree; i++) {
 				valeur[i-1] = entrees[i].getEtatLogiqueFil();
@@ -104,6 +105,7 @@ public class RegistreDecalage extends Sequentiels {
 			sorties[0].setEtatLogiqueFil(valeur[taille-1]);
 		}
 		else {
+			
 			if (decalageDroite) { // decalage droite
 				decalageDroite();
 			}

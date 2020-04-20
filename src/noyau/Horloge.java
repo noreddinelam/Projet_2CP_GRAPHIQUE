@@ -2,13 +2,15 @@ package noyau;
 
 import java.util.ArrayList;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
 public class Horloge extends Composant implements ElementHorloge,Runnable{
 	private EtatLogique etat = EtatLogique.ZERO;
 	private long temps;
-	private boolean active = true;// on met l'horloge toujours active pour le test
+	private volatile boolean active = true;// on met l'horloge toujours active pour le test
+	private ImageView image;
 	
 	public Horloge(String nom,long temps) {
 		super(0,nom);
@@ -47,34 +49,38 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 
 	@Override
 	public void run() {
+        active=true;
 		etat = EtatLogique.ONE;
 		this.evaluer();
 		Circuit.initialiser();
 		while(this.active)// tant que l'horloge est active
-		{			
+		{	
+			
 			this.evaluer();//on excut l'evaluation
+			
+			image.setImage(this.getSorties()[0].getEtatLogiqueFil().getNum() ==0 ? new Image("/Horloge/0.png") : new Image("/Horloge/1.png"));
 			try {
-				int i=1;// just pour revenir a la ligne a chaque front de 3 bascules
-			    for(Sequentiels sequentiels : Circuit.getListeEtages())// On parcour chaque composant sequentielle
-			    {
-			    	if (sequentiels.getClass().getSimpleName().equals("Compteur")) {
-			    		System.out.print(((Compteur)sequentiels).getValeur() + " | ");
-					}
-			    	else if(sequentiels.getClass().getSimpleName().equals("T")){
-			    		System.out.print(sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
-					}
-			    	else {
-			    		System.out.print("Valeur : " + ((RegistreDecalage)sequentiels).valeur()+ " |  " + sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
-					}
-			    	
-			    	if(i==1) // condition de retour a la ligne en fonctions du nombre elt contenu dans la liste eds etages
-			    		{
-			    		System.out.println("\n");
-			    		i=1;
-			    		}
-			    	i++;
-			    	
-			    }   
+//				int i=1;// just pour revenir a la ligne a chaque front de 3 bascules
+//			    for(Sequentiels sequentiels : Circuit.getListeEtages())// On parcour chaque composant sequentielle
+//			    {
+//			    	if (sequentiels.getClass().getSimpleName().equals("Compteur")) {
+//			    		System.out.print(((Compteur)sequentiels).getValeur() + " | ");
+//					}
+//			    	else if(sequentiels.getClass().getSimpleName().equals("T")){
+//			    		System.out.print(sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
+//					}
+//			    	else {
+//			    		System.out.print("Valeur : " + ((RegistreDecalage)sequentiels).valeur()+ " |  " + sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
+//					}
+//			    	
+//			    	if(i==1) // condition de retour a la ligne en fonctions du nombre elt contenu dans la liste eds etages
+//			    		{
+//			    		System.out.println("\n");
+//			    		i=1;
+//			    		}
+//			    	i++;
+//			    	
+//			    }   
 			    
 				Thread.sleep(temps);
 				
@@ -102,5 +108,18 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 	}
 
 
+	public ImageView getImage() {
+		return image;
+	}
+
+
+	public void setImage(ImageView image) {
+		this.image = image;
+	}
+
+  public void stop() {
+	  active=false;
+  }
+  
 	
 }

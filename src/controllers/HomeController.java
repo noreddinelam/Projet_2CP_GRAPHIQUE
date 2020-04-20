@@ -272,7 +272,7 @@ public class HomeController extends Controller implements Initializable {
     @FXML
     private ImageView darkMode;
     
-    
+    private ImageView horlogeDeCercuit;
     @FXML
     private AnchorPane work;
     
@@ -373,7 +373,7 @@ public class HomeController extends Controller implements Initializable {
 	////////////////////Appliquer l'animation de rotation   
     @FXML
     void mouseEnterLogo(MouseEvent event) {
-    	rotationDelogo(logo,1,500);
+    	rotationDelogo(logo,1,500,true);
     }
     
     @FXML
@@ -381,16 +381,43 @@ public class HomeController extends Controller implements Initializable {
     	captureEcran();
     }
     
-    @FXML
+   	Thread t1 ;
+	Horloge horloge = null;
+	
+	@FXML
     void onSimuler(MouseEvent event) {
     	simul = (!simul);
+		System.out.println("------------------------------------------------------------------------");
     	if (simul) {
     		simulation.setImage(new Image("homePage_icones/SIMULATION_OFF.png"));
-			Circuit.initialiser();
+		if(! horloged)	Circuit.initialiser();
+    	
+		else {	
+			horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
+    		horloge.setImage(horlogeDeCercuit);
+    		t1=new Thread(horloge);
+    		t1.start();
+		}
+			rotationDelogo(logo,1,1000,false);
 		}
     	else {
     		simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
-			Circuit.defaultCompValue();
+    		Circuit.defaultCompValue();
+    		System.out.println("------------------------------------------------------------------------");
+    		if( horloged)
+				{    		
+    			try {
+    		
+    		horlogeDeCercuit.setImage( new Image("/Horloge/0.png"));
+    				horloge.stop();
+					t1.join();
+				
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				}
+		
 		}
     }
     
@@ -762,7 +789,10 @@ public class HomeController extends Controller implements Initializable {
 							}
 							else 
 							{
-								if( dragImageView.getId().equals("clock")  ) horloged =true;
+								if( dragImageView.getId().equals("clock")  ) {
+									horloged =true;
+									horlogeDeCercuit=dragImageView;
+								}
 								
 								ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
 								addAllPolylinesToWorkSpace(polyline);
@@ -1303,24 +1333,25 @@ public class HomeController extends Controller implements Initializable {
 	        }
 	    }
 	     
-	private void rotationDelogo(ImageView image,int nombreDeboucle,int vitesse) {// Methode de rotation de logo
+	private void rotationDelogo(ImageView image,int nombreDeboucle,int vitesse,boolean returne) {// Methode de rotation de logo
 
 	     RotateTransition rotate = new RotateTransition();           	     
 	        rotate.setAxis(Rotate.Z_AXIS);  	          	       
-	        rotate.setByAngle(360);  	          	     
+	      if(returne)  rotate.setByAngle(360); 
+	      else rotate.setByAngle(1440);
 	        rotate.setCycleCount(nombreDeboucle);  
 	        rotate.setDuration(Duration.millis(vitesse));   
 	        rotate.setAutoReverse(false);  	              
 	        rotate.setNode(image);    
 	        rotate.play();
-	    
+	  
 	        rotate.setOnFinished(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {			         
 				        logo.setRotate(0);
 				}
 			});
-	     
+	    
 	}
  
 	private void tracerLesGuides() {//Methode d'initialitaton des guides

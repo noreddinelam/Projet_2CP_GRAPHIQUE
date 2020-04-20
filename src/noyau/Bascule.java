@@ -141,4 +141,9 @@ public abstract class Bascule extends Sequentiels{
 	public void setPreset(Fil preset) {
 		this.preset = preset;
 	}
+	public void defaultValue() {
+		super.defaultValue();
+		this.sorties[0].setEtat(EtatLogique.ZERO);
+		this.sorties[1].setEtat(EtatLogique.ONE);
+	}
 }
