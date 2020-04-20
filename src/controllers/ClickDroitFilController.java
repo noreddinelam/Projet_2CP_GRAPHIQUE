@@ -63,21 +63,7 @@ public class ClickDroitFilController {
     	while(i >= 0) {
     		InfoPolyline infoLine = list.get(i);
     		supprimer(infoLine);
-    		  if(infoLine.getLineParent() != null ) {
-    	    		infoLine.supprimerPremierNoeuds();
-    	    		workSpace.getChildren().remove(infoLine.getLinePrincipale());
-    	    		list.remove(new InfoPolyline(infoLine.getLinePrincipale()));
-    	    		infoLine.getLinePrincipale().getPoints().clear();
-    		  }else {
-    			  Composant cmpSource = Circuit.getFilFromPolyline(infoLine.getLinePrincipale()).getSource();
-    			  Fil filDeline = Circuit.getFilFromPolyline(infoLine.getLinePrincipale());
-    			  infoLine.setNbFils(0);
-    			  double posX = Circuit.getImageFromComp(cmpSource).getLayoutX()+cmpSource.getLesCoordonnees().getCordSortieInIndex(cmpSource.numCmpSorties(filDeline)).getX() ;
-    			  double posY = Circuit.getImageFromComp(cmpSource).getLayoutY()+cmpSource.getLesCoordonnees().getCordSortieInIndex(cmpSource.numCmpSorties(filDeline)).getY() ;
-			  	  cmpSource.resetPolyline(infoLine.getLinePrincipale(), posX, posY);
-    			  
-			  	  infoLine.getLinePrincipale().setStroke(Color.BLACK);
-    		  }
+    		  
     		  i--;
 		}
 		Stage s = (Stage)supprimer.getScene().getWindow(); 
