@@ -25,6 +25,12 @@ public class Multiplexeur extends Combinatoires {
 	public void genererSorties() { // role executer le fonction du composant 
 		
 		int numeroDeEntreeActif= Integer.parseInt(concatener(commande, this.nbCommande),2); //determiner le numero de sortie activee
+		String binaryString = Integer.toBinaryString(numeroDeEntreeActif);
+		for (int i = binaryString.length(); i < nbCommande; i++) {
+			binaryString = '0' + binaryString;
+		}
+		StringBuilder stringBuilder = new StringBuilder(binaryString);
+		numeroDeEntreeActif = Integer.valueOf(stringBuilder.reverse().toString(), 2);
 		sorties[0].setEtatLogiqueFil(entrees[numeroDeEntreeActif].getEtatLogiqueFil());		
 		
 	}

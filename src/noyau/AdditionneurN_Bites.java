@@ -40,12 +40,11 @@ public class AdditionneurN_Bites extends Additionneur {
 		switch (nombreEntree) {
 		case 3:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(1, 18.6), 0);
-			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(1, 49), 1);
+			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(1, 49.8), 1);
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 34.7), 2);
 			
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(61, 32.4), 0);
 			lesCoordonnees.setCordSortieInIndex(new Coordonnees(62, 11.4), 1);
-			
 		}break;
 		case 5:{
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(1, 12), 0);

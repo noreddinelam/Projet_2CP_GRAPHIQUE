@@ -21,11 +21,7 @@ public abstract class Composant implements Serializable{
 	protected boolean sleep = false;
 	protected Direction direction = Direction.Est;
 	protected LesCoordonnees lesCoordonnees ;
-	
-	
-	
-	
-	
+		
 	public Composant(int nombreEntree,String nom) {
 		this.nombreEntree = nombreEntree;
 		this.nom =nom;
@@ -78,8 +74,10 @@ public abstract class Composant implements Serializable{
 			
 			for (int i = 0; i < nombreSortie; i++) 
 			{
+				
 				if(sorties[i].getEtatLogiqueFil().getNum() != etatFinal[i].getNum())  //verifier si l'etat precedent du composant a changé ou non 
 				{
+					
 					etatFinal[i]=sorties[i].getEtatLogiqueFil(); //mettre a jour l'etat final du composant 
 					sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
 				}
@@ -209,7 +207,9 @@ public abstract class Composant implements Serializable{
 	
 	public void relierANouveau() { // elle permet de relier à nouveau le composant si il est derelier de ces fils
 		for (int i = 0; i < nombreEntree; i++) {
-			entrees[i].addDestination(this);
+			if (entrees[i] != null) {
+				entrees[i].addDestination(this);
+			}
 		}
 	}
 

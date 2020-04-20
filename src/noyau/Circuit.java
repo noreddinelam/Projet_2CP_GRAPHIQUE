@@ -1,15 +1,13 @@
 package noyau;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
@@ -195,7 +193,7 @@ public class Circuit implements Serializable{
 				return entry.getValue();
 			}
 		}
-		return null;
+		return new ArrayList<InfoPolyline>();
 	}
 	public static InfoPolyline getInfoPolylineFromPolyline(Polyline ligne) { 
 		for (Entry<Fil, ArrayList<InfoPolyline>> entry : filUtilises.entrySet()) {

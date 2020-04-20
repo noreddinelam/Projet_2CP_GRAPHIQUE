@@ -55,6 +55,7 @@ public class InfoPolyline {
 		this.nbFils = nbFils;
 	}
 	
+
 	public void supprimerPremierNoeuds() {
 		Coordonnees crdPere = new Coordonnees(0,0),crdDebt = new Coordonnees(linePrincipale.getPoints().get(0),linePrincipale.getPoints().get(1)),
 					crdAvant = new Coordonnees(lineParent.getPoints().get(0),lineParent.getPoints().get(1));
@@ -73,8 +74,7 @@ public class InfoPolyline {
 					}else {
 						lineParent.getPoints().remove(i);
 						lineParent.getPoints().remove(i);
-					}
-				
+					}			
 				break;
 			}
 			i = i + 2;	

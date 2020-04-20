@@ -13,7 +13,8 @@ import noyau.Composant;
 
 public class ClickDroit extends Stage{
 
-	public ClickDroit(Composant cmp,Double x,Double y,AnchorPane workSpace) {
+
+	public ClickDroit(Composant cmp,Double x,Double y,AnchorPane workSpace, Stage st) {
 		try
 		{			
 			FXMLLoader loader = new FXMLLoader();
@@ -29,6 +30,8 @@ public class ClickDroit extends Stage{
 			this.initStyle(StageStyle.UNDECORATED);
 			this.setY(y);
 			this.setFullScreen(false);
+			this.toBack();
+			this.initOwner(st);
 			this.show();
 		} catch(Exception e) {
 			e.printStackTrace();

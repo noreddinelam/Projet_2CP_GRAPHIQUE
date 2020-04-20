@@ -10,18 +10,19 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
+import noyau.Bascule;
 import noyau.Circuit;
+import noyau.Combinatoires;
 import noyau.Composant;
 import noyau.Fil;
 import noyau.InfoPolyline;
+import noyau.Sequentiels;
 
 public class ClickDroitFilController {
 
 	private Polyline line;
 	
 	private AnchorPane workSpace;
-	
-	
 	
     public AnchorPane getPane() {
 		return workSpace;
@@ -51,6 +52,7 @@ public class ClickDroitFilController {
     @FXML
     void supprimer(ActionEvent event) {
     	InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
+    	System.out.println(infoLine.isRelier());
     	supprimer(infoLine);
     	Stage s = (Stage)supprimer.getScene().getWindow(); 
     	s.close();
@@ -59,26 +61,13 @@ public class ClickDroitFilController {
     @FXML
     void supprimerTous(ActionEvent event) {
     	ArrayList<InfoPolyline> list = Circuit.getListFromPolyline(line);
+    	System.out.println("contenu : "+ list);
     	int i = list.size()-1;
     	while(i >= 0) {
     		InfoPolyline infoLine = list.get(i);
     		supprimer(infoLine);
-    		  /*if(infoLine.getLineParent() != null ) {
-    	    		infoLine.supprimerPremierNoeuds();
-    	    		workSpace.getChildren().remove(infoLine.getLinePrincipale());
-    	    		list.remove(new InfoPolyline(infoLine.getLinePrincipale()));
-    	    		infoLine.getLinePrincipale().getPoints().clear();
-    		  }else {
-    			  Composant cmpSource = Circuit.getFilFromPolyline(infoLine.getLinePrincipale()).getSource();
-    			  Fil filDeline = Circuit.getFilFromPolyline(infoLine.getLinePrincipale());
-    			  infoLine.setNbFils(0);
-    			  double posX = Circuit.getImageFromComp(cmpSource).getLayoutX()+cmpSource.getLesCoordonnees().getCordSortieInIndex(cmpSource.numCmpSorties(filDeline)).getX() ;
-    			  double posY = Circuit.getImageFromComp(cmpSource).getLayoutY()+cmpSource.getLesCoordonnees().getCordSortieInIndex(cmpSource.numCmpSorties(filDeline)).getY() ;
-			  	  cmpSource.resetPolyline(infoLine.getLinePrincipale(), posX, posY);
-    			  
-			  	  infoLine.getLinePrincipale().setStroke(Color.BLACK);
-    		  }*/
-    		  i--;
+    	  i--;
+
 		}
 		Stage s = (Stage)supprimer.getScene().getWindow(); 
     	s.close();
@@ -88,7 +77,21 @@ public class ClickDroitFilController {
     	if(infoLine.getNbFils() == 0 ) { //On peut le supprimer
     		
     		if(infoLine.isRelier()){ //relier a une entrée
-    			infoLine.getDestination().getEntrees()[infoLine.getEntre()] = null;
+    			Fil fil = new Fil(null);
+    			if(infoLine.getEntre() >= 0) {
+    				infoLine.getDestination().getEntrees()[infoLine.getEntre()] = null;
+				}else if(-5 < infoLine.getEntre()) {
+					infoLine.getDestination().getEntrees()[Math.abs(infoLine.getEntre())-1] = null;
+				}else if(infoLine.getEntre() == -5) {
+					((Sequentiels)infoLine.getDestination()).setEntreeHorloge(null);
+				}else if(infoLine.getEntre() == -6) {
+					((Sequentiels)infoLine.getDestination()).setClear(fil);
+				}else if(infoLine.getEntre() == -7) {
+					((Bascule)infoLine.getDestination()).setPreset(fil);
+				}else if(infoLine.getEntre() == -8) {
+					((Sequentiels)infoLine.getDestination()).setLoad(fil);
+				}
+    			
     			Circuit.getFilFromPolyline(line).getDestination().remove(infoLine.getDestination());
     			infoLine.setRelier(false);
     		}
