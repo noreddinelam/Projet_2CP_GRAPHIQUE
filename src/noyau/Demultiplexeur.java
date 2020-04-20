@@ -22,7 +22,12 @@ public class Demultiplexeur extends Combinatoires{
 	public void genererSorties() {
 		
 		int sortieActif=  Integer.parseInt(concatener(commande, nbCommande),2); //concatener les commandes//covertir les commandes en un entier
-
+		String binaryString = Integer.toBinaryString(sortieActif);
+		for (int i = binaryString.length(); i < nbCommande; i++) {
+			binaryString = '0' + binaryString;
+		}
+		StringBuilder stringBuilder = new StringBuilder(binaryString);
+		sortieActif = Integer.valueOf(stringBuilder.reverse().toString(), 2);
 		for(int i = 0 ; i < nombreSortie ; i++) {//parcourir les sorties en mettant le fil correspondant a 1 et le reste a zero
 			if (i == sortieActif)
 				sorties[i].setEtatLogiqueFil(entrees[0].getEtatLogiqueFil());

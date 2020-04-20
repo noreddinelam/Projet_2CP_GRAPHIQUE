@@ -21,6 +21,7 @@ public class SourceConstante extends Composant{
 	@Override
 	public void genererSorties() {
 		// TODO Auto-generated method stub
+		sorties[0].setEtat(etatLogique);
 	}
 
 	@Override

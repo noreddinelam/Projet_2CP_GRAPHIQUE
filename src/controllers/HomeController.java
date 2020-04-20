@@ -1121,7 +1121,6 @@ public class HomeController extends Controller implements Initializable {
 
 										afficheurY.setText("Y : "+ yString);
 
-
 									}
 
 									else 
