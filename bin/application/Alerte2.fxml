@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="413.0" style="-fx-background-color: #303337;" stylesheets="@../styleFile/alerte.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Line endX="142.5" layoutX="251.0" layoutY="84.0" startX="-230.5" style="-fx-stroke: #535c68;" />
+      <Text fx:id="titreAlerte" layoutX="1.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Alerte" textAlignment="CENTER" wrappingWidth="413.0">
+         <font>
+            <Font name="Calisto MT" size="40.0" />
+         </font>
+      </Text>
+      <Text fx:id="messageAlerte" fill="WHITE" layoutX="39.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="blablablablablab lablablablablablablablablab la blabla blablabla blablablablablabla blablablabla blablablablablab labla " wrappingWidth="336.0">
+         <font>
+            <Font name="Calisto MT" size="14.0" />
+         </font>
+      </Text>
+      <Button fx:id="ouiButton" layoutX="232.0" layoutY="203.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="90.0" text="Oui">
+         <font>
+            <Font name="Calisto MT" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="annulerButton" layoutX="93.0" layoutY="203.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="90.0" text="Annuler">
+         <font>
+            <Font name="Calisto MT" size="16.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

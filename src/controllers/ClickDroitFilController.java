@@ -10,10 +10,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
+import noyau.Bascule;
 import noyau.Circuit;
+import noyau.Combinatoires;
 import noyau.Composant;
 import noyau.Fil;
 import noyau.InfoPolyline;
+import noyau.Sequentiels;
 
 public class ClickDroitFilController {
 
@@ -49,6 +52,7 @@ public class ClickDroitFilController {
     @FXML
     void supprimer(ActionEvent event) {
     	InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
+    	System.out.println(infoLine.isRelier());
     	supprimer(infoLine);
     	Stage s = (Stage)supprimer.getScene().getWindow(); 
     	s.close();
@@ -62,7 +66,8 @@ public class ClickDroitFilController {
     	while(i >= 0) {
     		InfoPolyline infoLine = list.get(i);
     		supprimer(infoLine);
-    		i--;
+    	  i--;
+
 		}
 		Stage s = (Stage)supprimer.getScene().getWindow(); 
     	s.close();
@@ -72,7 +77,21 @@ public class ClickDroitFilController {
     	if(infoLine.getNbFils() == 0 ) { //On peut le supprimer
     		
     		if(infoLine.isRelier()){ //relier a une entrée
-    			infoLine.getDestination().getEntrees()[infoLine.getEntre()] = null;
+    			Fil fil = new Fil(null);
+    			if(infoLine.getEntre() >= 0) {
+    				infoLine.getDestination().getEntrees()[infoLine.getEntre()] = null;
+				}else if(-5 < infoLine.getEntre()) {
+					infoLine.getDestination().getEntrees()[Math.abs(infoLine.getEntre())-1] = null;
+				}else if(infoLine.getEntre() == -5) {
+					((Sequentiels)infoLine.getDestination()).setEntreeHorloge(null);
+				}else if(infoLine.getEntre() == -6) {
+					((Sequentiels)infoLine.getDestination()).setClear(fil);
+				}else if(infoLine.getEntre() == -7) {
+					((Bascule)infoLine.getDestination()).setPreset(fil);
+				}else if(infoLine.getEntre() == -8) {
+					((Sequentiels)infoLine.getDestination()).setLoad(fil);
+				}
+    			
     			Circuit.getFilFromPolyline(line).getDestination().remove(infoLine.getDestination());
     			infoLine.setRelier(false);
     		}

@@ -967,11 +967,10 @@ public class HomeController extends Controller implements Initializable {
 				// TODO Auto-generated method stub
 				eleementAdrager.setCursor(Cursor.DEFAULT);
 			}
-		});
-
-		eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() { /// s'il ya clic sur le compoant
-			public void handle(MouseEvent e) {
-				if (! simul) {		
+		});	    
+	    eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
+	        public void handle(MouseEvent e) {
+	        	if (! simul) {		
 					posX = eleementAdrager.getLayoutX();
 					posY = eleementAdrager.getLayoutY();
 
@@ -1011,95 +1010,109 @@ public class HomeController extends Controller implements Initializable {
 						clickDroitFenetre.show();
 						elementAmodifier=eleementAdrager;	        		
 					}
-					//traitement de pressed ajoutergest apres coallge
-					int size = 0;
-					Composant cmp = Circuit.getCompFromImage(eleementAdrager);
-					Polyline line ;
-					listEntrees.clear();
-					Coordonnees crdDebut = new Coordonnees(0,0);
-					int i = 0;
-					for(i = 0; i < cmp.getNombreEntree();i++){
-						if(cmp.getEntrees()[i] != null) {
-							crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
-							line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
-							size = line.getPoints().size();
-							line.getPoints().add(size-3,line.getPoints().get(size - 2));
-							line.getPoints().add(size-3,line.getPoints().get(size - 2));
-							listEntrees.add(line);
-						}
-					}
-					if(cmp.getLesCoordonnees().getNbCordCommandes() != 0) {
-						for(i = 0; i < cmp.getLesCoordonnees().getNbCordCommandes();i++){
-							if( ((Combinatoires)cmp).getCommande()[i] != null) {
-								crdDebut = cmp.getLesCoordonnees().coordReelesCommande(eleementAdrager, i);
-								line = ((Combinatoires)cmp).getCommande()[i].polylineParPoint(crdDebut);
-								size = line.getPoints().size();
-								line.getPoints().add(size-3,line.getPoints().get(size - 2));
-								line.getPoints().add(size-3,line.getPoints().get(size - 2));
-								listEntrees.add(line);
-							}
-						}
-					}
-					if(cmp.getLesCoordonnees().getCordHorloge() != null ) {
-						if( ((Sequentiels)cmp).getEntreeHorloge() != null) {
-							crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
-							line = ((Sequentiels)cmp).getEntreeHorloge().polylineParPoint(crdDebut);
-							size = line.getPoints().size();
-							line.getPoints().add(size-3,line.getPoints().get(size - 2));
-							line.getPoints().add(size-3,line.getPoints().get(size - 2));
-							listEntrees.add(line);
-						}
+              	//traitement de pressed ajoutergest apres coallge
+	        	int size = 0;
+	        	Composant cmp = Circuit.getCompFromImage(eleementAdrager);
+	        	Polyline line ;
+	        	listEntrees.clear();
+	        	Coordonnees crdDebut = new Coordonnees(0,0);
+	        	int i = 0;
+	        	for(i = 0; i < cmp.getNombreEntree();i++){
+	        		if(cmp.getEntrees()[i] != null) {
+	        			crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
+	        			line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
+//	        			size = line.getPoints().size();
+//	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+	    	        	listEntrees.add(line);
+	        		}
+	        	}
+	        	if(cmp.getLesCoordonnees().getNbCordCommandes() != 0) {
+	        		for(i = 0; i < cmp.getLesCoordonnees().getNbCordCommandes();i++){
+		        		if( ((Combinatoires)cmp).getCommande()[i] != null) {
+		        			crdDebut = cmp.getLesCoordonnees().coordReelesCommande(eleementAdrager, i);
+		        			line = ((Combinatoires)cmp).getCommande()[i].polylineParPoint(crdDebut);
+//		        			size = line.getPoints().size();
+//		        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//		    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+		    	        	listEntrees.add(line);
+		        		}
+		        	}
+	        	}
+				if(cmp.getLesCoordonnees().getCordHorloge() != null ) {
+	        		if( ((Sequentiels)cmp).getEntreeHorloge() != null) {
+	        			crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
+	        			line = ((Sequentiels)cmp).getEntreeHorloge().polylineParPoint(crdDebut);
+//	        			size = line.getPoints().size();
+//	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+	    	        	listEntrees.add(line);
+	        		}
 
+				}
+				if(cmp.getLesCoordonnees().getCordClear() != null ) {
+					if(((Sequentiels)cmp).getClear().getSource() != null) {
+						crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager, i);
+	        			line = ((Sequentiels)cmp).getClear().polylineParPoint(crdDebut);
+//	        			size = line.getPoints().size();
+//	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+	    	        	listEntrees.add(line);
 					}
-					if(cmp.getLesCoordonnees().getCordClear() != null ) {
-						if(((Sequentiels)cmp).getClear().getSource() != null) {
-							crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager, i);
-							line = ((Sequentiels)cmp).getClear().polylineParPoint(crdDebut);
-							size = line.getPoints().size();
-							line.getPoints().add(size-3,line.getPoints().get(size - 2));
-							line.getPoints().add(size-3,line.getPoints().get(size - 2));
-							listEntrees.add(line);
-						}
+				}
+				if(cmp.getLesCoordonnees().getCordPreset() != null) {
+					if(((Bascule)cmp).getPreset().getSource() != null){
+						crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager, i);
+	        			line = ((Bascule)cmp).getPreset().polylineParPoint(crdDebut);
+//	        			size = line.getPoints().size();
+//	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+	    	        	listEntrees.add(line);
+	    			}
+				}
+				if(cmp.getLesCoordonnees().getCordLoad() != null ) {
+					if(((Sequentiels)cmp).getLoad().getSource() != null) {
+						crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager, i);
+	        			line = ((Sequentiels)cmp).getLoad().polylineParPoint(crdDebut);
+//	        			size = line.getPoints().size();
+//	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+	    	        	listEntrees.add(line);
 					}
-					if(cmp.getLesCoordonnees().getCordPreset() != null) {
-						if(((Bascule)cmp).getPreset().getSource() != null){
-							crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager, i);
-							line = ((Bascule)cmp).getPreset().polylineParPoint(crdDebut);
-							size = line.getPoints().size();
-							line.getPoints().add(size-3,line.getPoints().get(size - 2));
-							line.getPoints().add(size-3,line.getPoints().get(size - 2));
-							listEntrees.add(line);
-						}
-					}
-					if(cmp.getLesCoordonnees().getCordLoad() != null ) {
-						if(((Sequentiels)cmp).getLoad().getSource() != null) {
-							crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager, i);
-							line = ((Sequentiels)cmp).getLoad().polylineParPoint(crdDebut);
-							size = line.getPoints().size();
-							line.getPoints().add(size-3,line.getPoints().get(size - 2));
-							line.getPoints().add(size-3,line.getPoints().get(size - 2));
-							listEntrees.add(line);
-						}
-
-					}
-					listSorties.clear();
-					for(i = 0; i < cmp.getNombreSortie();i++){
-						crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, i);
-						line = Circuit.getPolylineFromFil(cmp.getSorties()[i]).get(0).getLinePrincipale();
-						size = line.getPoints().size();
-						if(insererNoedDebut) {
-							line.getPoints().add(2,line.getPoints().get(3));
-							line.getPoints().add(2,line.getPoints().get(3));
-						}
-						listSorties.add(line);
-					}
-					insererNoedDebut = false;
-					//hna tekmeel
+				}
+	        	listSorties.clear();
+	        	for(i = 0; i < cmp.getNombreSortie();i++){
+	        			crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, i);
+	        			line = Circuit.getPolylineFromFil(cmp.getSorties()[i]).get(0).getLinePrincipale();
+	        			size = line.getPoints().size();
+	        			//if(insererNoedDebut) {
+	        			//line.getPoints().add(2,line.getPoints().get(3));
+	    	        	//line.getPoints().add(2,line.getPoints().get(3));
+	        			//}
+	    	        	listSorties.add(line);
+	        	}
+	        	//hna tekmeel
 					eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() { /// si le composant est dragé .
 						public void handle(MouseEvent e) {
 							if (! simul) {
 								if (e.getButton() == MouseButton.PRIMARY) {
-
+									//ajout des points
+		        					Polyline line;
+		        					int i = 0,size = 0;
+		        		        	if(insererNoedDebut) {
+		        		        		for( i = 0; i < listSorties.size();i++){
+		        		        			line = listSorties.get(i);
+		        		        			line.getPoints().add(2,line.getPoints().get(3));
+		        		        			line.getPoints().add(2,line.getPoints().get(3));
+		        		        		}
+		        		        		for(i = 0;i < listEntrees.size();i++) {
+		        		        			line = listEntrees.get(i);
+		        		        			size = line.getPoints().size();
+		        		        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+		        		    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+		        		        		}
+		        		        	insererNoedDebut = false;
+		        		        	}
 									Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
 									eleementAdrager.relocate(
 											(int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
@@ -1162,6 +1175,7 @@ public class HomeController extends Controller implements Initializable {
 					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() { /// quand le user depose le composant
 						public void handle(MouseEvent e) {
 							if (! simul) {
+								insererNoedDebut = true;
 								dragItem = null;  	 
 								if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
 								{
