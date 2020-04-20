@@ -449,7 +449,7 @@ public class HomeController extends Controller implements Initializable {
     	    ajouterLeGest(rs);
     	    ajouterLeGest(cpt);
     	    ajouterLeGest(registreDecalge);
-    	    tracerLagrill();
+    	    //tracerLagrill();
 		  
     	    
     	    ////////////// tracer les regles 
@@ -949,9 +949,9 @@ public class HomeController extends Controller implements Initializable {
 	        		if(cmp.getEntrees()[i] != null) {
 	        			crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
 	        			line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
-	        			size = line.getPoints().size();
-	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
-	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	        			size = line.getPoints().size();
+//	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
 	    	        	listEntrees.add(line);
 	        		}
 	        	}
@@ -960,9 +960,9 @@ public class HomeController extends Controller implements Initializable {
 		        		if( ((Combinatoires)cmp).getCommande()[i] != null) {
 		        			crdDebut = cmp.getLesCoordonnees().coordReelesCommande(eleementAdrager, i);
 		        			line = ((Combinatoires)cmp).getCommande()[i].polylineParPoint(crdDebut);
-		        			size = line.getPoints().size();
-		        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
-		    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//		        			size = line.getPoints().size();
+//		        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//		    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
 		    	        	listEntrees.add(line);
 		        		}
 		        	}
@@ -971,9 +971,9 @@ public class HomeController extends Controller implements Initializable {
 	        		if( ((Sequentiels)cmp).getEntreeHorloge() != null) {
 	        			crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
 	        			line = ((Sequentiels)cmp).getEntreeHorloge().polylineParPoint(crdDebut);
-	        			size = line.getPoints().size();
-	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
-	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	        			size = line.getPoints().size();
+//	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
 	    	        	listEntrees.add(line);
 	        		}
 
@@ -982,9 +982,9 @@ public class HomeController extends Controller implements Initializable {
 					if(((Sequentiels)cmp).getClear().getSource() != null) {
 						crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager, i);
 	        			line = ((Sequentiels)cmp).getClear().polylineParPoint(crdDebut);
-	        			size = line.getPoints().size();
-	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
-	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	        			size = line.getPoints().size();
+//	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
 	    	        	listEntrees.add(line);
 					}
 				}
@@ -992,9 +992,9 @@ public class HomeController extends Controller implements Initializable {
 					if(((Bascule)cmp).getPreset().getSource() != null){
 						crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager, i);
 	        			line = ((Bascule)cmp).getPreset().polylineParPoint(crdDebut);
-	        			size = line.getPoints().size();
-	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
-	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	        			size = line.getPoints().size();
+//	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
 	    	        	listEntrees.add(line);
 	    			}
 				}
@@ -1002,9 +1002,9 @@ public class HomeController extends Controller implements Initializable {
 					if(((Sequentiels)cmp).getLoad().getSource() != null) {
 						crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager, i);
 	        			line = ((Sequentiels)cmp).getLoad().polylineParPoint(crdDebut);
-	        			size = line.getPoints().size();
-	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
-	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	        			size = line.getPoints().size();
+//	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+//	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
 	    	        	listEntrees.add(line);
 					}
 
@@ -1014,19 +1014,37 @@ public class HomeController extends Controller implements Initializable {
 	        			crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, i);
 	        			line = Circuit.getPolylineFromFil(cmp.getSorties()[i]).get(0).getLinePrincipale();
 	        			size = line.getPoints().size();
-	        			if(insererNoedDebut) {
-	        			line.getPoints().add(2,line.getPoints().get(3));
-	    	        	line.getPoints().add(2,line.getPoints().get(3));
-	        			}
+	        			//if(insererNoedDebut) {
+	        			//line.getPoints().add(2,line.getPoints().get(3));
+	    	        	//line.getPoints().add(2,line.getPoints().get(3));
+	        			//}
 	    	        	listSorties.add(line);
 	        	}
-	        	insererNoedDebut = false;
+	       
 	        	//hna tekmeel
+	       
 	 	        	eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
 	        		public void handle(MouseEvent e) {
 	        			if (! simul) {
 	        				if (e.getButton() == MouseButton.PRIMARY) {
-
+	        				  	//ajout des points
+	        					Polyline line;
+	        					int i = 0,size = 0;
+	        		        	if(insererNoedDebut) {
+	        		        		for( i = 0; i < listSorties.size();i++){
+	        		        			line = listSorties.get(i);
+	        		        			line.getPoints().add(2,line.getPoints().get(3));
+	        		        			line.getPoints().add(2,line.getPoints().get(3));
+	        		        		}
+	        		        		for(i = 0;i < listEntrees.size();i++) {
+	        		        			line = listEntrees.get(i);
+	        		        			size = line.getPoints().size();
+	        		        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+	        		    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+	        		        		}
+	        		        	insererNoedDebut = false;
+	        		        	}
+	        		        	//nouds
 	        					Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
 	        					eleementAdrager.relocate(
 	        							(int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
@@ -1087,7 +1105,8 @@ public class HomeController extends Controller implements Initializable {
 	        						relocate = true;
 	        					
 	        					tracerSortieApresCollage(line, crdDebut, relocate);*/
-	        					int i = 0, j = 0 ;
+	        					int  j = 0 ;
+	        					i = 0;
 	        					Coordonnees crdDebut;
 	        					Polyline p;
 	        					while(i < cmp.getNombreSortie()) {
@@ -1176,6 +1195,7 @@ public class HomeController extends Controller implements Initializable {
 					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
 							if (! simul) {
+							insererNoedDebut = true;
 							dragItem = null;  
 							if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
 							{
@@ -1199,7 +1219,6 @@ public class HomeController extends Controller implements Initializable {
 								posX = eleementAdrager.getLayoutX();
 								posY = eleementAdrager.getLayoutY();
 							}
-							insererNoedDebut = true;
 							}
 						}
 					});

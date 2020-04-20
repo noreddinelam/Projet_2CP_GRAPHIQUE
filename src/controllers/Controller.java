@@ -196,6 +196,7 @@ public abstract class Controller {
 					infoLine2.copierRelierInfo(infoLine1);
 					infoLine1.setLineParent(line2); //line 2 est le pere de line 1
 					infoLine1.setNbFils(0);
+					infoLine1.setRelier(false);
 					
 					listDePolylines.add(listDePolylines.indexOf(infoLine1), infoLine2);
 					Polyline line3 = initialser(x, y);
@@ -233,11 +234,11 @@ public abstract class Controller {
 						/////////////////////////////relier/////////////////////////////////////
 						destination = intersectionFilComposants(arg0.getSceneX()-180,arg0.getSceneY());
 						/*   		entree >= 0   :entres
-						 * 		-4 < entree < 0	  :commandes
-						 * 			entree = -4	  :horloge
-						 * 			entree = -5	  :clear
-						 * 			entree = -6   :preset
-						 * 			entree = -7   :load*/
+						 *    -4 <= entree < 0	  :commandes
+						 * 			entree = -5	  :horloge
+						 * 			entree = -6	  :clear
+						 * 			entree = -7   :preset
+						 * 			entree = -8   :load*/
 						if(entree >= 0) {
 							Circuit.relier(source, destination, sortie, entree);
 							System.out.println("trabtooo entre");
