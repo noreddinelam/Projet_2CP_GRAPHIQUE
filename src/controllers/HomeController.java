@@ -1782,7 +1782,6 @@ public class HomeController extends Controller implements Initializable {
 
 	@FXML
 	void annuler(ActionEvent event) { /// pour appliquer l'opertaion de undo changes
-		//System.out.println("le boutton annuler est clique");
 		undoChanges(workSpace);
 	}
 
