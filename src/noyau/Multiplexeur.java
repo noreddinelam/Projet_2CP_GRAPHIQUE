@@ -20,8 +20,6 @@ public class Multiplexeur extends Combinatoires {
 		lesCoordonnees = new LesCoordonnees(nombreEntree, 1, nbCommande);
 	}
 	
-	
-	
 	public void genererSorties() { // role executer le fonction du composant 
 		
 		int numeroDeEntreeActif= Integer.parseInt(concatener(commande, this.nbCommande),2); //determiner le numero de sortie activee
