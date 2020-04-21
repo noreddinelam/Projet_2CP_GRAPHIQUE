@@ -223,6 +223,7 @@ public abstract class Controller {
 				@Override
 				public void handle(MouseEvent arg0) {
 					// TODO Auto-generated method stub
+
 					if (! simul) {
 						if(arg0.getButton() == MouseButton.PRIMARY) {
 							workSpace.getChildren().remove(guideFilX);
@@ -278,9 +279,11 @@ public abstract class Controller {
 									line.getPoints().remove(der);line.getPoints().remove(der-1);}
 							}
 							//System.out.println(line.getPoints().size());
+
 						}
 					}
 				}
+				
 			});
 		}
 	
