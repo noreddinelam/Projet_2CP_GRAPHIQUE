@@ -35,9 +35,6 @@ public class Main extends Application {
 						controller.setHomeControllerScene(scene);
 						controller.inisialiser();
 						
-						
-						
-						
 						/*FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Home.fxml"));
 		                Parent root = (Parent) fxmlLoader.load();
 						HomeController controller = new HomeController(primaryStage);*/
@@ -53,11 +50,6 @@ public class Main extends Application {
 //				        fade.setNode(root);  
 //				        fade.play(); 
 						//Scene scene = new Scene(root);
-						
-						
-						
-											
-						
 						primaryStage.setScene(scene);
 						
 						//primaryStage.initStyle(StageStyle.UNDECORATED);

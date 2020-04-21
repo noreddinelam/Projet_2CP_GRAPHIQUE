@@ -1804,18 +1804,13 @@ public class HomeController extends Controller implements Initializable {
 	    
 	    
 	    public void couper() {
-	    	System.out.println("le coupement de l'element : "+elementSeclecionner.getId());
 			copyActive = true;
 		    setCopierActive(true);	  
-
 		    imageComposantAcoller = new ImageView();
 		    imageComposantAcoller.setId(elementSeclecionner.getId());
 			instanceComposant(imageComposantAcoller);		
 			cmp1 = Circuit.getCompFromImage(elementSeclecionner);
 			cmp2 = Circuit.getCompFromImage(imageComposantAcoller);
-			
-			
-			
 			cmp2.setDirection(cmp1.getDirection());
 			cmp2.setIcon(cmp1.getIcon());
 			cmp2.setLesCoordonnees(cmp1.getLesCoordonnees());
@@ -1823,7 +1818,6 @@ public class HomeController extends Controller implements Initializable {
 			cmp2.setNombreEntree(cmp1.getNombreEntree());
 			cmp2.setNombreSortie(cmp1.getNombreSortie());
 			
-			//setComposantAttributs(cmp2, cmp1);
 			HomeController.elementAsuprimer=elementSeclecionner;
 			HomeController.sauveGarderSupression();		
 			if(elementSeclecionner.getId().equals("clock")) HomeController.horloged =false;
@@ -1838,7 +1832,6 @@ public class HomeController extends Controller implements Initializable {
 	    public void coller() {
 	    	
 	    	if(getCopierActive()) {
-	    		System.out.println("l'operation du collage est termine !");
 	    	  	if(!copyActive)
 	    	  		copier();
 	    		imageComposantAcoller.setLayoutX(x);
@@ -1871,7 +1864,7 @@ public class HomeController extends Controller implements Initializable {
 	    
 	    
 	    
-	    public static void setComposantAttributs(Composant cmp2, Composant cmp1) {
+	    public static void setComposantAttributs(Composant cmp2, Composant cmp1) {//pour setter les differents attributs
 	    	if(cmp1 == null)
 	    		System.out.println("the cmp1 is null");
 			cmp2.setDirection(cmp1.getDirection());
