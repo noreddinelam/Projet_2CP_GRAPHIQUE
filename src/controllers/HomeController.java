@@ -371,7 +371,7 @@ public class HomeController extends Controller implements Initializable {
     private ImageView darkMode;
     
 
-    private ImageView horlogeDeCercuit;
+    static public ImageView horlogeDeCercuit;
 
     @FXML
     private AnchorPane work;
@@ -467,7 +467,7 @@ public class HomeController extends Controller implements Initializable {
     	
 		else {	
 			horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
-    		horloge.setImage(horlogeDeCercuit);
+    		//horloge.setImage(horlogeDeCercuit);
     		t1=new Thread(horloge);
     		t1.start();
 		}
@@ -481,9 +481,10 @@ public class HomeController extends Controller implements Initializable {
 				{    		
     			try {
     		
-    		horlogeDeCercuit.setImage( new Image("/Horloge/0.png"));
+    				horlogeDeCercuit.setImage( new Image("/Horloge/0.png"));
     				horloge.stop();
 					t1.join();
+					
 				
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -1058,6 +1059,7 @@ public class HomeController extends Controller implements Initializable {
 	        		if(cmp.getEntrees()[i] != null) {
 	        			crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
 	        			line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
+	        			System.out.println("jdhfkj : "+line);
 //	        			size = line.getPoints().size();
 //	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
 //	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
@@ -1659,14 +1661,17 @@ public class HomeController extends Controller implements Initializable {
 	
 	@FXML
 	void supprimerTout(ActionEvent event) { /// la suppression de tout le contenu de la grille
-		Circuit.getCompUtilises().clear();
-		Circuit.getFilUtilises().clear();
-		Circuit.getEntreesCircuit().clear();
-		Circuit.getSortiesCircuit().clear();
-		Circuit.getListeEtages().clear();
-		workSpace.getChildren().clear();
-		//tracerLagrill();
-		tracerLesregles(workSpace);	
+		if (! simul) {
+			Circuit.getCompUtilises().clear();
+			Circuit.getFilUtilises().clear();
+			Circuit.getEntreesCircuit().clear();
+			Circuit.getSortiesCircuit().clear();
+			Circuit.getListeEtages().clear();
+			workSpace.getChildren().clear();
+			horloged = false;
+			//tracerLagrill();
+			tracerLesregles(workSpace);	
+		}
 	}    
 
 	@FXML
@@ -1711,8 +1716,8 @@ public class HomeController extends Controller implements Initializable {
 				cmp2.setNom(cmp.getNom());
 				cmp2.setNombreEntree(cmp.getNombreEntree());
 				cmp2.setNombreSortie(cmp.getNombreSortie());
-				cmp2.setCord();
-				cmp2.generatePolyline(ctrlX, ctrlY);	
+//				cmp2.setCord();
+//				cmp2.generatePolyline(ctrlX, ctrlY);	
 				Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
 				dragImageView.setImage(img);
 				dragImageView.setFitHeight(img.getHeight());
@@ -1787,13 +1792,18 @@ public class HomeController extends Controller implements Initializable {
 
 	@FXML
 	void supprimer(ActionEvent event) { /// pour appliquer une suppression sur 
-		cmp = Circuit.getCompFromImage(elementSeclecionner);
-		elementAsuprimer = elementSeclecionner;
-		sauveGarderSupression();
-		workSpace.getChildren().remove(elementSeclecionner);
-		ArrayList<Polyline> lineListe=Circuit.supprimerComp(cmp);	
-		for(Polyline line : lineListe)
-			workSpace.getChildren().remove(line);
+		if (elementSeclecionner != null) {
+			cmp = Circuit.getCompFromImage(elementSeclecionner);
+			elementAsuprimer = elementSeclecionner;
+			sauveGarderSupression();
+			if(elementAsuprimer.getId().equals("clock"))
+			{
+				HomeController.horloged =false;
+				HomeController.horlogeDeCercuit =null; 
+			}
+			workSpace.getChildren().remove(elementSeclecionner);
+			removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));
+		}
 	}
 
 	@FXML

@@ -10,11 +10,10 @@ public abstract class Sequentiels extends Composant {
 	protected Fil load = null;
 	protected Front front;
 	protected ArrayList<Integer> etages = new ArrayList<Integer>();
-	protected EtatLogique etatPrec[];
+	protected EtatLogique etatPrec[] = new EtatLogique[10];
 	
 	public Sequentiels(int nombreEntree,String nom,Front front) {
 		super(nombreEntree,nom);
-		etatPrec = new EtatLogique[nombreEntree];
 		this.front = front ;
 		clear = new Fil(null);
 		clear.setEtatLogiqueFil(EtatLogique.ONE);
@@ -30,10 +29,14 @@ public abstract class Sequentiels extends Composant {
 		// TODO Auto-generated method stub
 		super.derelierComp();
 		if (entreeHorloge != null) {
-			entreeHorloge.derelierCompFromDestination(this);
+			if (! entreeHorloge.getSource().equals(this)) {
+				entreeHorloge.derelierCompFromDestination(this);
+			}
 		}
-		if (clear != null) {
-			clear.derelierCompFromDestination(this);
+		if (clear.getSource() != null) {
+			if (! clear.getSource().equals(this)) {
+				clear.derelierCompFromDestination(this);
+			}
 		}
 		
 	}
@@ -44,11 +47,11 @@ public abstract class Sequentiels extends Composant {
 		super.derelierEntreeFromComp(fil);
 		if (entreeHorloge != null) {
 			if (entreeHorloge.equals(fil))
-				entreeHorloge.derelierCompFromDestination(this);
+				entreeHorloge = null;
 		}
-		if (clear != null) {
-			if (clear.equals(fil)) 
-				clear.derelierCompFromDestination(this);
+		if (clear.equals(fil)) { 
+			clear = new Fil(null);
+			clear.setEtat(EtatLogique.ONE);
 		}
 	}
 	
@@ -57,7 +60,7 @@ public abstract class Sequentiels extends Composant {
 		// TODO Auto-generated method stub
 		super.relierANouveau();
 		if (entreeHorloge != null) entreeHorloge.addDestination(this);
-		if(clear != null) clear.addDestination(this);
+		clear.addDestination(this);
 	}
 	
 	@Override

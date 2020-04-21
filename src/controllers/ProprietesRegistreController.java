@@ -108,29 +108,27 @@ public class ProprietesRegistreController extends ProprietesController{
     @FXML
     void modifier(ActionEvent event) {
     	cmp.setNom(label.getText());
-    	if (((RegistreDecalage)cmp).getTaille() != i) {
-    		if (cmp.isDessocier()) {
-    			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
-    			((RegistreDecalage)cmp).setTaille(i);
-    			((RegistreDecalage)cmp).setNombreEntree(i+1);
-    			if(frnt == 0)
-    				((RegistreDecalage)cmp).setFront(Front.Front_Montant);
-    			else
-    				((RegistreDecalage)cmp).setFront(Front.Front_Descendant);
-
-    			if(dcl == 0)
-    				((RegistreDecalage)cmp).setDecalageDroite(false);
-    			else
-    				((RegistreDecalage)cmp).setDecalageDroite(true);
-    			cmp.setCord();
-    			cmp.getLesCoordonnees().setNbCordEntree(i+1);
-    			Image image = new Image(cmp.generatePath());
-    			ImageView imageView = Circuit.getImageFromComp(cmp);
-    			imageView.setImage(image);
-    			imageView.setFitHeight(image.getHeight());
-    			imageView.setFitWidth(image.getWidth());
-    			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
-    		}
+    	if (cmp.isDessocier()) {
+    		removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
+    		((RegistreDecalage)cmp).setTaille(i);
+    		((RegistreDecalage)cmp).setNombreEntree(i+1);
+    		if(frnt == 0)
+    			((RegistreDecalage)cmp).setFront(Front.Front_Montant);
+    		else
+    			((RegistreDecalage)cmp).setFront(Front.Front_Descendant);
+    		if(dcl == 0)
+    			((RegistreDecalage)cmp).setDecalageDroite(false);
+    		else
+    			((RegistreDecalage)cmp).setDecalageDroite(true);
+    		cmp.setCord();
+    		System.out.println("FRONT : "+((Sequentiels)cmp).getFront());
+    		cmp.getLesCoordonnees().setNbCordEntree(i+1);
+    		Image image = new Image(cmp.generatePath());
+    		ImageView imageView = Circuit.getImageFromComp(cmp);
+    		imageView.setImage(image);
+    		imageView.setFitHeight(image.getHeight());
+    		imageView.setFitWidth(image.getWidth());
+    		addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
     	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();

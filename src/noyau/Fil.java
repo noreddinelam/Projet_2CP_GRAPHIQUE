@@ -43,7 +43,7 @@ public class Fil implements Serializable{
 	}
 
 	public boolean valider() { // tester si le fil est pret 
-		return (this.sortieReinjecter())&&(this.validerEntreeSorties()) // tester si le fil est reinjecté en entree /sortie injectée en entree
+		return (this.sortieReinjecter()) // tester si le fil est reinjecté en entree /sortie injectée en entree
 				&&
 				(this.getEtatLogiqueFil().getNum() == EtatLogique.ERROR.getNum() // tester l'etat ERREUR
 						|| 
@@ -51,20 +51,12 @@ public class Fil implements Serializable{
 		
 	}
 	
-	public boolean validerEntreeSorties() { // verifier si une on a relier deux composants sortie avec sortie .
-		for(Composant c: this.destination) {
-			for(Fil f : c.sorties) {
-				if(this.equals(f))
-					return false;
-			}
-		}
-		return true;
-	}
-	
 	public boolean sortieReinjecter() { //verifier si une sortie est reinjectée en entree 
+		
 		for(Fil f : this.source.entrees)
-			if(this.equals(f))
+			if(this.equals(f) && (! source.getClass().getSuperclass().equals(Bascule.class)) && (!  source.getClass().getSuperclass().equals(Sequentiels.class)))
 				return false;
+			
 		
 		return true;
 	}

@@ -136,7 +136,8 @@ public class Demultiplexeur extends Combinatoires{
 		super.derelierComp();
 		for (int i = 0; i < nbCommande; i++) {
 			if (commande[i] != null) {
-				commande[i].derelierCompFromDestination(this);
+				if (! commande[i].getSource().equals(this))
+					commande[i].derelierCompFromDestination(this);
 			}
 		}
 	}
@@ -148,7 +149,7 @@ public class Demultiplexeur extends Combinatoires{
 		for (int i = 0; i < nbCommande; i++) {
 			if (commande[i] != null) {
 				if (commande[i].equals(fil)) {
-					commande[i].derelierCompFromDestination(this);
+					commande[i] = null;
 				}
 			}
 		}

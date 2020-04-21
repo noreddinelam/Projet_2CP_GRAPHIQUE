@@ -133,7 +133,7 @@ public class Circuit implements Serializable{
 	}
 	public static void initialiser() {// à completer au fur et mesure .
 		for (Pin pin : entreesCircuit) { // initialiser les pins d'entrees pour le commencement de la simulation
-			if(pin.getInput() == true) pin.evaluer();  //a na7i
+			pin.evaluer();  //a na7i
 		}
 		
 		ArrayList<Integer> etage = new ArrayList<Integer>();
@@ -244,6 +244,7 @@ public class Circuit implements Serializable{
 			for (Composant destination : arrayList) {
 				destination.derelierEntreeFromComp(sortieFil);
 			}
+			arrayList.clear();
 		}
 		return listPolylines;
 	}

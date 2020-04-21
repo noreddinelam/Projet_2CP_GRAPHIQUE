@@ -70,6 +70,7 @@ public abstract class Composant implements Serializable{
 	public void evaluer() {
 		if(valider()) // si le composant est pret 
 		{
+			System.out.println("jhdfjksq");
 			genererSorties(); //executer sa fonction logique et mettre le resultat sur le fil de sortie 
 			
 			for (int i = 0; i < nombreSortie; i++) 
@@ -77,7 +78,6 @@ public abstract class Composant implements Serializable{
 				
 				if(sorties[i].getEtatLogiqueFil().getNum() != etatFinal[i].getNum())  //verifier si l'etat precedent du composant a changé ou non 
 				{
-					
 					etatFinal[i]=sorties[i].getEtatLogiqueFil(); //mettre a jour l'etat final du composant 
 					sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
 				}
@@ -190,7 +190,9 @@ public abstract class Composant implements Serializable{
 	public  void derelierComp() { // pour derelier le composant de ces fils d'entrees  (le composant à supprimer)
 		for (int i = 0; i < nombreEntree; i++) {
 			if (entrees[i] != null) {
-				entrees[i].derelierCompFromDestination(this);
+				if (! entrees[i].getSource().equals(this)) { // pour savoir si une entree est relié avec une sortie du mm composant
+					entrees[i].derelierCompFromDestination(this);
+				}
 			}
 		}
 	}
