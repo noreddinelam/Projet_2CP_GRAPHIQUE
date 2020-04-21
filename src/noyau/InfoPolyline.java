@@ -74,8 +74,7 @@ public class InfoPolyline {
 					}else {
 						lineParent.getPoints().remove(i);
 						lineParent.getPoints().remove(i);
-					}
-				
+					}			
 				break;
 			}
 			i = i + 2;	

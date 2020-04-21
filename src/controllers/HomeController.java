@@ -1760,14 +1760,7 @@ public class HomeController extends Controller implements Initializable {
 					workSpace.getChildren().add(dragImageView);
 
 					ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-					for(Polyline line : polyline ) {
-						line.setSmooth(true);
-						line.setStrokeWidth(3);
-						line.setStrokeType(StrokeType.CENTERED);
-						line.setCursor(Cursor.HAND);
-						workSpace.getChildren().add(line);
-						ajouterGeste(line);
-					}
+					addAllPolylinesToWorkSpace(polyline);
 
 					ajouterLeGestApresCollage(dragImageView);	
 						

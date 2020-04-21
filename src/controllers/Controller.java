@@ -223,72 +223,68 @@ public abstract class Controller {
 				@Override
 				public void handle(MouseEvent arg0) {
 					// TODO Auto-generated method stub
-					if(arg0.getButton() == MouseButton.PRIMARY) {
-					workSpace.getChildren().remove(guideFilX);
-		  			workSpace.getChildren().remove(guideFilY);
-					int	der =  line.getPoints().size()-1;
-					if(intersectionFilComposants(arg0.getX(),arg0.getY()) != null) {
-					//if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der))) {
-					if(rel == 0) {
-						line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
-					}if(rel == 1){
-						/////////////////////////////relier/////////////////////////////////////
-						destination = intersectionFilComposants(arg0.getX(),arg0.getY());
-						/*   		entree >= 0   :entres
-						 * 		-4 < entree < 0	  :commandes
-						 * 			entree = -4	  :horloge
-						 * 			entree = -5	  :clear
-						 * 			entree = -6   :preset
-						 * 			entree = -7   :load*/
-						if(entree >= 0) {
-							Circuit.relier(source, destination, sortie, entree);
-							System.out.println("trabtooo entre");
-							playSound();
-						}else if(-5 < entree) {
-							Circuit.relierCommand(source,((Combinatoires)destination), sortie, Math.abs(entree)-1);
-							System.out.println("trabtooo commande");
-							playSound();
-						}else if(entree == -5) {
-							Circuit.relierHorloge(((Sequentiels)destination), source, sortie);
-							System.out.println("trabtooo horloge");
-							playSound();
-						}else if(entree == -6) {
-							Circuit.relierClear(((Sequentiels)destination), source, sortie);
-							System.out.println("trabtooo clear");	
-							playSound();
-						}else if(entree == -7) {
-							Circuit.relierPreset(((Bascule)destination), source, sortie);
-							System.out.println("trabtooo preset");
-							playSound();
-						}else if(entree == -8) {
-							Circuit.relierLoad(((Sequentiels)destination), source, sortie);
-							System.out.println("trabtooo load");
-							playSound();
-						}
-						InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
-						infoLine.setRelier(true);
-						infoLine.setDestination(destination);
-						infoLine.setEntre(entree);
-						//souuund
-					}
-					}else {
-					der =  line.getPoints().size()-1;
-					if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3))< 10) {
-						line.getPoints().remove(der);line.getPoints().remove(der-1);}
-				}
-					//System.out.println(line.getPoints().size());
-				}
-				}
-			});
-		/*line.setOnMouseDragEntered(new EventHandler<MouseEvent>() {
 
-			@Override
-			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-			      guideFilX.setLayoutX(event.getX());
-			      guideFilY.setLayoutY(event.getY());
-			}
-		});*/
+					if (! simul) {
+						if(arg0.getButton() == MouseButton.PRIMARY) {
+							workSpace.getChildren().remove(guideFilX);
+							workSpace.getChildren().remove(guideFilY);
+							int	der =  line.getPoints().size()-1;
+							if(intersectionFilComposants(arg0.getX(),arg0.getY()) != null) {
+								//if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der))) {
+								if(rel == 0) {
+									line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
+								}if(rel == 1){
+									/////////////////////////////relier/////////////////////////////////////
+									destination = intersectionFilComposants(arg0.getX(),arg0.getY());
+									/*   		entree >= 0   :entres
+									 * 		-4 < entree < 0	  :commandes
+									 * 			entree = -4	  :horloge
+									 * 			entree = -5	  :clear
+									 * 			entree = -6   :preset
+									 * 			entree = -7   :load*/
+									if(entree >= 0) {
+										Circuit.relier(source, destination, sortie, entree);
+										System.out.println("trabtooo entre");
+										playSound();
+									}else if(-5 < entree) {
+										Circuit.relierCommand(source,((Combinatoires)destination), sortie, Math.abs(entree)-1);
+										System.out.println("trabtooo commande");
+										playSound();
+									}else if(entree == -5) {
+										Circuit.relierHorloge(((Sequentiels)destination), source, sortie);
+										System.out.println("trabtooo horloge");
+										playSound();
+									}else if(entree == -6) {
+										Circuit.relierClear(((Sequentiels)destination), source, sortie);
+										System.out.println("trabtooo clear");	
+										playSound();
+									}else if(entree == -7) {
+										Circuit.relierPreset(((Bascule)destination), source, sortie);
+										System.out.println("trabtooo preset");
+										playSound();
+									}else if(entree == -8) {
+										Circuit.relierLoad(((Sequentiels)destination), source, sortie);
+										System.out.println("trabtooo load");
+										playSound();
+									}
+									InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
+									infoLine.setRelier(true);
+									infoLine.setDestination(destination);
+									infoLine.setEntre(entree);
+									//souuund
+								}
+							}else {
+								der =  line.getPoints().size()-1;
+								if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3))< 10) {
+									line.getPoints().remove(der);line.getPoints().remove(der-1);}
+							}
+							//System.out.println(line.getPoints().size());
+
+						}
+					}
+				}
+				
+			});
 		}
 	
 	public void playSound() {

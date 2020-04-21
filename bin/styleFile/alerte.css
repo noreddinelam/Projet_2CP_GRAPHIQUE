@@ -1,0 +1,22 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+#okButton,#ouiButton,#annulerButton{
+	/* @SuppressWarning */
+	-fx-background-color :  #303337;
+	/* @SuppressWarning */
+	-fx-border-color : #b2b2b2;
+	/* @SuppressWarning */
+	-fx-border-radius : 20px;
+	/* @SuppressWarning */
+	-fx-text-fill : #b2b2b2;
+
+}
+#okButton:hover,#ouiButton:hover,#annulerButton:hover{
+	/* @SuppressWarning */
+	-fx-background-color :   #303337;
+	/* @SuppressWarning */
+	-fx-border-color : #E4E4E4;
+	/* @SuppressWarning */
+	-fx-border-radius : 20px;
+	/* @SuppressWarning */
+	-fx-text-fill : #E4E4E4;	
+}

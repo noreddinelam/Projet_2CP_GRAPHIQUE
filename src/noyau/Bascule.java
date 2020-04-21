@@ -85,6 +85,14 @@ public abstract class Bascule extends Sequentiels{
 	}
 	
 	@Override
+	public void defaultValue() {
+		// TODO Auto-generated method stub
+		super.defaultValue();
+		sorties[0].setEtat(EtatLogique.ZERO);
+		sorties[1].setEtat(EtatLogique.ONE);
+	}
+	
+	@Override
 	public String generatePath() {
 		// TODO Auto-generated method stub
 		return this.getClass().getSimpleName() + "/" + front.toString() + ".png";
