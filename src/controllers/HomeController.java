@@ -503,7 +503,7 @@ public class HomeController extends Controller implements Initializable {
     	    initialiseAnimationOfBarDroite();
     	    
     	    
-    	    //couperCollerButton();
+    	    copierCollerParBouttons();
     	    
 
     	    
@@ -565,16 +565,7 @@ public class HomeController extends Controller implements Initializable {
 		});	
 		
 		
-		 workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
-			  @Override
-			  public void handle(MouseEvent event) {
-				  
-				 x = (int) event.getSceneX()-200;
-				 y= (int) event.getSceneY();
-				 
-				
-			  }
-		  });
+		 
 		
 		
 		
@@ -637,6 +628,9 @@ public class HomeController extends Controller implements Initializable {
 					  }
 				  }
 			  });
+		  	  	
+		  	  	
+		  	  
 			  
 			  scrollPane.setOnKeyPressed(new EventHandler<KeyEvent>() {
 				    @Override
@@ -645,24 +639,35 @@ public class HomeController extends Controller implements Initializable {
 				            undoChanges(workSpace);
 				        } 
 				        
-				        if (event.isControlDown() && (event.getCode() == KeyCode.C)) {
-				            copier();
-				        } 
-				        
 				        if (event.isControlDown() && (event.getCode() == KeyCode.X)) {
-				            couper();
+				           System.out.println("the cut operation ");
+				            copierActive = true;
+				            
+				            copyActive = true;
+				            
+				            
+				            ImageView sauv = elementSeclecionner;
+				            workSpace.getChildren().remove(elementSeclecionner);
+				           
+				            Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
+				           composantCopy = composantCouper;
+				            		
+							ArrayList<Polyline> lineListe=Circuit.supprimerComp(composantCouper);
+							 for(Polyline line : lineListe)
+								 workSpace.getChildren().remove(line);
+
+							 
+					             elementSeclecionner  = sauv ;
+
 				        } 
+				       
 				        
-				        
-				        if (event.isControlDown() && (event.getCode() == KeyCode.V)) {
-				            coller();
-				        } 
+				       
 				        
 				    };
 				});
 			  
 			  
-	    	    collerBarDroite();
 
 			  
 			 
@@ -1700,11 +1705,12 @@ public class HomeController extends Controller implements Initializable {
 	    
 	    @FXML
 	    public void copier(ActionEvent event) {
-					    	System.out.println("l'element est bien selecltionner : "+elementSeclecionner.getId());
-					    	copier();
+					    	//copier();
+	    					if(elementSeclecionner != null) {
+	    					setCopierActive(true);
 					    	Stage s = (Stage) copier.getScene().getWindow();
 					    	s.close();
-
+	    					}
 	    }
 	    
 	    
@@ -1713,7 +1719,6 @@ public class HomeController extends Controller implements Initializable {
 	    
 	    
 	    
-	    static boolean cc;
 	    
 	    public void coller(ActionEvent event) {
 	    		cc = true;
@@ -1725,7 +1730,140 @@ public class HomeController extends Controller implements Initializable {
 	   
 		
 	    
-	    static boolean copyActive;
+	    static boolean copyActive, cc;
+	    double ctrlX;
+		double ctrlY;
+		
+		static Composant composantCopy;
+	    
+	    
+	    
+	    public void copierCollerParBouttons() { /// utilisation des touches pour faire une copie
+			final KeyCombination kb1 = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
+			final KeyCombination kb2 = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_ANY);
+			
+			workSpace.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
+				if(cc && elementSeclecionner != null) {	
+					cc = false;
+					
+					ctrlX = event.getX();
+					ctrlY = event.getY();					
+					ImageView dragImageView = new ImageView();
+					dragImageView.setLayoutX(ctrlX);
+					dragImageView.setLayoutY(ctrlY);
+					dragImageView.setId(elementSeclecionner.getId());
+					instanceComposant(dragImageView);		
+					if(!copyActive)
+						composantCopy = Circuit.getCompFromImage(elementSeclecionner);
+						
+					
+					
+					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
+
+					cmp2.setDirection(composantCopy.getDirection());
+					cmp2.setIcon(composantCopy.getIcon());
+					cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
+					cmp2.setNom(composantCopy.getNom());
+					cmp2.setNombreEntree(composantCopy.getNombreEntree());
+					cmp2.setNombreSortie(composantCopy.getNombreSortie());
+					cmp2.setCord();
+					cmp2.generatePolyline(ctrlX, ctrlY);	
+					//Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
+					dragImageView.setImage(elementSeclecionner.getImage());
+					dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
+					dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());		
+					workSpace.getChildren().add(dragImageView);
+
+					ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+					addAllPolylinesToWorkSpace(polyline);
+					ajouterLeGestApresCollage(dragImageView);
+					elementSeclecionner = dragImageView;
+
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+				}
+			});
+
+			homeScene.setOnKeyPressed(new EventHandler<KeyEvent>() { /// si user clique sur "CTRL + C"
+				public void handle(final KeyEvent keyEvent) {
+					if (kb1.match(keyEvent) && elementSeclecionner != null) {
+						System.out.println("control + c are pressed !");
+						System.out.println("l'element selectionner est : "+ elementSeclecionner.getId());
+						setCopierActive(true);	  
+						keyEvent.consume();
+					}
+
+					keyEvent.consume();
+
+					workSpace.setOnMousePressed(new EventHandler<MouseEvent>() { /// recuperer les coordonnees du clic
+						@Override
+						public void handle(MouseEvent event) {
+							ctrlX= event.getX();
+							ctrlY=event.getY();
+						}
+					});				   
+					if (kb2.match(keyEvent) && getCopierActive() && elementSeclecionner != null) {/// si user clique sur "CTRL + V"
+
+						System.out.println("control + v are pressed !");	    
+						ImageView dragImageView = new ImageView();
+						dragImageView.setLayoutX(ctrlX);
+						dragImageView.setLayoutY(ctrlY);
+						dragImageView.setId(elementSeclecionner.getId());
+						instanceComposant(dragImageView);		
+						if(!copyActive)
+							composantCopy = Circuit.getCompFromImage(elementSeclecionner);
+							
+						
+						
+						Composant cmp2 = Circuit.getCompFromImage(dragImageView);
+
+						cmp2.setDirection(composantCopy.getDirection());
+						cmp2.setIcon(composantCopy.getIcon());
+						cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
+						cmp2.setNom(composantCopy.getNom());
+						cmp2.setNombreEntree(composantCopy.getNombreEntree());
+						cmp2.setNombreSortie(composantCopy.getNombreSortie());
+						cmp2.setCord();
+						cmp2.generatePolyline(ctrlX, ctrlY);	
+						//Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
+						dragImageView.setImage(elementSeclecionner.getImage());
+						dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
+						dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());		
+						workSpace.getChildren().add(dragImageView);
+
+						ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+						addAllPolylinesToWorkSpace(polyline);
+						ajouterLeGestApresCollage(dragImageView);
+						elementSeclecionner = dragImageView;
+	
+					}
+
+				}
+
+			});
+
+		}
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	  /*  
+	    
 	    
 	    public void collerBarDroite() {
 	    	
@@ -1752,7 +1890,11 @@ public class HomeController extends Controller implements Initializable {
 					cmp2.setNombreEntree(cmp.getNombreEntree());
 					cmp2.setNombreSortie(cmp.getNombreSortie());
 					cmp2.setCord();
+					
+					
 					cmp2.generatePolyline(x, y);	
+					
+					
 					Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
 					dragImageView.setImage(img);
 					dragImageView.setFitHeight(img.getHeight());
@@ -1777,11 +1919,11 @@ public class HomeController extends Controller implements Initializable {
 	  
 	    
 	
+	   
 	    
 	    
-	    
-	    static Composant cmp1, cmp2;
-	    static ImageView imageComposantAcoller;
+	   static Composant cmp1, cmp2;
+	   static ImageView imageComposantAcoller;
 	    
 	    
 	    public void copier() {
@@ -1834,13 +1976,15 @@ public class HomeController extends Controller implements Initializable {
 	    	if(getCopierActive()) {
 	    	  	if(!copyActive)
 	    	  		copier();
-	    		imageComposantAcoller.setLayoutX(x);
+	    	  	imageComposantAcoller.setLayoutX(x);
 	    		imageComposantAcoller.setLayoutY(y);
 				if(cmp2 == null)
 					System.out.println("the cmp2 is null");
-				//cmp2.setCord();
-				//cmp2.generatePolyline(x, y);	
+				
 				imageComposantAcoller.setImage(elementSeclecionner.getImage());
+				imageComposantAcoller.setFitHeight(elementSeclecionner.getImage().getHeight());
+				imageComposantAcoller.setFitWidth(elementSeclecionner.getImage().getWidth());
+
 				workSpace.getChildren().add(imageComposantAcoller);
 				ArrayList<Polyline> polyline = Circuit.getCompFromImage(imageComposantAcoller).generatePolyline(imageComposantAcoller.getLayoutX(), imageComposantAcoller.getLayoutY());
 				addAllPolylinesToWorkSpace(polyline);
@@ -1859,7 +2003,7 @@ public class HomeController extends Controller implements Initializable {
 	    	
 
 	    }
-
+*/
 	    	
 	    
 	    
@@ -1914,13 +2058,29 @@ public class HomeController extends Controller implements Initializable {
 	    
 	    @FXML
 	    void couper(ActionEvent event) {
-	    	System.out.println("couper est cliquee");
-	    }
+	    	copierActive = true;
+            
+            copyActive = true;
+            
+            
+            ImageView sauv = elementSeclecionner;
+            workSpace.getChildren().remove(elementSeclecionner);
+           
+            Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
+           composantCopy = composantCouper;
+            		
+			ArrayList<Polyline> lineListe=Circuit.supprimerComp(composantCouper);
+			 for(Polyline line : lineListe)
+				 workSpace.getChildren().remove(line);
+
+			 
+	             elementSeclecionner  = sauv ;
+	             }
 	    
 	    
 	    
 	    
-	    
+
 	    
 	    
 	    
@@ -1932,6 +2092,7 @@ public class HomeController extends Controller implements Initializable {
 	    
 	    @FXML
 	    private Button nouveau;
+	
 
 	    @FXML
 	    private Button importer;
