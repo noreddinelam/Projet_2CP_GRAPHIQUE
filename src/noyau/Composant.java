@@ -70,7 +70,6 @@ public abstract class Composant implements Serializable{
 	public void evaluer() {
 		if(valider()) // si le composant est pret 
 		{
-			System.out.println("jhdfjksq");
 			genererSorties(); //executer sa fonction logique et mettre le resultat sur le fil de sortie 
 			
 			for (int i = 0; i < nombreSortie; i++) 
@@ -133,7 +132,12 @@ public abstract class Composant implements Serializable{
 		int i =0;
 		while(i<nombreEntree) {
 			if(entrees[i] == null) // verifier si toutes les entrees du composants sont reliées a un autre composant 
+			{
+				for (int j = i; j < nombreEntree; j++) {
+					new EntreeManquante(TypesExceptions.ERREUR, this,j);
+				}
 				return null;
+			}
 			if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum()) //  verifier si le fil d'entree est en haute impedence . 
 				return EtatLogique.HAUTE_IMPEDANCE;
 			if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.ERROR.getNum()) // verifier si le fil d'entree contient une erreur .

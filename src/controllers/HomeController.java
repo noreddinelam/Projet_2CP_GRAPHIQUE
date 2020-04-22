@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import application.ClickBarDroite;
 import application.ClickDroit;
 import application.ClickDroitFil;
+import application.FenetreDesErreurs;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -460,39 +461,43 @@ public class HomeController extends Controller implements Initializable {
     void onSimuler(MouseEvent event) { /// pour lancer la simulation ou l'arreter
 
     	simul = (!simul);
-		System.out.println("------------------------------------------------------------------------");
+    	System.out.println("------------------------------------------------------------------------");
     	if (simul) {
     		simulation.setImage(new Image("homePage_icones/SIMULATION_OFF.png"));
-		if(! horloged)	Circuit.initialiser();
-    	
-		else {	
-			horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
-    		//horloge.setImage(horlogeDeCercuit);
-    		t1=new Thread(horloge);
-    		t1.start();
-		}
-			rotationDelogo(logo,1,1000,false);
-		}
+    		if(! horloged)	Circuit.initialiser();
+
+    		else {	
+    			horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
+    			//horloge.setImage(horlogeDeCercuit);
+    			t1=new Thread(horloge);
+    			t1.start();
+    		}
+    		Circuit.printExceptions();
+    		if (Circuit.isThereAnyException()) {
+				new FenetreDesErreurs(stage);
+			}
+    		rotationDelogo(logo,1,1000,false);
+    	}
     	else {
+    		Circuit.clearException();
     		simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
     		Circuit.defaultCompValue();
     		System.out.println("------------------------------------------------------------------------");
     		if( horloged)
-				{    		
+    		{    		
     			try {
-    		
+
     				horlogeDeCercuit.setImage( new Image("/Horloge/0.png"));
     				horloge.stop();
-					t1.join();
-					
-				
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				}
-		
-		}
+    				t1.join();
+
+
+    			} catch (InterruptedException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    		}
+    	}
     }
     
     public  void setHomeControllerStage(Stage homeWindow) {

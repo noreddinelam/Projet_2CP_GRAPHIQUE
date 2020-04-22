@@ -19,7 +19,7 @@ public abstract class Portes extends Composant {
 	
 	
 	public boolean valider() { // valider les entrees 
-		return (super.validerEntrees().getNum() == EtatLogique.ONE.getNum()) ? true: false;	
+		return (super.validerEntrees() == EtatLogique.ONE) ? true: false;	
 	}
 	
 	@Override

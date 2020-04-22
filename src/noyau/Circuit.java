@@ -21,6 +21,29 @@ public class Circuit implements Serializable{
 	private static ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>(); // la liste des etages pour les elts sequentiels 
 	private static int nbEtages = 0; // nombre des etages
 	
+	private static ArrayList<ExceptionProgramme> circuitException = new ArrayList<ExceptionProgramme>();
+	
+	public static void AjouterException(ExceptionProgramme exceptionProgramme) {
+		circuitException.add(exceptionProgramme);
+	}
+	
+	public static void clearException() {
+		circuitException.clear();
+	}
+	
+	public static void printExceptions() {
+		for (ExceptionProgramme exceptionProgramme : circuitException) {
+			System.out.println(((EntreeManquante)exceptionProgramme).getEntreeManquante());
+		}
+	}
+	
+	public static boolean isThereAnyException() {
+		return ((circuitException.size() != 0) ? true : false);
+	}
+	
+	public static ArrayList<ExceptionProgramme> getListeExceptionProgrammes() {
+		return circuitException;
+	}
 	
 	public static void ajouterComposant(Composant comp,ImageView img) { // ajouter un composant à la liste des composants utilisés
 		compUtilises.put(comp, img);

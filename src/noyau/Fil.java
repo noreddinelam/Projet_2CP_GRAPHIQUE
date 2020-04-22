@@ -31,7 +31,7 @@ public class Fil implements Serializable{
 					polyline.getLinePrincipale().setStroke(Color.DARKGREEN);
 				}
 				if(etat.getNum() == 0){
-					polyline.getLinePrincipale().setStroke(Color.DARKRED);
+					polyline.getLinePrincipale().setStroke(Color.LIGHTGREEN);
 				}
 			}
 			for (Composant composant : destination) // parcourir les destinations
