@@ -495,32 +495,20 @@ public class HomeController extends Controller implements Initializable {
     	    ajouterLeGest(rs);
     	    ajouterLeGest(cpt);
     	    ajouterLeGest(registreDecalge);
-    	 //   tracerLagrill();
 		  
     	    
-    	    ////////////// tracer les regles 
   
     	    tracerLesregles(workSpace);
     	    scrollPane.setHmax(1);
     	    scrollPane.setVmax(1);
     	    tooltipInitialize();
     	    initialiseAnimationOfBarDroite();
-    	    
-    	    
-    	   // copierCollerParBouttons();
-    	    
 
-    	    
-
-    	   
-
-    		
     	    ClickBarDroite fichierFenetre = new ClickBarDroite(1140, 100, "Fichier.fxml", homeWindow, workSpace);
     	     ClickBarDroite editionFenetre = new ClickBarDroite(1140, 180, "Edition.fxml", homeWindow, workSpace);
     	    ClickBarDroite affichageFenetre = new ClickBarDroite(1140, 300, "Affichage.fxml", homeWindow, workSpace);
     	    ClickBarDroite aideFenetre = new ClickBarDroite(1140, 350, "Aide.fxml", homeWindow, workSpace);
     	    
-			  //click = new ClickBar(1000, 100);
     	    
     	    ClickBarDroite tableauFenetres[] = {fichierFenetre,editionFenetre, affichageFenetre, aideFenetre };
     	    
@@ -536,12 +524,7 @@ public class HomeController extends Controller implements Initializable {
     		 clickSouris2 = new ClickSouris2(400.0, 400.0, workSpace, homeWindow);
     		clickSouris2.close();
 	
-		//click = new ClickBar(1000, 100);
-    		
-    		
-
-
-		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
+    		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				ctrlX = event.getSceneX();
@@ -1847,23 +1830,6 @@ public class HomeController extends Controller implements Initializable {
 					
 				}
 			});
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-
 			homeScene.setOnKeyPressed(new EventHandler<KeyEvent>() { /// si user clique sur "CTRL + C"
 				public void handle(final KeyEvent keyEvent) {
 					if ((keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.C) && elementSeclecionner != null) {
@@ -1884,38 +1850,6 @@ public class HomeController extends Controller implements Initializable {
 					});				   
 					if ((keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.V) && getCopierActive() && elementSeclecionner != null) {/// si user clique sur "CTRL + V"
 
-						/*System.out.println("control + v are pressed !");	    
-						ImageView dragImageView = new ImageView();
-						dragImageView.setLayoutX(ctrlX);
-						dragImageView.setLayoutY(ctrlY);
-						dragImageView.setId(elementSeclecionner.getId());
-						instanceComposant(dragImageView);		
-						if(!copyActive)
-							composantCopy = Circuit.getCompFromImage(elementSeclecionner);
-							
-						
-						
-						Composant cmp2 = Circuit.getCompFromImage(dragImageView);
-
-						cmp2.setDirection(composantCopy.getDirection());
-						cmp2.setIcon(composantCopy.getIcon());
-						cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
-						cmp2.setNom(composantCopy.getNom());
-						cmp2.setNombreEntree(composantCopy.getNombreEntree());
-						cmp2.setNombreSortie(composantCopy.getNombreSortie());
-				
-						cmp2.setCord();
-						cmp2.generatePolyline(ctrlX, ctrlY);	
-						dragImageView.setImage(elementSeclecionner.getImage());
-						dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
-						dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());		
-						workSpace.getChildren().add(dragImageView);
-
-
-						ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-						addAllPolylinesToWorkSpace(polyline);
-						ajouterLeGestApresCollage(dragImageView);
-						elementSeclecionner = dragImageView;*/
 						CopyUses();
 	
 					}
@@ -1927,7 +1861,7 @@ public class HomeController extends Controller implements Initializable {
 		}
 	    
 	    
-	    public static boolean pastButton;
+	public static boolean pastButton;
 	    
 	    
 	public void CopyUses() {
@@ -1978,16 +1912,7 @@ public class HomeController extends Controller implements Initializable {
 			cmp2.setNombreSortie(cmp1.getNombreSortie());
 	    }
 	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
+
 	    /*-----------------------------------------------------*/
 	    
 	    @FXML
@@ -2039,16 +1964,6 @@ public class HomeController extends Controller implements Initializable {
 	    
 	    }
 	    
-	    
-	    
-	    
-
-	    
-	    
-	    
-	    
-	    
-	    
 
 	    /*----------------------fichier------------------------------------*/
 	    
@@ -2089,29 +2004,33 @@ public class HomeController extends Controller implements Initializable {
 
 	    @FXML
 	    void nouveau(ActionEvent event) {
-	    	 try {
+	    	Stage stage = (Stage) nouveau.getScene().getWindow();
+	    	stage.close();
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setContentText("Voullez vous sauvgarder ce circuit");
+			Optional<ButtonType> result = alert.showAndWait();	    		
+			if(result.get() == ButtonType.OK){
+				
+				final FileChooser fileChooser = new FileChooser();
+	            File f = fileChooser.showSaveDialog(homeWindow);
+	            System.out.println("the name of the file is : "+f.getAbsolutePath());
+	    		Circuit circuit = new Circuit();
+	            Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
+		    	
+			
+			}
+			
+				Circuit.getCompUtilises().clear();
+		    	Circuit.getFilUtilises().clear();
+		    	Circuit.getEntreesCircuit().clear();
+		    	Circuit.getSortiesCircuit().clear();
+		    	Circuit.getListeEtages().clear();
+		    	workSpace.getChildren().clear();
+		    	//tracerLagrill();
+		    	tracerLesregles(workSpace);	
+			
 	    		 
-	    		 	Stage s  = (Stage)nouveau.getScene().getWindow();
-	    		 	s.close();
-	    		 	Stage stage = new Stage();
-			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Home.fxml"));
-			        Parent root =(Parent)fxmlLoader.load();
-			        HomeController m =(HomeController)fxmlLoader.getController();
-
-			        m.setHomeControllerStage(homeWindow);
-			        
-			        m.setHomeControllerScene(homeScene);
-			        m.inisialiser();
-			       // m.setWorkSpace(workSpace);
-			        Scene scene = new Scene(root);
-					scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-			        stage.setScene(scene);  
-			        stage.setResizable(false);
-
-			        stage.show();
-			    } catch(Exception e) {
-			        e.printStackTrace();
-			    }
+	    		 
 			 
 	    }
 	    @FXML
