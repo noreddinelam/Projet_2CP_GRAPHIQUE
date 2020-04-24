@@ -149,6 +149,8 @@ public class HomeController extends Controller implements Initializable {
 
     @FXML
     private Button supprimer;
+    
+    public static boolean chrono=false;
 
     @FXML
     private Button coller;
@@ -866,6 +868,7 @@ public class HomeController extends Controller implements Initializable {
 								if( dragImageView.getId().equals("clock")  ) {
 									horloged =true;
 									horlogeDeCercuit=dragImageView;
+									ChronogrammeController.setHorlogeDecHRONO((Horloge) Circuit.getCompFromImage(dragImageView));
 								}
 								
 								ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
@@ -1514,7 +1517,7 @@ public class HomeController extends Controller implements Initializable {
 			comp = new Pin(true, "");
 		}break;
 		case "clock" :{
-			comp = new Horloge("", 1000);
+			comp = new Horloge("", 750);
 		}break;
 		case "vcc" :{
 			comp = new SourceConstante(EtatLogique.ONE, "");
@@ -1909,7 +1912,12 @@ public class HomeController extends Controller implements Initializable {
 	    void chronogramme(ActionEvent event) { /// charger la fenetre du chronogramme
 	    	try {
 	    		Stage s = (Stage) chronogramme.getScene().getWindow();
-	    		s.close();
+	    		s.close();	
+	   
+	    	  
+	    	       ChronogrammeController.composantDechrono.addAll( Circuit.getListeEtages());
+      
+                
 	    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Chronogramme.fxml"));
 	    		Parent root = fxmlLoader.load();
 	    		Stage stage = new Stage();
@@ -1920,6 +1928,7 @@ public class HomeController extends Controller implements Initializable {
 	    		stage.initModality(Modality.APPLICATION_MODAL);
 
 	    		stage.show();
+	    		
 	    	} catch(Exception e) {
 	    		e.printStackTrace();
 	    	}

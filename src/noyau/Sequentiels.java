@@ -3,7 +3,16 @@ package noyau;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public abstract class Sequentiels extends Composant {
+import controllers.ChronogrammeController;
+
+public abstract class Sequentiels extends Composant implements ComposantDeChronogramme {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	protected Fil entreeHorloge = null;
 	protected EtatLogique etatPrecHorloge;
 	protected Fil clear = null;
@@ -11,7 +20,11 @@ public abstract class Sequentiels extends Composant {
 	protected Front front;
 	protected ArrayList<Integer> etages = new ArrayList<Integer>();
 	protected EtatLogique etatPrec[];
-	
+    protected EtatLogique sortieAafficher=EtatLogique.ONE;
+    protected EtatLogique sortieBar=EtatLogique.ZERO;
+	  EtatLogique etatAvant;
+	double startChronoX=1;
+	double startChronoY=127;
 	public Sequentiels(int nombreEntree,String nom,Front front) {
 		super(nombreEntree,nom);
 		etatPrec = new EtatLogique[nombreEntree];
@@ -138,5 +151,58 @@ public abstract class Sequentiels extends Composant {
 	public void setLoad(Fil load) {
 		this.load = load;
 	}
+
+	
+
+	public EtatLogique getSortieAafficher() {
+		return sortieAafficher;
+	}
+
+	public void setSortieAafficher(EtatLogique sortieAafficher) {
+		this.sortieAafficher = sortieAafficher;
+	}
+
+	public EtatLogique getSortieBar() {
+		return sortieBar;
+	}
+
+	public void setSortieBar(EtatLogique sortieBar) {
+		this.sortieBar = sortieBar;
+	}
+
+	public double getStartChronoX() {
+		return startChronoX;
+	}
+
+	public void setStartChronoX(double startChronoX) {
+		this.startChronoX = startChronoX;
+	}
+
+	public double getStartChronoY() {
+		return startChronoY;
+	}
+
+	public void setStartChronoY(double startChronoY) {
+		this.startChronoY = startChronoY;
+	}
+
+	public EtatLogique[] getEtatPrec() {
+		return etatPrec;
+	}
+
+	public void setEtatPrec(EtatLogique[] etatPrec) {
+		this.etatPrec = etatPrec;
+	}
+
+	public EtatLogique getEtatAvant() {
+		return etatAvant;
+	}
+
+	public void setEtatAvant(EtatLogique etatAvant) {
+		this.etatAvant = etatAvant;
+	}
+	
+	
+   
 	
 }

@@ -8,9 +8,10 @@ public class D extends Bascule{
 	}
 
 	public void genererSortiesSyncho() { // generer la sortie de la bascule D
-		
+		 etatAvant=sorties[0].getEtatLogiqueFil();
 		if(etatPrec[0].getNum()==1)
 		{
+	
 			sorties[0].setEtatLogiqueFil(EtatLogique.ONE);
 			sorties[1].setEtatLogiqueFil(EtatLogique.ZERO);
 		}
@@ -19,6 +20,8 @@ public class D extends Bascule{
 			sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
 			sorties[1].setEtatLogiqueFil(EtatLogique.ONE);
 		}
+		sortieAafficher=sorties[0].getEtatLogiqueFil();
+		sortieBar=sorties[1].getEtatLogiqueFil();
 	}
 
 	@Override

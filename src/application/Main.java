@@ -59,7 +59,7 @@ public class Main extends Application {
 											
 						
 						primaryStage.setScene(scene);
-						
+//						PRIMARYSTAGE.GETICONS().ADD(NEW IMAGE("PATH"));
 						//primaryStage.initStyle(StageStyle.UNDECORATED);
 						primaryStage.setResizable(false);
 						primaryStage.show();

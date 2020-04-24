@@ -43,31 +43,32 @@ public class Fil implements Serializable{
 	}
 
 	public boolean valider() { // tester si le fil est pret 
-		return (this.sortieReinjecter())&&(this.validerEntreeSorties()) // tester si le fil est reinjecté en entree /sortie injectée en entree
-				&&
-				(this.getEtatLogiqueFil().getNum() == EtatLogique.ERROR.getNum() // tester l'etat ERREUR
-						|| 
-						this.getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum() ? false: true); // tester L'etat HAUTE_IMPEDANCE
-		
-	}
-	
-	public boolean validerEntreeSorties() { // verifier si une on a relier deux composants sortie avec sortie .
-		for(Composant c: this.destination) {
-			for(Fil f : c.sorties) {
-				if(this.equals(f))
-					return false;
-			}
-		}
+//		return (this.sortieReinjecter()) // tester si le fil est reinjecté en entree /sortie injectée en entree
+//				||
+//				(this.getEtatLogiqueFil().getNum() == EtatLogique.ERROR.getNum() // tester l'etat ERREUR
+//						|| 
+//						this.getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum() ? false: true); // tester L'etat HAUTE_IMPEDANCE
 		return true;
 	}
 	
-	public boolean sortieReinjecter() { //verifier si une sortie est reinjectée en entree 
-		for(Fil f : this.source.entrees)
-			if(this.equals(f))
-				return false;
-		
-		return true;
-	}
+//	public boolean validerEntreeSorties() { // verifier si une on a relier deux composants sortie avec sortie .
+//		for(Composant c: this.destination) {
+//			for(Fil f : c.sorties) {
+//				if(this.equals(f))
+//					return false;
+//			}
+//		}
+//		return true;
+//	}
+	
+//	public boolean sortieReinjecter() { //verifier si une sortie est reinjectée en entree 
+//	 if (this.source.getClass().isAssignableFrom(Sequentiels.class)) return true;
+//		for(Fil f : this.source.entrees)
+//			if(this.equals(f))
+//				return false;
+//		
+//		return true;
+//	}
 	
 	public void addDestination(Composant comp){ // ajouter un composant vers la liste des destinations
 		if (destination.contains(comp) == false) {

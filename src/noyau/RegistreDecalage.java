@@ -46,8 +46,11 @@ public class RegistreDecalage extends Sequentiels {
 		{
 			valeur[i] = valeur[i-1]; // decaler les bits a droite 
 		}
-		valeur[0] = bit ; // decaler le bit d'entree vers le poids faible du registre
-		sorties[0].setEtatLogiqueFil(res);// mettre la valeur du dernier bit (bit faible) dans le fil .
+		valeur[0] = bit ; 
+		// decaler le bit d'entree vers le poids faible du registre
+		sorties[0].setEtatLogiqueFil(res);
+//		sorties[0].evaluer();
+//		System.out.println(sorties[0].getEtatLogiqueFil());// mettre la valeur du dernier bit (bit faible) dans le fil .
 	}
 	
 	public void decalageGauche() {
@@ -77,6 +80,10 @@ public class RegistreDecalage extends Sequentiels {
 	public boolean valider() { // valider le circuit si clear est à 0 ou bien load à 0 à condition d'avoir toutes les entrees branchées 
 		if (clear.getEtatLogiqueFil().getNum() == 0) {
 			return true;
+		}
+		if (clear.getEtatLogiqueFil().getNum() == 1 &&load.getEtatLogiqueFil().getNum() == 1&& validerEntrees()==EtatLogique.ONE) {
+		return true;	
+		
 		}
 		if (load.getEtatLogiqueFil().getNum() == 0 && super.validerEntrees() == EtatLogique.ONE) {
 			return true;
@@ -156,8 +163,13 @@ public class RegistreDecalage extends Sequentiels {
 	@Override
 	public void initialiser() {// initialiser les etats precedents qui servent si le load à 0
 		// TODO Auto-generated method stub
+		if(load.getEtatLogiqueFil()==EtatLogique.ZERO)
+		{
 		for (int i = 1; i < nombreEntree; i++) {
 			etatPrec[i] = entrees[i].getEtatLogiqueFil();
+		}
+		}else {
+			etatPrec[0] =  entrees[0].getEtatLogiqueFil();
 		}
 	}
 	

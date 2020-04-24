@@ -52,3 +52,6 @@
 .table-view > .virtual-flow > .scroll-bar > .decrement-button {
     -fx-opacity: 0;
 }
+.table-row-cell {
+    -fx-cell-size: 50px;
+}

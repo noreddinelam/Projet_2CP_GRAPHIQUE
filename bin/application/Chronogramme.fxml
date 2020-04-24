@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.PointLight?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -11,9 +12,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Line?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #535c68;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChronogrammeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="661.0" prefWidth="700.0" style="-fx-background-color: #535c68;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChronogrammeController">
    <top>
-      <HBox prefHeight="54.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="54.0" prefWidth="700.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                <HBox.margin>
@@ -28,7 +29,7 @@
                   <Insets bottom="19.0" left="252.0" top="10.0" />
                </HBox.margin>
                <children>
-                  <ImageView fx:id="playButton" fitHeight="14.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="playButton" fitHeight="14.0" fitWidth="12.0" onMouseClicked="#play" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
                         <Insets left="19.0" top="5.0" />
                      </HBox.margin>
@@ -36,7 +37,7 @@
                         <Image url="@../chronoIcones/START.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="stopBotton" fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="stopBotton" fitHeight="12.0" fitWidth="12.0" onMouseClicked="#arreter" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
                         <Insets left="18.9" top="6.0" />
                      </HBox.margin>
@@ -44,7 +45,7 @@
                         <Image url="@../chronoIcones/STOP.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="pauseBotton" fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="pauseBotton" fitHeight="12.0" fitWidth="12.0" onMouseClicked="#stoper" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
                         <Insets left="18.9" top="6.0" />
                      </HBox.margin>
@@ -58,7 +59,7 @@
       </HBox>
    </top>
    <center>
-      <AnchorPane prefHeight="325.0" prefWidth="663.0" style="-fx-background-color: #e0e0d1; -fx-background-radius: 7;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="525.0" prefWidth="664.0" style="-fx-background-color: #e0e0d1; -fx-background-radius: 7;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="21.0" left="18.0" right="18.0" />
          </BorderPane.margin>
@@ -68,32 +69,52 @@
                   <TableView fx:id="tableView" layoutX="-11.0" layoutY="7.0" stylesheets="@../styleFile/tableViewChronoGramme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="elementsColumn" prefWidth="88.0" text="Element" />
-                      <TableColumn fx:id="valuesColumn" prefWidth="43.0" text="VC" />
-                        <TableColumn fx:id="valeurSuivie" prefWidth="42.0" text="VS" />
+                      <TableColumn fx:id="valeurQ" prefWidth="20.0" text="Q" />
+                        <TableColumn fx:id="valeurQbar" prefWidth="24.0" text="Qb" />
+                        <TableColumn prefWidth="42.0" text="VS" />
                     </columns>
                   </TableView>
                </children></AnchorPane>
-            <ScrollPane fx:id="scrollPane" layoutX="183.0" layoutY="6.0" pannable="true" prefHeight="313.0" prefWidth="481.0">
+            <ScrollPane fx:id="scrollPane" hmax="0.0" layoutX="183.0" layoutY="6.0" pannable="true" prefHeight="600.0" prefWidth="481.0" vbarPolicy="NEVER" vmax="0.0">
                <content>
-                  <AnchorPane fx:id="chronogrameField" prefHeight="311.0" prefWidth="1245.0" style="-fx-border-color: black;">
+                  <AnchorPane fx:id="chronogrameField" prefHeight="600.0" prefWidth="1245.0" style="-fx-border-color: black;">
                      <children>
-                        <ImageView fx:id="detectionBar" fitHeight="306.0" fitWidth="9.0" layoutX="10.0" layoutY="5.0" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
+                        <ImageView fx:id="detectionBar" fitHeight="577.0" fitWidth="20.0" layoutX="7.0" layoutY="5.0" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="4.0">
                            <image>
                               <Image url="@../chronoIcones/SUIVIT.png" />
                            </image>
                         </ImageView>
                         <Line endX="1200.0" layoutX="149.0" layoutY="58.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="49.0" />
-                        <Line endX="1200.0" layoutX="265.0" layoutY="62.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.5" />
-                        <Line endX="1200.0" layoutX="159.0" layoutY="68.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="73.0" />
-                        <Line endX="1200.0" layoutX="151.0" layoutY="109.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="97.5" />
-                        <Line endX="1200.0" layoutX="33.0" layoutY="131.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="121.0" />
-                        <Line endX="1200.0" layoutX="290.0" layoutY="155.0" startX="-149.0" stroke="#fcfcfc" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="145.0" />
-                        <Line endX="1200.0" layoutX="71.0" layoutY="193.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="169.0" />
-                        <Line endX="1200.0" layoutX="75.0" layoutY="225.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="193.5" />
-                        <Line endX="1200.0" layoutX="-32.0" layoutY="242.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="217.0" />
-                        <Line endX="1200.0" layoutX="49.0" layoutY="263.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="241.0" />
-                        <Line endX="1200.0" layoutX="48.0" layoutY="268.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="264.5" />
-                        <Line endX="1200.0" layoutX="60.0" layoutY="284.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="289.0" />
+                        <Line endX="1200.0" layoutX="265.0" layoutY="62.0" startX="-149.0" stroke="#504f4f" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.5" />
+                        <Line fx:id="line" endX="1200.0" layoutX="159.0" layoutY="68.0" startX="-149.0" stroke="#504f4f" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="74.0" />
+                        <Line endX="1200.0" layoutX="151.0" layoutY="109.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0" />
+                        <Line endX="1200.0" layoutX="33.0" layoutY="131.0" startX="-149.0" stroke="#504f4f" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="125.0" />
+                        <Line endX="1200.0" layoutX="290.0" layoutY="155.0" startX="-149.0" stroke="#fcfcfc" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0" />
+                        <Line endX="1200.0" layoutX="71.0" layoutY="193.0" startX="-149.0" stroke="#504f4f" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="173.0" />
+                        <Line endX="1200.0" layoutX="75.0" layoutY="225.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="198.0" />
+                        <Line endX="1200.0" layoutX="-32.0" layoutY="242.0" startX="-149.0" stroke="#504f4f" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="224.0" />
+                        <Line endX="1200.0" layoutX="49.0" layoutY="263.0" startX="-149.0" stroke="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="249.0" />
+                        <Line endX="1200.0" layoutX="48.0" layoutY="268.0" startX="-149.0" stroke="#504f4f" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="275.0" />
+                        <Line endX="1200.0" startX="-2.0" stroke="#504f4f" AnchorPane.topAnchor="324.0" />
+                        <Line endX="1200.0" startX="-1.0" stroke="#504f4f" AnchorPane.topAnchor="373.0" />
+                        <Line endX="1200.0" startX="-2.0" startY="-2.4852817058563232" stroke="#504f4f" AnchorPane.topAnchor="424.0" />
+                        <Line endX="1200.0" startX="-2.0" stroke="#504f4f" AnchorPane.topAnchor="474.0" />
+                        <Line endX="1200.0" startX="-2.0" startY="-2.8994953632354736" stroke="#504f4f" AnchorPane.topAnchor="524.0" />
+                        <Line endX="1200.0" startX="-2.0" stroke="WHITE" AnchorPane.topAnchor="350.0" />
+                        <Line endX="1200.0" startX="-149.0" stroke="WHITE" AnchorPane.topAnchor="300.0" />
+                        <Line endX="1200.0" startX="-149.0" stroke="WHITE" AnchorPane.topAnchor="400.0" />
+                        <Line endX="1200.0" startX="-149.0" stroke="WHITE" AnchorPane.topAnchor="450.0" />
+                        <Line endX="1200.0" startX="-149.0" stroke="WHITE" AnchorPane.topAnchor="500.0" />
+                        <Line endX="1200.0" startX="-149.0" stroke="WHITE" AnchorPane.topAnchor="550.0" />
+                        <PointLight fx:id="p1" color="CHARTREUSE" layoutX="1.0" layoutY="127.0" lightOn="true" />
+                        <PointLight fx:id="p2" color="CHARTREUSE" layoutX="1.0" layoutY="175.0" lightOn="true" />
+                        <PointLight fx:id="p3" color="CHARTREUSE" layoutX="1.0" layoutY="226.0" lightOn="true" />
+                        <PointLight fx:id="p4" color="CHARTREUSE" layoutX="1.0" layoutY="277.0" lightOn="true" />
+                        <PointLight fx:id="p5" color="CHARTREUSE" layoutX="1.0" layoutY="326.0" lightOn="true" />
+                        <PointLight fx:id="p6" color="CHARTREUSE" layoutX="1.0" layoutY="375.0" lightOn="true" />
+                        <PointLight fx:id="p7" color="CHARTREUSE" layoutX="1.0" layoutY="427.0" lightOn="true" />
+                        <PointLight fx:id="p8" color="CHARTREUSE" layoutY="476.0" lightOn="true" />
+                        <PointLight fx:id="p9" color="CHARTREUSE" layoutX="1.0" layoutY="526.0" lightOn="true" />
                      </children>
                   </AnchorPane>
                </content>
