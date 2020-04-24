@@ -9,12 +9,11 @@ import javafx.scene.shape.Polyline;
 public class RegistreDecalage extends Sequentiels {
 	
 	private int taille;
-	private EtatLogique[] valeur;
+	private EtatLogique[] valeur = new EtatLogique[8];
 	private boolean decalageDroite; // si true dec droite sinon dec gauche
 	
 	public RegistreDecalage(int taille,String nom,boolean dec,Front front) { // constructeur 
 		super(taille+1,nom,front);
-		valeur = new EtatLogique[taille];
 		load = new Fil(null);
 		load.setEtatLogiqueFil(EtatLogique.ONE);
 		this.nombreSortie = 1;
@@ -74,11 +73,15 @@ public class RegistreDecalage extends Sequentiels {
 		return EtatLogique.ONE;
 	}
 
-	public boolean valider() { // valider le circuit si clear est à 0 ou bien load à 0 à condition d'avoir toutes les entrees branchées 
+	public boolean valider() { // valider le circuit si clear est à 0 ou bien load à 0 à condition d'avoir toutes les entrees branchées
+		System.out.println("CLEAR : "+clear.getEtatLogiqueFil() + " LOAD : "+load.getEtatLogiqueFil());
 		if (clear.getEtatLogiqueFil().getNum() == 0) {
 			return true;
 		}
 		if (load.getEtatLogiqueFil().getNum() == 0 && super.validerEntrees() == EtatLogique.ONE) {
+			return true;
+		}
+		if ((clear.getEtatLogiqueFil().getNum() == 1)&&(load.getEtatLogiqueFil().getNum() == 1) && (validerEntrees() == EtatLogique.ONE)) {
 			return true;
 		}
 		return false;
@@ -97,13 +100,16 @@ public class RegistreDecalage extends Sequentiels {
 	@Override
 	public void genererSortiesSyncho() { // pour generer la sortie en mode synchrone ou load à 0
 		// TODO Auto-generated method stub
+
 		if (this.load.getEtatLogiqueFil().getNum() == 0) {
 			for (int i = 1; i < nombreEntree; i++) {
-				valeur[i-1] = entrees[i].getEtatLogiqueFil();
+				valeur[nombreEntree -i-1] = entrees[i].getEtatLogiqueFil();
 			}
-			sorties[0].setEtatLogiqueFil(valeur[taille-1]);
+			if (decalageDroite) sorties[0].setEtatLogiqueFil(valeur[taille-1]);
+			else sorties[0].setEtatLogiqueFil(valeur[0]);
 		}
 		else {
+			
 			if (decalageDroite) { // decalage droite
 				decalageDroite();
 			}
@@ -154,8 +160,13 @@ public class RegistreDecalage extends Sequentiels {
 	@Override
 	public void initialiser() {// initialiser les etats precedents qui servent si le load à 0
 		// TODO Auto-generated method stub
-		for (int i = 1; i < nombreEntree; i++) {
-			etatPrec[i] = entrees[i].getEtatLogiqueFil();
+		if (load.getEtatLogiqueFil() == EtatLogique.ZERO) {
+			for (int i = 1; i < nombreEntree; i++) {
+				etatPrec[i] = entrees[i].getEtatLogiqueFil();
+			}
+		}
+		else {
+			etatPrec[0] = entrees[0].getEtatLogiqueFil();
 		}
 	}
 	
@@ -258,7 +269,9 @@ public class RegistreDecalage extends Sequentiels {
 		// TODO Auto-generated method stub
 		super.derelierComp();
 		if (load.getSource() != null) {
-			load.derelierCompFromDestination(this);
+			if (! load.getSource().equals(this)) {
+				load.derelierCompFromDestination(this);
+			}
 		}
 	}
 	
@@ -267,7 +280,8 @@ public class RegistreDecalage extends Sequentiels {
 		// TODO Auto-generated method stub
 		super.derelierEntreeFromComp(fil);
 		if (load.equals(fil)) {
-			load.derelierCompFromDestination(this);
+			load = new Fil(null);
+			load.setEtat(EtatLogique.ONE);
 		}
 	}
 	
@@ -288,6 +302,30 @@ public class RegistreDecalage extends Sequentiels {
 			}
 		}
 		return dessocier;
+	}
+	
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+		if (entreeHorloge == null && entrees[0] == null) {
+			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE,this));
+		}
+		else if (entreeHorloge == null) {
+			Circuit.AjouterUneException(new HorlogeManquante(TypesExceptions.ERREUR,this));
+			Circuit.ajouterCompErrone(this);
+			System.out.println("husdhih");
+		}
+		else if (entrees[0] == null) {
+			Circuit.AjouterUneException(new EntreeManquante(TypesExceptions.ERREUR,this,0));
+			Circuit.ajouterCompErrone(this);
+		}
+	}
+	
+	@Override
+	public void defaultValue() {
+		// TODO Auto-generated method stub
+		super.defaultValue();
+		Arrays.fill(valeur, EtatLogique.ZERO);
 	}
 	
 	public void setTaille(int taille) {

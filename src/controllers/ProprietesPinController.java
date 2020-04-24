@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -100,8 +102,8 @@ public class ProprietesPinController extends ProprietesController{
         		pin.setInput(false);
     			Circuit.getEntreesCircuit().remove(pin);
     			Circuit.getSortiesCircuit().add(pin);
-        		Polyline line = Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale();
-        		workSpace.getChildren().remove(line);
+        		ArrayList<Polyline> line = Circuit.getListePolylineFromFil(cmp.getSorties()[0]);
+        		removeAllPolylinesFromWorkSpace(line);
         		cmp.setNombreEntree(1);
         		cmp.setNombreSortie(0);
         		cmp.getLesCoordonnees().setNbCordEntree(1);

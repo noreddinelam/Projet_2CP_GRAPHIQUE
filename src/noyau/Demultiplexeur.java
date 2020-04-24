@@ -22,7 +22,12 @@ public class Demultiplexeur extends Combinatoires{
 	public void genererSorties() {
 		
 		int sortieActif=  Integer.parseInt(concatener(commande, nbCommande),2); //concatener les commandes//covertir les commandes en un entier
-
+		String binaryString = Integer.toBinaryString(sortieActif);
+		for (int i = binaryString.length(); i < nbCommande; i++) {
+			binaryString = '0' + binaryString;
+		}
+		StringBuilder stringBuilder = new StringBuilder(binaryString);
+		sortieActif = Integer.valueOf(stringBuilder.reverse().toString(), 2);
 		for(int i = 0 ; i < nombreSortie ; i++) {//parcourir les sorties en mettant le fil correspondant a 1 et le reste a zero
 			if (i == sortieActif)
 				sorties[i].setEtatLogiqueFil(entrees[0].getEtatLogiqueFil());
@@ -131,7 +136,8 @@ public class Demultiplexeur extends Combinatoires{
 		super.derelierComp();
 		for (int i = 0; i < nbCommande; i++) {
 			if (commande[i] != null) {
-				commande[i].derelierCompFromDestination(this);
+				if (! commande[i].getSource().equals(this))
+					commande[i].derelierCompFromDestination(this);
 			}
 		}
 	}
@@ -143,7 +149,7 @@ public class Demultiplexeur extends Combinatoires{
 		for (int i = 0; i < nbCommande; i++) {
 			if (commande[i] != null) {
 				if (commande[i].equals(fil)) {
-					commande[i].derelierCompFromDestination(this);
+					commande[i] = null;
 				}
 			}
 		}
@@ -172,5 +178,30 @@ public class Demultiplexeur extends Combinatoires{
 			}
 		}
 		return dessocier;
+	}
+	
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+		ArrayList<ExceptionProgramme> arrayList = new ArrayList<ExceptionProgramme>();
+		for (int i = 0; i < nombreEntree; i++) {
+			if (entrees[i] == null) {
+				arrayList.add(new EntreeManquante(TypesExceptions.ERREUR, this, i));
+			}
+		}
+		for (int i = 0; i < nbCommande; i++) {
+			if (commande[i] == null) {
+				arrayList.add(new CommandeManquante(TypesExceptions.ERREUR, this, i));
+			}
+		}
+		if (arrayList.size() == nombreEntree + nbCommande) {
+			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE, this));
+		}
+		else {
+			if (arrayList.size() != 0) {
+				Circuit.AjouterListeException(arrayList);
+				Circuit.ajouterCompErrone(this);
+			}
+		}
 	}
 }

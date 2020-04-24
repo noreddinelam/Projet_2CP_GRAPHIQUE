@@ -35,8 +35,11 @@ public class Compteur extends Sequentiels{
 			initialiser(); // initialiser les etats prec pour le prochain front elle sert surtout dans le load
 		}
 	}
-	public boolean valider() { // valider le circuit si clear est à 0 ou bien load à 0 à condition d'avoir toutes les entrees branchées 
+	public boolean valider() { // valider le circuit si clear est à 0 ou bien load à 0 à condition d'avoir toutes les entrees branchées
 		if (clear.getEtatLogiqueFil().getNum() == 0) {
+			return true;
+		}
+		else if (load.getEtatLogiqueFil().getNum() == 1) {
 			return true;
 		}
 		if (load.getEtatLogiqueFil().getNum() == 0 && validerEntrees() == EtatLogique.ONE) {
@@ -121,8 +124,11 @@ public class Compteur extends Sequentiels{
 	@Override
 	public void initialiser() { // initialiser les etats precedents qui servent si le load à 0
 		// TODO Auto-generated method stub
-		for (int i = 0; i < nombreEntree; i++) {
-			etatPrec[i] = entrees[i].getEtatLogiqueFil();
+		if (load.getEtatLogiqueFil() == EtatLogique.ZERO) {
+			for (int i = 0; i < nombreEntree; i++) {
+				System.out.println("Entree [ "+ i + " ] " +entrees[i]);
+				etatPrec[i] = entrees[i].getEtatLogiqueFil();
+			}
 		}
 	}
 	
@@ -219,7 +225,9 @@ public class Compteur extends Sequentiels{
 		// TODO Auto-generated method stub
 		super.derelierComp();
 		if (load.getSource() != null) {
-			load.derelierCompFromDestination(this);
+			if (! load.getSource().equals(this)) {
+				load.derelierCompFromDestination(this);
+			}
 		}
 	}
 	
@@ -228,7 +236,8 @@ public class Compteur extends Sequentiels{
 		// TODO Auto-generated method stub
 		super.derelierEntreeFromComp(fil);
 		if (load.equals(fil)) {
-			load.derelierCompFromDestination(this);
+			load = new Fil(null);
+			load.setEtat(EtatLogique.ONE);
 		}
 	}
 	
@@ -251,6 +260,21 @@ public class Compteur extends Sequentiels{
 		return dessocier;
 	}
 	
+	@Override
+	public void defaultValue() {
+		// TODO Auto-generated method stub
+		super.defaultValue();
+		valeur = 0;
+	}
+	
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+		if (entreeHorloge == null) {
+			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE,this));
+		}
+	}
+	
 	public boolean isCompter() {
 		return compter;
 	}
@@ -263,5 +287,14 @@ public class Compteur extends Sequentiels{
 	public void setValeur(int valeur) {
 		this.valeur = valeur;
 	}
+
+	public int getValeurMax() {
+		return valeurMax;
+	}
+
+	public void setValeurMax(int valeurMax) {
+		this.valeurMax = valeurMax;
+	}
+	
 
 }

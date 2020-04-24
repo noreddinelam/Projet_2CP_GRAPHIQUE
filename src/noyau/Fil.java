@@ -28,46 +28,49 @@ public class Fil implements Serializable{
 			ArrayList<InfoPolyline> line = Circuit.getPolylineFromFil(this);
 			for (InfoPolyline polyline : line) {
 				if(etat.getNum() == 1) {
-					polyline.getLinePrincipale().setStroke(Color.DARKGREEN);
+					polyline.getLinePrincipale().setStroke(Color.LIGHTGREEN);
 				}
 				if(etat.getNum() == 0){
-					polyline.getLinePrincipale().setStroke(Color.DARKRED);
+					polyline.getLinePrincipale().setStroke(Color.DARKGREEN.darker());
 				}
 			}
 			for (Composant composant : destination) // parcourir les destinations
 				composant.evaluer(); // evaluer les composants de destination
-		}else
-		{
-
 		}
 	}
 
 	public boolean valider() { // tester si le fil est pret 
-		return (this.sortieReinjecter())&&(this.validerEntreeSorties()) // tester si le fil est reinjecté en entree /sortie injectée en entree
-				&&
-				(this.getEtatLogiqueFil().getNum() == EtatLogique.ERROR.getNum() // tester l'etat ERREUR
-						|| 
-						this.getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum() ? false: true); // tester L'etat HAUTE_IMPEDANCE
-		
-	}
-	
-	public boolean validerEntreeSorties() { // verifier si une on a relier deux composants sortie avec sortie .
-		for(Composant c: this.destination) {
-			for(Fil f : c.sorties) {
-				if(this.equals(f))
-					return false;
-			}
+//		return (this.sortieReinjecter()) // tester si le fil est reinjecté en entree /sortie injectée en entree
+//				&&
+//				(this.getEtatLogiqueFil().getNum() == EtatLogique.ERROR.getNum() // tester l'etat ERREUR
+//						|| 
+//						this.getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum() ? false: true); // tester L'etat HAUTE_IMPEDANCE
+		if (etat == EtatLogique.ERROR || etat == EtatLogique.HAUTE_IMPEDANCE ) {
+			return false;
 		}
-		return true;
+		return true;	
 	}
 	
-	public boolean sortieReinjecter() { //verifier si une sortie est reinjectée en entree 
-		for(Fil f : this.source.entrees)
-			if(this.equals(f))
-				return false;
-		
-		return true;
-	}
+//	public boolean sortieReinjecter() { //verifier si une sortie est reinjectée en entree 
+////		for(Fil f : this.source.entrees)
+////			if(this.equals(f) && (! source.getClass().getSuperclass().equals(Bascule.class)) && (!  source.getClass().getSuperclass().equals(Sequentiels.class)))
+////				return false;
+////			
+////		
+////		return true;
+//		boolean reinjecter = false;
+//		int i = 0;
+//		while (! reinjecter && i < source.nombreEntree) {
+//			if(this.equals(source.entrees[i]) && (! source.getClass().getSuperclass().equals(Bascule.class)) && (!  source.getClass().getSuperclass().equals(Sequentiels.class))) {
+//				reinjecter =true;
+//			}
+//			i++;
+//		}
+//		if (! reinjecter && (this.source.getClass().getSimpleName().equals("Multiplexeur") || this.source.) {
+//			
+//		}
+//		return reinjecter;
+//	}
 	
 	public void addDestination(Composant comp){ // ajouter un composant vers la liste des destinations
 		if (destination.contains(comp) == false) {

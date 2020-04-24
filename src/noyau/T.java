@@ -8,15 +8,17 @@ public class T extends Bascule{
 	}
 
 	public void genererSortiesSyncho() {
-		if(sorties[0].getEtatLogiqueFil().getNum()==1)
-		{
-			sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
-			sorties[1].setEtatLogiqueFil(EtatLogique.ONE);
-		}
-		else 
-		{
-			sorties[0].setEtatLogiqueFil(EtatLogique.ONE);
-			sorties[1].setEtatLogiqueFil(EtatLogique.ZERO);
+		if (etatPrec[0] == EtatLogique.ONE) {
+			if(sorties[0].getEtatLogiqueFil().getNum()==1)
+			{
+				sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
+				sorties[1].setEtatLogiqueFil(EtatLogique.ONE);
+			}
+			else 
+			{
+				sorties[0].setEtatLogiqueFil(EtatLogique.ONE);
+				sorties[1].setEtatLogiqueFil(EtatLogique.ZERO);
+			}
 		}
 	}
 

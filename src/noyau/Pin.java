@@ -147,6 +147,15 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		line.getPoints().clear();
 		line.getPoints().addAll(x,y,x,y+5);
 	}
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+		if (!input) {
+			if (entrees[0] == null) {
+				Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE, this));
+			}
+		}
+	}
 	public boolean isInput() {
 		return input;
 	}

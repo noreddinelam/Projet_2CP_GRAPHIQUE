@@ -45,8 +45,8 @@ public abstract class Controller {
 	protected double x,y;
     protected int switching = 0; 
     
-    protected Line guideFilX = new Line();
-	protected Line guideFilY = new Line();
+    protected static Line guideFilX = new Line();
+	protected static Line guideFilY = new Line();
 	
 	 protected Composant source;
 
@@ -54,7 +54,6 @@ public abstract class Controller {
     protected static ArrayList<Pin> ListTextPin = null;
     protected static ArrayList<Text> ListText = null;
 
-    
     protected Composant destination;
 	 protected int entree;
 	 protected int sortie;
@@ -229,6 +228,7 @@ public abstract class Controller {
 				@Override
 				public void handle(MouseEvent arg0) {
 					// TODO Auto-generated method stub
+
 					if (! simul) {
 						if(arg0.getButton() == MouseButton.PRIMARY) {
 							workSpace.getChildren().remove(guideFilX);
@@ -292,9 +292,11 @@ public abstract class Controller {
 									line.getPoints().remove(der);line.getPoints().remove(der-1);}
 							}
 							//System.out.println(line.getPoints().size());
+
 						}
 					}
 				}
+				
 			});
 		}
 	

@@ -22,6 +22,7 @@ public class SourceConstante extends Composant{
 	@Override
 	public void genererSorties() {
 		// TODO Auto-generated method stub
+		sorties[0].setEtat(etatLogique);
 	}
 
 	@Override
@@ -69,6 +70,10 @@ public class SourceConstante extends Composant{
 
 	public EtatLogique getEtatLogique() {
 		return etatLogique;
+	}
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
 	}
 	
 }
