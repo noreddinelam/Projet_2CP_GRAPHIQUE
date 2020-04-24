@@ -11,7 +11,7 @@ public class EntreeManquante extends ExceptionProgramme{
 	}
 	@Override
 	public String getProblem() {
-		return "Composant : "+ composant.getClass().getSimpleName() +" "+this.getClass().getSimpleName()+" : " +String.valueOf(entreeManquante);
+		return "L'entree : "+String.valueOf(entreeManquante) + " du composant : "+composant.getClass().getSimpleName()+" est non relié";
 	}
 	@Override
 	public String getSolution() {

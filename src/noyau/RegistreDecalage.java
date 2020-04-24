@@ -304,6 +304,30 @@ public class RegistreDecalage extends Sequentiels {
 		return dessocier;
 	}
 	
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+		if (entreeHorloge == null && entrees[0] == null) {
+			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE,this));
+		}
+		else if (entreeHorloge == null) {
+			Circuit.AjouterUneException(new HorlogeManquante(TypesExceptions.ERREUR,this));
+			Circuit.ajouterCompErrone(this);
+			System.out.println("husdhih");
+		}
+		else if (entrees[0] == null) {
+			Circuit.AjouterUneException(new EntreeManquante(TypesExceptions.ERREUR,this,0));
+			Circuit.ajouterCompErrone(this);
+		}
+	}
+	
+	@Override
+	public void defaultValue() {
+		// TODO Auto-generated method stub
+		super.defaultValue();
+		Arrays.fill(valeur, EtatLogique.ZERO);
+	}
+	
 	public void setTaille(int taille) {
 		this.taille = taille;
 	}

@@ -70,5 +70,9 @@ public class SourceConstante extends Composant{
 	public EtatLogique getEtatLogique() {
 		return etatLogique;
 	}
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+	}
 	
 }

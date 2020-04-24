@@ -17,11 +17,7 @@ public abstract class Sequentiels extends Composant {
 		this.front = front ;
 		clear = new Fil(null);
 		clear.setEtatLogiqueFil(EtatLogique.ONE);
-		
-		// EN CAS D'ERREUR INATENDUE :
-//		for (int i = 0; i < nombreEntree; i++) {
-//			etatPrec[i] = EtatLogique.ZERO;
-//		}
+	
 	}
 	
 	@Override
@@ -101,6 +97,37 @@ public abstract class Sequentiels extends Composant {
 			if(! etage.contains(i+1)) {
 				etage.add(i+1);
 			}
+		}
+	}
+	
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+		ArrayList<ExceptionProgramme> arrayList = new ArrayList<ExceptionProgramme>();
+		for (int i = 0; i < nombreEntree; i++) {
+			if (entrees[i] == null) {
+				arrayList.add(new EntreeManquante(TypesExceptions.ERREUR, this, i));
+			}
+		}
+		if (arrayList.size() == nombreEntree) {
+			if (entreeHorloge != null) {
+				Circuit.AjouterListeException(arrayList);
+				Circuit.ajouterCompErrone(this);
+			}
+			else {
+				Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE, this));
+			}
+			
+		}
+		else {
+			if (entreeHorloge == null) {
+				arrayList.add(new HorlogeManquante(TypesExceptions.ERREUR, this));
+				Circuit.ajouterCompErrone(this);
+			}
+			else if(arrayList.size() != 0) {
+				Circuit.ajouterCompErrone(this);
+			}
+			Circuit.AjouterListeException(arrayList);	
 		}
 	}
 	

@@ -80,7 +80,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 
-public class HomeController extends Controller implements Initializable {
+public class HomeController extends Controller {
 	
     Map<ImageView,Label> elemanrsMapFillMap;
     ImageView dragItem;
@@ -109,7 +109,7 @@ public class HomeController extends Controller implements Initializable {
     
 	public static ImageView elementSeclecionner ;
 	
-	Stage stage;
+//	static Stage stage;
 
 	public static ImageView elementAsuprimer=null;
 
@@ -459,39 +459,53 @@ public class HomeController extends Controller implements Initializable {
 
     @FXML
     void onSimuler(MouseEvent event) { /// pour lancer la simulation ou l'arreter
-
+    	Circuit.clearException();
     	simul = (!simul);
     	System.out.println("------------------------------------------------------------------------");
     	if (simul) {
-    		simulation.setImage(new Image("homePage_icones/SIMULATION_OFF.png"));
-    		if(! horloged)	Circuit.initialiser();
+    		Circuit.validerCircuits();
+    		if ( Circuit.isThereAnyException()) {
+    			if (Circuit.isThereAnyError()) {
+    				simul = false;
+    				simulation.setImage(new Image("homePage_icones/simulation.png"));
+    			}
+    			else {
+    				simulation.setImage(new Image("homePage_icones/SIMULATION_ON.png"));
+    				if(! horloged)	Circuit.initialiser();
 
-    		else {	
-    			horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
-    			//horloge.setImage(horlogeDeCercuit);
-    			t1=new Thread(horloge);
-    			t1.start();
+    				else {	
+    					horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
+    					//horloge.setImage(horlogeDeCercuit);
+    					t1=new Thread(horloge);
+    					t1.start();
+    				}
+    				rotationDelogo(logo,1,1000,false);
+    			}
+    			new FenetreDesErreurs(homeWindow);
     		}
-    		Circuit.printExceptions();
-    		if (Circuit.isThereAnyException()) {
-				new FenetreDesErreurs(stage);
+    		else {
+    			simulation.setImage(new Image("homePage_icones/SIMULATION_ON.png"));
+				if(! horloged)	Circuit.initialiser();
+
+				else {	
+					horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
+					//horloge.setImage(horlogeDeCercuit);
+					t1=new Thread(horloge);
+					t1.start();
+				}
+				rotationDelogo(logo,1,1000,false);
 			}
-    		rotationDelogo(logo,1,1000,false);
     	}
     	else {
-    		Circuit.clearException();
     		simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
     		Circuit.defaultCompValue();
     		System.out.println("------------------------------------------------------------------------");
     		if( horloged)
     		{    		
     			try {
-
     				horlogeDeCercuit.setImage( new Image("/Horloge/0.png"));
     				horloge.stop();
     				t1.join();
-
-
     			} catch (InterruptedException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
@@ -522,12 +536,6 @@ public class HomeController extends Controller implements Initializable {
     public static boolean getCopierActive() {
     	return copierActive;
     }
-       
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-	
-	}
 
 	public void inisialiser() { /// pour l'initialisation des effets de la fenetre principale (affichage des guides ajout de 
 								/// l'operation du drag and drop pour tout les composants
@@ -619,20 +627,22 @@ public class HomeController extends Controller implements Initializable {
 					click.close();
 					tooltipInitialize();
 				}
+				ctrlX= event.getX();
+				ctrlY=event.getY();
+				if (clickDroitFenetre != null) {
+					Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
+					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
 
-				if(event.getButton() == MouseButton.PRIMARY) {
+					if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) )
+						clickDroitFenetre.close();
+				}
+				if (clickDroitFilFenetre != null) {
+					Double x = clickDroitFilFenetre.getX(), y = clickDroitFilFenetre.getY(); 
+					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
 
-					if (clickDroitFenetre != null) {
-						Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
-						Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-
-						if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) ) {
-							// clickDroitFenetre.close();
-
-							Stage s = (Stage) clickDroitFenetre.getScene().getWindow();
-							s.close();
-
-						}
+					if( (mouseX < x)  ||  (mouseX > x+164) || (mouseY < y)  ||  (mouseY > y+55) ) {
+						lineDroit.setStroke(Color.BLACK);
+						clickDroitFilFenetre.close();
 					}
 				}
 			}
@@ -671,27 +681,6 @@ public class HomeController extends Controller implements Initializable {
 				//	  workSpace.getChildren().remove(guideFilY);
 
 				e.consume();
-			}
-		});
-		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() { /// pour le click droit de la souris 
-			@Override
-			public void handle(MouseEvent event) {
-				if (clickDroitFenetre != null) {
-					Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
-					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-
-					if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) )
-						clickDroitFenetre.close();
-				}
-				if (clickDroitFilFenetre != null) {
-					Double x = clickDroitFilFenetre.getX(), y = clickDroitFilFenetre.getY(); 
-					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-
-					if( (mouseX < x)  ||  (mouseX > x+164) || (mouseY < y)  ||  (mouseY > y+55) ) {
-						lineDroit.setStroke(Color.BLACK);
-						clickDroitFilFenetre.close();
-					}
-				}
 			}
 		});
 
@@ -1254,14 +1243,16 @@ public class HomeController extends Controller implements Initializable {
 								@Override
 								public void handle(MouseEvent e) {
 									// TODO Auto-generated method stub
-									if (pin.getEtat() == EtatLogique.ONE) {
-										pin.setEtat(EtatLogique.ZERO);
-									} 
-									else {
-										pin.setEtat(EtatLogique.ONE);
+									if (simul) {
+										if (pin.getEtat() == EtatLogique.ONE) {
+											pin.setEtat(EtatLogique.ZERO);
+										} 
+										else {
+											pin.setEtat(EtatLogique.ONE);
+										}
+										pin.evaluer();
+										eleementAdrager.setCursor(Cursor.HAND);
 									}
-									pin.evaluer();
-									eleementAdrager.setCursor(Cursor.HAND);
 								}
 							});
 						}
@@ -1745,14 +1736,7 @@ public class HomeController extends Controller implements Initializable {
 				}
 
 				keyEvent.consume();
-
-				workSpace.setOnMousePressed(new EventHandler<MouseEvent>() { /// recuperer les coordonnees du clic
-					@Override
-					public void handle(MouseEvent event) {
-						ctrlX= event.getX();
-						ctrlY=event.getY();
-					}
-				});				   
+			   
 				if (kb2.match(keyEvent) && getCopierActive()) {/// si user clique sur "CTRL + V"
 
 					System.out.println("control + v are pressed !");	    
@@ -1763,7 +1747,6 @@ public class HomeController extends Controller implements Initializable {
 					instanceComposant(dragImageView);		
 					Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
 					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
-
 					cmp2.setDirection(cmp.getDirection());
 					cmp2.setIcon(cmp.getIcon());
 					cmp2.setLesCoordonnees(cmp.getLesCoordonnees());

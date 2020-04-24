@@ -267,6 +267,14 @@ public class Compteur extends Sequentiels{
 		valeur = 0;
 	}
 	
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+		if (entreeHorloge == null) {
+			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE,this));
+		}
+	}
+	
 	public boolean isCompter() {
 		return compter;
 	}

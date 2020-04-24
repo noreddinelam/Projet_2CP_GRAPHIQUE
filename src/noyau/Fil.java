@@ -28,37 +28,22 @@ public class Fil implements Serializable{
 			ArrayList<InfoPolyline> line = Circuit.getPolylineFromFil(this);
 			for (InfoPolyline polyline : line) {
 				if(etat.getNum() == 1) {
-					polyline.getLinePrincipale().setStroke(Color.DARKGREEN);
+					polyline.getLinePrincipale().setStroke(Color.LIGHTGREEN);
 				}
 				if(etat.getNum() == 0){
-					polyline.getLinePrincipale().setStroke(Color.LIGHTGREEN);
+					polyline.getLinePrincipale().setStroke(Color.DARKGREEN.darker());
 				}
 			}
 			for (Composant composant : destination) // parcourir les destinations
 				composant.evaluer(); // evaluer les composants de destination
-		}else
-		{
-
 		}
 	}
 
 	public boolean valider() { // tester si le fil est pret 
-		return (this.sortieReinjecter()) // tester si le fil est reinjecté en entree /sortie injectée en entree
-				&&
-				(this.getEtatLogiqueFil().getNum() == EtatLogique.ERROR.getNum() // tester l'etat ERREUR
-						|| 
-						this.getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum() ? false: true); // tester L'etat HAUTE_IMPEDANCE
-		
-	}
-	
-	public boolean sortieReinjecter() { //verifier si une sortie est reinjectée en entree 
-		
-		for(Fil f : this.source.entrees)
-			if(this.equals(f) && (! source.getClass().getSuperclass().equals(Bascule.class)) && (!  source.getClass().getSuperclass().equals(Sequentiels.class)))
-				return false;
-			
-		
-		return true;
+		if (etat == EtatLogique.ERROR || etat == EtatLogique.HAUTE_IMPEDANCE ) {
+			return false;
+		}
+		return true;	
 	}
 	
 	public void addDestination(Composant comp){ // ajouter un composant vers la liste des destinations
