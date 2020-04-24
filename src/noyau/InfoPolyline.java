@@ -1,6 +1,8 @@
 package noyau;
 
 import java.util.ArrayList;
+
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
 public class InfoPolyline {

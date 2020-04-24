@@ -17,10 +17,11 @@ public class Circuit implements Serializable{
 	private static HashMap<Composant, ImageView> compUtilises = new HashMap<Composant,ImageView>();// tout les composants du circuit
 	private static HashMap<Fil, ArrayList<InfoPolyline>> filUtilises = new HashMap<Fil,ArrayList<InfoPolyline>>();// tout les fils du circuit
 	private static ArrayList<Pin> entreesCircuit = new ArrayList<Pin>(); // toutes les entrees du circuit
-	private static ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>(); // toutes les sorties du circuit
-	private EtatLogique tableVerite[][]; // la table de verite du circuit
+	public static ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>(); // toutes les sorties du circuit
+	public static EtatLogique tableVerite[][]; // la table de verite du circuit
 	private static ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>(); // la liste des etages pour les elts sequentiels 
 	private static int nbEtages = 0; // nombre des etages	
+	private static ArrayList<SourceConstante> listSouceCte = new ArrayList<SourceConstante>();//liste des sources constants
 	private static ArrayList<ExceptionProgramme> circuitException = new ArrayList<ExceptionProgramme>();
 	private static ArrayList<Composant> composantsErronee = new ArrayList<Composant>();
 	
@@ -127,6 +128,13 @@ public class Circuit implements Serializable{
 		entreesCircuit.add(pin);
 		
 	}
+	public static void ajouterSourceCte(SourceConstante cte) { // ajouter une entree à la liste des entrees
+		listSouceCte.add(cte);
+		
+	}
+	public static void supprimerSourceCte(SourceConstante cte) {
+		listSouceCte.remove(cte);
+	}
 	public static void ajouterSortie(Affichage compAff) { // ajouter une sorties à la liste des sorties
 		sortiesCircuit.add(compAff);
 	}
@@ -169,7 +177,7 @@ public class Circuit implements Serializable{
 		bascule.setPreset(fil);
 		fil.addDestination(bascule);
 	}
-	private EtatLogique[] convertir(int i , int nbits) // elle transforme une ligne dans de la table en etat  logique pour generer les sorties
+	private static EtatLogique[] convertir(int i , int nbits) // elle transforme une ligne dans de la table en etat  logique pour generer les sorties
 	{
 		EtatLogique tableVerite[]= new EtatLogique[nbits]; // initialiser un tableau de etat logique qui sera le resultat de la conversion
 		int j=0;
@@ -184,7 +192,7 @@ public class Circuit implements Serializable{
 		return tableVerite;
 	}
 	
-	public void tableVerite() // generer la table de verité du ciruit
+	public static void tableVerite(ArrayList<Pin> entreesCircuit) // generer la table de verité du ciruit
 	{
 		int nbEntrees = entreesCircuit.size(); // nombre d'entrees du circuit
 		int nbSorties = sortiesCircuit.size(); // nombre de sortiees du circuit
@@ -193,14 +201,16 @@ public class Circuit implements Serializable{
 		double l=Math.pow(2, nbEntrees); // calculer le nombre de lignes de la table de verité
 		tableVerite = new EtatLogique[(int)l][c]; // initialiser la taille de la table
 		EtatLogique ligne[] ; // sert à stocker une ligne 
-		for (Pin pin : entreesCircuit) { // affichage des labels des pins d'entrees
+		/*for (Pin pin : entreesCircuit) { // affichage des labels des pins d'entrees
 			System.out.print(pin.nom+"  ");
-		}
-		for (Affichage pin : sortiesCircuit) { // affichage des labels des pins de sorties 
+		}*/
+		/*for (Affichage pin : sortiesCircuit) { // affichage des labels des pins de sorties 
 			System.out.print(((Pin)pin).nom + "  ");
+		}*/
+		for (SourceConstante cte : listSouceCte) {
+			cte.evaluer();
 		}
-		System.out.println();
-		for(int  i=0;i<l;i++)
+		for(int i=0;i<l;i++)
 		{
 			ligne = Arrays.copyOf(convertir(i, nbEntrees), c);
 			j=0;
@@ -218,7 +228,7 @@ public class Circuit implements Serializable{
 		}
 	}
 	
-	public void afficher() { // pour l'affichage en mode console de la table de vérité 
+	public static void afficher() { // pour l'affichage en mode console de la table de vérité 
 		for (int i = 0; i < tableVerite.length; i++) {
 			for (int j = 0; j < tableVerite[i].length; j++) {
 				System.out.print(tableVerite[i][j].getNum() + " | ");
@@ -229,6 +239,9 @@ public class Circuit implements Serializable{
 	public static void initialiser() {// à completer au fur et mesure .
 		for (Pin pin : entreesCircuit) { // initialiser les pins d'entrees pour le commencement de la simulation
 			pin.evaluer();  //a na7i
+		}
+		for (SourceConstante cte : listSouceCte) { // initialiser les pins d'entrees pour le commencement de la simulation
+			cte.evaluer(); 
 		}
 		
 		ArrayList<Integer> etage = new ArrayList<Integer>();
@@ -418,6 +431,13 @@ public class Circuit implements Serializable{
 					}
 				}
 		}
+	}
+	public static HashMap<Fil, ArrayList<InfoPolyline>> getfilUtilises() {
+		return filUtilises;
+	}
+	public static void creerCircuitIntegrer(String nom) {
+		CircuitIntegre ci = new CircuitIntegre(entreesCircuit.size(),sortiesCircuit.size(), nom);
+		ci.setTableVerite(tableVerite);
 	}
 	
 }

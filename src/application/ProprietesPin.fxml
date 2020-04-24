@@ -22,7 +22,7 @@
                         <Font name="Calisto MT" size="16.0" />
                      </font>
                   </Text>
-                  <Text fill="#e4e4e4" layoutX="22.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In/Out Put">
+                  <Text fill="#e4e4e4" layoutX="22.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
                      <font>
                         <Font name="Calisto MT" size="16.0" />
                      </font>
@@ -56,7 +56,7 @@
                <font>
                   <Font name="Calisto MT" size="14.0" />
                </font></Button>
-            <Label fx:id="put" alignment="CENTER" layoutX="247.0" layoutY="47.0" prefHeight="19.0" prefWidth="107.0" text="Input" textFill="#b2b2b2">
+            <Label fx:id="put" alignment="CENTER" layoutX="247.0" layoutY="46.0" prefHeight="19.0" prefWidth="107.0" text="Input" textFill="#b2b2b2">
                <font>
                   <Font name="Calisto MT" size="15.0" />
                </font>

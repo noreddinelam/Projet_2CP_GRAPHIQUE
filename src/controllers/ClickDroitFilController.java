@@ -110,6 +110,7 @@ public class ClickDroitFilController {
     			double posX = Circuit.getImageFromComp(cmpSource).getLayoutX()+cmpSource.getLesCoordonnees().getCordSortieInIndex(cmpSource.numCmpSorties(filDeline)).getX() ;
     			double posY = Circuit.getImageFromComp(cmpSource).getLayoutY()+cmpSource.getLesCoordonnees().getCordSortieInIndex(cmpSource.numCmpSorties(filDeline)).getY() ;
     			cmpSource.resetPolyline(line, posX, posY);
+        		line.setStroke(Color.BLACK);
     		}
     	}else {
     		line.setStroke(Color.BLACK);
