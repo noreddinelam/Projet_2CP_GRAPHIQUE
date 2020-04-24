@@ -22,3 +22,73 @@
     .comb:selected, .seq:selected, .portes:selected, .outils:selected {
     	    		-fx-background-color :  #303337;
     }
+    .dialog-pane{
+   /* @SuppressWarning */ 	
+  -fx-border-color:#303337;
+  /* @SuppressWarning */
+  -fx-border-width:2.0px;
+ }
+
+/**Costumization of The Bar where the buttons are located**/
+.dialog-pane > .button-bar > .container {
+  /* @SuppressWarning */
+  -fx-background-color: #303337;
+}
+
+.dialog-pane > .content.label {
+   /* @SuppressWarning */
+   -fx-padding: 0.5em 0.5em 0.5em 0.5em;
+   /* @SuppressWarning */
+   -fx-background-color:  #303337;
+  /* @SuppressWarning */
+   -fx-text-fill:  #e4e4e4;
+   /* @SuppressWarning */
+   -fx-font-size:13.0px;
+      /* @SuppressWarning */
+   -fx-border-color : #7c7878;
+}
+
+/**Costumization of DialogPane Header**/
+.dialog-pane:header .header-panel {
+	/* @SuppressWarning */
+  -fx-background-color:  #303337;
+}
+
+.dialog-pane:header .header-panel .label{
+	/* @SuppressWarning */
+  -fx-background-color:  #303337;
+  /* @SuppressWarning */
+  -fx-background-radius:10px;
+  /* @SuppressWarning */
+  -fx-text-fill: #e4e4e4;
+  /* @SuppressWarning */
+  -fx-font-size:15.0px;
+    /* @SuppressWarning */
+  -fx-font-weight:bold; 
+}
+
+
+/**Costumization of Buttons**/
+.dialog-pane .button{
+	/* @SuppressWarning */
+   -fx-background-color: #303337;
+   /* @SuppressWarning */
+   -fx-text-fill:#e4e4e4;
+   /* @SuppressWarning */
+   -fx-wrap-text: true;
+   /* @SuppressWarning */
+   -fx-effect: dropshadow( three-pass-box, #7c7878, 10.0, 0.0, 0.0, 0.0);
+   /* @SuppressWarning */
+   -fx-cursor:hand;
+       /* @SuppressWarning */
+  -fx-font-weight:bold; 
+ }
+
+.dialog-pane .button:hover{    
+	/* @SuppressWarning */ 
+  -fx-background-color:#e4e4e4;
+  /* @SuppressWarning */
+  -fx-text-fill: #303337;
+  /* @SuppressWarning */
+  -fx-font-weight:bold; 
+ }

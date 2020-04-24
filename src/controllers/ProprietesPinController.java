@@ -15,7 +15,7 @@ public class ProprietesPinController extends ProprietesController{
 
 	private Direction bddDirection[] = {Direction.Nord,Direction.Est,Direction.West,Direction.Sud};
 	int direct;
-	String bddPut[] = {"Input","Output"};
+	String bddPut[] = {"Entrée","Sortie"};
 	int putInt;
 	
 	
