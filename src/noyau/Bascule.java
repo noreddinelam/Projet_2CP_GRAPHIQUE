@@ -145,6 +145,7 @@ public abstract class Bascule extends Sequentiels{
 		}
 		return dessocier;
 	}
+	
 	public Fil getPreset() {
 		return preset;
 	}

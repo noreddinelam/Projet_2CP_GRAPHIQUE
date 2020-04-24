@@ -7,12 +7,20 @@ public abstract class ExceptionProgramme {
 		// TODO Auto-generated constructor stub
 		this.typesExceptions = typesExceptions;
 		this.composant = composant;
-		Circuit.AjouterException(this);
 	}
 	
 	public String getTypeExceptions() {
 		return typesExceptions.getTypeExString();
 	}
+	
+	public TypesExceptions getTypesExceptions() {
+		return typesExceptions;
+	}
+
+	public void setTypesExceptions(TypesExceptions typesExceptions) {
+		this.typesExceptions = typesExceptions;
+	}
+
 	public abstract String getProblem();
 	public abstract String getSolution();
 }

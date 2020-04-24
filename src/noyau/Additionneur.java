@@ -14,6 +14,7 @@ public abstract class Additionneur extends Combinatoires{
 	
 	public boolean valider() { // verifier si le composant est pret a executer sa fonction logique 
 							   // valider si les entrees sont pretes 
-		return ( validerEntrees().getNum() == 1 ) ? true : false; 
+		return ( validerEntrees() == EtatLogique.ONE ) ? true : false; 
 	}
+	
 }
