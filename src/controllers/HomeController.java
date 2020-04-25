@@ -548,7 +548,7 @@ public class HomeController extends Controller {
     public static boolean getCopierActive() {
     	return copierActive;
     }
-       
+
 	public void inisialiser() { /// pour l'initialisation des effets de la fenetre principale (affichage des guides ajout de 
 								/// l'operation du drag and drop pour tout les composants
 
@@ -1879,7 +1879,7 @@ public class HomeController extends Controller {
 	            File f = fileChooser.showOpenDialog(homeWindow);
 	            Sauvegarde.loadCiruit(f.getAbsolutePath());
 	            ajouterElements(); 
-	           	    	
+
 	    }
 	        
 	    @FXML
@@ -1907,8 +1907,7 @@ public class HomeController extends Controller {
 	    	final FileChooser fileChooser = new FileChooser();
 	    	File f = fileChooser.showSaveDialog(homeWindow);
 	    	System.out.println("the name of the file is : "+f.getAbsolutePath());
-	    	Circuit circuit = new Circuit();
-	    	Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
+	    	Sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
 	    }
 
 	    @FXML
@@ -1932,8 +1931,7 @@ public class HomeController extends Controller {
 	    	final FileChooser fileChooser = new FileChooser();
 	    	File f = fileChooser.showSaveDialog(homeWindow);
 	    	System.out.println("the name of the file is : "+f.getAbsolutePath());
-	    	Circuit circuit = new Circuit();
-	    	Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
+	    	Sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
 	    }
 
 	    @FXML

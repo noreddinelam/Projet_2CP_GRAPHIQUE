@@ -383,8 +383,8 @@ public class Circuit implements Serializable{
 	public static HashMap<Fil, ArrayList<InfoPolyline>> getFilUtilises() {
 		return filUtilises;
 	}
-	public static void setFilUtilises(HashMap<Fil, ArrayList<InfoPolyline>> filUtilises) {
-		Circuit.filUtilises = filUtilises;
+	public static void setFilUtilises(HashMap<Fil, ArrayList<InfoPolyline>> arrayList) {
+		Circuit.filUtilises = arrayList;
 	}
 	public static ArrayList<Pin> getEntreesCircuit() {
 		return entreesCircuit;
@@ -392,7 +392,7 @@ public class Circuit implements Serializable{
 	public static ArrayList<Affichage> getSortiesCircuit() {
 		return sortiesCircuit;
 	}
-	public EtatLogique[][] getTableVerite() {
+	public static EtatLogique[][] getTableVerite() {
 		return tableVerite;
 	}
 	public static ArrayList<Sequentiels> getListeEtages() {
@@ -439,5 +439,15 @@ public class Circuit implements Serializable{
 		CircuitIntegre ci = new CircuitIntegre(entreesCircuit.size(),sortiesCircuit.size(), nom);
 		ci.setTableVerite(tableVerite);
 	}
+
+	public static ArrayList<SourceConstante> getListSouceCte() {
+		return listSouceCte;
+	}
+
+	public static void setListSouceCte(ArrayList<SourceConstante> listSouceCte) {
+		Circuit.listSouceCte = listSouceCte;
+	}
+	
+	
 	
 }
