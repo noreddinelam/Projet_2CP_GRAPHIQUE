@@ -51,11 +51,11 @@ public class Sauvegarde implements Serializable {
 
 	}
 
-	public static Circuit loadCiruit(String nomFichier) {//la recuperation d'un objet de type circuit dans un fihcier par la methode de la deserialization
+	public static void loadCiruit(String nomFichier) {//la recuperation d'un objet de type circuit dans un fihcier par la methode de la deserialization
 		FileInputStream fichier;
 		ObjectInputStream oo = null;
 		Sauvegarde circuitSauv = null;
-		Circuit circuit = new Circuit();
+		//Circuit circuit = new Circuit();
 		try {
 			fichier = new FileInputStream(nomFichier);
 			oo = new ObjectInputStream(fichier);
@@ -66,7 +66,7 @@ public class Sauvegarde implements Serializable {
 			Circuit.setListeEtages(circuitSauv.getListeEtages());
 			Circuit.setNbEtages(circuitSauv.getNbEtages());
 			Circuit.setSortiesCircuit(circuitSauv.getSortiesCircuit());
-			circuit.setTableVerite(circuitSauv.getTableVerite());
+			Circuit.setTableVerite(circuitSauv.getTableVerite());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,7 +80,7 @@ public class Sauvegarde implements Serializable {
 			}
 
 		}
-		return circuit;
+		//return circuit;
 
 	}
 

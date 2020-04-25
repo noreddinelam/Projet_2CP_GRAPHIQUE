@@ -73,6 +73,7 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
@@ -875,14 +876,20 @@ public class HomeController extends Controller {
 									horloged =true;
 									horlogeDeCercuit=dragImageView;
 								}
-								
-								ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+								Composant cmp = Circuit.getCompFromImage(dragImageView);
+								ArrayList<Polyline> polyline = cmp.generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
 								addAllPolylinesToWorkSpace(polyline);
+								if(cmp.getClass().getSimpleName().equals("CircuitIntegre")){
+									ArrayList<Circle> listeCircles = ((CircuitIntegre)cmp).generateCercles(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+									for (Circle circle : listeCircles) {
+										workSpace.getChildren().add(circle);
+									}
+								}
 								ajouterLeGestApresCollage(dragImageView);
 								Donnes sauveGarde=new Donnes();
 								sauveGarde.setTypeDaction(Actions.Creation);
 								sauveGarde.setComposantCommeImage(dragImageView);
-								sauveGarde.setComposant(Circuit.getCompFromImage(dragImageView));
+								sauveGarde.setComposant(cmp);
 								sauveGarde.setPosX(dragImageView.getLayoutX());
 								sauveGarde.setPosY(dragImageView.getLayoutY());
 								undoDeque.addFirst(sauveGarde);
@@ -1254,8 +1261,8 @@ public class HomeController extends Controller {
 	        				if( ((Pin)compos).isInput()) {
 	        					if(!ListTextPin.contains((Pin)compos)){
 	        						Text number = new Text();
-	        						number.setLayoutX(eleementAdrager.getLayoutX()-14);
-	        						number.setLayoutY(eleementAdrager.getLayoutY()+14);
+	        						number.setLayoutX(eleementAdrager.getLayoutX()+3);
+	        						number.setLayoutY(eleementAdrager.getLayoutY()+16);
 	        						String id = Integer.toString(ListTextPin.size()+1);
 	        						number.setText(id);
 	        						number.setId(id);
@@ -1870,9 +1877,9 @@ public class HomeController extends Controller {
 	                );
 	            
 	            File f = fileChooser.showOpenDialog(homeWindow);
-	            Circuit circuit = Sauvegarde.loadCiruit(f.getAbsolutePath());
-	            if(circuit != null)
-	            	System.out.println("le circuit est bien charge :)");	    	
+	            Sauvegarde.loadCiruit(f.getAbsolutePath());
+	            ajouterElements(); 
+	           	    	
 	    }
 	        
 	    @FXML
@@ -1905,7 +1912,7 @@ public class HomeController extends Controller {
 	    }
 
 	    @FXML
-	    void importer(ActionEvent event) { /// la fonctionalité importer
+	    void importer(ActionEvent event) { /// la fonctionalité importer circuit integré
 
 	    	final FileChooser fileChooser = new FileChooser();
 	    	fileChooser.setInitialDirectory(
@@ -1916,9 +1923,7 @@ public class HomeController extends Controller {
 	    			);
 
 	    	File f = fileChooser.showOpenDialog(homeWindow);
-	    	Circuit circuit = Sauvegarde.loadCiruit(f.getAbsolutePath());
-	    	if(circuit != null)
-	    		System.out.println("le circuit est bien charge :)");
+	    	Sauvegarde.loadCiruit(f.getAbsolutePath());
 
 	    }
 
@@ -2299,6 +2304,15 @@ public class HomeController extends Controller {
 				}
 			}
 	 }
-
+	 public void ajouterElements() {
+		 for (ImageView img : Circuit.getCompUtilises().values()) {
+			 workSpace.getChildren().add(img);
+		 }
+		 for (ArrayList<InfoPolyline> list : Circuit.getfilUtilises().values()) {
+			 for (InfoPolyline infoPolyline : list) {
+				 workSpace.getChildren().add(infoPolyline.getLinePrincipale());
+			 }	
+		 }
+	 }
 }
 

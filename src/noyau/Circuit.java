@@ -420,8 +420,8 @@ public class Circuit implements Serializable{
 	public static void setSortiesCircuit(ArrayList<Affichage> sortiesCircuit) {
 		Circuit.sortiesCircuit = sortiesCircuit;
 	}
-	public void setTableVerite(EtatLogique[][] tableVerite) {
-		this.tableVerite = tableVerite;
+	public static void setTableVerite(EtatLogique[][] tableVerite) {
+		Circuit.tableVerite = tableVerite;
 	}
 	public static void remplacerPere(Polyline line1, Polyline line2) {
 		for (Entry<Fil, ArrayList<InfoPolyline>> entry : filUtilises.entrySet()) {

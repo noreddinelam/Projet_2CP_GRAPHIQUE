@@ -163,7 +163,6 @@ public abstract class Controller {
 					while((!trouve) && i>0) {
 						if((Math.abs(x - list.get(i)) < 5) && (Math.abs(y - list.get(i+1)) < 5)) {
 							trouve = true;
-							System.out.println("dkhal 1");
 							x = list.get(i);
 							y = list.get(i+1);
 							line2.getPoints().add(i, x);
@@ -178,7 +177,6 @@ public abstract class Controller {
 						while((!trouve)){
 							if(Math.abs(x - list.get(i)) < 5 ) {
 								trouve = true;
-								System.out.println("dkhal 1");
 								x = list.get(i);
 								line2.getPoints().add(i+2, x);
 								line2.getPoints().add(i+3, y);
@@ -187,7 +185,6 @@ public abstract class Controller {
 								
 							}else if (Math.abs(y - list.get(i+1)) < 5) {
 								trouve = true;
-								System.out.println("dkhal 1");
 								y = list.get(i+1);
 								line2.getPoints().add(i+2, x);
 								line2.getPoints().add(i+3, y);
