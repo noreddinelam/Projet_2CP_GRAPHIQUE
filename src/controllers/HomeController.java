@@ -1870,9 +1870,8 @@ public class HomeController extends Controller {
 	                );
 	            
 	            File f = fileChooser.showOpenDialog(homeWindow);
-	            Circuit circuit = Sauvegarde.loadCiruit(f.getAbsolutePath());
-	            if(circuit != null)
-	            	System.out.println("le circuit est bien charge :)");	    	
+	            Sauvegarde.loadCiruit(f.getAbsolutePath());
+	            	    	
 	    }
 	        
 	    @FXML
@@ -1900,8 +1899,7 @@ public class HomeController extends Controller {
 	    	final FileChooser fileChooser = new FileChooser();
 	    	File f = fileChooser.showSaveDialog(homeWindow);
 	    	System.out.println("the name of the file is : "+f.getAbsolutePath());
-	    	Circuit circuit = new Circuit();
-	    	Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
+	    	Sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
 	    }
 
 	    @FXML
@@ -1916,9 +1914,7 @@ public class HomeController extends Controller {
 	    			);
 
 	    	File f = fileChooser.showOpenDialog(homeWindow);
-	    	Circuit circuit = Sauvegarde.loadCiruit(f.getAbsolutePath());
-	    	if(circuit != null)
-	    		System.out.println("le circuit est bien charge :)");
+	    	Sauvegarde.loadCiruit(f.getAbsolutePath());
 
 	    }
 
@@ -1927,8 +1923,7 @@ public class HomeController extends Controller {
 	    	final FileChooser fileChooser = new FileChooser();
 	    	File f = fileChooser.showSaveDialog(homeWindow);
 	    	System.out.println("the name of the file is : "+f.getAbsolutePath());
-	    	Circuit circuit = new Circuit();
-	    	Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
+	    	Sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
 	    }
 
 	    @FXML
