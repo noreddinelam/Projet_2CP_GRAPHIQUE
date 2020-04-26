@@ -14,6 +14,7 @@ import application.ClickDroitFil;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -61,6 +62,7 @@ public abstract class Controller {
 	 
 	 @FXML
 	 protected AnchorPane workSpace;
+	 
 
 	public Composant getCmp() {
 		return cmp;
@@ -231,6 +233,7 @@ public abstract class Controller {
 							workSpace.getChildren().remove(guideFilX);
 							workSpace.getChildren().remove(guideFilY);
 							int	der =  line.getPoints().size()-1;
+							
 							if(intersectionFilComposants(arg0.getX(),arg0.getY()) != null ) {
 								//if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der))) {
 								if(rel == 0) {
@@ -244,6 +247,7 @@ public abstract class Controller {
 					    			line.getPoints().clear();
 									//line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
 								}else if(rel == 1){
+									
 									/////////////////////////////relier/////////////////////////////////////
 									destination = intersectionFilComposants(arg0.getX(),arg0.getY());
 									/*   		entree >= 0   :entres
@@ -315,6 +319,7 @@ public abstract class Controller {
 		Collection<ImageView> list = Circuit.getCompUtilises().values();
 		Iterator<ImageView> iterator = list.iterator();
 		ImageView img;
+		System.out.println("X : "+x+" Y : "+y);
 		while(iterator.hasNext() && ! trouv) {
 			img = iterator.next();
 			if (intersectionFilComposant(img, x, y) != -1) {
@@ -336,7 +341,6 @@ public abstract class Controller {
 	 */
 		Double XImg = imgCmp.getLayoutX();
 		Double Yimg = imgCmp.getLayoutY();
-		
 		if(( Xfil >= XImg  )  &&  (XImg+imgCmp.getFitWidth() > Xfil) && ( Yfil >= Yimg)  &&  (Yimg+imgCmp.getFitHeight() > Yfil) ) {
 			Composant cmp = Circuit.getCompFromImage(imgCmp);
 			Coordonnees tabCoord[] = cmp.getLesCoordonnees().getCordEntree();

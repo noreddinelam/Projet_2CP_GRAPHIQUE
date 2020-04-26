@@ -448,6 +448,16 @@ public class Circuit implements Serializable{
 		Circuit.listSouceCte = listSouceCte;
 	}
 	
-	
+	public static void clearCircuit() {
+		compUtilises.clear();
+		entreesCircuit.clear();
+		sortiesCircuit.clear();
+		listeEtages.clear();
+		nbEtages =0 ;
+		listSouceCte.clear();
+		composantsErronee.clear();
+		circuitException.clear();
+		filUtilises.clear();
+	}
 	
 }

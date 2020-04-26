@@ -9,11 +9,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import java.util.Map.Entry;
+
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Sauvegarde implements Serializable {
-
-	private  HashMap<Composant, ImageView> compUtilises = new HashMap<Composant,ImageView>();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2097504601089191547L;
+	private  HashMap<Composant,Coordonnees> compUtilises = new HashMap<Composant, Coordonnees>();
+	private  HashMap<Composant,Taille> lesTailles = new HashMap<Composant, Taille>();
 	private  HashMap<Fil,ArrayList<InfoPolyline>> filUtilises = new HashMap<Fil, ArrayList<InfoPolyline>>();
 	private  ArrayList<Pin> entreesCircuit = new ArrayList<Pin>();
 	private  ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>();
@@ -22,23 +29,30 @@ public class Sauvegarde implements Serializable {
 	private  ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>();
 	private  int nbEtages = 0;
 
-	public static void saveCiruit(String nomFichier) {//la sauvgarde d'un objet de type circuit dans un fihcier par la methode de la serialization
-		FileOutputStream fichier;
+	public  void saveCiruit(String nomFichier) {//la sauvgarde d'un objet de type circuit dans un fihcier par la methode de la serialization
+		FileOutputStream fichier ;
 		ObjectOutputStream oo = null;
-		Sauvegarde circuitSauv = new Sauvegarde();
-		circuitSauv.setCompUtilises(Circuit.getCompUtilises());
-		circuitSauv.setFilUtilises(Circuit.getFilUtilises());
-		circuitSauv.setEntreesCircuit(Circuit.getEntreesCircuit());
-		circuitSauv.setListeEtages(Circuit.getListeEtages());
-		circuitSauv.setNbEtages(Circuit.getNbEtages());
-		circuitSauv.setSortiesCircuit(Circuit.getSortiesCircuit());
-		circuitSauv.setTableVerite(Circuit.getTableVerite());
-		circuitSauv.setSourceConstantes(Circuit.getListSouceCte());
+		for(Entry<Composant, ImageView> liste : Circuit.getCompUtilises().entrySet()){
+			compUtilises.put(liste.getKey(), new Coordonnees(liste.getValue().getLayoutX(), liste.getValue().getLayoutY()));
+			lesTailles.put(liste.getKey(),new Taille(liste.getValue().getFitHeight(), liste.getValue().getFitWidth()));
+		}	
+		this.setFilUtilises(Circuit.getFilUtilises());
+		for (Fil fil : filUtilises.keySet()) {
+			for (InfoPolyline infoPolyline : filUtilises.get(fil)) {
+				infoPolyline.refrechPoints();
+			}
+		}
+		this.setEntreesCircuit(Circuit.getEntreesCircuit());
+		this.setListeEtages(Circuit.getListeEtages());
+		this.setNbEtages(Circuit.getNbEtages());
+		this.setSortiesCircuit(Circuit.getSortiesCircuit());
+		this.setTableVerite(Circuit.getTableVerite());
+		this.setSourceConstantes(Circuit.getListSouceCte());
 
 		try {
 			fichier = new FileOutputStream(nomFichier);
 			oo = new ObjectOutputStream(fichier);
-			oo.writeObject(circuitSauv);
+			oo.writeObject(this);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,16 +74,25 @@ public class Sauvegarde implements Serializable {
 	public void setSourceConstantes(ArrayList<SourceConstante> sourceConstantes) {
 		this.sourceConstantes = sourceConstantes;
 	}
-	public static void loadCiruit(String nomFichier) {//la recuperation d'un objet de type circuit dans un fihcier par la methode de la deserialization
-		FileInputStream fichier;
+	public static  void loadCiruit(String nomFichier) {//la recuperation d'un objet de type circuit dans un fihcier par la methode de la deserialization
+		FileInputStream fichier ;
 		ObjectInputStream oo = null;
 		Sauvegarde circuitSauv = null;
-		//Circuit circuit = new Circuit();
 		try {
 			fichier = new FileInputStream(nomFichier);
 			oo = new ObjectInputStream(fichier);
 			circuitSauv= (Sauvegarde) oo.readObject();
-			Circuit.setCompUtilises(circuitSauv.getCompUtilises());
+			HashMap<Composant, ImageView> compMap = new HashMap<Composant, ImageView>();
+			for (Entry<Composant,Coordonnees> entry : circuitSauv.compUtilises.entrySet()) {
+				ImageView imageView = new ImageView();
+				imageView.setImage(new Image(entry.getKey().generatePath()));
+				imageView.setLayoutX(entry.getValue().getX());
+				imageView.setLayoutY(entry.getValue().getY());
+				imageView.setFitHeight(circuitSauv.lesTailles.get(entry.getKey()).getHeight());
+				imageView.setFitWidth(circuitSauv.lesTailles.get(entry.getKey()).getWidth());
+				compMap.put(entry.getKey(), imageView);
+			}
+			Circuit.setCompUtilises(compMap); 
 			Circuit.setFilUtilises(circuitSauv.getFilUtilises());
 			Circuit.setEntreesCircuit(circuitSauv.getEntreesCircuit());
 			Circuit.setListeEtages(circuitSauv.getListeEtages());
@@ -93,11 +116,11 @@ public class Sauvegarde implements Serializable {
 	}
 
 	
-	public  HashMap<Composant, ImageView> getCompUtilises() {
+	public  HashMap<Composant, Coordonnees> getCompUtilises() {
 		return compUtilises;
 	}
 
-	public  void setCompUtilises(HashMap<Composant, ImageView> compUtilises) {
+	public  void setCompUtilises(HashMap<Composant, Coordonnees> compUtilises) {
 		this.compUtilises = compUtilises;
 	}
 

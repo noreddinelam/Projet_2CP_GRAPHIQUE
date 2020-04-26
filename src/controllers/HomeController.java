@@ -97,8 +97,10 @@ public class HomeController extends Controller {
     Map<ImageView,Label> elemanrsMapFillMap;
     ImageView dragItem;
     private ClickDroit clickDroitFenetre;
-    private ClickBarDroite clickBar;
-    private double difX = 0;
+    private static ClickBarDroite fichierFenetre;
+    private static ClickBarDroite affichageFenetre;
+    private static ClickBarDroite editionFenetre;
+    private static ClickBarDroite aideFenetre;
     
     // utilisé dans la sauvegarde des coordonnées  
     double posX ;
@@ -117,8 +119,7 @@ public class HomeController extends Controller {
 	final KeyCombination touchesDundo = new KeyCodeCombination(KeyCode.Z,
             KeyCombination.CONTROL_DOWN);
 	
-	private Polyline testPoly;
-    
+	
 	public static ImageView elementSeclecionner ;
 	
 //	static Stage stage;
@@ -127,14 +128,12 @@ public class HomeController extends Controller {
 
 	private static ImageView elementAmodifier=null;
 	/////////////////////////////Les lignes de Guide
-	private Line guideX = new Line();
-	private Line guideXp = new Line();
-	private	Line guideY = new Line();
-	private	Line guideYp = new Line();
+	private static Line guideX = new Line();
+	private static Line guideXp = new Line();
+	private	static Line guideY = new Line();
+	private	static Line guideYp = new Line();
 	
 	private static boolean copierActive;
-
-	ClickBarDroite editionFenetre;
 	
 	private ArrayList<Polyline> listEntrees = new ArrayList<Polyline>();
 	private ArrayList<Polyline> listSorties = new ArrayList<Polyline>();
@@ -554,6 +553,8 @@ public class HomeController extends Controller {
 
 		ajouterGestWorkSpace(); /// ajouter des listners pour capter les operations (clic , drag .. etc) 
 		tracerLesGuides(); /// tracer les guides qui aide l'user pour connaitre la position de l'elt
+        
+
 		afficheurX.setText("X : 0"); 
 		afficheurY.setText("Y : 0");
 		//Creation d'une map pour gerer les titres des composants 
@@ -614,10 +615,10 @@ public class HomeController extends Controller {
 		initialiseAnimationOfBarDroite();
 		copierCollerParBouttons();
 		
-		ClickBarDroite fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace);
-		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace);
-		ClickBarDroite affichageFenetre = new ClickBarDroite(1055, 255, "Affichage.fxml", homeWindow, workSpace);
-		ClickBarDroite aideFenetre = new ClickBarDroite(1055, 300, "Aide.fxml", homeWindow, workSpace);
+	    fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace,afficheurX,afficheurY);
+		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace,afficheurX,afficheurY);
+	    affichageFenetre = new ClickBarDroite(1055, 255, "Affichage.fxml", homeWindow, workSpace,afficheurX,afficheurY);
+	    aideFenetre = new ClickBarDroite(1055, 300, "Aide.fxml", homeWindow, workSpace,afficheurX,afficheurY);
 
 		//click = new ClickBar(1000, 100);
 
@@ -1161,7 +1162,6 @@ public class HomeController extends Controller {
 										guideXp.setLayoutX(eleementAdrager.getLayoutX()+ eleementAdrager.getBoundsInLocal().getWidth()+1);
 										guideYp.setLayoutY(eleementAdrager.getLayoutY()+ eleementAdrager.getBoundsInLocal().getHeight()+1);
 										afficheurX.setText("X : "+ xString);
-
 										afficheurY.setText("Y : "+ yString);
 
 									}
@@ -1283,7 +1283,7 @@ public class HomeController extends Controller {
 	        								workSpace.getChildren().remove(num);
 	        							}
 	        							for (Pin pin : ListTextPin) {
-	        								workSpace.getChildren().remove(pin);
+	        								workSpace.getChildren().remove(pin); /// a voir avec sari
 	        							}
 	        							ListText.clear();
 	        							ListTextPin.clear();
@@ -1694,14 +1694,9 @@ public class HomeController extends Controller {
 	@FXML
 	void supprimerTout(ActionEvent event) { /// la suppression de tout le contenu de la grille
 		if (! simul) {
-			Circuit.getCompUtilises().clear();
-			Circuit.getFilUtilises().clear();
-			Circuit.getEntreesCircuit().clear();
-			Circuit.getSortiesCircuit().clear();
-			Circuit.getListeEtages().clear();
+			Circuit.clearCircuit();
 			workSpace.getChildren().clear();
 			horloged = false;
-			//tracerLagrill();
 			tracerLesregles(workSpace);	
 		}
 	}    
@@ -1877,9 +1872,12 @@ public class HomeController extends Controller {
 	                );
 	            
 	            File f = fileChooser.showOpenDialog(homeWindow);
-	            Sauvegarde.loadCiruit(f.getAbsolutePath());
-	            ajouterElements(); 
-
+	            /// ils faut afficher une alerte pour dire au user s'il veut sauvegarder son travail ou pas
+	            if (f != null) {
+		            supprimerTout(null);
+		            Sauvegarde.loadCiruit(f.getAbsolutePath());
+		            ajouterElements();
+				}
 	    }
 	        
 	    @FXML
@@ -1907,7 +1905,10 @@ public class HomeController extends Controller {
 	    	final FileChooser fileChooser = new FileChooser();
 	    	File f = fileChooser.showSaveDialog(homeWindow);
 	    	System.out.println("the name of the file is : "+f.getAbsolutePath());
-	    	Sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
+	    	if (f != null) {
+	    		Sauvegarde sauvegarde = new Sauvegarde();
+	    		sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
+			}
 	    }
 
 	    @FXML
@@ -1931,7 +1932,8 @@ public class HomeController extends Controller {
 	    	final FileChooser fileChooser = new FileChooser();
 	    	File f = fileChooser.showSaveDialog(homeWindow);
 	    	System.out.println("the name of the file is : "+f.getAbsolutePath());
-	    	Sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
+	    	Sauvegarde sauvegarde = new Sauvegarde();
+	    	sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
 	    }
 
 	    @FXML
@@ -2302,15 +2304,80 @@ public class HomeController extends Controller {
 				}
 			}
 	 }
+	 ArrayList<Polyline> sauv = new ArrayList<Polyline>();
 	 public void ajouterElements() {
 		 for (ImageView img : Circuit.getCompUtilises().values()) {
 			 workSpace.getChildren().add(img);
+			 ajouterLeGestApresCollage(img);
 		 }
+		 Polyline principale;
+		 Polyline parent;
 		 for (ArrayList<InfoPolyline> list : Circuit.getfilUtilises().values()) {
 			 for (InfoPolyline infoPolyline : list) {
-				 workSpace.getChildren().add(infoPolyline.getLinePrincipale());
+				 principale = initialser(0, 0);
+				 principale.getPoints().clear();
+				 principale.getPoints().addAll(infoPolyline.getNoeudLinePrincipale());
+				 Polyline polySauv=containsPolyInSauv(principale);
+				 if ( polySauv== null) {
+					 workSpace.getChildren().add(principale);
+					 ajouterGeste(principale);
+					 sauv.add(principale);
+					 infoPolyline.setLinePrincipale(principale);
+				 }
+				 else {
+					 infoPolyline.setLinePrincipale(polySauv);
+				 }
+				 if (! infoPolyline.getNoeudLineParent().isEmpty()) {
+					 parent = initialser(0, 0);
+					 parent.getPoints().clear();
+					 parent.getPoints().addAll(infoPolyline.getNoeudLineParent());
+					 Polyline polySauv2=containsPolyInSauv(parent);
+					 if ( polySauv2== null) {
+						 workSpace.getChildren().add(parent);
+						 ajouterGeste(parent);
+						 sauv.add(parent);
+						 infoPolyline.setLinePrincipale(parent);
+					 }
+					 else {
+						 infoPolyline.setLinePrincipale(polySauv2);
+					 }
+				 }
+				 else {
+					infoPolyline.setLineParent(null);
+				}
 			 }	
 		 }
 	 }
+	 public Polyline containsPolyInSauv(Polyline polyline) {
+		for (Polyline polyline2 : sauv) {
+			if (equalsPolylines(polyline, polyline2)) {
+				return polyline2;
+			}
+		}
+		return null;
+	}
+	 public boolean equalsPolylines(Polyline line1,Polyline line2) {
+		int i = 0;
+		if (line1 == null || line2 == null) {
+			return false;
+		}
+		if (line1.getPoints().size() != line2.getPoints().size()) {
+			return false;
+		}
+		while (i<line1.getPoints().size()) {
+			if (line1.getPoints().get(i) != line2.getPoints().get(i)) {
+				return false;
+			}
+			i++;
+		}
+		return true;
+	}
+	 
+	 public void setAffX(Label affX) {
+		afficheurX = affX;
+	}
+	 public void setAffY(Label affY) {
+			afficheurY = affY;
+		}
 }
 
