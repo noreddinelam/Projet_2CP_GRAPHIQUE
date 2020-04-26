@@ -1975,6 +1975,7 @@ public class HomeController extends Controller {
 	    	}else {
 	    		Alert a = new Alert(AlertType.ERROR);
 	    		a.setHeaderText("Chronogramme erreur");
+	    		a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 	    		a.setTitle("Chronogramme");
 	    		a.setContentText(! simul ? "Veulliez Simuler le Circuit D'abord":"Le Circuit ne contient Aucun Element Sequentiel");
 	    		a.showAndWait();
