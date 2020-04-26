@@ -40,14 +40,12 @@ public class Fil implements Serializable{
 	}
 
 	public boolean valider() { // tester si le fil est pret 
-
 		if (etat == EtatLogique.ERROR || etat == EtatLogique.HAUTE_IMPEDANCE ) {
 			return false;
 		}
 		return true;	
 	}
-	
-	
+
 	public void addDestination(Composant comp){ // ajouter un composant vers la liste des destinations
 		if (destination.contains(comp) == false) {
 			destination.add(comp);

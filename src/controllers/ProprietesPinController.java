@@ -17,7 +17,7 @@ public class ProprietesPinController extends ProprietesController{
 
 	private Direction bddDirection[] = {Direction.Nord,Direction.Est,Direction.West,Direction.Sud};
 	int direct;
-	String bddPut[] = {"Input","Output"};
+	String bddPut[] = {"Entrée","Sortie"};
 	int putInt;
 	
 	
@@ -90,15 +90,17 @@ public class ProprietesPinController extends ProprietesController{
         	Pin pin =((Pin)cmp);
         	ImageView imageView = Circuit.getImageFromComp(cmp);
         	if(putInt == 0){
-        		pin.setInput(true);
-    			Circuit.getSortiesCircuit().remove(pin);
-    			Circuit.getEntreesCircuit().add(pin);
-    			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
-        		cmp.setNombreEntree(0);
-        		cmp.setNombreSortie(1);
-        		cmp.getLesCoordonnees().setNbCordEntree(0);
-        		cmp.getLesCoordonnees().setNbCordSorties(1);
-        	}else {
+        		if (! pin.getInput()) {
+        			pin.setInput(true);
+        			Circuit.getSortiesCircuit().remove(pin);
+        			Circuit.getEntreesCircuit().add(pin);
+        			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+            		cmp.setNombreEntree(0);
+            		cmp.setNombreSortie(1);
+            		cmp.getLesCoordonnees().setNbCordEntree(0);
+            		cmp.getLesCoordonnees().setNbCordSorties(1);
+				}
+        	}else if( pin.getInput()){
         		pin.setInput(false);
     			Circuit.getEntreesCircuit().remove(pin);
     			Circuit.getSortiesCircuit().add(pin);

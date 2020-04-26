@@ -7,12 +7,14 @@
 }
 
 .table-view .column-header-background{
-    -fx-background-color: linear-gradient(#131313 0%, #424141 100%);
+	-fx-height: 36px;
+	
+    -fx-background-color: linear-gradient(#000000 0%, #424242 100%);
 }
 
 .table-view .column-header-background .label{
     -fx-background-color: transparent;
-    -fx-text-fill: white;
+    -fx-text-fill: #e4e4e4;
     -fx-font-family: "Calisto MT";
 }
 
@@ -21,11 +23,14 @@
 }
 
 .table-view .table-cell{
-    -fx-text-fill: white;
+    -fx-text-fill: #e4e4e4;
+    -fx-alignment: CENTER;
+    /*-fx-font-smoothing-type: lcd;*/
+ 	-fx-font-size: 11pt;
 }
 
 .table-row-cell{
-    -fx-background-color: -fx-table-cell-border-color, #616161;
+    -fx-background-color: -fx-table-cell-border-color, #424242; /* #616161*/
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em; /* 0 */
 }
@@ -37,7 +42,7 @@
 }
 
 .table-row-cell:selected {
-    -fx-background-color: #005797;
+    -fx-background-color: #616161;
     -fx-background-insets: 0;
     -fx-background-radius: 1;
 }

@@ -29,25 +29,25 @@
 	}
 
 #mdf,#annuler{
+
 	/* @SuppressWarning */
-	-fx-background-color :  #303337;
-	/* @SuppressWarning */
-	-fx-border-color : #b2b2b2;
-	/* @SuppressWarning */
-	-fx-border-radius : 20px;
-	/* @SuppressWarning */
-	-fx-text-fill : #b2b2b2;
+   -fx-background-color: #303337;
+   /* @SuppressWarning */
+   -fx-text-fill:#e4e4e4;
+   /* @SuppressWarning */
+   -fx-wrap-text: true;
+   /* @SuppressWarning */
+   -fx-effect: dropshadow( three-pass-box, #7c7878, 10.0, 0.0, 0.0, 0.0);
+   /* @SuppressWarning */
+   -fx-cursor:hand;
 
 }
 #mdf:hover,#annuler:hover{
-	/* @SuppressWarning */
-	-fx-background-color :   #303337;
-	/* @SuppressWarning */
-	-fx-border-color : #E4E4E4;
-	/* @SuppressWarning */
-	-fx-border-radius : 20px;
-	/* @SuppressWarning */
-	-fx-text-fill : #E4E4E4;	
+	/* @SuppressWarning */ 
+  -fx-background-color:#7c7878;
+  /* @SuppressWarning */
+  -fx-text-fill: #e4e4e4;
+  
 }
 #label,#frequance{
 	/* @SuppressWarning */

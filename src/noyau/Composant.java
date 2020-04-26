@@ -183,6 +183,8 @@ public abstract class Composant implements Serializable{
 			posX = x+ lesCoordonnees.getCordSortieInIndex(i).getX() ;
 			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
 			polyline = new Polyline(posX ,posY,posX+5,posY);
+			//polyline.setViewOrder(2); //l'ordre 
+			polyline.toBack();
 			listPolylines.add(new InfoPolyline(polyline));
 			reslut.add(polyline);
 			Circuit.ajouterFil(sorties[i], listPolylines); 

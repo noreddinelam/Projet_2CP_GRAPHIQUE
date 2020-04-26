@@ -3,6 +3,7 @@ package controllers;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.sound.sampled.AudioInputStream;
@@ -13,6 +14,7 @@ import application.ClickDroitFil;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -21,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Text;
 import noyau.Bascule;
 import noyau.Circuit;
 import noyau.Combinatoires;
@@ -28,6 +31,7 @@ import noyau.Composant;
 import noyau.Coordonnees;
 import noyau.Fil;
 import noyau.InfoPolyline;
+import noyau.Pin;
 import noyau.Sequentiels;
 
 public abstract class Controller {
@@ -48,7 +52,9 @@ public abstract class Controller {
 	 protected Composant source;
 
     protected static boolean simul = false;
-    
+    protected static ArrayList<Pin> ListTextPin = null;
+    protected static ArrayList<Text> ListText = null;
+
     protected Composant destination;
 	 protected int entree;
 	 protected int sortie;
@@ -56,6 +62,7 @@ public abstract class Controller {
 	 
 	 @FXML
 	 protected AnchorPane workSpace;
+	 
 
 	public Composant getCmp() {
 		return cmp;
@@ -131,10 +138,10 @@ public abstract class Controller {
 					// TODO Auto-generated method stub
 					if (! simul) {
 						if (event.getButton() == MouseButton.PRIMARY)  {
-					workSpace.getChildren().add(guideFilX);
+				   workSpace.getChildren().add(guideFilX);
                    workSpace.getChildren().add(guideFilY);
                    guideFilX.setLayoutX(event.getX());
-					guideFilY.setLayoutY(event.getY());
+				   guideFilY.setLayoutY(event.getY());
 					ArrayList<InfoPolyline> listDePolylines = Circuit.getListFromPolyline(line);
 					
 					////////////////////relier/////////////////////// 
@@ -158,7 +165,6 @@ public abstract class Controller {
 					while((!trouve) && i>0) {
 						if((Math.abs(x - list.get(i)) < 5) && (Math.abs(y - list.get(i+1)) < 5)) {
 							trouve = true;
-							System.out.println("dkhal 1");
 							x = list.get(i);
 							y = list.get(i+1);
 							line2.getPoints().add(i, x);
@@ -173,7 +179,6 @@ public abstract class Controller {
 						while((!trouve)){
 							if(Math.abs(x - list.get(i)) < 5 ) {
 								trouve = true;
-								System.out.println("dkhal 1");
 								x = list.get(i);
 								line2.getPoints().add(i+2, x);
 								line2.getPoints().add(i+3, y);
@@ -182,7 +187,6 @@ public abstract class Controller {
 								
 							}else if (Math.abs(y - list.get(i+1)) < 5) {
 								trouve = true;
-								System.out.println("dkhal 1");
 								y = list.get(i+1);
 								line2.getPoints().add(i+2, x);
 								line2.getPoints().add(i+3, y);
@@ -229,11 +233,21 @@ public abstract class Controller {
 							workSpace.getChildren().remove(guideFilX);
 							workSpace.getChildren().remove(guideFilY);
 							int	der =  line.getPoints().size()-1;
-							if(intersectionFilComposants(arg0.getX(),arg0.getY()) != null) {
+							
+							if(intersectionFilComposants(arg0.getX(),arg0.getY()) != null ) {
 								//if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der))) {
 								if(rel == 0) {
-									line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
-								}if(rel == 1){
+									//suppression du fil
+									InfoPolyline infoline = Circuit.getInfoPolylineFromPolyline(line);
+									infoline.supprimerPremierNoeuds();
+					    			workSpace.getChildren().remove(line);
+					    			Circuit.getListFromPolyline(line).remove(new InfoPolyline(line));
+					    			infoline = Circuit.getInfoPolylineFromPolyline(infoline.getLineParent());
+					    			infoline.setNbFils(infoline.getNbFils() - 1);
+					    			line.getPoints().clear();
+									//line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
+								}else if(rel == 1){
+									
 									/////////////////////////////relier/////////////////////////////////////
 									destination = intersectionFilComposants(arg0.getX(),arg0.getY());
 									/*   		entree >= 0   :entres
@@ -305,13 +319,13 @@ public abstract class Controller {
 		Collection<ImageView> list = Circuit.getCompUtilises().values();
 		Iterator<ImageView> iterator = list.iterator();
 		ImageView img;
+		System.out.println("X : "+x+" Y : "+y);
 		while(iterator.hasNext() && ! trouv) {
 			img = iterator.next();
 			if (intersectionFilComposant(img, x, y) != -1) {
 				trouv = true;
 				cmp = Circuit.getCompFromImage(img);
 				rel = intersectionFilComposant(img, x, y);
-				System.out.println(rel);
 			}
 		}
 		return cmp;
@@ -327,7 +341,6 @@ public abstract class Controller {
 	 */
 		Double XImg = imgCmp.getLayoutX();
 		Double Yimg = imgCmp.getLayoutY();
-		
 		if(( Xfil >= XImg  )  &&  (XImg+imgCmp.getFitWidth() > Xfil) && ( Yfil >= Yimg)  &&  (Yimg+imgCmp.getFitHeight() > Yfil) ) {
 			Composant cmp = Circuit.getCompFromImage(imgCmp);
 			Coordonnees tabCoord[] = cmp.getLesCoordonnees().getCordEntree();
@@ -337,7 +350,9 @@ public abstract class Controller {
 			int i = 0;
 			while( i < nbCord && trouve == false) { 
 				Coordonnees crdTab = new Coordonnees(tabCoord[i].getX() + imgCmp.getLayoutX(), tabCoord[i].getY() + imgCmp.getLayoutY());				
-				if( crdTab.equals(crd) ) { 
+				if( crdTab.equals(crd) ) {
+					if(cmp.getEntrees()[i] != null) 
+						return 0;
 					trouve =true;
 					entree=i; 
 				}
@@ -349,7 +364,9 @@ public abstract class Controller {
 				nbCord = cmp.getLesCoordonnees().getNbCordCommandes();
 				while( i < nbCord && trouve == false) { 
 					Coordonnees crdTab = new Coordonnees(tabCoord[i].getX() + imgCmp.getLayoutX(), tabCoord[i].getY() + imgCmp.getLayoutY());				
-					if( crdTab.equals(crd) ) { 
+					if( crdTab.equals(crd) ) {
+						if( ((Combinatoires)cmp).getCommande()[i] != null) 
+							return 0;
 						trouve =true;
 						entree= -i-1; 
 					}
@@ -358,7 +375,10 @@ public abstract class Controller {
 				Coordonnees crdTab ;
 				if(cmp.getLesCoordonnees().getCordHorloge() != null && !trouve) {
 					crdTab = new Coordonnees(cmp.getLesCoordonnees().getCordHorloge().getX() + imgCmp.getLayoutX(), cmp.getLesCoordonnees().getCordHorloge().getY() + imgCmp.getLayoutY());				
-					if( crdTab.equals(crd) ) { 
+					if( crdTab.equals(crd) ) {
+						if( ((Sequentiels)cmp).getEntreeHorloge() != null) 
+							return 0;
+						
 						trouve =true;
 						entree= -5; 
 					}
@@ -366,6 +386,8 @@ public abstract class Controller {
 				if(cmp.getLesCoordonnees().getCordClear() != null && !trouve) {
 					crdTab = new Coordonnees(cmp.getLesCoordonnees().getCordClear().getX() + imgCmp.getLayoutX(), cmp.getLesCoordonnees().getCordClear().getY() + imgCmp.getLayoutY());				
 					if( crdTab.equals(crd) ) { 
+						if( ((Sequentiels)cmp).getClear() != null) 
+							return 0;
 						trouve =true;
 						entree= -6; 
 					}
@@ -373,6 +395,8 @@ public abstract class Controller {
 				if(cmp.getLesCoordonnees().getCordPreset() != null && !trouve) {
 					crdTab = new Coordonnees(cmp.getLesCoordonnees().getCordPreset().getX() + imgCmp.getLayoutX(), cmp.getLesCoordonnees().getCordPreset().getY() + imgCmp.getLayoutY());				
 					if( crdTab.equals(crd) ) { 
+						if( ((Bascule)cmp).getPreset() != null) 
+							return 0;
 						trouve =true;
 						entree= -7; 
 					}
@@ -380,6 +404,8 @@ public abstract class Controller {
 				if(cmp.getLesCoordonnees().getCordLoad() != null && !trouve) {
 					crdTab = new Coordonnees(cmp.getLesCoordonnees().getCordLoad().getX() + imgCmp.getLayoutX(), cmp.getLesCoordonnees().getCordLoad().getY() + imgCmp.getLayoutY());				
 					if( crdTab.equals(crd) ) { 
+						if( ((Sequentiels)cmp).getLoad() != null) 
+							return 0;
 						trouve =true;
 						entree= -8; 
 					}
@@ -394,11 +420,13 @@ public abstract class Controller {
 	
 	public Polyline initialser(double x, double y) {
 		Polyline a = new Polyline(x,y,x,y,x,y); 
+		//a.setViewOrder(1); //l'ordre 
+		a.toBack();
 		a.setStrokeWidth(3);
 		a.setSmooth(true);
 		a.setStrokeType(StrokeType.CENTERED);
 		a.setCursor(Cursor.HAND);
     	ajouterGeste(a);
 		return a;
-	}
+	}	
 }
