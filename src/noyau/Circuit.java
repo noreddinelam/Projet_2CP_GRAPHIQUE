@@ -340,7 +340,7 @@ public class Circuit implements Serializable{
 		else { 
 			if (composant.getClass().getSimpleName().equals("SourceConstante")) 
 				entreesCircuit.remove(composant);
-			else if (composant.getClass().getSimpleName().equals("AfficheurSegments")) {
+			else if (composant.getClass().getSimpleName().equals("AfficheurSegment")) {
 				sortiesCircuit.remove((AfficheurSegment)composant);
 			}
 		}

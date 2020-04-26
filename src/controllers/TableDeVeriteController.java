@@ -44,7 +44,7 @@ public class TableDeVeriteController extends Controller implements Initializable
 		if(tableVerite.length != 0) { //Les labels des entrees et sorties 
 			for (Pin pin : ListTextPin) {
 				String entre = pin.getNom();
-				if(entre.equals("")) 
+				if(entre.equals("Pin")) 
 					entre = "E"+(MapSize-i);
 				labels.add(entre);
 				i++;
@@ -58,8 +58,9 @@ public class TableDeVeriteController extends Controller implements Initializable
 			}*/
 			i=1;
 			for ( Affichage sortie : Circuit.sortiesCircuit) {
+				
 				String sort = ((Pin)sortie).getNom();
-				if(sort.equals("")) 
+				if(sort.equals("Pin")) 
 					sort = "S"+(Circuit.sortiesCircuit.size()-i);
 				labels.add(sort);
 				i++;
