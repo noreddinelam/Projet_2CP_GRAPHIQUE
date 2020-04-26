@@ -75,17 +75,15 @@ public abstract class Composant implements Serializable{
 			
 			for (int i = 0; i < nombreSortie; i++) 
 			{
-				System.out.print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");	
+				
 				if(sorties[i].getEtatLogiqueFil().getNum() != etatFinal[i].getNum())  //verifier si l'etat precedent du composant a changé ou non 
 				{
-				
 					etatFinal[i]=sorties[i].getEtatLogiqueFil(); //mettre a jour l'etat final du composant 
 					sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
 				}
 			}
 		}else // to be continued ...
 		{
-			//signaler les erreurs ..
 		}
 	}
 
@@ -132,16 +130,20 @@ public abstract class Composant implements Serializable{
 	
 	public EtatLogique validerEntrees() { //role :  valider si les entrees du composant sont pretes 
 		int i =0;
-		while(i<nombreEntree) {
+		EtatLogique etatLogique = EtatLogique.ONE;
+		while(i<nombreEntree && etatLogique==EtatLogique.ONE) {
 			if(entrees[i] == null) // verifier si toutes les entrees du composants sont reliées a un autre composant 
-				return null;
-			if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum()) //  verifier si le fil d'entree est en haute impedence . 
-				return EtatLogique.HAUTE_IMPEDANCE;
-			if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.ERROR.getNum()) // verifier si le fil d'entree contient une erreur .
-				return EtatLogique.ERROR;
+				//return null;
+				etatLogique = null;
+			else if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum()) //  verifier si le fil d'entree est en haute impedence . 
+				//return EtatLogique.HAUTE_IMPEDANCE;
+				etatLogique = EtatLogique.HAUTE_IMPEDANCE;
+			else if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.ERROR.getNum()) // verifier si le fil d'entree contient une erreur .
+				//return EtatLogique.ERROR;
+				etatLogique = EtatLogique.HAUTE_IMPEDANCE;
 			i++;
 		}
-		return EtatLogique.ONE;
+		return etatLogique;
 		
 	}
 	
@@ -191,7 +193,9 @@ public abstract class Composant implements Serializable{
 	public  void derelierComp() { // pour derelier le composant de ces fils d'entrees  (le composant à supprimer)
 		for (int i = 0; i < nombreEntree; i++) {
 			if (entrees[i] != null) {
-				entrees[i].derelierCompFromDestination(this);
+				if (! entrees[i].getSource().equals(this)) { // pour savoir si une entree est relié avec une sortie du mm composant
+					entrees[i].derelierCompFromDestination(this);
+				}
 			}
 		}
 	}
@@ -270,6 +274,25 @@ public abstract class Composant implements Serializable{
 		}
 		return dessocier;
 		
+	}
+	
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+		ArrayList<ExceptionProgramme> arrayList = new ArrayList<ExceptionProgramme>();
+		for (int i = 0; i < nombreEntree; i++) {
+			if (entrees[i] == null) {
+				arrayList.add(new EntreeManquante(TypesExceptions.ERREUR, this, i));
+			}
+		}
+		if (arrayList.size() == nombreEntree) {
+			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE, this));
+		}
+		else {
+			if (arrayList.size() != 0) {
+				Circuit.AjouterListeException(arrayList);
+				Circuit.ajouterCompErrone(this);
+			}
+		}
 	}
 	
 	public Fil getFilSortieByNum(int i) {

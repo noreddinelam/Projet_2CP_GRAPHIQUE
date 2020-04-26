@@ -56,7 +56,7 @@ public class PremierePageController implements Initializable{
 	class  firstScreen extends Thread{
 		public void run() {
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(5000);/// changer le temps  
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

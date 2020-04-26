@@ -10,7 +10,7 @@ public class JK extends Bascule{
 	}
 
  public void genererSortiesSyncho() {
-	 etatAvant=sorties[0].getEtatLogiqueFil();
+	
 	 if(etatPrec[0].getNum()==1)//j=1
 	 {
 		 if(etatPrec[1].getNum()==1)//k=1
@@ -40,6 +40,8 @@ public class JK extends Bascule{
 		 }
 	 sortieAafficher= sorties[0].getEtatLogiqueFil();
 	 sortieBar= sorties[1].getEtatLogiqueFil();
+	
+	
 }
 
 	@Override

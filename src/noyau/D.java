@@ -8,7 +8,7 @@ public class D extends Bascule{
 	}
 
 	public void genererSortiesSyncho() { // generer la sortie de la bascule D
-		 etatAvant=sorties[0].getEtatLogiqueFil();
+	
 		if(etatPrec[0].getNum()==1)
 		{
 	

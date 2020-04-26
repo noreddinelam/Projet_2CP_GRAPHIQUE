@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
 public class Circuit implements Serializable{
@@ -19,8 +20,102 @@ public class Circuit implements Serializable{
 	private static ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>(); // toutes les sorties du circuit
 	private EtatLogique tableVerite[][]; // la table de verite du circuit
 	private static ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>(); // la liste des etages pour les elts sequentiels 
-	private static int nbEtages = 0; // nombre des etages
+	private static int nbEtages = 0; // nombre des etages	
+	private static ArrayList<ExceptionProgramme> circuitException = new ArrayList<ExceptionProgramme>();
+	private static ArrayList<Composant> composantsErronee = new ArrayList<Composant>();
 	
+	public static void ajouterCompErrone(Composant composant) {
+		composantsErronee.add(composant);
+	}
+	
+	public static void AjouterListeException(ArrayList<ExceptionProgramme> exceptionProgramme) {
+		circuitException.addAll(exceptionProgramme);
+	}
+	
+	public static void AjouterUneException(ExceptionProgramme exceptionProgramme) {
+		circuitException.add(exceptionProgramme);
+	}
+	
+	public static void clearException() {
+		circuitException.clear();
+	}
+	
+	public static void printExceptions() {
+		for (ExceptionProgramme exceptionProgramme : circuitException) {
+			System.out.println(((EntreeManquante)exceptionProgramme).getEntreeManquante());
+		}
+	}
+	
+	public static boolean isThereAnyError() {
+		for (ExceptionProgramme exceptionProgramme : circuitException) {
+			if (exceptionProgramme.getTypesExceptions()==TypesExceptions.ERREUR) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean isThereAnyException() {
+		return ((circuitException.size() != 0) ? true : false);
+	}
+	
+	public static ArrayList<ExceptionProgramme> getListeExceptionProgrammes() {
+		return circuitException;
+	}
+	
+	public static void validerCircuits() {
+		composantsErronee.clear();
+		if (compUtilises.isEmpty()) {
+			circuitException.add(new CircuitVide(TypesExceptions.ALERTE));
+		}
+		else {
+			if (entreesCircuit.size() == 0) {
+				boolean stop = false;
+				for (Composant composant : compUtilises.keySet()) {
+					if (composant.getClass().getSimpleName().equals("Horloge")) {
+						stop = true;
+						break;
+					}
+				}
+				if (!stop) {
+					circuitException.add(new AucuneEntree(TypesExceptions.ALERTE));
+				}
+			}
+			for (Composant composant : compUtilises.keySet()) {
+				composant.validerComposant();
+			}
+			ArrayList<Polyline> result;
+			for (Composant composant : composantsErronee) {
+				for (int i = 0; i < composant.getNombreSortie(); i++) {
+					result = getListePolylineFromFil(composant.getFilSortieByNum(i));
+					for (Polyline polyline : result) {
+						polyline.setStroke(Color.RED);
+					}
+				}
+			}
+		}
+	}
+	
+	public static void defaultColorFil() {
+		ArrayList<Polyline> result;
+		for (Composant composant : composantsErronee) {
+			for (int i = 0; i < composant.getNombreSortie(); i++) {
+				result = getListePolylineFromFil(composant.getFilSortieByNum(i));
+				for (Polyline polyline : result) {
+					polyline.setStroke(Color.BLACK);
+				}
+			}
+		}
+	}
+	
+//	public static boolean areAllWarnings() {
+//		for (ExceptionProgramme exceptionProgramme : circuitException) {
+//			if (exceptionProgramme.getTypesExceptions() == TypesExceptions.ERREUR) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 	
 	public static void ajouterComposant(Composant comp,ImageView img) { // ajouter un composant à la liste des composants utilisés
 		compUtilises.put(comp, img);
@@ -133,7 +228,7 @@ public class Circuit implements Serializable{
 	}
 	public static void initialiser() {// à completer au fur et mesure .
 		for (Pin pin : entreesCircuit) { // initialiser les pins d'entrees pour le commencement de la simulation
-			if(pin.getInput() == true) pin.evaluer();  //a na7i
+			pin.evaluer();  //a na7i
 		}
 		
 		ArrayList<Integer> etage = new ArrayList<Integer>();
@@ -143,8 +238,10 @@ public class Circuit implements Serializable{
 			for (Sequentiels b : listeEtages) {
 				b.entreeHorloge.addEtages(etage);
 				tmp = new ArrayList<Integer>(etage);
-				max = Collections.max(tmp); // avoir le nombre des etages
-				nbEtages = (nbEtages < max ) ? max : nbEtages ;
+				if (tmp.size() != 0) {
+					max = Collections.max(tmp); // avoir le nombre des etages
+					nbEtages = (nbEtages < max ) ? max : nbEtages ;
+				}
 				b.setEtages(tmp);
 				etage.clear();
 			}
@@ -224,14 +321,18 @@ public class Circuit implements Serializable{
 				entreesCircuit.remove(composant);
 			}
 			else {
-				sortiesCircuit.remove(composant);
+				sortiesCircuit.remove(pin);
 			}
 		}
-		else if (composant.getClass().getSimpleName().equals("SourceConstante")) {
-			entreesCircuit.remove(composant);
+		else { 
+			if (composant.getClass().getSimpleName().equals("SourceConstante")) 
+				entreesCircuit.remove(composant);
+			else if (composant.getClass().getSimpleName().equals("AfficheurSegments")) {
+				sortiesCircuit.remove((AfficheurSegment)composant);
+			}
 		}
-		else {
-			sortiesCircuit.remove(composant);
+		if ((composant.getClass().getSuperclass().equals(Bascule.class)) || (composant.getClass().getSuperclass().equals(Sequentiels.class))) {
+			listeEtages.remove(composant);
 		}
 		Fil sortieFil;
 		ArrayList<Composant> arrayList ;
@@ -244,6 +345,7 @@ public class Circuit implements Serializable{
 			for (Composant destination : arrayList) {
 				destination.derelierEntreeFromComp(sortieFil);
 			}
+			arrayList.clear();
 		}
 		return listPolylines;
 	}

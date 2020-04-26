@@ -24,6 +24,7 @@ public abstract class Bascule extends Sequentiels{
 
 	public void genererSorties() // executer dans le cas des cmd asynchrones
 	{
+		
 		if(clear.getEtatLogiqueFil().getNum()==0)
 		{
 			sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
@@ -52,6 +53,7 @@ public abstract class Bascule extends Sequentiels{
 		if (super.validerEntrees() == EtatLogique.ONE) { // les entrees sont valides
 			if(preset.getEtatLogiqueFil()==EtatLogique.ONE && clear.getEtatLogiqueFil()==EtatLogique.ONE) { // mode synchrone
 				if (entreeHorloge != null) { // l'horloge est reliée 
+					this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
 					switch (front) {
 					case Front_Descendant:{
 						if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ZERO )
@@ -113,7 +115,9 @@ public abstract class Bascule extends Sequentiels{
 		// TODO Auto-generated method stub
 		super.derelierComp();
 		if (preset.getSource() != null) {
-			preset.derelierCompFromDestination(this);
+			if (! preset.getSource().equals(this)) {
+				preset.derelierCompFromDestination(this);
+			}
 		}
 	}
 	@Override
@@ -121,7 +125,8 @@ public abstract class Bascule extends Sequentiels{
 		// TODO Auto-generated method stub
 		super.derelierEntreeFromComp(fil);
 		if (preset.equals(fil)) {
-			preset.derelierCompFromDestination(this);
+			preset = new Fil(null);
+			preset.setEtat(EtatLogique.ONE);
 		}
 	}
 	@Override
@@ -142,6 +147,7 @@ public abstract class Bascule extends Sequentiels{
 		}
 		return dessocier;
 	}
+	
 	public Fil getPreset() {
 		return preset;
 	}

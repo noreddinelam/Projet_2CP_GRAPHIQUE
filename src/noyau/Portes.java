@@ -2,6 +2,8 @@ package noyau;
 
 import java.util.ArrayList;
 
+import com.sun.glass.ui.Size;
+
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
@@ -19,7 +21,32 @@ public abstract class Portes extends Composant {
 	
 	
 	public boolean valider() { // valider les entrees 
-		return (super.validerEntrees().getNum() == EtatLogique.ONE.getNum()) ? true: false;	
+		return (super.validerEntrees() == EtatLogique.ONE) ? true: false;	
+	}
+	
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+		ArrayList<ExceptionProgramme> arrayList = new ArrayList<ExceptionProgramme>();
+		int j=0,k = 0;
+		for (int i = 0; i < nombreEntree; i++) {
+			if (entrees[i] == null) {
+				arrayList.add(new EntreeManquante(TypesExceptions.ERREUR, this, i));
+				j++;
+			}
+			else if(entrees[i].equals(sorties[0])) {
+				arrayList.add(new SortieReinjecter(TypesExceptions.ALERTE, this, i, 0));
+				k++;
+			}
+		}
+		if (j == nombreEntree) {
+			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE, this));
+		}
+		else {
+			if (arrayList.size() != 0 && k == 0) {
+				Circuit.ajouterCompErrone(this);
+			}
+			Circuit.AjouterListeException(arrayList);
+		}
 	}
 	
 	@Override

@@ -20,8 +20,6 @@ public class Multiplexeur extends Combinatoires {
 		lesCoordonnees = new LesCoordonnees(nombreEntree, 1, nbCommande);
 	}
 	
-	
-	
 	public void genererSorties() { // role executer le fonction du composant 
 		
 		int numeroDeEntreeActif= Integer.parseInt(concatener(commande, this.nbCommande),2); //determiner le numero de sortie activee
@@ -34,14 +32,11 @@ public class Multiplexeur extends Combinatoires {
 		sorties[0].setEtatLogiqueFil(entrees[numeroDeEntreeActif].getEtatLogiqueFil());		
 		
 	}
-	public boolean valider() { // tester si le composant est pret 
-		return (this.validerCommandes().equals(EtatLogique.ONE)? true : false) // tester si les commandes sont valides
-				&&
-				(validerEntrees().equals(EtatLogique.ONE)  // tester si les entrees sont valides 
-						|| 
-						validerEntrees().equals(EtatLogique.ZERO) ? true: false); // tester si LessExpression sorties sont valides 
-		
-		
+	public boolean valider() { // tester si le composant est pret
+		if ((this.validerCommandes() == EtatLogique.ONE)&&(super.validerEntrees() == EtatLogique.ONE)) {
+			return true;
+		}
+		return false;
 	}
 	
 	public EtatLogique validerCommandes() { // Role : valider les commandes ( si toutes les commandes sont valides retourner 1) 
@@ -145,7 +140,8 @@ public class Multiplexeur extends Combinatoires {
 		super.derelierComp();
 		for (int i = 0; i < nbCommande; i++) {
 			if (commande[i] != null) {
-				commande[i].derelierCompFromDestination(this);
+				if (! commande[i].getSource().equals(this))
+					commande[i].derelierCompFromDestination(this);
 			}
 		}
 	}
@@ -157,7 +153,7 @@ public class Multiplexeur extends Combinatoires {
 		for (int i = 0; i < nbCommande; i++) {
 			if (commande[i] != null) {
 				if (commande[i].equals(fil)) {
-					commande[i].derelierCompFromDestination(this);
+					commande[i] = null;
 				}
 			}
 		}
@@ -186,6 +182,31 @@ public class Multiplexeur extends Combinatoires {
 			}
 		}
 		return dessocier;
+	}
+	
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+		ArrayList<ExceptionProgramme> arrayList = new ArrayList<ExceptionProgramme>();
+		for (int i = 0; i < nombreEntree; i++) {
+			if (entrees[i] == null) {
+				arrayList.add(new EntreeManquante(TypesExceptions.ERREUR, this, i));
+			}
+		}
+		for (int i = 0; i < nbCommande; i++) {
+			if (commande[i] == null) {
+				arrayList.add(new CommandeManquante(TypesExceptions.ERREUR, this, i));
+			}
+		}
+		if (arrayList.size() == nombreEntree + nbCommande) {
+			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE, this));
+		}
+		else {
+			if (arrayList.size() != 0) {
+				Circuit.AjouterListeException(arrayList);
+				Circuit.ajouterCompErrone(this);
+			}
+		}
 	}
 	
 

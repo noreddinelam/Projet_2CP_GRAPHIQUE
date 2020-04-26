@@ -24,6 +24,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 	static double startY=76;
     protected EtatLogique sortieAafficher;
 	protected EtatLogique sortieBar;
+
 	
 	public Horloge(String nom,long temps) {
 		super(0,nom);
@@ -70,30 +71,26 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 	
 		while(active)// tant que l'horloge est active
 		{	
-			
-		//on excut l'evaluation
-
-			image.setImage(this.getSorties()[0].getEtatLogiqueFil().getNum() ==0 ? new Image("/Horloge/0.png") : new Image("/Horloge/1.png"));
+	    	this.evaluer();
+			image.setImage(new Image(generatePath()) );
 	
 			try {
 			    
-		    	this.evaluer();
+		
 			    if(HomeController.chrono) 
-			    	{
-		
-		
+			    	{		
 			    	   Platform.runLater(new Runnable() {
 			               @Override public void run() {
 			            	
 			             	   ChronogrammeController.tracerFront(etat);
 			                   ChronogrammeController.refrecher();
-			      
-			   	    
+			                   ChronogrammeController.valeurSuivi();
+			                   
+			               if(etat.getNum()==1)    ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#90EE90;-fx-background-radius:15");
+			               else ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#303337;-fx-background-radius:15");
+		   	    
 			               }
 			           });
-			    	   
-			     
-			 
 			    	}
 				Thread.sleep(temps);
 			
@@ -121,7 +118,10 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(), img.getBoundsInLocal().getHeight() / 2), 0);
 	}
 
-
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
+	}
 	public ImageView getImage() {
 		return image;
 	}

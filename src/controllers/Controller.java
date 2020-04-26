@@ -42,12 +42,12 @@ public abstract class Controller {
 	protected double x,y;
     protected int switching = 0; 
     
-    protected Line guideFilX = new Line();
-	protected Line guideFilY = new Line();
+    protected static Line guideFilX = new Line();
+	protected static Line guideFilY = new Line();
 	
 	 protected Composant source;
 
-    protected boolean simul = false;
+    protected static boolean simul = false;
     
     protected Composant destination;
 	 protected int entree;

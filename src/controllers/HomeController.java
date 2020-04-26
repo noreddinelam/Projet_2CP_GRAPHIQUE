@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import application.ClickBarDroite;
 import application.ClickDroit;
 import application.ClickDroitFil;
+import application.FenetreDesErreurs;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -38,6 +39,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Point2D;
@@ -49,6 +51,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -76,6 +79,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 
@@ -86,6 +90,8 @@ public class HomeController extends Controller implements Initializable {
     private ClickDroit clickDroitFenetre;
     private ClickBarDroite clickBar;
     private double difX = 0;
+
+
     
     // utilisé dans la sauvegarde des coordonnées  
     double posX ;
@@ -108,7 +114,7 @@ public class HomeController extends Controller implements Initializable {
     
 	public static ImageView elementSeclecionner ;
 	
-	Stage stage;
+//	static Stage stage;
 
 	public static ImageView elementAsuprimer=null;
 
@@ -373,7 +379,7 @@ public class HomeController extends Controller implements Initializable {
     private ImageView darkMode;
     
 
-    private ImageView horlogeDeCercuit;
+    static public ImageView horlogeDeCercuit;
 
     @FXML
     private AnchorPane work;
@@ -460,40 +466,59 @@ public class HomeController extends Controller implements Initializable {
 
     @FXML
     void onSimuler(MouseEvent event) { /// pour lancer la simulation ou l'arreter
-
+    	Circuit.clearException();
     	simul = (!simul);
-		System.out.println("------------------------------------------------------------------------");
+    	System.out.println("------------------------------------------------------------------------");
     	if (simul) {
-    		simulation.setImage(new Image("homePage_icones/SIMULATION_OFF.png"));
-		if(! horloged)	Circuit.initialiser();
-    	
-		else {	
-			horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
-    		horloge.setImage(horlogeDeCercuit);
-    		t1=new Thread(horloge);
-    		t1.start();
-		}
-			rotationDelogo(logo,1,1000,false);
-		}
+    		Circuit.validerCircuits();
+    		if ( Circuit.isThereAnyException()) {
+    			if (Circuit.isThereAnyError()) {
+    				simul = false;
+    				simulation.setImage(new Image("homePage_icones/simulation.png"));
+    			}
+    			else {
+    				simulation.setImage(new Image("homePage_icones/SIMULATION_ON.png"));
+    				if(! horloged)	Circuit.initialiser();
+
+    				else {	
+    					horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
+    					horloge.setImage(horlogeDeCercuit);
+    					t1=new Thread(horloge);
+    					t1.start();
+    				}
+    				rotationDelogo(logo,1,1000,false);
+    			}
+    			new FenetreDesErreurs(homeWindow);
+    		}
+    		else {
+    			simulation.setImage(new Image("homePage_icones/SIMULATION_ON.png"));
+				if(! horloged)	Circuit.initialiser();
+
+				else {	
+					horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
+					horloge.setImage(horlogeDeCercuit);
+					t1=new Thread(horloge);
+					t1.start();
+				}
+				rotationDelogo(logo,1,1000,false);
+			}
+    	}
     	else {
     		simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
     		Circuit.defaultCompValue();
     		System.out.println("------------------------------------------------------------------------");
     		if( horloged)
-				{    		
+    		{    		
     			try {
-    		
-    		horlogeDeCercuit.setImage( new Image("/Horloge/0.png"));
+    				horlogeDeCercuit.setImage( new Image("/Horloge/0.png"));
     				horloge.stop();
-					t1.join();
-				
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				}
-		
-		}
+    				t1.join();
+    			} catch (InterruptedException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    		}
+    	}
     }
     
     public  void setHomeControllerStage(Stage homeWindow) {
@@ -615,20 +640,22 @@ public class HomeController extends Controller implements Initializable {
 					click.close();
 					tooltipInitialize();
 				}
+				ctrlX= event.getX();
+				ctrlY=event.getY();
+				if (clickDroitFenetre != null) {
+					Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
+					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
 
-				if(event.getButton() == MouseButton.PRIMARY) {
+					if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) )
+						clickDroitFenetre.close();
+				}
+				if (clickDroitFilFenetre != null) {
+					Double x = clickDroitFilFenetre.getX(), y = clickDroitFilFenetre.getY(); 
+					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
 
-					if (clickDroitFenetre != null) {
-						Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
-						Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-
-						if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) ) {
-							// clickDroitFenetre.close();
-
-							Stage s = (Stage) clickDroitFenetre.getScene().getWindow();
-							s.close();
-
-						}
+					if( (mouseX < x)  ||  (mouseX > x+164) || (mouseY < y)  ||  (mouseY > y+55) ) {
+						lineDroit.setStroke(Color.BLACK);
+						clickDroitFilFenetre.close();
 					}
 				}
 			}
@@ -667,27 +694,6 @@ public class HomeController extends Controller implements Initializable {
 				//	  workSpace.getChildren().remove(guideFilY);
 
 				e.consume();
-			}
-		});
-		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() { /// pour le click droit de la souris 
-			@Override
-			public void handle(MouseEvent event) {
-				if (clickDroitFenetre != null) {
-					Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
-					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-
-					if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) )
-						clickDroitFenetre.close();
-				}
-				if (clickDroitFilFenetre != null) {
-					Double x = clickDroitFilFenetre.getX(), y = clickDroitFilFenetre.getY(); 
-					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-
-					if( (mouseX < x)  ||  (mouseX > x+164) || (mouseY < y)  ||  (mouseY > y+55) ) {
-						lineDroit.setStroke(Color.BLACK);
-						clickDroitFilFenetre.close();
-					}
-				}
 			}
 		});
 
@@ -868,7 +874,7 @@ public class HomeController extends Controller implements Initializable {
 								if( dragImageView.getId().equals("clock")  ) {
 									horloged =true;
 									horlogeDeCercuit=dragImageView;
-									ChronogrammeController.setHorlogeDecHRONO((Horloge) Circuit.getCompFromImage(dragImageView));
+								
 								}
 								
 								ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
@@ -1061,6 +1067,7 @@ public class HomeController extends Controller implements Initializable {
 	        		if(cmp.getEntrees()[i] != null) {
 	        			crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
 	        			line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
+	        			System.out.println("jdhfkj : "+line);
 //	        			size = line.getPoints().size();
 //	        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
 //	    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
@@ -1250,14 +1257,16 @@ public class HomeController extends Controller implements Initializable {
 								@Override
 								public void handle(MouseEvent e) {
 									// TODO Auto-generated method stub
-									if (pin.getEtat() == EtatLogique.ONE) {
-										pin.setEtat(EtatLogique.ZERO);
-									} 
-									else {
-										pin.setEtat(EtatLogique.ONE);
+									if (simul) {
+										if (pin.getEtat() == EtatLogique.ONE) {
+											pin.setEtat(EtatLogique.ZERO);
+										} 
+										else {
+											pin.setEtat(EtatLogique.ONE);
+										}
+										pin.evaluer();
+										eleementAdrager.setCursor(Cursor.HAND);
 									}
-									pin.evaluer();
-									eleementAdrager.setCursor(Cursor.HAND);
 								}
 							});
 						}
@@ -1662,14 +1671,17 @@ public class HomeController extends Controller implements Initializable {
 	
 	@FXML
 	void supprimerTout(ActionEvent event) { /// la suppression de tout le contenu de la grille
-		Circuit.getCompUtilises().clear();
-		Circuit.getFilUtilises().clear();
-		Circuit.getEntreesCircuit().clear();
-		Circuit.getSortiesCircuit().clear();
-		Circuit.getListeEtages().clear();
-		workSpace.getChildren().clear();
-		//tracerLagrill();
-		tracerLesregles(workSpace);	
+		if (! simul) {
+			Circuit.getCompUtilises().clear();
+			Circuit.getFilUtilises().clear();
+			Circuit.getEntreesCircuit().clear();
+			Circuit.getSortiesCircuit().clear();
+			Circuit.getListeEtages().clear();
+			workSpace.getChildren().clear();
+			horloged = false;
+			//tracerLagrill();
+			tracerLesregles(workSpace);	
+		}
 	}    
 
 	@FXML
@@ -1714,8 +1726,8 @@ public class HomeController extends Controller implements Initializable {
 				cmp2.setNom(cmp.getNom());
 				cmp2.setNombreEntree(cmp.getNombreEntree());
 				cmp2.setNombreSortie(cmp.getNombreSortie());
-				cmp2.setCord();
-				cmp2.generatePolyline(ctrlX, ctrlY);	
+//				cmp2.setCord();
+//				cmp2.generatePolyline(ctrlX, ctrlY);	
 				Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
 				dragImageView.setImage(img);
 				dragImageView.setFitHeight(img.getHeight());
@@ -1738,14 +1750,7 @@ public class HomeController extends Controller implements Initializable {
 				}
 
 				keyEvent.consume();
-
-				workSpace.setOnMousePressed(new EventHandler<MouseEvent>() { /// recuperer les coordonnees du clic
-					@Override
-					public void handle(MouseEvent event) {
-						ctrlX= event.getX();
-						ctrlY=event.getY();
-					}
-				});				   
+			   
 				if (kb2.match(keyEvent) && getCopierActive()) {/// si user clique sur "CTRL + V"
 
 					System.out.println("control + v are pressed !");	    
@@ -1756,7 +1761,6 @@ public class HomeController extends Controller implements Initializable {
 					instanceComposant(dragImageView);		
 					Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
 					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
-
 					cmp2.setDirection(cmp.getDirection());
 					cmp2.setIcon(cmp.getIcon());
 					cmp2.setLesCoordonnees(cmp.getLesCoordonnees());
@@ -1785,19 +1789,23 @@ public class HomeController extends Controller implements Initializable {
 
 	@FXML
 	void annuler(ActionEvent event) { /// pour appliquer l'opertaion de undo changes
-		//System.out.println("le boutton annuler est clique");
 		undoChanges(workSpace);
 	}
 
 	@FXML
 	void supprimer(ActionEvent event) { /// pour appliquer une suppression sur 
-		cmp = Circuit.getCompFromImage(elementSeclecionner);
-		elementAsuprimer = elementSeclecionner;
-		sauveGarderSupression();
-		workSpace.getChildren().remove(elementSeclecionner);
-		ArrayList<Polyline> lineListe=Circuit.supprimerComp(cmp);	
-		for(Polyline line : lineListe)
-			workSpace.getChildren().remove(line);
+		if (elementSeclecionner != null) {
+			cmp = Circuit.getCompFromImage(elementSeclecionner);
+			elementAsuprimer = elementSeclecionner;
+			sauveGarderSupression();
+			if(elementAsuprimer.getId().equals("clock"))
+			{
+				HomeController.horloged =false;
+				HomeController.horlogeDeCercuit =null; 
+			}
+			workSpace.getChildren().remove(elementSeclecionner);
+			removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));
+		}
 	}
 
 	@FXML
@@ -1910,27 +1918,39 @@ public class HomeController extends Controller implements Initializable {
 
 	    @FXML
 	    void chronogramme(ActionEvent event) { /// charger la fenetre du chronogramme
+	    	if(simul && ! Circuit.getListeEtages().isEmpty())
+	    	{
 	    	try {
 	    		Stage s = (Stage) chronogramme.getScene().getWindow();
-	    		s.close();	
-	   
-	    	  
-	    	       ChronogrammeController.composantDechrono.addAll( Circuit.getListeEtages());
-      
-                
+	    		s.close();		   
+	    		ChronogrammeController.setHorlogeDecHRONO((Horloge) Circuit.getCompFromImage(horlogeDeCercuit));
+	    		int i=0;
+	    	      while(i<10 && i<Circuit.getListeEtages().size())
+	    	      {
+	    	    	  if(!Circuit.getListeEtages().get(i).getClass().getSimpleName().equals("Compteur"))
+	    	    		  ChronogrammeController.composantDechrono.add(Circuit.getListeEtages().get(i));
+	    	    	  i++;
+	    	      }
 	    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Chronogramme.fxml"));
 	    		Parent root = fxmlLoader.load();
 	    		Stage stage = new Stage();
 	    		Scene scene = new Scene(root);
 	    		stage.setScene(scene);  
-	    		stage.setTitle("le chronogramme");
 	    		stage.setResizable(false);
 	    		stage.initModality(Modality.APPLICATION_MODAL);
-
+	    		stage.initStyle(StageStyle.UNDECORATED);
+	    		scene.setFill(Color.TRANSPARENT);
+	    		stage.initStyle(StageStyle.TRANSPARENT);
 	    		stage.show();
-	    		
 	    	} catch(Exception e) {
 	    		e.printStackTrace();
+	    	}
+	    	}else {
+	    		Alert a = new Alert(AlertType.ERROR);
+	    		a.setHeaderText("Chronogramme erreur");
+	    		a.setTitle("Chronogramme");
+	    		a.setContentText(! simul ? "Veulliez Simuler le Circuit D'abord":"Le Circuit ne contient Aucun Element Sequentiel");
+	    		a.showAndWait();
 	    	}
 
 	    }
@@ -2029,7 +2049,6 @@ public class HomeController extends Controller implements Initializable {
 	            l2.setEndX(workSpace.getPrefWidth());
 	            l2.setEndY(0);
 	            l2.getStrokeDashArray().addAll(2.2d);
-
 	            workSpace.getChildren().add(l2);
 	        }
 	    }

@@ -22,7 +22,7 @@ public class Encodeur extends Combinatoires {
 	}
 	
 	public boolean valider() { // verifier si les entrees du composant sont toutes reliées
-		return (validerEntrees().getNum() == 1) ? true : false;
+		return (validerEntrees() == EtatLogique.ONE) ? true : false;
 	}
 	
 	@Override
