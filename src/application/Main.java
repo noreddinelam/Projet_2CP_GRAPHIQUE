@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import jdk.internal.net.http.hpack.HPACK;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -62,6 +63,29 @@ public class Main extends Application {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public void stop(){
+
+		if(Horloge.active)
+		{
+	Horloge	horloge=((Horloge)Circuit.getCompFromImage(HomeController.horlogeDeCercuit));
+	
+	try {
+		horloge.stop();
+		HomeController.t1.join();
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+		}
+	   try {
+		super.stop();
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 	
 	public static void main(String[] args) {

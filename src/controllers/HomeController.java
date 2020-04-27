@@ -22,6 +22,7 @@ import java.util.Map.Entry;
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout.Alignment;
 
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import com.sun.tools.javac.code.Type.ForAll;
 
 import application.ClickBarDroite;
@@ -470,7 +471,7 @@ public class HomeController extends Controller {
     }
     
 
-   	Thread t1 ;
+   public static	Thread t1 ;
 	Horloge horloge = null;
 	
 
@@ -478,7 +479,6 @@ public class HomeController extends Controller {
     void onSimuler(MouseEvent event) { /// pour lancer la simulation ou l'arreter
     	Circuit.clearException();
     	simul = (!simul);
-    	System.out.println("------------------------------------------------------------------------");
     	if (simul) {
     		Circuit.validerCircuits();
     		if ( Circuit.isThereAnyException()) {
@@ -516,7 +516,6 @@ public class HomeController extends Controller {
     	else {
     		simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
     		Circuit.defaultCompValue();
-    		System.out.println("------------------------------------------------------------------------");
     		if( horloged)
     		{    		
     			try {
@@ -1945,7 +1944,7 @@ public class HomeController extends Controller {
 
 	    @FXML
 	    void chronogramme(ActionEvent event) { /// charger la fenetre du chronogramme
-	    	if(simul && ! Circuit.getListeEtages().isEmpty())
+	    	if(simul && ! Circuit.getListeEtages().isEmpty() && horloged)
 	    	{
 	    	try {
 	    		Stage s = (Stage) chronogramme.getScene().getWindow();
@@ -1977,8 +1976,12 @@ public class HomeController extends Controller {
 	    		a.setHeaderText("Chronogramme erreur");
 	    		a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 	    		a.setTitle("Chronogramme");
-	    		a.setContentText(! simul ? "Veulliez Simuler le Circuit D'abord":"Le Circuit ne contient Aucun Element Sequentiel");
+	    		a.setContentText(! simul ? "Veulliez Simuler le Circuit D'abord": Circuit.getListeEtages().isEmpty() ?"Le Circuit ne contient Aucun Element Sequentiel !"
+	    				+ "Ajouter des Elements pour visualiser Le Chronogramme" : "Le Plan de travaille ne contient aucune horloge"
+	    						+ "Ajouter une Horloge au Plan pour visualiser le Chronogramme");
+	    		transitionDesComposants(clock);
 	    		a.showAndWait();
+	    		
 	    	}
 
 	    }

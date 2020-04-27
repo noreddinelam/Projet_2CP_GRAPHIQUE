@@ -258,27 +258,27 @@ public abstract class Controller {
 									 * 			entree = -7   :load*/
 									if(entree >= 0) {
 										Circuit.relier(source, destination, sortie, entree);
-										System.out.println("trabtooo entre");
+								
 										playSound();
 									}else if(-5 < entree) {
 										Circuit.relierCommand(source,((Combinatoires)destination), sortie, Math.abs(entree)-1);
-										System.out.println("trabtooo commande");
+									
 										playSound();
 									}else if(entree == -5) {
 										Circuit.relierHorloge(((Sequentiels)destination), source, sortie);
-										System.out.println("trabtooo horloge");
+							
 										playSound();
 									}else if(entree == -6) {
 										Circuit.relierClear(((Sequentiels)destination), source, sortie);
-										System.out.println("trabtooo clear");	
+						
 										playSound();
 									}else if(entree == -7) {
 										Circuit.relierPreset(((Bascule)destination), source, sortie);
-										System.out.println("trabtooo preset");
+							
 										playSound();
 									}else if(entree == -8) {
 										Circuit.relierLoad(((Sequentiels)destination), source, sortie);
-										System.out.println("trabtooo load");
+								
 										playSound();
 									}
 									InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);

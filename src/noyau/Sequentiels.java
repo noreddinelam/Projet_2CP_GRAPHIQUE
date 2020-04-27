@@ -19,9 +19,9 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	protected Fil load = null;
 	protected Front front;
 	protected ArrayList<Integer> etages = new ArrayList<Integer>();
-    protected EtatLogique sortieAafficher=EtatLogique.ONE;
-    protected EtatLogique sortieBar=EtatLogique.ZERO;
-	 protected EtatLogique etatAvant=EtatLogique.ONE;;
+    protected EtatLogique sortieAafficher=EtatLogique.ZERO;
+    protected EtatLogique sortieBar=EtatLogique.ONE;
+	 protected EtatLogique etatAvant=EtatLogique.ZERO;;
 	double startChronoX=1;
 	double startChronoY=127;
 	protected EtatLogique etatPrec[] = new EtatLogique[10];
