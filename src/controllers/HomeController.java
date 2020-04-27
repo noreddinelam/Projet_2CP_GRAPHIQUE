@@ -2,11 +2,15 @@ package controllers;
 
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -1151,6 +1155,13 @@ public class HomeController extends Controller {
 		        		        		}
 		        		        	insererNoedDebut = false;
 		        		        	}
+		        		        	Composant ci=Circuit.getCompFromImage(eleementAdrager);
+		        		        	if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
+		        		        		CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
+		        		        		circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());
+//										workSpace.getChildren().removeAll(((CircuitIntegre)ci).getListeCercles());
+//										workSpace.getChildren().addAll(((CircuitIntegre)ci).generateCercles(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY()));
+									}
 									Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
 									eleementAdrager.relocate(
 											(int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
@@ -1926,21 +1937,69 @@ public class HomeController extends Controller {
 	    			new File(System.getProperty("user.home"))
 	    			);                 
 	    	fileChooser.getExtensionFilters().addAll(
-	    			new FileChooser.ExtensionFilter("BIN", "*.bin")
+	    			new FileChooser.ExtensionFilter("INT", "*.int")
 	    			);
 
 	    	File f = fileChooser.showOpenDialog(homeWindow);
-	    	Sauvegarde.loadCiruit(f.getAbsolutePath());
+	    	if (f != null) {
+	    		FileInputStream fichier ;
+	    		ObjectInputStream oo = null;
+	    		CircuitIntegre circuitIntegre;
+	    		try {
+	    			fichier = new FileInputStream(f.getAbsolutePath());
+	    			oo = new ObjectInputStream(fichier);
+	    			circuitIntegre = (CircuitIntegre) oo.readObject();
+	    			ImageView imageView = new ImageView(new Image(circuitIntegre.generatePath()));
+	    			imageView.setLayoutX(10);
+	    			imageView.setLayoutY(10);
+	    			imageView.setFitHeight(imageView.getImage().getHeight());
+	    			imageView.setFitWidth(imageView.getImage().getWidth());
+	    			Circuit.ajouterComposant(circuitIntegre, imageView);
+	    			workSpace.getChildren().add(imageView);
+	    			ajouterLeGestApresCollage(imageView);
+	    			addAllPolylinesToWorkSpace(circuitIntegre.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+	    			workSpace.getChildren().addAll(circuitIntegre.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+	    		finally {
+	    			try {
+	    				oo.close();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
 
+	    		}
+			}
 	    }
 
 	    @FXML
 	    void encapsulerEtSauvgarder(ActionEvent event) { /// l'encapsulation et la sauvegarde
 	    	final FileChooser fileChooser = new FileChooser();
 	    	File f = fileChooser.showSaveDialog(homeWindow);
-	    	System.out.println("the name of the file is : "+f.getAbsolutePath());
-	    	Sauvegarde sauvegarde = new Sauvegarde();
-	    	sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
+	    	if (f != null) {
+	    		FileOutputStream fichier ;
+	    		ObjectOutputStream oo = null;
+	    		CircuitIntegre ci = new CircuitIntegre(Circuit.getEntreesCircuit().size(),Circuit.getSortiesCircuit().size(), f.getAbsolutePath());
+	    		Circuit.tableVerite(Circuit.getEntreesCircuit());
+	    		ci.setTableVerite(Circuit.getTableVerite());
+	    		try {
+	    			fichier = new FileOutputStream(f.getAbsolutePath()+".int");
+	    			oo = new ObjectOutputStream(fichier);
+	    			oo.writeObject(ci);
+
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
+	    		finally {
+	    			try {
+	    				oo.close();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
+	    		}
+			}
 	    }
 
 	    @FXML

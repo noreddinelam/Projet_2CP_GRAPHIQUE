@@ -344,7 +344,7 @@ public abstract class Controller {
 		if(( Xfil >= XImg  )  &&  (XImg+imgCmp.getFitWidth() > Xfil) && ( Yfil >= Yimg)  &&  (Yimg+imgCmp.getFitHeight() > Yfil) ) {
 			Composant cmp = Circuit.getCompFromImage(imgCmp);
 			Coordonnees tabCoord[] = cmp.getLesCoordonnees().getCordEntree();
-			int nbCord = cmp.getLesCoordonnees().getNbCordEntree();
+			int nbCord = cmp.getNombreEntree();
 			Coordonnees crd = new Coordonnees(Xfil,Yfil);
 			boolean trouve = false;
 			int i = 0;
