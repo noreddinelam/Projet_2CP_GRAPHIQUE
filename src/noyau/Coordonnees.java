@@ -1,6 +1,8 @@
 package noyau;
 
-public class Coordonnees {
+import java.io.Serializable;
+
+public class Coordonnees implements Serializable{
 	private double x;
 	private double y;
 	public Coordonnees(double x,double y) {

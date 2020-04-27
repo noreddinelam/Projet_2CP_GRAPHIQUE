@@ -1,14 +1,16 @@
 package noyau;
 
 public class JK extends Bascule{
-
+   
 	
  public JK(String nom,Front front) {
 		super(2,nom,front);
+		
 		// TODO Auto-generated constructor stub
 	}
 
  public void genererSortiesSyncho() {
+	
 	 if(etatPrec[0].getNum()==1)//j=1
 	 {
 		 if(etatPrec[1].getNum()==1)//k=1
@@ -36,6 +38,10 @@ public class JK extends Bascule{
 			 sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
 			 sorties[1].setEtatLogiqueFil(EtatLogique.ONE);
 		 }
+	 sortieAafficher= sorties[0].getEtatLogiqueFil();
+	 sortieBar= sorties[1].getEtatLogiqueFil();
+	
+	
 }
 
 	@Override

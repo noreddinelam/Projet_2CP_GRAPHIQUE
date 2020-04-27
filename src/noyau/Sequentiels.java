@@ -3,15 +3,28 @@ package noyau;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public abstract class Sequentiels extends Composant {
+import controllers.ChronogrammeController;
+
+public abstract class Sequentiels extends Composant implements ComposantDeChronogramme {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	protected Fil entreeHorloge = null;
 	protected EtatLogique etatPrecHorloge;
 	protected Fil clear = null;
 	protected Fil load = null;
 	protected Front front;
 	protected ArrayList<Integer> etages = new ArrayList<Integer>();
+    protected EtatLogique sortieAafficher=EtatLogique.ONE;
+    protected EtatLogique sortieBar=EtatLogique.ZERO;
+	 protected EtatLogique etatAvant=EtatLogique.ONE;;
+	double startChronoX=1;
+	double startChronoY=127;
 	protected EtatLogique etatPrec[] = new EtatLogique[10];
-	
 	public Sequentiels(int nombreEntree,String nom,Front front) {
 		super(nombreEntree,nom);
 		this.front = front ;
@@ -168,5 +181,66 @@ public abstract class Sequentiels extends Composant {
 	public void setLoad(Fil load) {
 		this.load = load;
 	}
+
+	
+
+	public EtatLogique getSortieAafficher() {
+		return sortieAafficher;
+	}
+
+	public void setSortieAafficher(EtatLogique sortieAafficher) {
+		this.sortieAafficher = sortieAafficher;
+	}
+
+	public EtatLogique getSortieBar() {
+		return sortieBar;
+	}
+
+	public void setSortieBar(EtatLogique sortieBar) {
+		this.sortieBar = sortieBar;
+	}
+
+	public double getStartChronoX() {
+		return startChronoX;
+	}
+
+	public void setStartChronoX(double startChronoX) {
+		this.startChronoX = startChronoX;
+	}
+
+	public double getStartChronoY() {
+		return startChronoY;
+	}
+
+	public void setStartChronoY(double startChronoY) {
+		this.startChronoY = startChronoY;
+	}
+
+	public EtatLogique[] getEtatPrec() {
+		return etatPrec;
+	}
+
+	public void setEtatPrec(EtatLogique[] etatPrec) {
+		this.etatPrec = etatPrec;
+	}
+
+	public EtatLogique getEtatAvant() {
+		return etatAvant;
+	}
+
+	public void setEtatAvant(EtatLogique etatAvant) {
+		this.etatAvant = etatAvant;
+	}
+
+	public EtatLogique getEtatPrecHorloge() {
+		return etatPrecHorloge;
+	}
+
+	public void setEtatPrecHorloge(EtatLogique etatPrecHorloge) {
+		this.etatPrecHorloge = etatPrecHorloge;
+	}
+	
+	
+   
 	
 }

@@ -8,6 +8,7 @@ public class T extends Bascule{
 	}
 
 	public void genererSortiesSyncho() {
+     
 		if (etatPrec[0] == EtatLogique.ONE) {
 			if(sorties[0].getEtatLogiqueFil().getNum()==1)
 			{
@@ -20,6 +21,8 @@ public class T extends Bascule{
 				sorties[1].setEtatLogiqueFil(EtatLogique.ZERO);
 			}
 		}
+		sortieAafficher=sorties[0].getEtatLogiqueFil();
+		sortieBar=sorties[1].getEtatLogiqueFil();
 	}
 
 	@Override

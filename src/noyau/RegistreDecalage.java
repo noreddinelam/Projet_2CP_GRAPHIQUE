@@ -45,8 +45,11 @@ public class RegistreDecalage extends Sequentiels {
 		{
 			valeur[i] = valeur[i-1]; // decaler les bits a droite 
 		}
-		valeur[0] = bit ; // decaler le bit d'entree vers le poids faible du registre
-		sorties[0].setEtatLogiqueFil(res);// mettre la valeur du dernier bit (bit faible) dans le fil .
+		valeur[0] = bit ; 
+		// decaler le bit d'entree vers le poids faible du registre
+		sorties[0].setEtatLogiqueFil(res);
+//		sorties[0].evaluer();
+//		System.out.println(sorties[0].getEtatLogiqueFil());// mettre la valeur du dernier bit (bit faible) dans le fil .
 	}
 	
 	public void decalageGauche() {
@@ -74,9 +77,12 @@ public class RegistreDecalage extends Sequentiels {
 	}
 
 	public boolean valider() { // valider le circuit si clear est à 0 ou bien load à 0 à condition d'avoir toutes les entrees branchées
-		System.out.println("CLEAR : "+clear.getEtatLogiqueFil() + " LOAD : "+load.getEtatLogiqueFil());
 		if (clear.getEtatLogiqueFil().getNum() == 0) {
 			return true;
+		}
+		if (clear.getEtatLogiqueFil().getNum() == 1 &&load.getEtatLogiqueFil().getNum() == 1&& validerEntrees()==EtatLogique.ONE) {
+		return true;	
+		
 		}
 		if (load.getEtatLogiqueFil().getNum() == 0 && super.validerEntrees() == EtatLogique.ONE) {
 			return true;
@@ -117,6 +123,8 @@ public class RegistreDecalage extends Sequentiels {
 				decalageGauche();
 			}
 		}
+		sortieAafficher=sorties[0].getEtatLogiqueFil();
+		sortieBar=EtatLogique.ZERO;
 	}
 
 	@Override
@@ -126,6 +134,7 @@ public class RegistreDecalage extends Sequentiels {
 		if (clear.getEtatLogiqueFil().getNum() == 1) { // valider le compteur soit dans le mode synchrone ou load à 0 et toutes les entrées sont toutes validées
 			if((load.getEtatLogiqueFil().getNum() == 1 && validerEntrees().getNum()== 1)||(load.getEtatLogiqueFil().getNum() == 0 && super.validerEntrees() == EtatLogique.ONE))// verification de l'horloge à revoir .
 				if (entreeHorloge != null) {
+					etatAvant=sorties[0].getEtatLogiqueFil();
 					switch (front) {
 					case Front_Descendant:{
 						if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ZERO )
@@ -160,6 +169,7 @@ public class RegistreDecalage extends Sequentiels {
 	@Override
 	public void initialiser() {// initialiser les etats precedents qui servent si le load à 0
 		// TODO Auto-generated method stub
+
 		if (load.getEtatLogiqueFil() == EtatLogique.ZERO) {
 			for (int i = 1; i < nombreEntree; i++) {
 				etatPrec[i] = entrees[i].getEtatLogiqueFil();
@@ -167,8 +177,10 @@ public class RegistreDecalage extends Sequentiels {
 		}
 		else {
 			etatPrec[0] = entrees[0].getEtatLogiqueFil();
+
 		}
-	}
+		}
+	
 	
 	@Override
 	public String generatePath() {

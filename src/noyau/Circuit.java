@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
-public class Circuit implements Serializable{
+public class Circuit {
 	
 	private static HashMap<Composant, ImageView> compUtilises = new HashMap<Composant,ImageView>();// tout les composants du circuit
 	private static HashMap<Fil, ArrayList<InfoPolyline>> filUtilises = new HashMap<Fil,ArrayList<InfoPolyline>>();// tout les fils du circuit
@@ -106,6 +106,12 @@ public class Circuit implements Serializable{
 					polyline.setStroke(Color.BLACK);
 				}
 			}
+		}
+	}
+	
+	public static void defaultValueSeq() {
+		for (Sequentiels sequentiels : listeEtages) {
+			sequentiels.defaultValue();
 		}
 	}
 	
@@ -340,7 +346,7 @@ public class Circuit implements Serializable{
 		else { 
 			if (composant.getClass().getSimpleName().equals("SourceConstante")) 
 				entreesCircuit.remove(composant);
-			else if (composant.getClass().getSimpleName().equals("AfficheurSegments")) {
+			else if (composant.getClass().getSimpleName().equals("AfficheurSegment")) {
 				sortiesCircuit.remove((AfficheurSegment)composant);
 			}
 		}
@@ -383,8 +389,8 @@ public class Circuit implements Serializable{
 	public static HashMap<Fil, ArrayList<InfoPolyline>> getFilUtilises() {
 		return filUtilises;
 	}
-	public static void setFilUtilises(HashMap<Fil, ArrayList<InfoPolyline>> filUtilises) {
-		Circuit.filUtilises = filUtilises;
+	public static void setFilUtilises(HashMap<Fil, ArrayList<InfoPolyline>> arrayList) {
+		Circuit.filUtilises = arrayList;
 	}
 	public static ArrayList<Pin> getEntreesCircuit() {
 		return entreesCircuit;
@@ -392,7 +398,7 @@ public class Circuit implements Serializable{
 	public static ArrayList<Affichage> getSortiesCircuit() {
 		return sortiesCircuit;
 	}
-	public EtatLogique[][] getTableVerite() {
+	public static EtatLogique[][] getTableVerite() {
 		return tableVerite;
 	}
 	public static ArrayList<Sequentiels> getListeEtages() {
@@ -420,8 +426,8 @@ public class Circuit implements Serializable{
 	public static void setSortiesCircuit(ArrayList<Affichage> sortiesCircuit) {
 		Circuit.sortiesCircuit = sortiesCircuit;
 	}
-	public void setTableVerite(EtatLogique[][] tableVerite) {
-		this.tableVerite = tableVerite;
+	public static void setTableVerite(EtatLogique[][] tableVerite) {
+		Circuit.tableVerite = tableVerite;
 	}
 	public static void remplacerPere(Polyline line1, Polyline line2) {
 		for (Entry<Fil, ArrayList<InfoPolyline>> entry : filUtilises.entrySet()) {
@@ -439,5 +445,27 @@ public class Circuit implements Serializable{
 		CircuitIntegre ci = new CircuitIntegre(entreesCircuit.size(),sortiesCircuit.size(), nom);
 		ci.setTableVerite(tableVerite);
 	}
+
+	public static ArrayList<SourceConstante> getListSouceCte() {
+		return listSouceCte;
+	}
+
+	public static void setListSouceCte(ArrayList<SourceConstante> listSouceCte) {
+		Circuit.listSouceCte = listSouceCte;
+	}
+	
+	public static void clearCircuit() {
+		compUtilises.clear();
+		entreesCircuit.clear();
+		sortiesCircuit.clear();
+		listeEtages.clear();
+		nbEtages =0 ;
+		listSouceCte.clear();
+		composantsErronee.clear();
+		circuitException.clear();
+		filUtilises.clear();
+	}
+	
+	
 	
 }

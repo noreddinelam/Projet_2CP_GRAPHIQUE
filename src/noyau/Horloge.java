@@ -2,14 +2,29 @@ package noyau;
 
 import java.util.ArrayList;
 
+
+
+import controllers.ChronogrammeController;
+import controllers.HomeController;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
-public class Horloge extends Composant implements ElementHorloge,Runnable{
+public class Horloge extends Composant implements ElementHorloge,Runnable,ComposantDeChronogramme{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private EtatLogique etat = EtatLogique.ZERO;
 	private long temps;
-	private volatile boolean active = true;// on met l'horloge toujours active pour le test
+	public volatile static boolean active = true;// on met l'horloge toujours active pour le test
+	transient private ImageView image;
+	static double startX=1;
+	static double startY=76;
+    protected EtatLogique sortieAafficher;
+	protected EtatLogique sortieBar;
+
 	
 	public Horloge(String nom,long temps) {
 		super(0,nom);
@@ -33,6 +48,8 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 	public void genererSorties() { // inverser l'etat de l'horloge pour generer sorte de front
 		etat = (etat == EtatLogique.ZERO) ? EtatLogique.ONE : EtatLogique.ZERO ;
 		sorties[0].setEtatLogiqueFil(etat);
+		sortieAafficher=etat;
+		sortieBar=etat.getNum()==1 ? EtatLogique.ZERO: EtatLogique.ONE;
 	}
 	
 	public boolean valider() { // à voir apres si elle est nécessaire
@@ -51,41 +68,37 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 		etat = EtatLogique.ONE;
 		this.evaluer();
 		Circuit.initialiser();
-		while(this.active)// tant que l'horloge est active
+	
+		while(active)// tant que l'horloge est active
 		{	
-			
-			this.evaluer();//on excut l'evaluation
-			
-			Circuit.getImageFromComp(this).setImage(this.getSorties()[0].getEtatLogiqueFil().getNum() ==0 ? new Image("/Horloge/0.png") : new Image("/Horloge/1.png"));
+	    	this.evaluer();
+			image.setImage(new Image(generatePath()) );
+	
 			try {
-//				int i=1;// just pour revenir a la ligne a chaque front de 3 bascules
-//			    for(Sequentiels sequentiels : Circuit.getListeEtages())// On parcour chaque composant sequentielle
-//			    {
-//			    	if (sequentiels.getClass().getSimpleName().equals("Compteur")) {
-//			    		System.out.print(((Compteur)sequentiels).getValeur() + " | ");
-//					}
-//			    	else if(sequentiels.getClass().getSimpleName().equals("T")){
-//			    		System.out.print(sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
-//					}
-//			    	else {
-//			    		System.out.print("Valeur : " + ((RegistreDecalage)sequentiels).valeur()+ " |  " + sequentiels.sorties[0].getEtatLogiqueFil() + " |  ");
-//					}
-//			    	
-//			    	if(i==1) // condition de retour a la ligne en fonctions du nombre elt contenu dans la liste eds etages
-//			    		{
-//			    		System.out.println("\n");
-//			    		i=1;
-//			    		}
-//			    	i++;
-//			    	
-//			    }   
 			    
+		
+			    if(HomeController.chrono) 
+			    	{		
+			    	   Platform.runLater(new Runnable() {
+			               @Override public void run() {
+			            	
+			             	   ChronogrammeController.tracerFront(etat);
+			                   ChronogrammeController.refrecher();
+			                   ChronogrammeController.valeurSuivi();
+			                   
+			               if(etat.getNum()==1)    ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#90EE90;-fx-background-radius:15");
+			               else ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#303337;-fx-background-radius:15");
+		   	    
+			               }
+			           });
+			    	}
 				Thread.sleep(temps);
-				
+			
+			
 			} catch (InterruptedException e) {// exception traité par la clasee thread
 				e.printStackTrace();
 			}
-	       
+			
 		}
 	}
 	
@@ -109,18 +122,72 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 	public void validerComposant() {
 		// TODO Auto-generated method stub
 	}
-//	public ImageView getImage() {
-//		return image;
-//	}
-//
-//
-//	public void setImage(ImageView image) {
-//		this.image = image;
-//	}
+	public ImageView getImage() {
+		return image;
+	}
+
+
+	public void setImage(ImageView image) {
+		this.image = image;
+	}
 
   public void stop() {
 	  active=false;
   }
-  
+
+
+public EtatLogique getEtat() {
+	return etat;
+}
+
+
+public void setEtat(EtatLogique etat) {
+	this.etat = etat;
+}
+
+
+public static  double getStartX() {
+	return startX;
+}
+
+
+public static void setStartX(double startXh) {
+	startX = startXh;
+}
+
+
+public static double getStartY() {
+	return startY;
+}
+
+
+public static void setStartY(double startYh) {
+	startY = startYh;
+}
+
+
+public EtatLogique getSortieAafficher() {
+	return sortieAafficher;
+}
+
+
+public void setSortieAafficher(EtatLogique sortieAafficher) {
+	this.sortieAafficher = sortieAafficher;
+}
+
+
+public EtatLogique getSortieBar() {
+	return sortieBar;
+}
+
+
+public void setSortieBar(EtatLogique sortieBar) {
+	this.sortieBar = sortieBar;
+}
+
+
+
+
+
 	
 }

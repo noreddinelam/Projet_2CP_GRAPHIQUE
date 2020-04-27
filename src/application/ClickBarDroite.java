@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -19,15 +21,17 @@ public class ClickBarDroite extends Stage{
     private static AnchorPane workSpace;
 	
 
-	public ClickBarDroite(int x,int y, String s, Stage st, AnchorPane w) {
+	public ClickBarDroite(int x,int y, String s, Stage st, AnchorPane w,Label label1,Label label2,ScrollPane scrollPane) {
 		try
 		{
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource(s));
 			Parent root = loader.load();
-			System.out.println(root);
 			HomeController h = loader.getController();
 			h.setWorkSpace(w);
+			h.setAffX(label1);
+			h.setAffY(label2);
+			h.setScrollPane(scrollPane);
 			Scene scene = new Scene(root);
 			//scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);

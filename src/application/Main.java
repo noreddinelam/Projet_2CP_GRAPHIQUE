@@ -54,7 +54,7 @@ public class Main extends Application {
 //				        fade.play(); 
 						//Scene scene = new Scene(root);
 						primaryStage.setScene(scene);
-						
+//						PRIMARYSTAGE.GETICONS().ADD(NEW IMAGE("PATH"));
 						//primaryStage.initStyle(StageStyle.UNDECORATED);
 
 						primaryStage.setResizable(false);

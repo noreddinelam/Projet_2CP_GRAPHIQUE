@@ -1,9 +1,7 @@
 package controllers;
-
-
 import java.io.IOException;
-
-
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -16,6 +14,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,17 +27,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Stack;
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.util.Map.Entry;
-
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout.Alignment;
-
-
 import application.ClickBarDroite;
 import application.ClickDroit;
 import application.ClickDroitFil;
@@ -50,7 +46,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -60,6 +55,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
@@ -90,6 +86,7 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
@@ -118,8 +115,12 @@ public class HomeController extends Controller {
     Map<ImageView,Label> elemanrsMapFillMap;
     ImageView dragItem;
     private ClickDroit clickDroitFenetre;
-    private ClickBarDroite clickBar;
-    private double difX = 0;
+
+    private static ClickBarDroite fichierFenetre;
+    private static ClickBarDroite affichageFenetre;
+    private static ClickBarDroite editionFenetre;
+    private static ClickBarDroite aideFenetre;
+
     
     // utilisé dans la sauvegarde des coordonnées 
     
@@ -140,8 +141,6 @@ public class HomeController extends Controller {
 	final KeyCombination touchesDundo = new KeyCodeCombination(KeyCode.Z,
             KeyCombination.CONTROL_DOWN);
 	
-	private Polyline testPoly;
-
 	public static ImageView elementSeclecionner ;
 	
 //	static Stage stage;
@@ -150,14 +149,12 @@ public class HomeController extends Controller {
 
 	private static ImageView elementAmodifier=null;
 	/////////////////////////////Les lignes de Guide
-	private Line guideX = new Line();
-	private Line guideXp = new Line();
-	private	Line guideY = new Line();
-	private	Line guideYp = new Line();
+	private static Line guideX = new Line();
+	private static Line guideXp = new Line();
+	private	static Line guideY = new Line();
+	private	static Line guideYp = new Line();
 	
 	private static boolean copierActive;
-
-	ClickBarDroite editionFenetre;
 	
 	private ArrayList<Polyline> listEntrees = new ArrayList<Polyline>();
 	private ArrayList<Polyline> listSorties = new ArrayList<Polyline>();
@@ -185,6 +182,8 @@ public class HomeController extends Controller {
 
     @FXML
     private Button supprimer;
+    
+    public static boolean chrono=false;
 
     @FXML
     private Button coller;
@@ -453,7 +452,7 @@ public class HomeController extends Controller {
     private Tab comb;
     
     @FXML
-    private ScrollPane scrollPane;
+    private  ScrollPane scrollPane;
     
     @FXML
     private TabPane tabPane;
@@ -467,7 +466,6 @@ public class HomeController extends Controller {
     
     
     
-    ClickSouris2 clickSouris2;
     
     
     void ajouterAnimationBarDroite(ImageView imageView) {
@@ -504,8 +502,10 @@ public class HomeController extends Controller {
     
 	////////////////////Appliquer l'animation de rotation   
     @FXML
-    void mouseEnterLogo(MouseEvent event) {
-    	rotationDelogo(logo,1,500, true);
+
+
+    void mouseEnterLogo(MouseEvent event) { // ajouter une rotation pour le logo
+    	rotationDelogo(logo,1,500,true);
     }
     
     @FXML
@@ -533,7 +533,7 @@ public class HomeController extends Controller {
 
     				else {	
     					horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
-    					//horloge.setImage(horlogeDeCercuit);
+    					horloge.setImage(horlogeDeCercuit);
     					t1=new Thread(horloge);
     					t1.start();
     				}
@@ -547,7 +547,7 @@ public class HomeController extends Controller {
 
 				else {	
 					horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
-					//horloge.setImage(horlogeDeCercuit);
+					horloge.setImage(horlogeDeCercuit);
 					t1=new Thread(horloge);
 					t1.start();
 				}
@@ -597,94 +597,95 @@ public class HomeController extends Controller {
        
 	
 
-	
+
 	public void inisialiser() { /// pour l'initialisation des effets de la fenetre principale (affichage des guides ajout de 
 								/// l'operation du drag and drop pour tout les composants
 
-		ajouterGestWorkSpace();/////Les gestes De drag and drop 
-		tracerLesGuides();//Initialisation des files de guide
-		//initialisation des coordones de X et Y a 0
+		ajouterGestWorkSpace(); /// ajouter des listners pour capter les operations (clic , drag .. etc) 
+		tracerLesGuides(); /// tracer les guides qui aide l'user pour connaitre la position de l'elt
+        
+
 		afficheurX.setText("X : 0"); 
 		afficheurY.setText("Y : 0");
 		//Creation d'une map pour gerer les titres des composants 
 		elemanrsMapFillMap = new HashMap<ImageView, Label>(){{put(hex, tHex);
-    		put(pin, tPin);
-    		put(clock, tH);
-    		put(vcc, tVcc);
-    		put(mass, tMass);
-    		put(and, tAnd);
-    		put(or, tOr);
-    		put(nand, tNand);
-    		put(nor, tNor);
-    		put(xor, tXor);
-    		put(not, tNot);
-    		put(jk, tJk);
-    		put(d, tD);
-    		put(t, tT);
-    		put(rs, tRs);
-    		put(cpt, tCpt);
-    		put(registreDecalge, tRd);
-    		put(mux, tMux);
-    		put(dmux, tDmux);
-    		put(dec, tDEC);
-    		put(enco, tEnc);
-    		put(addcomplet, tAddc);
-    		put(demiAdd, tDadd);}};
-    	////Ajouter pour chaque Composant les gestes de drag and drop
-    		
-    		ajouterLeGest(hex);
-    	    ajouterLeGest(pin);
-    	    ajouterLeGest(clock);
-    	    ajouterLeGest(vcc);
-    	    ajouterLeGest(mass);
-    	    ajouterLeGest(and);
-    	    ajouterLeGest(or);
-    	    ajouterLeGest(xor);
-    	    ajouterLeGest(nor);
-    	    ajouterLeGest(nand);
-    	    ajouterLeGest(not);
-    	    ajouterLeGest(mux);
-    	    ajouterLeGest(dmux);
-    	    ajouterLeGest(dec);
-    	    ajouterLeGest(addcomplet);
-    	    ajouterLeGest(enco);
-    	    ajouterLeGest(demiAdd);
-    	    ajouterLeGest(d);
-    	    ajouterLeGest(jk);
-    	    ajouterLeGest(t);
-    	    ajouterLeGest(rs);
-    	    ajouterLeGest(cpt);
-    	    ajouterLeGest(registreDecalge);
-		  
-    	    
-  
-    	    tracerLesregles(workSpace);
-    	    scrollPane.setHmax(1);
-    	    scrollPane.setVmax(1);
-    	    tooltipInitialize();
-    	    initialiseAnimationOfBarDroite();
 
-    	    ClickBarDroite fichierFenetre = new ClickBarDroite(1140, 100, "Fichier.fxml", homeWindow, workSpace);
-    	     ClickBarDroite editionFenetre = new ClickBarDroite(1140, 180, "Edition.fxml", homeWindow, workSpace);
-    	    ClickBarDroite affichageFenetre = new ClickBarDroite(1140, 300, "Affichage.fxml", homeWindow, workSpace);
-    	    ClickBarDroite aideFenetre = new ClickBarDroite(1140, 350, "Aide.fxml", homeWindow, workSpace);
-    	    
-    	    
-    	    ClickBarDroite tableauFenetres[] = {fichierFenetre,editionFenetre, affichageFenetre, aideFenetre };
-    	    
-    	    for(ClickBarDroite click : tableauFenetres) {
-				click.close();
-			}
-    	    
-    	    
-    		rightbar(fichier, fichierFenetre, tableauFenetres );
-    		rightbar(edition,editionFenetre ,tableauFenetres );
-    		rightbar(affichage, affichageFenetre ,tableauFenetres);
-    		rightbar(aide, aideFenetre, tableauFenetres );
-    		 clickSouris2 = new ClickSouris2(400.0, 400.0, workSpace, homeWindow);
-    		clickSouris2.close();
-	
-    		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
+		put(pin, tPin);
+		put(clock, tH);
+		put(vcc, tVcc);
+		put(mass, tMass);
+		put(and, tAnd);
+		put(or, tOr);
+		put(nand, tNand);
+		put(nor, tNor);
+		put(xor, tXor);
+		put(not, tNot);
+		put(jk, tJk);
+		put(d, tD);
+		put(t, tT);
+		put(rs, tRs);
+		put(cpt, tCpt);
+		put(registreDecalge, tRd);
+		put(mux, tMux);
+		put(dmux, tDmux);
+		put(dec, tDEC);
+		put(enco, tEnc);
+		put(addcomplet, tAddc);
+		put(demiAdd, tDadd);}};
+		////Ajouter pour chaque Composant les gestes de drag and drop
+
+		ajouterLeGest(hex);
+		ajouterLeGest(pin);
+		ajouterLeGest(clock);
+		ajouterLeGest(vcc);
+		ajouterLeGest(mass);
+		ajouterLeGest(and);
+		ajouterLeGest(or);
+		ajouterLeGest(xor);
+		ajouterLeGest(nor);
+		ajouterLeGest(nand);
+		ajouterLeGest(not);
+		ajouterLeGest(mux);
+		ajouterLeGest(dmux);
+		ajouterLeGest(dec);
+		ajouterLeGest(addcomplet);
+		ajouterLeGest(enco);
+		ajouterLeGest(demiAdd);
+		ajouterLeGest(d);
+		ajouterLeGest(jk);
+		ajouterLeGest(t);
+		ajouterLeGest(rs);
+		ajouterLeGest(cpt);
+		ajouterLeGest(registreDecalge);
+
+		tracerLesregles(workSpace); /// tracer les regles qui entoure la fenetre et ils aident aussi dans le deplacement 
+		scrollPane.setHmax(1);
+		scrollPane.setVmax(1);
+		tooltipInitialize();
+
+		initialiseAnimationOfBarDroite();
+		//copierCollerParBouttons();
+		
+	    fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
+		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
+	    affichageFenetre = new ClickBarDroite(1055, 255, "Affichage.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
+	    aideFenetre = new ClickBarDroite(1055, 300, "Aide.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
+	    clickSouris2 = new ClickSouris2(0.0,0.0,workSpace,homeWindow);
+
+		//click = new ClickBar(1000, 100);
+
+		ClickBarDroite tableauFenetres[] = {fichierFenetre,editionFenetre, affichageFenetre, aideFenetre };
+
+		for(ClickBarDroite click : tableauFenetres) {
+			click.close();
+		}
+
+		rightbar(fichier, fichierFenetre, tableauFenetres );
+		rightbar(edition,editionFenetre ,tableauFenetres );
+		rightbar(affichage, affichageFenetre ,tableauFenetres);
+		rightbar(aide, aideFenetre, tableauFenetres );
+
+		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				if(cc && elementSeclecionner != null) {	
@@ -692,10 +693,7 @@ public class HomeController extends Controller {
 					ctrlX = event.getX();
 					ctrlY = event.getY();	
 					CopyUses();
-			}
-			
-				
-				
+				}
 				for(ClickBarDroite click : tableauFenetres) {
 					click.close();
 					tooltipInitialize();
@@ -719,7 +717,6 @@ public class HomeController extends Controller {
 					}
 				}
 				if(event.getButton()==MouseButton.SECONDARY  && (clickDroitFenetre == null  || (!clickDroitFenetre.isShowing())) && (clickDroitFilFenetre == null  || (!clickDroitFilFenetre.isShowing()))) {                          
-
 						if(event.getSceneX() >1100) 
 							clickSouris2.setx(event.getSceneX()-75, event.getSceneY()+60);	
 						else
@@ -1007,14 +1004,26 @@ public class HomeController extends Controller {
 							}
 							else 
 							{
-								if( dragImageView.getId().equals("clock")  ) horloged =true;								
-								ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());			
+
+								if( dragImageView.getId().equals("clock")  ) {
+									horloged =true;
+									horlogeDeCercuit=dragImageView;
+								
+								}
+								Composant cmp = Circuit.getCompFromImage(dragImageView);
+								ArrayList<Polyline> polyline = cmp.generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
 								addAllPolylinesToWorkSpace(polyline);
+								if(cmp.getClass().getSimpleName().equals("CircuitIntegre")){
+									ArrayList<Circle> listeCircles = ((CircuitIntegre)cmp).generateCercles(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+									for (Circle circle : listeCircles) {
+										workSpace.getChildren().add(circle);
+									}
+								}
 								ajouterLeGestApresCollage(dragImageView);
 								Donnes sauveGarde=new Donnes();
 								sauveGarde.setTypeDaction(Actions.Creation);
 								sauveGarde.setComposantCommeImage(dragImageView);
-								sauveGarde.setComposant(Circuit.getCompFromImage(dragImageView));
+								sauveGarde.setComposant(cmp);
 								sauveGarde.setPosX(dragImageView.getLayoutX());
 								sauveGarde.setPosY(dragImageView.getLayoutY());
 								undoDeque.addFirst(sauveGarde);
@@ -1032,37 +1041,37 @@ public class HomeController extends Controller {
 	public Polyline tracerEntrerApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) {
         //Trecer les lignes d'entrées apres le collage
 		int i = 0;
-        double x2 = crdDebut.getX();
-        double y2 = crdDebut.getY();
-        if(!relocate) {
-		x = line.getPoints().get(line.getPoints().size()-6);
-		y = line.getPoints().get(line.getPoints().size()-5);
-		for (i = 0; i < 4; i++) {
-			line.getPoints().remove(line.getPoints().size()-1);
-		}
-		int size = line.getPoints().size();
-		if(nbOccPoint(line, line.getPoints().get(size-2), line.getPoints().get(size-1)) == 1 && size != 2)
+		double x2 = crdDebut.getX();
+		double y2 = crdDebut.getY();
+		if(!relocate) {
+			x = line.getPoints().get(line.getPoints().size()-6);
+			y = line.getPoints().get(line.getPoints().size()-5);
+			for (i = 0; i < 4; i++) {
+				line.getPoints().remove(line.getPoints().size()-1);
+			}
+			int size = line.getPoints().size();
+			if(nbOccPoint(line, line.getPoints().get(size-2), line.getPoints().get(size-1)) == 1 && size != 2)
 			{
 				if((Math.abs(line.getPoints().get(size-2)-x2)<10) && (Math.abs(line.getPoints().get(size-1)-y2)<10)) {
 					line.getPoints().remove(size-2);
 					line.getPoints().remove(size-2);
 				}
 			}
-			
-		if(Math.abs(x2-x)<10) { 
-			if(Math.abs(y2-y)<10) switching = 0; 
-			else switching = 1;
+
+			if(Math.abs(x2-x)<10) { 
+				if(Math.abs(y2-y)<10) switching = 0; 
+				else switching = 1;
+			}else {
+				if(Math.abs(y2-y)<10) switching = 0;
+			} 		
+
+			if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
+			else line.getPoints().addAll(x,y2,x2,y2);
+
 		}else {
-			if(Math.abs(y2-y)<10) switching = 0;
-		} 		
-		
-		if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
-		else line.getPoints().addAll(x,y2,x2,y2);
-		
-        }else {
-        	Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
-        }
-        return line;
+			Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
+		}
+		return line;
 	}
 	
 	public Polyline tracerSortieApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) {
@@ -1252,48 +1261,88 @@ public class HomeController extends Controller {
 	    	        	listSorties.add(line);
 	        	}
 	        	//hna tekmeel
-	 	        	eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
-	        		public void handle(MouseEvent e) {
-	        			if (! simul) {
-	        				if (e.getButton() == MouseButton.PRIMARY) {
 
-	        					Polyline line;
-	        			        int i = 0,size = 0;
-	        			                if(insererNoedDebut) {
-	        			                for( i = 0; i < listSorties.size();i++){
-	        			                line = listSorties.get(i);
-	        			                line.getPoints().add(2,line.getPoints().get(3));
-	        			                line.getPoints().add(2,line.getPoints().get(3));
-	        			                }
-	        			                for(i = 0;i < listEntrees.size();i++) {
-	        			                line = listEntrees.get(i);
-	        			                size = line.getPoints().size();
-	        			                line.getPoints().add(size-3,line.getPoints().get(size - 2));
-	        			                    line.getPoints().add(size-3,line.getPoints().get(size - 2));
-	        			                }
-	        			                insererNoedDebut = false;
-	        			                }
-	        					Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
-	        					eleementAdrager.relocate(
-	        							(int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
-	        							(int)(localPoint.getY() - eleementAdrager.getBoundsInLocal().getHeight()/2 )
-	        							);
-	        					double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth() - 2;
-	        					double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2 - 1;
-	
-	        							
-	        					String xString=String.valueOf(eleementAdrager.getLayoutX());
-	        					String yString=String.valueOf(eleementAdrager.getLayoutY());
-	        					if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<workSpace.getMaxWidth() )&&(eleementAdrager.getLayoutY()>0))
-	        					{
-	        						guideX.setLayoutX(eleementAdrager.getLayoutX());
-	        						guideY.setLayoutY(eleementAdrager.getLayoutY());
-	        						guideXp.setLayoutX(eleementAdrager.getLayoutX()+ eleementAdrager.getBoundsInLocal().getWidth()+1);
-	        						guideYp.setLayoutY(eleementAdrager.getLayoutY()+ eleementAdrager.getBoundsInLocal().getHeight()+1);
-	        						afficheurX.setText("X : "+ xString);
-	        						
-	        						afficheurY.setText("Y : "+ yString);
-	        						
+					eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() { /// si le composant est dragé .
+						public void handle(MouseEvent e) {
+							if (! simul) {
+								if (e.getButton() == MouseButton.PRIMARY) {
+									//ajout des points
+		        					Polyline line;
+		        					int i = 0,size = 0;
+		        		        	if(insererNoedDebut) {
+		        		        		for( i = 0; i < listSorties.size();i++){
+		        		        			line = listSorties.get(i);
+		        		        			line.getPoints().add(2,line.getPoints().get(3));
+		        		        			line.getPoints().add(2,line.getPoints().get(3));
+		        		        		}
+		        		        		for(i = 0;i < listEntrees.size();i++) {
+		        		        			line = listEntrees.get(i);
+		        		        			size = line.getPoints().size();
+		        		        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+		        		    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+		        		        		}
+		        		        	insererNoedDebut = false;
+		        		        	}
+		        		        	Composant ci=Circuit.getCompFromImage(eleementAdrager);
+		        		        	if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
+		        		        		CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
+		        		        		circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());
+//										workSpace.getChildren().removeAll(((CircuitIntegre)ci).getListeCercles());
+//										workSpace.getChildren().addAll(((CircuitIntegre)ci).generateCercles(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY()));
+									}
+									Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+									eleementAdrager.relocate(
+											(int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
+											(int)(localPoint.getY() - eleementAdrager.getBoundsInLocal().getHeight()/2 )
+											);
+									double x=eleementAdrager.getLayoutX()+eleementAdrager.getBoundsInLocal().getWidth() - 2;
+									double y=eleementAdrager.getLayoutY()+eleementAdrager.getBoundsInLocal().getHeight()/2 - 1;
+
+
+									String xString=String.valueOf(eleementAdrager.getLayoutX());
+									String yString=String.valueOf(eleementAdrager.getLayoutY());
+									if((eleementAdrager.getLayoutX()>0 && eleementAdrager.getLayoutX()<workSpace.getMaxWidth() )&&(eleementAdrager.getLayoutY()>0))
+									{
+										guideX.setLayoutX(eleementAdrager.getLayoutX());
+										guideY.setLayoutY(eleementAdrager.getLayoutY());
+										guideXp.setLayoutX(eleementAdrager.getLayoutX()+ eleementAdrager.getBoundsInLocal().getWidth()+1);
+										guideYp.setLayoutY(eleementAdrager.getLayoutY()+ eleementAdrager.getBoundsInLocal().getHeight()+1);
+										afficheurX.setText("X : "+ xString);
+										afficheurY.setText("Y : "+ yString);
+
+									}
+
+									else 
+									{
+										guideX.setLayoutX(0);
+										guideY.setLayoutY(0);
+										guideXp.setLayoutX(0);
+										guideYp.setLayoutY(0);
+										afficheurX.setText("X : 0");
+										afficheurY.setText("Y : 0");
+
+									}	    
+									if(e.getSceneX() > 1275)
+									{
+										scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+										scrollPane.setHvalue(scrollPane.getHvalue()+0.01);
+									}
+									if(e.getSceneX() < 210)
+									{							
+										scrollPane.setHvalue(scrollPane.getHvalue()-0.01);
+									}
+									if(e.getSceneY() > 700)
+									{
+										scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+										scrollPane.setVvalue(scrollPane.getVvalue()+0.01);
+									}
+									if(e.getSceneY() < 0)
+									{							
+										scrollPane.setVvalue(scrollPane.getVvalue()-0.01);
+									}
+									e.consume();
+
+									updatePolyline(eleementAdrager);   
 
 	        					}
 
@@ -1331,7 +1380,8 @@ public class HomeController extends Controller {
 
 	        				}
 	        			}
-	        		}
+	        		
+	        	
 	        	});
 					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
@@ -1393,8 +1443,8 @@ public class HomeController extends Controller {
 	        				if( ((Pin)compos).isInput()) {
 	        					if(!ListTextPin.contains((Pin)compos)){
 	        						Text number = new Text();
-	        						number.setLayoutX(eleementAdrager.getLayoutX()-14);
-	        						number.setLayoutY(eleementAdrager.getLayoutY()+14);
+	        						number.setLayoutX(eleementAdrager.getLayoutX()+3);
+	        						number.setLayoutY(eleementAdrager.getLayoutY()+16);
 	        						String id = Integer.toString(ListTextPin.size()+1);
 	        						number.setText(id);
 	        						number.setId(id);
@@ -1414,9 +1464,9 @@ public class HomeController extends Controller {
 	        							for (Text num : ListText) {
 	        								workSpace.getChildren().remove(num);
 	        							}
-	        							for (Pin pin : ListTextPin) {
-	        								workSpace.getChildren().remove(pin);
-	        							}
+//	        							for (Pin pin : ListTextPin) {
+//	        								workSpace.getChildren().remove(pin); /// a voir avec sari
+//	        							}
 	        							ListText.clear();
 	        							ListTextPin.clear();
 	        						}
@@ -1686,7 +1736,7 @@ public class HomeController extends Controller {
 			comp = new Pin(true, "");
 		}break;
 		case "clock" :{
-			comp = new Horloge("", 1000);
+			comp = new Horloge("", 750);
 		}break;
 		case "vcc" :{
 			comp = new SourceConstante(EtatLogique.ONE, "");
@@ -1829,7 +1879,8 @@ public class HomeController extends Controller {
 		return nb;
 	}
 	
-	/*------------------------------------edition----------/------------------*/
+	///////////////////////////////////////////////////////////-> Bar Droite <-/////////////////////////////////////////////////////////////
+	
 
 
 	    @FXML
@@ -1991,7 +2042,7 @@ public class HomeController extends Controller {
 	            File f = fileChooser.showSaveDialog(homeWindow);
 	            System.out.println("the name of the file is : "+f.getAbsolutePath());
 	    		Circuit circuit = new Circuit();
-	            Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
+	           // Sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
 		    	
 			
 			}
@@ -2022,11 +2073,13 @@ public class HomeController extends Controller {
 	                );
 	            
 	            File f = fileChooser.showOpenDialog(homeWindow);
-	            Circuit circuit = Sauvegarde.loadCiruit(f.getAbsolutePath());
-	            if(circuit != null)
-	            	System.out.println("le circuit est bien charge :)");
 
-	    	
+	            /// ils faut afficher une alerte pour dire au user s'il veut sauvegarder son travail ou pas
+	            if (f != null) {
+		            supprimerTout(null);
+		            Sauvegarde.loadCiruit(f.getAbsolutePath());
+		            ajouterElements();
+				}
 	    }
 	    
 	    
@@ -2058,43 +2111,93 @@ public class HomeController extends Controller {
 	    
 	    
 	    @FXML
-	    void saveAs(ActionEvent event) {
 
-            final FileChooser fileChooser = new FileChooser();
-            File f = fileChooser.showSaveDialog(homeWindow);
-            System.out.println("the name of the file is : "+f.getAbsolutePath());
-    		Circuit circuit = new Circuit();
-            Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
-
+	    void saveAs(ActionEvent event) { /// la fonctionnalité de sauvegarder as
+	    	final FileChooser fileChooser = new FileChooser();
+	    	File f = fileChooser.showSaveDialog(homeWindow);
+	    	if (f != null) {
+	    		System.out.println("the name of the file is : "+f.getAbsolutePath());
+	    		Sauvegarde sauvegarde = new Sauvegarde();
+	    		sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
+			}
 	    }
+
+	    
 	    
 	    @FXML
-	    void importer(ActionEvent event) {
-	    	
-	    	 final FileChooser fileChooser = new FileChooser();
-	            fileChooser.setInitialDirectory(
-	                    new File(System.getProperty("user.home"))
-	                );                 
-	                fileChooser.getExtensionFilters().addAll(
-	                    new FileChooser.ExtensionFilter("BIN", "*.bin")
-	                );
-	            
-	            File f = fileChooser.showOpenDialog(homeWindow);
-	            Circuit circuit = Sauvegarde.loadCiruit(f.getAbsolutePath());
-	            if(circuit != null)
-	            	System.out.println("le circuit est bien charge :)");
 
+	    void importer(ActionEvent event) { /// la fonctionalité importer circuit integré
+
+	    	final FileChooser fileChooser = new FileChooser();
+	    	fileChooser.setInitialDirectory(
+	    			new File(System.getProperty("user.home"))
+	    			);                 
+	    	fileChooser.getExtensionFilters().addAll(
+	    			new FileChooser.ExtensionFilter("INT", "*.int")
+	    			);
+
+	    	File f = fileChooser.showOpenDialog(homeWindow);
+	    	if (f != null) {
+	    		FileInputStream fichier ;
+	    		ObjectInputStream oo = null;
+	    		CircuitIntegre circuitIntegre;
+	    		try {
+	    			fichier = new FileInputStream(f.getAbsolutePath());
+	    			oo = new ObjectInputStream(fichier);
+	    			circuitIntegre = (CircuitIntegre) oo.readObject();
+	    			ImageView imageView = new ImageView(new Image(circuitIntegre.generatePath()));
+	    			imageView.setLayoutX(10);
+	    			imageView.setLayoutY(10);
+	    			imageView.setFitHeight(imageView.getImage().getHeight());
+	    			imageView.setFitWidth(imageView.getImage().getWidth());
+	    			Circuit.ajouterComposant(circuitIntegre, imageView);
+	    			workSpace.getChildren().add(imageView);
+	    			ajouterLeGestApresCollage(imageView);
+	    			addAllPolylinesToWorkSpace(circuitIntegre.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+	    			workSpace.getChildren().addAll(circuitIntegre.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+	    		finally {
+	    			try {
+	    				oo.close();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
+
+	    		}
+			}
 	    }
 	    
 	    
 	    @FXML
 	    void encapsulerEtSauvgarder(ActionEvent event) {
 	    	final FileChooser fileChooser = new FileChooser();
-            File f = fileChooser.showSaveDialog(homeWindow);
-            System.out.println("the name of the file is : "+f.getAbsolutePath());
-    		Circuit circuit = new Circuit();
-            Sauvegarde.saveCiruit(circuit, f.getAbsolutePath()+".bin");
 
+	    	File f = fileChooser.showSaveDialog(homeWindow);
+	    	if (f != null) {
+	    		FileOutputStream fichier ;
+	    		ObjectOutputStream oo = null;
+	    		CircuitIntegre ci = new CircuitIntegre(Circuit.getEntreesCircuit().size(),Circuit.getSortiesCircuit().size(), f.getAbsolutePath());
+	    		Circuit.tableVerite(Circuit.getEntreesCircuit());
+	    		ci.setTableVerite(Circuit.getTableVerite());
+	    		try {
+	    			fichier = new FileOutputStream(f.getAbsolutePath()+".int");
+	    			oo = new ObjectOutputStream(fichier);
+	    			oo.writeObject(ci);
+
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
+	    		finally {
+	    			try {
+	    				oo.close();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
+	    		}
+			}
 	    }
 
 	    
@@ -2105,24 +2208,43 @@ public class HomeController extends Controller {
 	    /*---------------------------affichage--------------------------------*/
 
 	    @FXML
-	    void chronogramme(ActionEvent event) {
-	    	 try {
-	    		 	Stage s = (Stage) chronogramme.getScene().getWindow();
-	    		 	s.close();
-			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Chronogramme.fxml"));
-			        Parent root = fxmlLoader.load();
-			        Stage stage = new Stage();
-			        Scene scene = new Scene(root);
-			        stage.setScene(scene);  
-			        stage.setTitle("le chronogramme");
-			        stage.setResizable(false);
-				    stage.initModality(Modality.APPLICATION_MODAL);
-				    stage.initOwner(s.getOwner());
 
-			        stage.show();
-			    } catch(Exception e) {
-			        e.printStackTrace();
-			    	}
+	    void chronogramme(ActionEvent event) { /// charger la fenetre du chronogramme
+	    	if(simul && ! Circuit.getListeEtages().isEmpty())
+	    	{
+	    	try {
+	    		Stage s = (Stage) chronogramme.getScene().getWindow();
+	    		s.close();		   
+	    		ChronogrammeController.setHorlogeDecHRONO((Horloge) Circuit.getCompFromImage(horlogeDeCercuit));
+	    		int i=0;
+	    	      while(i<10 && i<Circuit.getListeEtages().size())
+	    	      {
+	    	    	  if(!Circuit.getListeEtages().get(i).getClass().getSimpleName().equals("Compteur"))
+	    	    		  ChronogrammeController.composantDechrono.add(Circuit.getListeEtages().get(i));
+	    	    	  i++;
+	    	      }
+	    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Chronogramme.fxml"));
+	    		Parent root = fxmlLoader.load();
+	    		Stage stage = new Stage();
+	    		Scene scene = new Scene(root);
+	    		stage.setScene(scene);  
+	    		stage.setResizable(false);
+	    		stage.initModality(Modality.APPLICATION_MODAL);
+	    		stage.initStyle(StageStyle.UNDECORATED);
+	    		scene.setFill(Color.TRANSPARENT);
+	    		stage.initStyle(StageStyle.TRANSPARENT);
+	    		stage.show();
+	    	} catch(Exception e) {
+	    		e.printStackTrace();
+	    	}
+	    	}else {
+	    		Alert a = new Alert(AlertType.ERROR);
+	    		a.setHeaderText("Chronogramme erreur");
+	    		a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+	    		a.setTitle("Chronogramme");
+	    		a.setContentText(! simul ? "Veulliez Simuler le Circuit D'abord":"Le Circuit ne contient Aucun Element Sequentiel");
+	    		a.showAndWait();
+	    	}
 
 	    }
 
@@ -2333,7 +2455,6 @@ public class HomeController extends Controller {
 	            l2.setEndX(workSpace.getPrefWidth());
 	            l2.setEndY(0);
 	            l2.getStrokeDashArray().addAll(2.2d);
-
 	            workSpace.getChildren().add(l2);
 	        }
 	    }
@@ -2518,6 +2639,84 @@ public class HomeController extends Controller {
 				}
 			}
 	 }
-
+	 ArrayList<Polyline> sauv = new ArrayList<Polyline>();
+	 public void ajouterElements() {
+		 for (ImageView img : Circuit.getCompUtilises().values()) {
+			 workSpace.getChildren().add(img);
+			 ajouterLeGestApresCollage(img);
+		 }
+		 Polyline principale;
+		 Polyline parent;
+		 for (ArrayList<InfoPolyline> list : Circuit.getfilUtilises().values()) {
+			 for (InfoPolyline infoPolyline : list) {
+				 principale = initialser(0, 0);
+				 principale.getPoints().clear();
+				 principale.getPoints().addAll(infoPolyline.getNoeudLinePrincipale());
+				 Polyline polySauv=containsPolyInSauv(principale);
+				 if ( polySauv== null) {
+					 workSpace.getChildren().add(principale);
+					 ajouterGeste(principale);
+					 sauv.add(principale);
+					 infoPolyline.setLinePrincipale(principale);
+				 }
+				 else {
+					 infoPolyline.setLinePrincipale(polySauv);
+				 }
+				 if (! infoPolyline.getNoeudLineParent().isEmpty()) {
+					 parent = initialser(0, 0);
+					 parent.getPoints().clear();
+					 parent.getPoints().addAll(infoPolyline.getNoeudLineParent());
+					 Polyline polySauv2=containsPolyInSauv(parent);
+					 if ( polySauv2== null) {
+						 workSpace.getChildren().add(parent);
+						 ajouterGeste(parent);
+						 sauv.add(parent);
+						 infoPolyline.setLineParent(parent);
+					 }
+					 else {
+						 infoPolyline.setLineParent(polySauv2);
+					 }
+				 }
+				 else {
+					infoPolyline.setLineParent(null);
+				}
+			 }	
+		 }
+	 }
+	 public Polyline containsPolyInSauv(Polyline polyline) {
+		for (Polyline polyline2 : sauv) {
+			if (equalsPolylines(polyline, polyline2)) {
+				return polyline2;
+			}
+		}
+		return null;
+	}
+	 public boolean equalsPolylines(Polyline line1,Polyline line2) {
+		int i = 0;
+		if (line1 == null || line2 == null) {
+			return false;
+		}
+		if (line1.getPoints().size() != line2.getPoints().size()) {
+			return false;
+		}
+		while (i<line1.getPoints().size()) {
+			if (line1.getPoints().get(i) != line2.getPoints().get(i)) {
+				return false;
+			}
+			i++;
+		}
+		return true;
+	}
+	 
+	 public void setAffX(Label affX) {
+		 afficheurX = affX;
+	 }
+	 public void setAffY(Label affY) {
+		 afficheurY = affY;
+	 }
+	 
+	 public void setScrollPane(ScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
+	}
 }
 

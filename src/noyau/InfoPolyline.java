@@ -1,14 +1,17 @@
 package noyau;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
-public class InfoPolyline {
-	private Polyline linePrincipale;
-	private Polyline lineParent = null;
-	private ArrayList<Polyline> linesFils = new ArrayList();
+public class InfoPolyline implements Serializable{
+	private  transient Polyline linePrincipale;
+	private ArrayList<Double> noeudLinePrincipale = new ArrayList<Double>();
+	private  transient Polyline lineParent = null;
+	private ArrayList<Double> noeudLineParent = new ArrayList<Double>();
 	private int switching = 0;
 	private int nbFils = 0;
 	private boolean relier = false;
@@ -16,6 +19,9 @@ public class InfoPolyline {
 	private int entre;
 	public InfoPolyline(Polyline linePrincipale) {
 		this.linePrincipale = linePrincipale;
+		if (linePrincipale != null) {
+			this.noeudLinePrincipale.addAll(linePrincipale.getPoints());
+		}
 	}
 	
 	public InfoPolyline(Polyline linePrincipale, Polyline lineParent, int switching, int nbFils) {
@@ -24,6 +30,12 @@ public class InfoPolyline {
 		this.lineParent = lineParent;
 		this.switching = switching;
 		this.nbFils = nbFils;
+		if (linePrincipale != null) {			
+			this.noeudLinePrincipale.addAll(linePrincipale.getPoints());
+		}
+		if (lineParent != null) {
+			this.noeudLineParent.addAll(lineParent.getPoints());
+		}
 	}
 
 	@Override
@@ -83,23 +95,6 @@ public class InfoPolyline {
 		}
 	}
 
-	public ArrayList<Polyline> getLinesFils() {
-		return linesFils;
-	}
-
-	public void setLinesFils(ArrayList<Polyline> linesFils) {
-		this.linesFils = linesFils;
-	}
-	public void ajouterFils(Polyline line) {
-		linesFils.add(line);
-		nbFils++;
-	}
-	public void supprimerFils(Polyline line) {
-		if(!linesFils.remove(line)) {
-			nbFils--;
-		}
-	}
-
 	public boolean isRelier() {
 		return relier;
 	}
@@ -127,5 +122,29 @@ public class InfoPolyline {
 		this.relier =infoOrig.isRelier();
 		this.destination =infoOrig.getDestination();
 		this.entre = infoOrig.getEntre();
+	}
+	public ArrayList<Double> getNoeudLinePrincipale() {
+		return noeudLinePrincipale;
+	}
+
+	public void setNoeudLinePrincipale(ArrayList<Double> noeudLinePrincipale) {
+		this.noeudLinePrincipale = noeudLinePrincipale;
+	}
+
+	public ArrayList<Double> getNoeudLineParent() {
+		return noeudLineParent;
+	}
+
+	public void setNoeudLineParent(ArrayList<Double> noeudLineParent) {
+		this.noeudLineParent = noeudLineParent;
+	}
+	
+	public void refrechPoints() {
+		if (linePrincipale != null) {
+			noeudLinePrincipale = new ArrayList<Double>(linePrincipale.getPoints());
+		}
+		if (lineParent != null) {
+			noeudLineParent = new ArrayList<Double>(lineParent.getPoints());
+		}
 	}
 }

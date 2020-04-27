@@ -2,7 +2,7 @@
     -fx-background-color:   #4b535e;
 }
 .scroll-bar:horizontal, .scroll-bar:vertical{
-    -fx-background-color:    #4b535e;
+    -fx-background-color:     #5a6572;
 }
 .scroll-bar:horizontal .thumb,
 .scroll-bar:vertical .thumb {

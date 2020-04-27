@@ -11,7 +11,7 @@ import javafx.scene.shape.Polyline;
 
 public abstract class Composant implements Serializable{
 	/*--------- Attributs -------------*/
-	protected String nom; // pour le label
+	protected String nom=this.getClass().getSimpleName(); // pour le label
 	protected String icon; // le lien vers l'icone
 	protected Fil entrees[]= new Fil[32] ;
 	protected Fil sorties[] = new Fil[32];
@@ -21,10 +21,11 @@ public abstract class Composant implements Serializable{
 	protected boolean sleep = false;
 	protected Direction direction = Direction.Est;
 	protected LesCoordonnees lesCoordonnees ;
+
 		
 	public Composant(int nombreEntree,String nom) {
 		this.nombreEntree = nombreEntree;
-		this.nom =nom;
+		if (!nom.isEmpty())this.nom =nom;
 		Arrays.fill(etatFinal, EtatLogique.HAUTE_IMPEDANCE);
 	}
 	/*--------- setters & getters--------------*/

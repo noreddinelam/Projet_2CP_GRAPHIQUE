@@ -9,34 +9,52 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import java.util.Map.Entry;
+
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Sauvegarde implements Serializable {
-
-	private static HashMap<Composant, ImageView> compUtilises = new HashMap<Composant,ImageView>();
-	private  ArrayList<Fil> filUtilises = new ArrayList<Fil>();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2097504601089191547L;
+	private  HashMap<Composant,Coordonnees> compUtilises = new HashMap<Composant, Coordonnees>();
+	private  HashMap<Composant,Taille> lesTailles = new HashMap<Composant, Taille>();
+	private HashMap<Composant, String> lesID = new HashMap<Composant, String>();
+	private  HashMap<Fil,ArrayList<InfoPolyline>> filUtilises = new HashMap<Fil, ArrayList<InfoPolyline>>();
 	private  ArrayList<Pin> entreesCircuit = new ArrayList<Pin>();
 	private  ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>();
+	private ArrayList<SourceConstante> sourceConstantes = new ArrayList<SourceConstante>();
 	private EtatLogique tableVerite[][];
 	private  ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>();
 	private  int nbEtages = 0;
 
-	public static void saveCiruit(Circuit circuit, String nomFichier) {//la sauvgarde d'un objet de type circuit dans un fihcier par la methode de la serialization
-		FileOutputStream fichier;
+	public  void saveCiruit(String nomFichier) {//la sauvgarde d'un objet de type circuit dans un fihcier par la methode de la serialization
+		FileOutputStream fichier ;
 		ObjectOutputStream oo = null;
-		Sauvegarde circuitSauv = new Sauvegarde();
-		circuitSauv.setCompUtilises(Circuit.getCompUtilises());
-		//circuitSauv.setFilUtilises(Circuit.getFilUtilises());
-		circuitSauv.setEntreesCircuit(Circuit.getEntreesCircuit());
-		circuitSauv.setListeEtages(Circuit.getListeEtages());
-		circuitSauv.setNbEtages(Circuit.getNbEtages());
-		circuitSauv.setSortiesCircuit(Circuit.getSortiesCircuit());
-		circuitSauv.setTableVerite(circuit.getTableVerite());
+		for(Entry<Composant, ImageView> liste : Circuit.getCompUtilises().entrySet()){
+			compUtilises.put(liste.getKey(), new Coordonnees(liste.getValue().getLayoutX(), liste.getValue().getLayoutY()));
+			lesTailles.put(liste.getKey(),new Taille(liste.getValue().getFitHeight(), liste.getValue().getFitWidth()));
+			lesID.put(liste.getKey(), liste.getValue().getId());
+		}	
+		this.setFilUtilises(Circuit.getFilUtilises());
+		for (Fil fil : filUtilises.keySet()) {
+			for (InfoPolyline infoPolyline : filUtilises.get(fil)) {
+				infoPolyline.refrechPoints();
+			}
+		}
+		this.setEntreesCircuit(Circuit.getEntreesCircuit());
+		this.setListeEtages(Circuit.getListeEtages());
+		this.setNbEtages(Circuit.getNbEtages());
+		this.setSortiesCircuit(Circuit.getSortiesCircuit());
+		this.setTableVerite(Circuit.getTableVerite());
+		this.setSourceConstantes(Circuit.getListSouceCte());
 
 		try {
 			fichier = new FileOutputStream(nomFichier);
 			oo = new ObjectOutputStream(fichier);
-			oo.writeObject(circuitSauv);
+			oo.writeObject(this);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -51,22 +69,40 @@ public class Sauvegarde implements Serializable {
 
 	}
 
-	public static Circuit loadCiruit(String nomFichier) {//la recuperation d'un objet de type circuit dans un fihcier par la methode de la deserialization
-		FileInputStream fichier;
+	public ArrayList<SourceConstante> getSourceConstantes() {
+		return sourceConstantes;
+	}
+
+	public void setSourceConstantes(ArrayList<SourceConstante> sourceConstantes) {
+		this.sourceConstantes = sourceConstantes;
+	}
+	public static  void loadCiruit(String nomFichier) {//la recuperation d'un objet de type circuit dans un fihcier par la methode de la deserialization
+		FileInputStream fichier ;
 		ObjectInputStream oo = null;
 		Sauvegarde circuitSauv = null;
-		Circuit circuit = new Circuit();
 		try {
 			fichier = new FileInputStream(nomFichier);
 			oo = new ObjectInputStream(fichier);
 			circuitSauv= (Sauvegarde) oo.readObject();
-			Circuit.setCompUtilises(circuitSauv.getCompUtilises());
-			//Circuit.setFilUtilises(circuitSauv.getFilUtilises());
+			HashMap<Composant, ImageView> compMap = new HashMap<Composant, ImageView>();
+			for (Entry<Composant,Coordonnees> entry : circuitSauv.compUtilises.entrySet()) {
+				ImageView imageView = new ImageView();
+				imageView.setImage(new Image(entry.getKey().generatePath()));
+				imageView.setLayoutX(entry.getValue().getX());
+				imageView.setLayoutY(entry.getValue().getY());
+				imageView.setFitHeight(circuitSauv.lesTailles.get(entry.getKey()).getHeight());
+				imageView.setFitWidth(circuitSauv.lesTailles.get(entry.getKey()).getWidth());
+				imageView.setId(circuitSauv.lesID.get(entry.getKey()));
+				compMap.put(entry.getKey(), imageView);
+			}
+			Circuit.setCompUtilises(compMap); 
+			Circuit.setFilUtilises(circuitSauv.getFilUtilises());
 			Circuit.setEntreesCircuit(circuitSauv.getEntreesCircuit());
 			Circuit.setListeEtages(circuitSauv.getListeEtages());
 			Circuit.setNbEtages(circuitSauv.getNbEtages());
 			Circuit.setSortiesCircuit(circuitSauv.getSortiesCircuit());
-			circuit.setTableVerite(circuitSauv.getTableVerite());
+			Circuit.setTableVerite(circuitSauv.getTableVerite());
+			Circuit.setListSouceCte(circuitSauv.getSourceConstantes());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,24 +116,22 @@ public class Sauvegarde implements Serializable {
 			}
 
 		}
-		return circuit;
-
 	}
 
 	
-	public static HashMap<Composant, ImageView> getCompUtilises() {
+	public  HashMap<Composant, Coordonnees> getCompUtilises() {
 		return compUtilises;
 	}
 
-	public static void setCompUtilises(HashMap<Composant, ImageView> compUtilises) {
-		Sauvegarde.compUtilises = compUtilises;
+	public  void setCompUtilises(HashMap<Composant, Coordonnees> compUtilises) {
+		this.compUtilises = compUtilises;
 	}
 
-	public ArrayList<Fil> getFilUtilises() {
+	public HashMap<Fil, ArrayList<InfoPolyline>> getFilUtilises() {
 		return filUtilises;
 	}
-	public void setFilUtilises(ArrayList<Fil> filUtilises) {
-		this.filUtilises = filUtilises;
+	public void setFilUtilises(HashMap<Fil, ArrayList<InfoPolyline>> hashMap) {
+		this.filUtilises = hashMap;
 	}
 	public ArrayList<Pin> getEntreesCircuit() {
 		return entreesCircuit;

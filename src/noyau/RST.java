@@ -8,7 +8,10 @@ public class RST extends Bascule{
 	}
 
 	public void genererSortiesSyncho() {
+
+       
 		if(etatPrec[0].getNum()==0 && etatPrec[1].getNum()==1 )//R=1 S=0
+
 		{
 			sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
 			sorties[1].setEtatLogiqueFil(EtatLogique.ONE);
@@ -18,6 +21,8 @@ public class RST extends Bascule{
 			sorties[0].setEtatLogiqueFil(EtatLogique.ONE);
 			sorties[1].setEtatLogiqueFil(EtatLogique.ZERO);
 		}
+		sortieAafficher=sorties[0].getEtatLogiqueFil();
+		sortieBar=sorties[1].getEtatLogiqueFil();
 	}
 
 	@Override

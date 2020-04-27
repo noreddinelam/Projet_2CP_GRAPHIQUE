@@ -1,8 +1,10 @@
 package noyau;
 
+import java.io.Serializable;
+
 import javafx.scene.image.ImageView;
 
-public class LesCoordonnees {
+public class LesCoordonnees implements Serializable{
 	private Coordonnees cordEntree[] = new Coordonnees[32]; // coordonees des entrees
 	private int nbCordEntree ;
 	private Coordonnees cordSorties[] = new Coordonnees[32]; // coordonees des sorties

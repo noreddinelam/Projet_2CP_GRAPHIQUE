@@ -24,6 +24,7 @@ public abstract class Bascule extends Sequentiels{
 
 	public void genererSorties() // executer dans le cas des cmd asynchrones
 	{
+		
 		if(clear.getEtatLogiqueFil().getNum()==0)
 		{
 			sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
@@ -52,6 +53,7 @@ public abstract class Bascule extends Sequentiels{
 		if (super.validerEntrees() == EtatLogique.ONE) { // les entrees sont valides
 			if(preset.getEtatLogiqueFil()==EtatLogique.ONE && clear.getEtatLogiqueFil()==EtatLogique.ONE) { // mode synchrone
 				if (entreeHorloge != null) { // l'horloge est reliée 
+					this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
 					switch (front) {
 					case Front_Descendant:{
 						if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ZERO )
