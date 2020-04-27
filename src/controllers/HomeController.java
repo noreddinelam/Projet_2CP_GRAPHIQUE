@@ -1919,11 +1919,10 @@ public class HomeController extends Controller {
 	    
 	    @FXML
 	    void saveAs(ActionEvent event) { /// la fonctionnalité de sauvegarder as
-
 	    	final FileChooser fileChooser = new FileChooser();
 	    	File f = fileChooser.showSaveDialog(homeWindow);
-	    	System.out.println("the name of the file is : "+f.getAbsolutePath());
 	    	if (f != null) {
+	    		System.out.println("the name of the file is : "+f.getAbsolutePath());
 	    		Sauvegarde sauvegarde = new Sauvegarde();
 	    		sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
 			}

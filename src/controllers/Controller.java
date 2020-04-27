@@ -386,7 +386,7 @@ public abstract class Controller {
 				if(cmp.getLesCoordonnees().getCordClear() != null && !trouve) {
 					crdTab = new Coordonnees(cmp.getLesCoordonnees().getCordClear().getX() + imgCmp.getLayoutX(), cmp.getLesCoordonnees().getCordClear().getY() + imgCmp.getLayoutY());				
 					if( crdTab.equals(crd) ) { 
-						if( ((Sequentiels)cmp).getClear() != null) 
+						if( ((Sequentiels)cmp).getClear().getSource() != null) 
 							return 0;
 						trouve =true;
 						entree= -6; 
@@ -395,7 +395,7 @@ public abstract class Controller {
 				if(cmp.getLesCoordonnees().getCordPreset() != null && !trouve) {
 					crdTab = new Coordonnees(cmp.getLesCoordonnees().getCordPreset().getX() + imgCmp.getLayoutX(), cmp.getLesCoordonnees().getCordPreset().getY() + imgCmp.getLayoutY());				
 					if( crdTab.equals(crd) ) { 
-						if( ((Bascule)cmp).getPreset() != null) 
+						if( ((Bascule)cmp).getPreset().getSource() != null) 
 							return 0;
 						trouve =true;
 						entree= -7; 
@@ -404,7 +404,7 @@ public abstract class Controller {
 				if(cmp.getLesCoordonnees().getCordLoad() != null && !trouve) {
 					crdTab = new Coordonnees(cmp.getLesCoordonnees().getCordLoad().getX() + imgCmp.getLayoutX(), cmp.getLesCoordonnees().getCordLoad().getY() + imgCmp.getLayoutY());				
 					if( crdTab.equals(crd) ) { 
-						if( ((Sequentiels)cmp).getLoad() != null) 
+						if( ((Sequentiels)cmp).getLoad().getSource() != null) 
 							return 0;
 						trouve =true;
 						entree= -8; 

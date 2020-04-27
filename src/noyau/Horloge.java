@@ -19,7 +19,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 	private EtatLogique etat = EtatLogique.ZERO;
 	private long temps;
 	public volatile static boolean active = true;// on met l'horloge toujours active pour le test
-	private ImageView image;
+	transient private ImageView image;
 	static double startX=1;
 	static double startY=76;
     protected EtatLogique sortieAafficher;

@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
-public class Circuit implements Serializable{
+public class Circuit {
 	
 	private static HashMap<Composant, ImageView> compUtilises = new HashMap<Composant,ImageView>();// tout les composants du circuit
 	private static HashMap<Fil, ArrayList<InfoPolyline>> filUtilises = new HashMap<Fil,ArrayList<InfoPolyline>>();// tout les fils du circuit
@@ -106,6 +106,12 @@ public class Circuit implements Serializable{
 					polyline.setStroke(Color.BLACK);
 				}
 			}
+		}
+	}
+	
+	public static void defaultValueSeq() {
+		for (Sequentiels sequentiels : listeEtages) {
+			sequentiels.defaultValue();
 		}
 	}
 	
