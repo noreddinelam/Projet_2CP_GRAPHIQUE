@@ -19,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import noyau.Circuit;
+import noyau.Composant;
 
 public class ClickDroitController extends Controller implements Initializable{
 
@@ -40,6 +41,7 @@ public class ClickDroitController extends Controller implements Initializable{
 		BddFenetre.put("AdditionneurN_Bites","ProprietesAdditionneur.fxml");
 		BddFenetre.put("DemiAdditionneur","ProprietesAdditionneur.fxml");
 		BddFenetre.put("SourceConstante","ProprietesSourceConstante.fxml");
+		BddFenetre.put("AfficheurSegment","ProprietesAfficheurSegment.fxml");
 	}
 
     @FXML
@@ -79,8 +81,30 @@ public class ClickDroitController extends Controller implements Initializable{
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
     	
+    	HomeController.pastButton = true;
+    	
     	HomeController.cc = true;
     	
+    	HomeController.setCopierActive(true);	  
+
+    	
+        
+    	HomeController.copyActive = true;
+        
+        
+        ImageView sauv = HomeController.elementSeclecionner;
+        workSpace.getChildren().remove(HomeController.elementSeclecionner);
+       
+        Composant composantCouper = Circuit.getCompFromImage(HomeController.elementSeclecionner);
+       HomeController.composantCopy = composantCouper;
+        		
+		ArrayList<Polyline> lineListe=Circuit.supprimerComp(composantCouper);
+		 for(Polyline line : lineListe)
+			 workSpace.getChildren().remove(line);
+
+		 
+		 HomeController.elementSeclecionner  = sauv ;
+	
     	
 	}
 
@@ -100,7 +124,7 @@ public class ClickDroitController extends Controller implements Initializable{
 			key = nom;
 		}
 		System.out.println(cmp);
-		Proprietes f = new Proprietes(BddFenetre.get(key), cmp,workSpace);
+		Proprietes f = new Proprietes(BddFenetre.get(key), cmp,workSpace, HomeController.homeWindow);
 	}
 
 	@FXML
@@ -142,4 +166,20 @@ public class ClickDroitController extends Controller implements Initializable{
 		rotationG.setCursor(Cursor.HAND);
 		prop.setCursor(Cursor.HAND);	
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

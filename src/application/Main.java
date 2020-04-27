@@ -56,6 +56,7 @@ public class Main extends Application {
 						primaryStage.setScene(scene);
 //						PRIMARYSTAGE.GETICONS().ADD(NEW IMAGE("PATH"));
 						//primaryStage.initStyle(StageStyle.UNDECORATED);
+
 						primaryStage.setResizable(false);
 						primaryStage.show();
 		
@@ -126,7 +127,7 @@ public class Main extends Application {
 //		Circuit circuit = new Circuit();
 //		
 //		Pin pin1 = new Pin(true);
-//		Pin pin2 = new Pin(true);
+//		Pin pin2 = new Pin(true); 
 //		Pin pin3 = new Pin(true);
 //		Pin pin4 = new Pin(true);
 //		

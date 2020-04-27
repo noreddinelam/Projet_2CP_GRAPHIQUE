@@ -1,20 +1,17 @@
 package controllers;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-
 import application.ClickDroitFil;
+import application.ClickSouris2;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.control.Label;
+import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -24,6 +21,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import noyau.Bascule;
 import noyau.Circuit;
 import noyau.Combinatoires;
@@ -40,6 +38,10 @@ public abstract class Controller {
 	protected Composant cmp;
     protected ClickDroitFil clickDroitFilFenetre;
     protected Polyline lineDroit;
+	public static Stage homeWindow;
+	public static Scene homeScene;
+    public ClickSouris2 clickSouris2;
+
 
 	//protected AnchorPane workSpace;
 	
@@ -215,7 +217,10 @@ public abstract class Controller {
 					 		clicDroitY = event.getScreenY();
 					 		lineDroit = line;
 					 		line.setStroke(Color.web("00000070"));
-					 		clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY);
+					 		if(clickSouris2.isShowing())
+					 			clickSouris2.close();
+					 		clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY, homeWindow);
+					 		
 					}
 				}
 				}

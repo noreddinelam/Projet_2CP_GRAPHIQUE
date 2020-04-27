@@ -11,7 +11,7 @@ import javafx.stage.StageStyle;
 import noyau.Composant;
 
 public class ClickDroitFil extends Stage{
-	public ClickDroitFil(Polyline line,AnchorPane workSpace,Double x,Double y) {
+	public ClickDroitFil(Polyline line,AnchorPane workSpace,Double x,Double y, Stage s) {
 		try
 		{
 			FXMLLoader loader = new FXMLLoader();
@@ -28,6 +28,7 @@ public class ClickDroitFil extends Stage{
 			this.initStyle(StageStyle.UNDECORATED);
 			this.setY(y);
 			this.setFullScreen(false);
+			this.initOwner(s);
 			this.show();
 		} catch(Exception e) {
 			e.printStackTrace();

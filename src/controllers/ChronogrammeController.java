@@ -1,5 +1,6 @@
 package controllers;
 import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,7 +41,6 @@ import noyau.EtatLogique;
 import noyau.Horloge;
 import noyau.Pin;
 import noyau.Sequentiels;
-import sun.java2d.d3d.D3DSurfaceData;
 import javafx.scene.input.MouseEvent;
 
 
@@ -253,6 +253,7 @@ public class ChronogrammeController implements Initializable {
 			HomeController.chrono=true;
 			playButton.setImage(new Image("/chronoIcones/CHRONO_START_OFF.png"));
 		}
+
 		for(Line line : valeursDesuivis.keySet())
 		{
 			if (line.getStartX() <= detectionBar.getLayoutX()+4 && detectionBar.getLayoutX()+4 <= line.getEndX())
@@ -284,6 +285,7 @@ public class ChronogrammeController implements Initializable {
 			composantDechrono.get(i).setStartChronoX(1);
 			composantDechrono.get(i).setStartChronoY(pointsDeDepart.get(i).getLayoutY());
 		}
+
 		scrollPane.setPannable(false);
 		detectionBar.setImage(new Image("/chronoIcones/SUIVIT.png"));
 
@@ -292,8 +294,12 @@ public class ChronogrammeController implements Initializable {
 	}
 
 	public static void refrecher() {
+
 		extTableView.refresh();
+
+
 	}
+
 
 	public static void tracerFront(EtatLogique etatDeHorloge) {
 
@@ -485,9 +491,11 @@ public class ChronogrammeController implements Initializable {
 		});
 		node.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
+
 				detectionBar.setMouseTransparent(false);
 				node.setMouseTransparent(false);
 				node.setCursor(Cursor.DEFAULT);
+
 			}
 		});
 	}
@@ -497,6 +505,7 @@ public class ChronogrammeController implements Initializable {
 			if (line.getStartX() <= detectionBar.getLayoutX()+4 && detectionBar.getLayoutX()+4 <= line.getEndX())
 			{
 				labels[valeursDesuivis.get(line)[0]].setText(String.valueOf(valeursDesuivis.get(line)[1]));
+
 			}
 		}
 	}

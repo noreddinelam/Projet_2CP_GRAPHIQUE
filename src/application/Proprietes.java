@@ -10,7 +10,7 @@ import noyau.Composant;
 
 public class Proprietes extends Stage{
 
-	public Proprietes(String Fenete,Composant cmp,AnchorPane workSpace) {
+	public Proprietes(String Fenete,Composant cmp,AnchorPane workSpace, Stage st) {
 		try
 		{
 			FXMLLoader loader = new FXMLLoader();
@@ -24,6 +24,7 @@ public class Proprietes extends Stage{
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);
 			this.setFullScreen(false);
+			this.initOwner(st);
 			this.show();
 		} catch(Exception e) {
 			e.printStackTrace();
