@@ -420,7 +420,7 @@ public class HomeController extends Controller {
     private Tab comb;
     
     @FXML
-    private ScrollPane scrollPane;
+    private  ScrollPane scrollPane;
     
     @FXML
     private TabPane tabPane;
@@ -465,7 +465,7 @@ public class HomeController extends Controller {
      
     @FXML
 
-    void mouseEnterLogo(MouseEvent event) {
+    void mouseEnterLogo(MouseEvent event) { // ajouter une rotation pour le logo
     	rotationDelogo(logo,1,500,true);
     }
     @FXML
@@ -625,10 +625,10 @@ public class HomeController extends Controller {
 		initialiseAnimationOfBarDroite();
 		copierCollerParBouttons();
 		
-	    fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace,afficheurX,afficheurY);
-		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace,afficheurX,afficheurY);
-	    affichageFenetre = new ClickBarDroite(1055, 255, "Affichage.fxml", homeWindow, workSpace,afficheurX,afficheurY);
-	    aideFenetre = new ClickBarDroite(1055, 300, "Aide.fxml", homeWindow, workSpace,afficheurX,afficheurY);
+	    fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
+		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
+	    affichageFenetre = new ClickBarDroite(1055, 255, "Affichage.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
+	    aideFenetre = new ClickBarDroite(1055, 300, "Aide.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
 
 		//click = new ClickBar(1000, 100);
 
@@ -920,37 +920,37 @@ public class HomeController extends Controller {
 	}
 	public Polyline tracerEntrerApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) { ///Trecer les lignes d'entrées apres le collage
 		int i = 0;
-        double x2 = crdDebut.getX();
-        double y2 = crdDebut.getY();
-        if(!relocate) {
-		x = line.getPoints().get(line.getPoints().size()-6);
-		y = line.getPoints().get(line.getPoints().size()-5);
-		for (i = 0; i < 4; i++) {
-			line.getPoints().remove(line.getPoints().size()-1);
-		}
-		int size = line.getPoints().size();
-		if(nbOccPoint(line, line.getPoints().get(size-2), line.getPoints().get(size-1)) == 1 && size != 2)
+		double x2 = crdDebut.getX();
+		double y2 = crdDebut.getY();
+		if(!relocate) {
+			x = line.getPoints().get(line.getPoints().size()-6);
+			y = line.getPoints().get(line.getPoints().size()-5);
+			for (i = 0; i < 4; i++) {
+				line.getPoints().remove(line.getPoints().size()-1);
+			}
+			int size = line.getPoints().size();
+			if(nbOccPoint(line, line.getPoints().get(size-2), line.getPoints().get(size-1)) == 1 && size != 2)
 			{
 				if((Math.abs(line.getPoints().get(size-2)-x2)<10) && (Math.abs(line.getPoints().get(size-1)-y2)<10)) {
 					line.getPoints().remove(size-2);
 					line.getPoints().remove(size-2);
 				}
 			}
-			
-		if(Math.abs(x2-x)<10) { 
-			if(Math.abs(y2-y)<10) switching = 0; 
-			else switching = 1;
+
+			if(Math.abs(x2-x)<10) { 
+				if(Math.abs(y2-y)<10) switching = 0; 
+				else switching = 1;
+			}else {
+				if(Math.abs(y2-y)<10) switching = 0;
+			} 		
+
+			if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
+			else line.getPoints().addAll(x,y2,x2,y2);
+
 		}else {
-			if(Math.abs(y2-y)<10) switching = 0;
-		} 		
-		
-		if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
-		else line.getPoints().addAll(x,y2,x2,y2);
-		
-        }else {
-        	Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
-        }
-        return line;
+			Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
+		}
+		return line;
 	}
 	
 	public Polyline tracerSortieApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) {//Trecer les lignes de sorties apres le collage
@@ -1300,9 +1300,9 @@ public class HomeController extends Controller {
 	        							for (Text num : ListText) {
 	        								workSpace.getChildren().remove(num);
 	        							}
-	        							for (Pin pin : ListTextPin) {
-	        								workSpace.getChildren().remove(pin); /// a voir avec sari
-	        							}
+//	        							for (Pin pin : ListTextPin) {
+//	        								workSpace.getChildren().remove(pin); /// a voir avec sari
+//	        							}
 	        							ListText.clear();
 	        							ListTextPin.clear();
 	        						}
@@ -2420,10 +2420,10 @@ public class HomeController extends Controller {
 						 workSpace.getChildren().add(parent);
 						 ajouterGeste(parent);
 						 sauv.add(parent);
-						 infoPolyline.setLinePrincipale(parent);
+						 infoPolyline.setLineParent(parent);
 					 }
 					 else {
-						 infoPolyline.setLinePrincipale(polySauv2);
+						 infoPolyline.setLineParent(polySauv2);
 					 }
 				 }
 				 else {
@@ -2458,10 +2458,14 @@ public class HomeController extends Controller {
 	}
 	 
 	 public void setAffX(Label affX) {
-		afficheurX = affX;
-	}
+		 afficheurX = affX;
+	 }
 	 public void setAffY(Label affY) {
-			afficheurY = affY;
-		}
+		 afficheurY = affY;
+	 }
+	 
+	 public void setScrollPane(ScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
+	}
 }
 

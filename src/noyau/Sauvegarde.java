@@ -21,6 +21,7 @@ public class Sauvegarde implements Serializable {
 	private static final long serialVersionUID = 2097504601089191547L;
 	private  HashMap<Composant,Coordonnees> compUtilises = new HashMap<Composant, Coordonnees>();
 	private  HashMap<Composant,Taille> lesTailles = new HashMap<Composant, Taille>();
+	private HashMap<Composant, String> lesID = new HashMap<Composant, String>();
 	private  HashMap<Fil,ArrayList<InfoPolyline>> filUtilises = new HashMap<Fil, ArrayList<InfoPolyline>>();
 	private  ArrayList<Pin> entreesCircuit = new ArrayList<Pin>();
 	private  ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>();
@@ -35,6 +36,7 @@ public class Sauvegarde implements Serializable {
 		for(Entry<Composant, ImageView> liste : Circuit.getCompUtilises().entrySet()){
 			compUtilises.put(liste.getKey(), new Coordonnees(liste.getValue().getLayoutX(), liste.getValue().getLayoutY()));
 			lesTailles.put(liste.getKey(),new Taille(liste.getValue().getFitHeight(), liste.getValue().getFitWidth()));
+			lesID.put(liste.getKey(), liste.getValue().getId());
 		}	
 		this.setFilUtilises(Circuit.getFilUtilises());
 		for (Fil fil : filUtilises.keySet()) {
@@ -90,6 +92,7 @@ public class Sauvegarde implements Serializable {
 				imageView.setLayoutY(entry.getValue().getY());
 				imageView.setFitHeight(circuitSauv.lesTailles.get(entry.getKey()).getHeight());
 				imageView.setFitWidth(circuitSauv.lesTailles.get(entry.getKey()).getWidth());
+				imageView.setId(circuitSauv.lesID.get(entry.getKey()));
 				compMap.put(entry.getKey(), imageView);
 			}
 			Circuit.setCompUtilises(compMap); 

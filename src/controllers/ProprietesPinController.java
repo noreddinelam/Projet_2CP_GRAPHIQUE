@@ -104,7 +104,7 @@ public class ProprietesPinController extends ProprietesController{
         		pin.setInput(false);
     			Circuit.getEntreesCircuit().remove(pin);
     			Circuit.getSortiesCircuit().add(pin);
-        		ArrayList<Polyline> line = Circuit.getListePolylineFromFil(cmp.getSorties()[0]);
+        		ArrayList<Polyline> line = Circuit.supprimerAllPolylinesForCompounent(pin);
         		removeAllPolylinesFromWorkSpace(line);
         		cmp.setNombreEntree(1);
         		cmp.setNombreSortie(0);
