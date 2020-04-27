@@ -144,12 +144,13 @@ public class ClickDroitController extends Controller implements Initializable{
 		ImageView imageDeComposant=Circuit.getImageFromComp(cmp);
 		HomeController.elementAsuprimer=imageDeComposant;
 		HomeController.sauveGarderSupression();		
-		if(imageDeComposant.getId().equals("clock")) HomeController.horloged =false;
+		if(imageDeComposant.getId().equals("clock"))
+		{
+			HomeController.horloged =false;
+			HomeController.horlogeDeCercuit =null; 
+		}
 		workSpace.getChildren().remove(imageDeComposant);
-		ArrayList<Polyline> lineListe=Circuit.supprimerComp(cmp);	
-		 for(Polyline line : lineListe)
-			  workSpace.getChildren().remove(line);
-		 
+		removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));		 
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
 	}

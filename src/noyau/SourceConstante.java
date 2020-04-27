@@ -12,6 +12,7 @@ public class SourceConstante extends Composant{
 		super(0,nom);
 		this.nombreSortie = 1;
 		this.etatLogique = etatLogique;
+		Circuit.ajouterSourceCte(this);
 		sorties[0] = new Fil(this);
 		sorties[0].setEtatLogiqueFil(etatLogique);
 		lesCoordonnees = new LesCoordonnees(0, 1, 0);
@@ -69,6 +70,10 @@ public class SourceConstante extends Composant{
 
 	public EtatLogique getEtatLogique() {
 		return etatLogique;
+	}
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
 	}
 	
 }

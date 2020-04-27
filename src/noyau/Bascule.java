@@ -113,7 +113,9 @@ public abstract class Bascule extends Sequentiels{
 		// TODO Auto-generated method stub
 		super.derelierComp();
 		if (preset.getSource() != null) {
-			preset.derelierCompFromDestination(this);
+			if (! preset.getSource().equals(this)) {
+				preset.derelierCompFromDestination(this);
+			}
 		}
 	}
 	@Override
@@ -121,7 +123,8 @@ public abstract class Bascule extends Sequentiels{
 		// TODO Auto-generated method stub
 		super.derelierEntreeFromComp(fil);
 		if (preset.equals(fil)) {
-			preset.derelierCompFromDestination(this);
+			preset = new Fil(null);
+			preset.setEtat(EtatLogique.ONE);
 		}
 	}
 	@Override
@@ -142,6 +145,7 @@ public abstract class Bascule extends Sequentiels{
 		}
 		return dessocier;
 	}
+	
 	public Fil getPreset() {
 		return preset;
 	}

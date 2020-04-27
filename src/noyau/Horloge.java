@@ -10,7 +10,6 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 	private EtatLogique etat = EtatLogique.ZERO;
 	private long temps;
 	private volatile boolean active = true;// on met l'horloge toujours active pour le test
-	private ImageView image;
 	
 	public Horloge(String nom,long temps) {
 		super(0,nom);
@@ -57,7 +56,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 			
 			this.evaluer();//on excut l'evaluation
 			
-			image.setImage(this.getSorties()[0].getEtatLogiqueFil().getNum() ==0 ? new Image("/Horloge/0.png") : new Image("/Horloge/1.png"));
+			Circuit.getImageFromComp(this).setImage(this.getSorties()[0].getEtatLogiqueFil().getNum() ==0 ? new Image("/Horloge/0.png") : new Image("/Horloge/1.png"));
 			try {
 //				int i=1;// just pour revenir a la ligne a chaque front de 3 bascules
 //			    for(Sequentiels sequentiels : Circuit.getListeEtages())// On parcour chaque composant sequentielle
@@ -106,15 +105,18 @@ public class Horloge extends Composant implements ElementHorloge,Runnable{
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(), img.getBoundsInLocal().getHeight() / 2), 0);
 	}
 
-
-	public ImageView getImage() {
-		return image;
+	@Override
+	public void validerComposant() {
+		// TODO Auto-generated method stub
 	}
-
-
-	public void setImage(ImageView image) {
-		this.image = image;
-	}
+//	public ImageView getImage() {
+//		return image;
+//	}
+//
+//
+//	public void setImage(ImageView image) {
+//		this.image = image;
+//	}
 
   public void stop() {
 	  active=false;

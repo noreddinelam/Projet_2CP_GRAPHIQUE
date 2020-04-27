@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
 public class Circuit implements Serializable{
@@ -16,11 +17,106 @@ public class Circuit implements Serializable{
 	private static HashMap<Composant, ImageView> compUtilises = new HashMap<Composant,ImageView>();// tout les composants du circuit
 	private static HashMap<Fil, ArrayList<InfoPolyline>> filUtilises = new HashMap<Fil,ArrayList<InfoPolyline>>();// tout les fils du circuit
 	private static ArrayList<Pin> entreesCircuit = new ArrayList<Pin>(); // toutes les entrees du circuit
-	private static ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>(); // toutes les sorties du circuit
-	private EtatLogique tableVerite[][]; // la table de verite du circuit
+	public static ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>(); // toutes les sorties du circuit
+	public static EtatLogique tableVerite[][]; // la table de verite du circuit
 	private static ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>(); // la liste des etages pour les elts sequentiels 
-	private static int nbEtages = 0; // nombre des etages
+	private static int nbEtages = 0; // nombre des etages	
+	private static ArrayList<SourceConstante> listSouceCte = new ArrayList<SourceConstante>();//liste des sources constants
+	private static ArrayList<ExceptionProgramme> circuitException = new ArrayList<ExceptionProgramme>();
+	private static ArrayList<Composant> composantsErronee = new ArrayList<Composant>();
 	
+	public static void ajouterCompErrone(Composant composant) {
+		composantsErronee.add(composant);
+	}
+	
+	public static void AjouterListeException(ArrayList<ExceptionProgramme> exceptionProgramme) {
+		circuitException.addAll(exceptionProgramme);
+	}
+	
+	public static void AjouterUneException(ExceptionProgramme exceptionProgramme) {
+		circuitException.add(exceptionProgramme);
+	}
+	
+	public static void clearException() {
+		circuitException.clear();
+	}
+	
+	public static void printExceptions() {
+		for (ExceptionProgramme exceptionProgramme : circuitException) {
+			System.out.println(((EntreeManquante)exceptionProgramme).getEntreeManquante());
+		}
+	}
+	
+	public static boolean isThereAnyError() {
+		for (ExceptionProgramme exceptionProgramme : circuitException) {
+			if (exceptionProgramme.getTypesExceptions()==TypesExceptions.ERREUR) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean isThereAnyException() {
+		return ((circuitException.size() != 0) ? true : false);
+	}
+	
+	public static ArrayList<ExceptionProgramme> getListeExceptionProgrammes() {
+		return circuitException;
+	}
+	
+	public static void validerCircuits() {
+		composantsErronee.clear();
+		if (compUtilises.isEmpty()) {
+			circuitException.add(new CircuitVide(TypesExceptions.ALERTE));
+		}
+		else {
+			if (entreesCircuit.size() == 0) {
+				boolean stop = false;
+				for (Composant composant : compUtilises.keySet()) {
+					if (composant.getClass().getSimpleName().equals("Horloge")) {
+						stop = true;
+						break;
+					}
+				}
+				if (!stop) {
+					circuitException.add(new AucuneEntree(TypesExceptions.ALERTE));
+				}
+			}
+			for (Composant composant : compUtilises.keySet()) {
+				composant.validerComposant();
+			}
+			ArrayList<Polyline> result;
+			for (Composant composant : composantsErronee) {
+				for (int i = 0; i < composant.getNombreSortie(); i++) {
+					result = getListePolylineFromFil(composant.getFilSortieByNum(i));
+					for (Polyline polyline : result) {
+						polyline.setStroke(Color.RED);
+					}
+				}
+			}
+		}
+	}
+	
+	public static void defaultColorFil() {
+		ArrayList<Polyline> result;
+		for (Composant composant : composantsErronee) {
+			for (int i = 0; i < composant.getNombreSortie(); i++) {
+				result = getListePolylineFromFil(composant.getFilSortieByNum(i));
+				for (Polyline polyline : result) {
+					polyline.setStroke(Color.BLACK);
+				}
+			}
+		}
+	}
+	
+//	public static boolean areAllWarnings() {
+//		for (ExceptionProgramme exceptionProgramme : circuitException) {
+//			if (exceptionProgramme.getTypesExceptions() == TypesExceptions.ERREUR) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 	
 	public static void ajouterComposant(Composant comp,ImageView img) { // ajouter un composant à la liste des composants utilisés
 		compUtilises.put(comp, img);
@@ -31,6 +127,13 @@ public class Circuit implements Serializable{
 	public static void ajouterEntree(Pin pin) { // ajouter une entree à la liste des entrees
 		entreesCircuit.add(pin);
 		
+	}
+	public static void ajouterSourceCte(SourceConstante cte) { // ajouter une entree à la liste des entrees
+		listSouceCte.add(cte);
+		
+	}
+	public static void supprimerSourceCte(SourceConstante cte) {
+		listSouceCte.remove(cte);
 	}
 	public static void ajouterSortie(Affichage compAff) { // ajouter une sorties à la liste des sorties
 		sortiesCircuit.add(compAff);
@@ -74,7 +177,7 @@ public class Circuit implements Serializable{
 		bascule.setPreset(fil);
 		fil.addDestination(bascule);
 	}
-	private EtatLogique[] convertir(int i , int nbits) // elle transforme une ligne dans de la table en etat  logique pour generer les sorties
+	private static EtatLogique[] convertir(int i , int nbits) // elle transforme une ligne dans de la table en etat  logique pour generer les sorties
 	{
 		EtatLogique tableVerite[]= new EtatLogique[nbits]; // initialiser un tableau de etat logique qui sera le resultat de la conversion
 		int j=0;
@@ -89,7 +192,7 @@ public class Circuit implements Serializable{
 		return tableVerite;
 	}
 	
-	public void tableVerite() // generer la table de verité du ciruit
+	public static void tableVerite(ArrayList<Pin> entreesCircuit) // generer la table de verité du ciruit
 	{
 		int nbEntrees = entreesCircuit.size(); // nombre d'entrees du circuit
 		int nbSorties = sortiesCircuit.size(); // nombre de sortiees du circuit
@@ -98,14 +201,16 @@ public class Circuit implements Serializable{
 		double l=Math.pow(2, nbEntrees); // calculer le nombre de lignes de la table de verité
 		tableVerite = new EtatLogique[(int)l][c]; // initialiser la taille de la table
 		EtatLogique ligne[] ; // sert à stocker une ligne 
-		for (Pin pin : entreesCircuit) { // affichage des labels des pins d'entrees
+		/*for (Pin pin : entreesCircuit) { // affichage des labels des pins d'entrees
 			System.out.print(pin.nom+"  ");
-		}
-		for (Affichage pin : sortiesCircuit) { // affichage des labels des pins de sorties 
+		}*/
+		/*for (Affichage pin : sortiesCircuit) { // affichage des labels des pins de sorties 
 			System.out.print(((Pin)pin).nom + "  ");
+		}*/
+		for (SourceConstante cte : listSouceCte) {
+			cte.evaluer();
 		}
-		System.out.println();
-		for(int  i=0;i<l;i++)
+		for(int i=0;i<l;i++)
 		{
 			ligne = Arrays.copyOf(convertir(i, nbEntrees), c);
 			j=0;
@@ -123,7 +228,7 @@ public class Circuit implements Serializable{
 		}
 	}
 	
-	public void afficher() { // pour l'affichage en mode console de la table de vérité 
+	public static void afficher() { // pour l'affichage en mode console de la table de vérité 
 		for (int i = 0; i < tableVerite.length; i++) {
 			for (int j = 0; j < tableVerite[i].length; j++) {
 				System.out.print(tableVerite[i][j].getNum() + " | ");
@@ -133,7 +238,10 @@ public class Circuit implements Serializable{
 	}
 	public static void initialiser() {// à completer au fur et mesure .
 		for (Pin pin : entreesCircuit) { // initialiser les pins d'entrees pour le commencement de la simulation
-			if(pin.getInput() == true) pin.evaluer();  //a na7i
+			pin.evaluer();  //a na7i
+		}
+		for (SourceConstante cte : listSouceCte) { // initialiser les pins d'entrees pour le commencement de la simulation
+			cte.evaluer(); 
 		}
 		
 		ArrayList<Integer> etage = new ArrayList<Integer>();
@@ -143,8 +251,10 @@ public class Circuit implements Serializable{
 			for (Sequentiels b : listeEtages) {
 				b.entreeHorloge.addEtages(etage);
 				tmp = new ArrayList<Integer>(etage);
-				max = Collections.max(tmp); // avoir le nombre des etages
-				nbEtages = (nbEtages < max ) ? max : nbEtages ;
+				if (tmp.size() != 0) {
+					max = Collections.max(tmp); // avoir le nombre des etages
+					nbEtages = (nbEtages < max ) ? max : nbEtages ;
+				}
 				b.setEtages(tmp);
 				etage.clear();
 			}
@@ -224,14 +334,18 @@ public class Circuit implements Serializable{
 				entreesCircuit.remove(composant);
 			}
 			else {
-				sortiesCircuit.remove(composant);
+				sortiesCircuit.remove(pin);
 			}
 		}
-		else if (composant.getClass().getSimpleName().equals("SourceConstante")) {
-			entreesCircuit.remove(composant);
+		else { 
+			if (composant.getClass().getSimpleName().equals("SourceConstante")) 
+				entreesCircuit.remove(composant);
+			else if (composant.getClass().getSimpleName().equals("AfficheurSegments")) {
+				sortiesCircuit.remove((AfficheurSegment)composant);
+			}
 		}
-		else {
-			sortiesCircuit.remove(composant);
+		if ((composant.getClass().getSuperclass().equals(Bascule.class)) || (composant.getClass().getSuperclass().equals(Sequentiels.class))) {
+			listeEtages.remove(composant);
 		}
 		Fil sortieFil;
 		ArrayList<Composant> arrayList ;
@@ -244,6 +358,7 @@ public class Circuit implements Serializable{
 			for (Composant destination : arrayList) {
 				destination.derelierEntreeFromComp(sortieFil);
 			}
+			arrayList.clear();
 		}
 		return listPolylines;
 	}
@@ -316,6 +431,13 @@ public class Circuit implements Serializable{
 					}
 				}
 		}
+	}
+	public static HashMap<Fil, ArrayList<InfoPolyline>> getfilUtilises() {
+		return filUtilises;
+	}
+	public static void creerCircuitIntegrer(String nom) {
+		CircuitIntegre ci = new CircuitIntegre(entreesCircuit.size(),sortiesCircuit.size(), nom);
+		ci.setTableVerite(tableVerite);
 	}
 	
 }
