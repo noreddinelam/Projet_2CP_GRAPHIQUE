@@ -1880,9 +1880,23 @@ public class HomeController extends Controller {
 		cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
 		cmp2.setNom(composantCopy.getNom());
 		cmp2.setNombreEntree(composantCopy.getNombreEntree());
-		cmp2.setNombreSortie(composantCopy.getNombreSortie());
+		cmp2.setNombreSortieAndUpdateFil(composantCopy.getNombreSortie());
+		if(cmp2.getClass().getSimpleName().equals("Multiplexeur")){
+			((Multiplexeur)cmp2).setNbCommande(((Multiplexeur)composantCopy).getNbCommande());
+			cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
+		}
+		else
+			if(cmp2.getClass().getSimpleName().equals("Demultiplexeur")){
+			((Demultiplexeur)cmp2).setNbCommande(((Demultiplexeur)composantCopy).getNbCommande());
+			cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
+		}
+			
 		cmp2.setCord();
-		cmp2.generatePolyline(ctrlX, ctrlY);	
+		
+		
+		cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
+		cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
+		//cmp2.generatePolyline(ctrlX, ctrlY);	
 		//Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
 		dragImageView.setImage(elementSeclecionner.getImage());
 		dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
