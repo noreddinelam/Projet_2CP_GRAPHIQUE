@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import controllers.Controller;
 import controllers.HomeController;
 
 import controllers.PremierePageController;
@@ -67,7 +68,7 @@ public class Main extends Application {
 	@Override
 	public void stop(){
 
-		if(Horloge.active)
+		if(Horloge.active && HomeController.horloged && Controller.simul)
 		{
 	Horloge	horloge=((Horloge)Circuit.getCompFromImage(HomeController.horlogeDeCercuit));
 	
@@ -83,7 +84,7 @@ public class Main extends Application {
 		super.stop();
 		
 	} catch (Exception e) {
-		// TODO Auto-generated catch block
+	
 		e.printStackTrace();
 	}
 	}

@@ -108,7 +108,9 @@ public class ProprietesPortesController extends ProprietesController{
     		cmp.setCord();
     		cmp.getLesCoordonnees().setNbCordEntree(i);
     		Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
-    	}
+    	}else {
+    		this.alert();
+		}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

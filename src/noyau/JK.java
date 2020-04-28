@@ -10,6 +10,7 @@ public class JK extends Bascule{
 	}
 
  public void genererSortiesSyncho() {
+		this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
 	
 	 if(etatPrec[0].getNum()==1)//j=1
 	 {

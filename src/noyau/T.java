@@ -8,7 +8,7 @@ public class T extends Bascule{
 	}
 
 	public void genererSortiesSyncho() {
-     
+		this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
 		if (etatPrec[0] == EtatLogique.ONE) {
 			if(sorties[0].getEtatLogiqueFil().getNum()==1)
 			{

@@ -16,21 +16,21 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private EtatLogique etat = EtatLogique.ZERO;
-	private long temps;
+	public static EtatLogique etat = EtatLogique.ZERO;
+	public static long temps=1000;
 	public volatile static boolean active = true;// on met l'horloge toujours active pour le test
-	private ImageView image;
+	transient private ImageView image;
 	static double startX=1;
 	static double startY=76;
     protected EtatLogique sortieAafficher;
 	protected EtatLogique sortieBar;
 
 	
-	public Horloge(String nom,long temps) {
+	public Horloge(String nom,long tempsDeHorloge) {
 		super(0,nom);
 		nombreSortie = 1;
 		sorties[0] = new Fil(this);
-		this.temps=temps;
+		temps=tempsDeHorloge;
 		lesCoordonnees = new LesCoordonnees(0, 1, 0);
 	}
 
@@ -64,41 +64,34 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 
 	@Override
 	public void run() {
-        active=true;
-		etat = EtatLogique.ONE;
-		this.evaluer();
+        active=true;	
 		Circuit.initialiser();
-	
 		while(active)// tant que l'horloge est active
-		{	
-	    	this.evaluer();
-			image.setImage(new Image(generatePath()) );
-	
+		{
+			this.evaluer();
+			image.setImage(new Image(generatePath()));
 			try {
-			    
-		
 			    if(HomeController.chrono) 
 			    	{		
 			    	   Platform.runLater(new Runnable() {
 			               @Override public void run() {
-			            	
+			            	   if(ChronogrammeController.resimul) {
+			            		   Circuit.defaultValueSeq();
+			            		   ChronogrammeController.resimul=false;
+			            	   }
 			             	   ChronogrammeController.tracerFront(etat);
 			                   ChronogrammeController.refrecher();
-			                   ChronogrammeController.valeurSuivi();
-			                   
+			                   ChronogrammeController.valeurSuivi();			                   
 			               if(etat.getNum()==1)    ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#90EE90;-fx-background-radius:15");
-			               else ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#303337;-fx-background-radius:15");
-		   	    
+			               else ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#303337;-fx-background-radius:15"); 	    
 			               }
 			           });
 			    	}
-				Thread.sleep(temps);
-			
-			
+				Thread.sleep(temps);;		
 			} catch (InterruptedException e) {// exception traité par la clasee thread
 				e.printStackTrace();
 			}
-			
+		
 		}
 	}
 	

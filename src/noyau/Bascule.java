@@ -53,7 +53,7 @@ public abstract class Bascule extends Sequentiels{
 		if (super.validerEntrees() == EtatLogique.ONE) { // les entrees sont valides
 			if(preset.getEtatLogiqueFil()==EtatLogique.ONE && clear.getEtatLogiqueFil()==EtatLogique.ONE) { // mode synchrone
 				if (entreeHorloge != null) { // l'horloge est reliée 
-					this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
+				
 					switch (front) {
 					case Front_Descendant:{
 						if(entreeHorloge.getEtatLogiqueFil() == EtatLogique.ZERO )
@@ -89,9 +89,13 @@ public abstract class Bascule extends Sequentiels{
 	@Override
 	public void defaultValue() {
 		// TODO Auto-generated method stub
+		sortieAafficher=EtatLogique.ZERO;
+		etatAvant=EtatLogique.ZERO;
+		sortieBar=EtatLogique.ONE;
 		super.defaultValue();
 		sorties[0].setEtat(EtatLogique.ZERO);
 		sorties[1].setEtat(EtatLogique.ONE);
+		
 	}
 	
 	@Override

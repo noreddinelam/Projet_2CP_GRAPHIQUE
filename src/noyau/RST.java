@@ -8,7 +8,7 @@ public class RST extends Bascule{
 	}
 
 	public void genererSortiesSyncho() {
-
+		this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
        
 		if(etatPrec[0].getNum()==0 && etatPrec[1].getNum()==1 )//R=1 S=0
 

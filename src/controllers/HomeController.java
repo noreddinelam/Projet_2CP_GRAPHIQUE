@@ -2,11 +2,15 @@ package controllers;
 
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -417,7 +421,7 @@ public class HomeController extends Controller {
     private Tab comb;
     
     @FXML
-    private ScrollPane scrollPane;
+    private  ScrollPane scrollPane;
     
     @FXML
     private TabPane tabPane;
@@ -462,15 +466,13 @@ public class HomeController extends Controller {
      
     @FXML
 
-    void mouseEnterLogo(MouseEvent event) {
+    void mouseEnterLogo(MouseEvent event) { // ajouter une rotation pour le logo
     	rotationDelogo(logo,1,500,true);
     }
     @FXML
     void screenShot(MouseEvent event) { /// pour faire une capture du circuit 
     	captureEcran();
     }
-    
-
    public static	Thread t1 ;
 	Horloge horloge = null;
 	
@@ -489,7 +491,6 @@ public class HomeController extends Controller {
     			else {
     				simulation.setImage(new Image("homePage_icones/SIMULATION_ON.png"));
     				if(! horloged)	Circuit.initialiser();
-
     				else {	
     					horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
     					horloge.setImage(horlogeDeCercuit);
@@ -516,6 +517,7 @@ public class HomeController extends Controller {
     	else {
     		simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
     		Circuit.defaultCompValue();
+    		
     		if( horloged)
     		{    		
     			try {
@@ -620,10 +622,10 @@ public class HomeController extends Controller {
 		initialiseAnimationOfBarDroite();
 		copierCollerParBouttons();
 		
-	    fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace,afficheurX,afficheurY);
-		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace,afficheurX,afficheurY);
-	    affichageFenetre = new ClickBarDroite(1055, 255, "Affichage.fxml", homeWindow, workSpace,afficheurX,afficheurY);
-	    aideFenetre = new ClickBarDroite(1055, 300, "Aide.fxml", homeWindow, workSpace,afficheurX,afficheurY);
+	    fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
+		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
+	    affichageFenetre = new ClickBarDroite(1055, 255, "Affichage.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
+	    aideFenetre = new ClickBarDroite(1055, 300, "Aide.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
 
 		//click = new ClickBar(1000, 100);
 
@@ -915,37 +917,37 @@ public class HomeController extends Controller {
 	}
 	public Polyline tracerEntrerApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) { ///Trecer les lignes d'entrées apres le collage
 		int i = 0;
-        double x2 = crdDebut.getX();
-        double y2 = crdDebut.getY();
-        if(!relocate) {
-		x = line.getPoints().get(line.getPoints().size()-6);
-		y = line.getPoints().get(line.getPoints().size()-5);
-		for (i = 0; i < 4; i++) {
-			line.getPoints().remove(line.getPoints().size()-1);
-		}
-		int size = line.getPoints().size();
-		if(nbOccPoint(line, line.getPoints().get(size-2), line.getPoints().get(size-1)) == 1 && size != 2)
+		double x2 = crdDebut.getX();
+		double y2 = crdDebut.getY();
+		if(!relocate) {
+			x = line.getPoints().get(line.getPoints().size()-6);
+			y = line.getPoints().get(line.getPoints().size()-5);
+			for (i = 0; i < 4; i++) {
+				line.getPoints().remove(line.getPoints().size()-1);
+			}
+			int size = line.getPoints().size();
+			if(nbOccPoint(line, line.getPoints().get(size-2), line.getPoints().get(size-1)) == 1 && size != 2)
 			{
 				if((Math.abs(line.getPoints().get(size-2)-x2)<10) && (Math.abs(line.getPoints().get(size-1)-y2)<10)) {
 					line.getPoints().remove(size-2);
 					line.getPoints().remove(size-2);
 				}
 			}
-			
-		if(Math.abs(x2-x)<10) { 
-			if(Math.abs(y2-y)<10) switching = 0; 
-			else switching = 1;
+
+			if(Math.abs(x2-x)<10) { 
+				if(Math.abs(y2-y)<10) switching = 0; 
+				else switching = 1;
+			}else {
+				if(Math.abs(y2-y)<10) switching = 0;
+			} 		
+
+			if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
+			else line.getPoints().addAll(x,y2,x2,y2);
+
 		}else {
-			if(Math.abs(y2-y)<10) switching = 0;
-		} 		
-		
-		if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
-		else line.getPoints().addAll(x,y2,x2,y2);
-		
-        }else {
-        	Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
-        }
-        return line;
+			Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
+		}
+		return line;
 	}
 	
 	public Polyline tracerSortieApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) {//Trecer les lignes de sorties apres le collage
@@ -1150,6 +1152,13 @@ public class HomeController extends Controller {
 		        		        		}
 		        		        	insererNoedDebut = false;
 		        		        	}
+		        		        	Composant ci=Circuit.getCompFromImage(eleementAdrager);
+		        		        	if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
+		        		        		CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
+		        		        		circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());
+//										workSpace.getChildren().removeAll(((CircuitIntegre)ci).getListeCercles());
+//										workSpace.getChildren().addAll(((CircuitIntegre)ci).generateCercles(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY()));
+									}
 									Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
 									eleementAdrager.relocate(
 											(int)(localPoint.getX() - eleementAdrager.getBoundsInLocal().getWidth() /2),
@@ -1288,9 +1297,9 @@ public class HomeController extends Controller {
 	        							for (Text num : ListText) {
 	        								workSpace.getChildren().remove(num);
 	        							}
-	        							for (Pin pin : ListTextPin) {
-	        								workSpace.getChildren().remove(pin); /// a voir avec sari
-	        							}
+//	        							for (Pin pin : ListTextPin) {
+//	        								workSpace.getChildren().remove(pin); /// a voir avec sari
+//	        							}
 	        							ListText.clear();
 	        							ListTextPin.clear();
 	        						}
@@ -1554,7 +1563,7 @@ public class HomeController extends Controller {
 			comp = new Pin(true, "");
 		}break;
 		case "clock" :{
-			comp = new Horloge("", 750);
+			comp = new Horloge("", 1000);
 		}break;
 		case "vcc" :{
 			comp = new SourceConstante(EtatLogique.ONE, "");
@@ -1907,11 +1916,10 @@ public class HomeController extends Controller {
 	    
 	    @FXML
 	    void saveAs(ActionEvent event) { /// la fonctionnalité de sauvegarder as
-
 	    	final FileChooser fileChooser = new FileChooser();
 	    	File f = fileChooser.showSaveDialog(homeWindow);
-	    	System.out.println("the name of the file is : "+f.getAbsolutePath());
 	    	if (f != null) {
+	    		System.out.println("the name of the file is : "+f.getAbsolutePath());
 	    		Sauvegarde sauvegarde = new Sauvegarde();
 	    		sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
 			}
@@ -1925,21 +1933,69 @@ public class HomeController extends Controller {
 	    			new File(System.getProperty("user.home"))
 	    			);                 
 	    	fileChooser.getExtensionFilters().addAll(
-	    			new FileChooser.ExtensionFilter("BIN", "*.bin")
+	    			new FileChooser.ExtensionFilter("INT", "*.int")
 	    			);
 
 	    	File f = fileChooser.showOpenDialog(homeWindow);
-	    	Sauvegarde.loadCiruit(f.getAbsolutePath());
+	    	if (f != null) {
+	    		FileInputStream fichier ;
+	    		ObjectInputStream oo = null;
+	    		CircuitIntegre circuitIntegre;
+	    		try {
+	    			fichier = new FileInputStream(f.getAbsolutePath());
+	    			oo = new ObjectInputStream(fichier);
+	    			circuitIntegre = (CircuitIntegre) oo.readObject();
+	    			ImageView imageView = new ImageView(new Image(circuitIntegre.generatePath()));
+	    			imageView.setLayoutX(10);
+	    			imageView.setLayoutY(10);
+	    			imageView.setFitHeight(imageView.getImage().getHeight());
+	    			imageView.setFitWidth(imageView.getImage().getWidth());
+	    			Circuit.ajouterComposant(circuitIntegre, imageView);
+	    			workSpace.getChildren().add(imageView);
+	    			ajouterLeGestApresCollage(imageView);
+	    			addAllPolylinesToWorkSpace(circuitIntegre.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+	    			workSpace.getChildren().addAll(circuitIntegre.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+	    		finally {
+	    			try {
+	    				oo.close();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
 
+	    		}
+			}
 	    }
 
 	    @FXML
 	    void encapsulerEtSauvgarder(ActionEvent event) { /// l'encapsulation et la sauvegarde
 	    	final FileChooser fileChooser = new FileChooser();
 	    	File f = fileChooser.showSaveDialog(homeWindow);
-	    	System.out.println("the name of the file is : "+f.getAbsolutePath());
-	    	Sauvegarde sauvegarde = new Sauvegarde();
-	    	sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
+	    	if (f != null) {
+	    		FileOutputStream fichier ;
+	    		ObjectOutputStream oo = null;
+	    		CircuitIntegre ci = new CircuitIntegre(Circuit.getEntreesCircuit().size(),Circuit.getSortiesCircuit().size(), f.getAbsolutePath());
+	    		Circuit.tableVerite(Circuit.getEntreesCircuit());
+	    		ci.setTableVerite(Circuit.getTableVerite());
+	    		try {
+	    			fichier = new FileOutputStream(f.getAbsolutePath()+".int");
+	    			oo = new ObjectOutputStream(fichier);
+	    			oo.writeObject(ci);
+
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
+	    		finally {
+	    			try {
+	    				oo.close();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
+	    		}
+			}
 	    }
 
 	    @FXML
@@ -1976,9 +2032,9 @@ public class HomeController extends Controller {
 	    		a.setHeaderText("Chronogramme erreur");
 	    		a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 	    		a.setTitle("Chronogramme");
-	    		a.setContentText(! simul ? "Veulliez Simuler le Circuit D'abord": Circuit.getListeEtages().isEmpty() ?"Le Circuit ne contient Aucun Element Sequentiel !"
+	    		a.setContentText(! simul ? "Veulliez Simuler le Circuit D'abord": Circuit.getListeEtages().isEmpty() ?"Le Circuit ne contient Aucun Element Sequentiel ! "
 	    				+ "Ajouter des Elements pour visualiser Le Chronogramme" : "Le Plan de travaille ne contient aucune horloge"
-	    						+ "Ajouter une Horloge au Plan pour visualiser le Chronogramme");
+	    						+ " ajouter une Horloge au Plan pour visualiser le Chronogramme");
 	    		transitionDesComposants(clock);
 	    		a.showAndWait();
 	    		
@@ -2364,10 +2420,10 @@ public class HomeController extends Controller {
 						 workSpace.getChildren().add(parent);
 						 ajouterGeste(parent);
 						 sauv.add(parent);
-						 infoPolyline.setLinePrincipale(parent);
+						 infoPolyline.setLineParent(parent);
 					 }
 					 else {
-						 infoPolyline.setLinePrincipale(polySauv2);
+						 infoPolyline.setLineParent(polySauv2);
 					 }
 				 }
 				 else {
@@ -2402,10 +2458,14 @@ public class HomeController extends Controller {
 	}
 	 
 	 public void setAffX(Label affX) {
-		afficheurX = affX;
-	}
+		 afficheurX = affX;
+	 }
 	 public void setAffY(Label affY) {
-			afficheurY = affY;
-		}
+		 afficheurY = affY;
+	 }
+	 
+	 public void setScrollPane(ScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
+	}
 }
 

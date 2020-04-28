@@ -58,6 +58,7 @@ public class TableDeVeriteController extends Controller implements Initializable
 			}*/
 			i=1;
 			for ( Affichage sortie : Circuit.sortiesCircuit) {
+				
 				String sort = ((Pin)sortie).getNom();
 				if(sort.equals("Pin")) 
 					sort = "S"+(Circuit.sortiesCircuit.size()-i);

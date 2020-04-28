@@ -105,7 +105,9 @@ public class ProprietesSourceConstController extends ProprietesController{
     	if(cmp.isDessocier()){
     		cmp.setCord();       	
         	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
-    	}
+    	}else {
+    		this.alert();
+		}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

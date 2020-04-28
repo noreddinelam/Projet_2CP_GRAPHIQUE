@@ -6,9 +6,11 @@ import noyau.*;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -114,6 +116,8 @@ public class ProprietesDecodeurController extends ProprietesController{
     			imageView.setFitHeight(img.getHeight());
     			imageView.setFitWidth(img.getWidth());
     			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
+    		}else {
+    			this.alert();
     		}
     	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 

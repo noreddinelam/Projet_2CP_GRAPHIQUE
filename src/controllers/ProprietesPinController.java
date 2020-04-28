@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
@@ -104,7 +106,7 @@ public class ProprietesPinController extends ProprietesController{
         		pin.setInput(false);
     			Circuit.getEntreesCircuit().remove(pin);
     			Circuit.getSortiesCircuit().add(pin);
-        		ArrayList<Polyline> line = Circuit.getListePolylineFromFil(cmp.getSorties()[0]);
+        		ArrayList<Polyline> line = Circuit.supprimerAllPolylinesForCompounent(pin);
         		removeAllPolylinesFromWorkSpace(line);
         		cmp.setNombreEntree(1);
         		cmp.setNombreSortie(0);
@@ -113,7 +115,9 @@ public class ProprietesPinController extends ProprietesController{
         	}
         	cmp.setCord();
         	imageView.setImage(new Image(cmp.generatePath()));
-		}  	
+		}  else {
+			this.alert();
+		}	
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

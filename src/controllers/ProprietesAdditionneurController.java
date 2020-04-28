@@ -137,6 +137,9 @@ public class ProprietesAdditionneurController extends ProprietesController{
     			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
     			
     		}
+    		else {
+    		this.alert();
+    		}
     	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();

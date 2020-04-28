@@ -3,9 +3,11 @@ package controllers;
 import javafx.event.ActionEvent;
 import noyau.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -74,7 +76,9 @@ public class ProprietesBasculesController extends ProprietesController {
         		((Bascule)cmp).setFront(Front.Front_Descendant);
         	
         	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
-		}
+		}else {
+    		this.alert();
+    		}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }
