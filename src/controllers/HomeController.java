@@ -505,7 +505,6 @@ public class HomeController extends Controller {
     				simulation.setImage(new Image("homePage_icones/SIMULATION_ON.png"));
     				if(! horloged)	Circuit.initialiser();
     				else {	
-    					System.out.println("dfbhqezbgfiqyzehfj");
     					horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
     					horloge.setImage(horlogeDeCercuit);
     					t1=new Thread(horloge);
@@ -1055,9 +1054,10 @@ public class HomeController extends Controller {
 		double x2 = crdDebut.getX();
 		double y2 = crdDebut.getY();
 
-		x = line.getPoints().get(4);
-		y = line.getPoints().get(5);
+		
 		if(!relocate) {
+			x = line.getPoints().get(4);
+			y = line.getPoints().get(5);
 			for (i = 0; i < 4; i++) {
 				line.getPoints().remove((0));
 			}
@@ -1074,6 +1074,7 @@ public class HomeController extends Controller {
 					if((Math.abs(line.getPoints().get(line.getPoints().size()-2)-line2.getPoints().get(0))<10) && (Math.abs(line.getPoints().get(line.getPoints().size()-1)-line2.getPoints().get(1))<10)) {
 						if((Math.abs(line.getPoints().get(0)-x2)<5) && (Math.abs(line.getPoints().get(1)-y2)<5)) {
 							//Suppression
+							workSpace.getChildren().remove(line);
 							line.getPoints().clear();
 							Circuit.getListFromPolyline(line).remove(0);
 							listSorties.add(listSorties.indexOf(line), line2);
@@ -1088,6 +1089,8 @@ public class HomeController extends Controller {
 			if(!Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
 				Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
 			}else {
+				x = line.getPoints().get(4);
+				y = line.getPoints().get(5);
 				for (i = 0; i < 4; i++) {
 					line.getPoints().remove((0));
 				}
@@ -1095,8 +1098,10 @@ public class HomeController extends Controller {
 					line.getPoints().remove(0);
 					line.getPoints().remove(0);
 				}
+				relocate = false;
 			}
 		}
+		if(!relocate) {
 		if(Math.abs(x2-x)<10) {
 			if(Math.abs(y2-y)<10) switching = 0;
 			else switching = 1;
@@ -1114,6 +1119,7 @@ public class HomeController extends Controller {
 			line.getPoints().add(1, y2);
 			line.getPoints().add(2, x);
 			line.getPoints().add(3, y2);
+		}
 		}
 		return line;
 	}
@@ -1257,8 +1263,10 @@ public class HomeController extends Controller {
 		        		        	if(insererNoedDebut) {
 		        		        		for( i = 0; i < listSorties.size();i++){
 		        		        			line = listSorties.get(i);
+		        		        			if(Circuit.getListFromPolyline(line).size()>1 || Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
 		        		        			line.getPoints().add(2,line.getPoints().get(3));
 		        		        			line.getPoints().add(2,line.getPoints().get(3));
+		        		        			}
 		        		        		}
 		        		        		for(i = 0;i < listEntrees.size();i++) {
 		        		        			line = listEntrees.get(i);
