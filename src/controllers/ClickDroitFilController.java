@@ -66,6 +66,7 @@ public class ClickDroitFilController {
     	while(i >= 0) {
     		InfoPolyline infoLine = list.get(i);
     		supprimer(infoLine);
+
     	  i--;
 
 		}

@@ -1,6 +1,4 @@
 package controllers;
-
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,17 +19,18 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Stack;
+import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.util.Map.Entry;
-
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout.Alignment;
-
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
-import com.sun.tools.javac.code.Type.ForAll;
-
 import application.ClickBarDroite;
 import application.ClickDroit;
 import application.ClickDroitFil;
+import application.ClickSouris2;
 import application.FenetreDesErreurs;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
@@ -52,6 +51,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.animation.FadeTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -97,13 +97,17 @@ import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
+
+
+
 
 
 public class HomeController extends Controller {
 	
     Map<ImageView,Label> elemanrsMapFillMap;
     ImageView dragItem;
-    private ClickDroit clickDroitFenetre;
+    private static ClickDroit clickDroitFenetre;
 
     private static ClickBarDroite fichierFenetre;
     private static ClickBarDroite affichageFenetre;
@@ -111,23 +115,23 @@ public class HomeController extends Controller {
     private static ClickBarDroite aideFenetre;
 
     
-    // utilisé dans la sauvegarde des coordonnées  
+    // utilisé dans la sauvegarde des coordonnées 
+    
     double posX ;
 	double posY ;
 	
-	// utilisé pour recuperer le clic de la souris pour copier coller
-	double ctrlX;
-	double ctrlY;
+	 public static boolean copyActive, copyMouse, pastButton;
+
+	 
+	 private static double ctrlX,ctrlY;
+		
+	static Composant composantCopy;
 	
-	Stage homeWindow;
-	
-	public static boolean horloged=false;
 	
 	public static Deque<Donnes> undoDeque=new LinkedList<Donnes>() ;
 	
 	final KeyCombination touchesDundo = new KeyCodeCombination(KeyCode.Z,
             KeyCombination.CONTROL_DOWN);
-	
 	
 	public static ImageView elementSeclecionner ;
 	
@@ -245,6 +249,8 @@ public class HomeController extends Controller {
 
     @FXML
     private Label tPin;
+    
+    public static boolean horloged=false;
 
     @FXML
     private ImageView pin;
@@ -393,24 +399,32 @@ public class HomeController extends Controller {
     @FXML
     private ImageView darkMode;
     
-
     static public ImageView horlogeDeCercuit;
 
     @FXML
     private AnchorPane work;
-    
-    @FXML
-    private Scene homeScene;
-      
+     
     @FXML
     private ImageView camera;
     
     @FXML
     private ImageView logo;
+    
    
+    /////////////////////////////Les lignes de Guide
+	
+    ///////////////////////////////////////////////
+	//relier
+	 
+	 //////////////////
+	 Stage stage;
+    
+    
+    
     @FXML
     private Tab outils;
-      
+    
+    
     @FXML
     private Tab portes;
     
@@ -431,30 +445,29 @@ public class HomeController extends Controller {
 
     @FXML
     private  Label afficheurY;
-    
-    void ajouterAnimationBarDroite(ImageView imageView) { // ajouter les effets des icones de la bar doite 
-    	imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
-
-    		@Override
-    		public void handle(MouseEvent arg0) { // effet quand la souris entre dans l'image
-    			// TODO Auto-generated method stub
-    			if (! imageView.getId().equals("simulation") || imageView.getId().equals("simulation") && ! simul) {
-    				imageView.setImage(new Image("homePage_icones/"+imageView.getId()+"Hover.png"));
-    			}				
-    		}
-    	});
-    	imageView.setOnMouseExited(new EventHandler<MouseEvent>() { // effet quand la souris sort de l'image
-
-    		@Override
-    		public void handle(MouseEvent arg0) {
-    			// TODO Auto-generated method stub
-    			if (! imageView.getId().equals("simulation") || imageView.getId().equals("simulation") && ! simul)
-    				imageView.setImage(new Image("homePage_icones/"+imageView.getId() + ".png"));
-    		}
-    	});
+     
+    void ajouterAnimationBarDroite(ImageView imageView) {
+    	imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {	
+			@Override
+			public void handle(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				if (! imageView.getId().equals("simulation") || imageView.getId().equals("simulation") && ! simul) {
+					imageView.setImage(new Image("homePage_icones/"+imageView.getId()+"Hover.png"));
+				}				
+			}
+		});
+    	
+    	imageView.setOnMouseExited(new EventHandler<MouseEvent>() {		
+			@Override
+			public void handle(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				if (! imageView.getId().equals("simulation") || imageView.getId().equals("simulation") && ! simul)
+					imageView.setImage(new Image("homePage_icones/"+imageView.getId() + ".png"));
+			}
+		});
     }
     
-    void initialiseAnimationOfBarDroite() { /// appliquer l'effet de la bar droite sur tout les icones 
+    void initialiseAnimationOfBarDroite() {
     	ajouterAnimationBarDroite(fichier);
     	ajouterAnimationBarDroite(edition);
     	ajouterAnimationBarDroite(simulation);
@@ -463,20 +476,20 @@ public class HomeController extends Controller {
     	ajouterAnimationBarDroite(camera);
     	camera.setCursor(Cursor.HAND);
     }
-     
+    
+	////////////////////Appliquer l'animation de rotation  
+    
     @FXML
-
     void mouseEnterLogo(MouseEvent event) { // ajouter une rotation pour le logo
     	rotationDelogo(logo,1,500,true);
     }
+    
     @FXML
-    void screenShot(MouseEvent event) { /// pour faire une capture du circuit 
+    void screenShot(MouseEvent event) {
     	captureEcran();
     }
    public static	Thread t1 ;
 	Horloge horloge = null;
-	
-
     @FXML
     void onSimuler(MouseEvent event) { /// pour lancer la simulation ou l'arreter
     	Circuit.clearException();
@@ -492,6 +505,7 @@ public class HomeController extends Controller {
     				simulation.setImage(new Image("homePage_icones/SIMULATION_ON.png"));
     				if(! horloged)	Circuit.initialiser();
     				else {	
+    					System.out.println("dfbhqezbgfiqyzehfj");
     					horloge=((Horloge)Circuit.getCompFromImage(horlogeDeCercuit));
     					horloge.setImage(horlogeDeCercuit);
     					t1=new Thread(horloge);
@@ -532,18 +546,18 @@ public class HomeController extends Controller {
     	}
     }
     
-    public  void setHomeControllerStage(Stage homeWindow) {
-    	this.homeWindow = homeWindow;
+    public  void setHomeControllerStage(Stage w) {
+    	homeWindow = w;
     }
     
     
     public void setHomeControllerScene(Scene scene) {
-    	this.homeScene = scene;
+    	homeScene = scene;
     }
     
   
     public Stage getHomeStage() {
-    	return this.homeWindow;
+    	return homeWindow;
     }
     
     
@@ -554,7 +568,7 @@ public class HomeController extends Controller {
     public static boolean getCopierActive() {
     	return copierActive;
     }
-
+       
 	public void inisialiser() { /// pour l'initialisation des effets de la fenetre principale (affichage des guides ajout de 
 								/// l'operation du drag and drop pour tout les composants
 
@@ -566,6 +580,7 @@ public class HomeController extends Controller {
 		afficheurY.setText("Y : 0");
 		//Creation d'une map pour gerer les titres des composants 
 		elemanrsMapFillMap = new HashMap<ImageView, Label>(){{put(hex, tHex);
+
 		put(pin, tPin);
 		put(clock, tH);
 		put(vcc, tVcc);
@@ -620,14 +635,11 @@ public class HomeController extends Controller {
 		tooltipInitialize();
 
 		initialiseAnimationOfBarDroite();
-		copierCollerParBouttons();
 		
 	    fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
 		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
 	    affichageFenetre = new ClickBarDroite(1055, 255, "Affichage.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
 	    aideFenetre = new ClickBarDroite(1055, 300, "Aide.fxml", homeWindow, workSpace,afficheurX,afficheurY,scrollPane);
-
-		//click = new ClickBar(1000, 100);
 
 		ClickBarDroite tableauFenetres[] = {fichierFenetre,editionFenetre, affichageFenetre, aideFenetre };
 
@@ -643,98 +655,157 @@ public class HomeController extends Controller {
 		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				ctrlX = event.getX();
+				ctrlY = event.getY();	
+				if(cc && elementSeclecionner != null) {	
+					cc = false;
+				}
 				for(ClickBarDroite click : tableauFenetres) {
 					click.close();
 					tooltipInitialize();
 				}
-				ctrlX= event.getX();
-				ctrlY=event.getY();
 				if (clickDroitFenetre != null) {
 					Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
-					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-
-					if( (mouseX < x)  ||  (mouseX > x+162) || (mouseY < y)  ||  (mouseY > y+164) )
+					
+					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();		
+					if( (mouseX < x - 10)  ||  (mouseX > x+172) || (mouseY < y - 10)  ||  (mouseY > y+174) )
+					{//162     164
 						clickDroitFenetre.close();
+						clickDroitFenetre = null;
+					}
 				}
 				if (clickDroitFilFenetre != null) {
 					Double x = clickDroitFilFenetre.getX(), y = clickDroitFilFenetre.getY(); 
 					Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-
 					if( (mouseX < x)  ||  (mouseX > x+164) || (mouseY < y)  ||  (mouseY > y+55) ) {
 						lineDroit.setStroke(Color.BLACK);
 						clickDroitFilFenetre.close();
+						clickDroitFilFenetre = null;
 					}
 				}
-			}
-		});	   
+				if (clickSouris2 != null) {
+					clickSouris2.close();
+					clickSouris2 = null;
+				}
+				if(event.getButton()==MouseButton.SECONDARY  && (clickDroitFenetre == null  || (!clickDroitFenetre.isShowing())) && (clickDroitFilFenetre == null  || (!clickDroitFilFenetre.isShowing()))) {
+					if (! simul) {
+						if (event.getScreenX() > 1135) {
+							if (event.getScreenY() > 640) {
+								clickSouris2 = new ClickSouris2(event.getScreenX()-160, event.getScreenY()-55, workSpace, homeWindow);
+							}
+							else {
+								clickSouris2 = new ClickSouris2(event.getScreenX()-160, event.getScreenY(), workSpace, homeWindow);
+							}
 
-	}
-
-	private void ajouterGestWorkSpace() {/// pour appliquer des listners sur les mouvements appliquer au workspace
-		workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
-			public void handle(MouseDragEvent e) { /// ajout des guides de bas à droite pour afficher la position d'un elt
-				if (! workSpace.getChildren().contains(guideX)) workSpace.getChildren().add(guideX);
-				if (! workSpace.getChildren().contains(guideXp)) workSpace.getChildren().add(guideXp);
-				if (! workSpace.getChildren().contains(guideY)) workSpace.getChildren().add(guideY);
-				if (! workSpace.getChildren().contains(guideYp)) workSpace.getChildren().add(guideYp);
-
-				e.consume();
-			}
-		});
-
-		workSpace.setOnMouseDragExited(new EventHandler<MouseDragEvent>() {
-			public void handle(MouseDragEvent e) {
-				e.consume();
-			}
-		});
-
-
-		workSpace.setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
-			public void handle(MouseDragEvent e) {
-				//TODO: add new instance of dragItem to rightPane
-				workSpace.getChildren().remove(guideX);
-				workSpace.getChildren().remove(guideXp);
-				workSpace.getChildren().remove(guideY);
-				workSpace.getChildren().remove(guideYp);
-				//sari
-				//	  workSpace.getChildren().remove(guideFilX);
-				//	  workSpace.getChildren().remove(guideFilY);
-
-				e.consume();
-			}
-		});
-
-		scrollPane.setOnKeyPressed(new EventHandler<KeyEvent>() { /// pour le click du control + z
-			@Override
-			public void handle(KeyEvent event) {
-				if (event.isControlDown() && (event.getCode() == KeyCode.Z)) {
-					undoChanges(workSpace);
-				} 
-			};
-		});
-	}
-	
-	public void rightbar(ImageView icon,ClickBarDroite cc, ClickBarDroite tableauDeFenetres[]) {
-		icon.setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				for(ClickBarDroite click :tableauDeFenetres ) {
-					if(cc.equals(click)) {
-						if(cc.isShowing()) {
-							cc.close();
 						}
 						else {
-							cc.show();
-							//  tooltipInitialize();
+							clickSouris2 = new ClickSouris2(event.getScreenX(), event.getScreenY(), workSpace, homeWindow);
 						}
+						clickSouris2.show();
 					}
-					else
-						click.close();
 				}
+			}
+		});	
+	}
+
+	private void ajouterGestWorkSpace() {//Methodes pour Ajouter l'interaction avec le drag and drop et les guides
+		   workSpace.setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
+	   	        public void handle(MouseDragEvent e) {
+                       if (! workSpace.getChildren().contains(guideX)) workSpace.getChildren().add(guideX);
+                       if (! workSpace.getChildren().contains(guideXp)) workSpace.getChildren().add(guideXp);
+                       if (! workSpace.getChildren().contains(guideY)) workSpace.getChildren().add(guideY);
+                       if (! workSpace.getChildren().contains(guideYp)) workSpace.getChildren().add(guideYp);
+                       
+	   	            e.consume();
+	   	        }
+	   	    });
+		   
+		  	  workSpace.setOnMouseDragExited(new EventHandler<MouseDragEvent>() {
+			        public void handle(MouseDragEvent e) {
+			        	e.consume();
+			        }
+			    });
+		  	  
+		  	  
+		  	  workSpace.setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
+		  		  public void handle(MouseDragEvent e) {
+		  			  //TODO: add new instance of dragItem to rightPane
+		  			  workSpace.getChildren().remove(guideX);
+		  			  workSpace.getChildren().remove(guideXp);
+		  			  workSpace.getChildren().remove(guideY);
+		  			  workSpace.getChildren().remove(guideYp);
+		  			  //sari
+		  		//	  workSpace.getChildren().remove(guideFilX);
+		  		//	  workSpace.getChildren().remove(guideFilY);
+
+		  			  e.consume();
+		  		  }
+		  	  });
+  
+			  scrollPane.setOnKeyPressed(new EventHandler<KeyEvent>() {
+				    @Override
+				    public void handle(KeyEvent event) {
+				        if (event.isControlDown() && (event.getCode() == KeyCode.Z)) {
+				            undoChanges(workSpace);
+				        } 				        
+				        if (event.isControlDown() && (event.getCode() == KeyCode.X)) {
+				           System.out.println("the cut operation ");
+				            copierActive = true;				            
+				            copyActive = true;
+				            ImageView sauv = elementSeclecionner;
+				            workSpace.getChildren().remove(elementSeclecionner);			           
+				            Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
+				           composantCopy = composantCouper;				            		
+							ArrayList<Polyline> lineListe=Circuit.supprimerComp(composantCouper);
+							 for(Polyline line : lineListe)
+								 workSpace.getChildren().remove(line);
+							 	 elementSeclecionner  = sauv ;
+
+				        } 
+				        
+				        if (event.isControlDown() && (event.getCode() == KeyCode.C)) {
+				        	if (elementSeclecionner != null) {
+				        		System.out.println("control + c are pressed !");
+				        		System.out.println("l'element selectionner est : "+ elementSeclecionner.getId());
+				        		setCopierActive(true);	  
+							}
+				        }
+				        if (event.isControlDown() && (event.getCode() == KeyCode.V)) {	        	
+							CopyUses();
+				        }
+				    };
+				});
+
+				workSpace.addEventHandler(MouseEvent.MOUSE_ENTERED, (event) -> {
+					if(copyMouse && elementSeclecionner != null) {	
+							copyMouse = false;
+							ctrlX = event.getX();
+							ctrlY = event.getY();
+							System.out.println("workSpace.MOUSE_ENTERED");
+							CopyUses();	
+					}		
+				});
+		}
+	
+
+	public void rightbar(ImageView icon,ClickBarDroite cc, ClickBarDroite tableauDeFenetres[]) {
+		  icon.setOnMousePressed(new EventHandler<MouseEvent>() {
+			  @Override
+			  public void handle(MouseEvent event) {
+				  for(ClickBarDroite click :tableauDeFenetres ) {
+					  if(cc.equals(click)) {
+						  if(cc.isShowing()) 
+							  cc.close();
+						  else 
+							  cc.show();	  
+					  }
+					  else
+						  click.close();
+				  }	  
 			}
 		});
 	}
-	
+
 	public void tooltipInitialize() {//utiliser pour les effets hover ou nous avons un texte en mettant la souris sur les elements
 
 	    Tooltip fich = new Tooltip("fichier");
@@ -781,88 +852,100 @@ public class HomeController extends Controller {
 		
 	}
 	
+	
+	
+    
+
 	private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant 
 		//est ajoute dans le workSpace
+			
+		
+			elementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+					elementAdrager.setCursor(Cursor.HAND);
+					elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#000000;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
+					transitionDesComposants(elementAdrager);
+				}
 
+			});
+			elementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+					elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#303337;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
+					elementAdrager.setCursor(Cursor.DEFAULT);
+				}
+			});
 
-		elementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() { /// quand la souris rentre dans le composant
-			public void handle(MouseEvent e) {
-				elementAdrager.setCursor(Cursor.HAND);
-				elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#000000;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
-				transitionDesComposants(elementAdrager);
-			}
-
-		});
-		elementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() { /// quand la souris sort du composant
-			public void handle(MouseEvent e) {
-				elemanrsMapFillMap.get(elementAdrager).setStyle("-fx-background-color:#303337;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
-				elementAdrager.setCursor(Cursor.DEFAULT);
-			}
-		});
-
-		elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() { /// quand l'user click sur le composant
-			public void handle(MouseEvent e) {
-				if (! simul) {
+			elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent e) {
+					if (! simul) {
 					ImageView dragImageView = new ImageView();
 					dragImageView.setMouseTransparent(true);
 					//dragImageView.setViewOrder(1); //l'ordre 
 					dragImageView.toFront();
 					elementAdrager.setMouseTransparent(true);
 					elementAdrager.setCursor(Cursor.CLOSED_HAND);
+					
+
 					elementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
 							if (! simul) {
-								SnapshotParameters snapParams = new SnapshotParameters();
-								snapParams.setFill(Color.TRANSPARENT);
-								dragImageView.setImage(elementAdrager.snapshot(snapParams, null));
-								workSpace.getChildren().add(dragImageView);
-								dragImageView.startFullDrag();
-								e.consume();
+							SnapshotParameters snapParams = new SnapshotParameters();
+							snapParams.setFill(Color.TRANSPARENT);
+							dragImageView.setImage(elementAdrager.snapshot(snapParams, null));
+							workSpace.getChildren().add(dragImageView);
+						   
+							dragImageView.startFullDrag();
+							
+							e.consume();
 							}
 						}
 					});
 
-					elementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() { /// quand 
+					elementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
 							if (! simul) {
-								Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
-								dragImageView.relocate(
-										(int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2),
-										(int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2 )
-										);
-								String xString=String.valueOf(dragImageView.getLayoutX());
-								String yString=String.valueOf(dragImageView.getLayoutY());
-								if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<workSpace.getMaxWidth() )&&(dragImageView.getLayoutY()>0))
-								{
-									guideX.setLayoutX(dragImageView.getLayoutX());
-									guideY.setLayoutY(dragImageView.getLayoutY());
-									guideXp.setLayoutX(dragImageView.getLayoutX()+ elementAdrager.getBoundsInLocal().getWidth()+1);
-									guideYp.setLayoutY(dragImageView.getLayoutY()+ elementAdrager.getBoundsInLocal().getHeight()+1);
-									afficheurX.setText("X : "+xString);
-									afficheurY.setText("Y : "+yString);
-								}
-								else 
-								{
-									guideX.setLayoutX(0);
-									guideY.setLayoutY(0);
-									guideXp.setLayoutX(0);
-									guideYp.setLayoutY(0);
-									afficheurX.setText("X : 0");
-									afficheurY.setText("Y : 0");
-								}
-								e.consume();
+							Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+							dragImageView.relocate(
+									(int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2),
+									(int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2 )
+									);
+                      
+							String xString=String.valueOf(dragImageView.getLayoutX());
+							String yString=String.valueOf(dragImageView.getLayoutY());
+							if((dragImageView.getLayoutX()>0 && dragImageView.getLayoutX()<workSpace.getMaxWidth() )&&(dragImageView.getLayoutY()>0))
+							{
+								guideX.setLayoutX(dragImageView.getLayoutX());
+								guideY.setLayoutY(dragImageView.getLayoutY());
+								guideXp.setLayoutX(dragImageView.getLayoutX()+ elementAdrager.getBoundsInLocal().getWidth()+1);
+								guideYp.setLayoutY(dragImageView.getLayoutY()+ elementAdrager.getBoundsInLocal().getHeight()+1);
+
+
+								afficheurX.setText("X : "+xString);
+								afficheurY.setText("Y : "+yString);
+
 							}
+
+							else 
+							{
+								guideX.setLayoutX(0);
+								guideY.setLayoutY(0);
+								guideXp.setLayoutX(0);
+								guideYp.setLayoutY(0);
+								afficheurX.setText("X : 0");
+								afficheurY.setText("Y : 0");
+							}
+						
+
+							e.consume();
+						}
 						}
 					});
 
 					elementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
 							if (! simul) {
-
 							dragItem = null;
-
 							dragImageView.setMouseTransparent(false);
-
 							elementAdrager.setMouseTransparent(false);
 							elementAdrager.setCursor(Cursor.DEFAULT);
 							dragImageView.setId(elementAdrager.getId());
@@ -871,7 +954,6 @@ public class HomeController extends Controller {
 							dragImageView.setImage(img);
 							dragImageView.setFitHeight(img.getHeight());
 							dragImageView.setFitWidth(img.getWidth());	
-							
 							System.out.println((e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2)+ "----------------------");
 							if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView)||( dragImageView.getId().equals("clock") && ( horloged)))
 							{
@@ -880,6 +962,7 @@ public class HomeController extends Controller {
 							}
 							else 
 							{
+
 								if( dragImageView.getId().equals("clock")  ) {
 									horloged =true;
 									horlogeDeCercuit=dragImageView;
@@ -902,30 +985,28 @@ public class HomeController extends Controller {
 								sauveGarde.setPosX(dragImageView.getLayoutX());
 								sauveGarde.setPosY(dragImageView.getLayoutY());
 								undoDeque.addFirst(sauveGarde);
-								
-								
-							}
-
+	
+								}
 							}
 						}
 					});
 
 				}
-			}
-		});
-
+				}
+			});
+		
 	}
 	public Polyline tracerEntrerApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) { ///Trecer les lignes d'entrées apres le collage
 		int i = 0;
 		double x2 = crdDebut.getX();
 		double y2 = crdDebut.getY();
-		if(!relocate) {
-			x = line.getPoints().get(line.getPoints().size()-6);
-			y = line.getPoints().get(line.getPoints().size()-5);
-			for (i = 0; i < 4; i++) {
-				line.getPoints().remove(line.getPoints().size()-1);
-			}
-			int size = line.getPoints().size();
+		x = line.getPoints().get(line.getPoints().size()-6);
+		y = line.getPoints().get(line.getPoints().size()-5);
+		for (i = 0; i < 4; i++) {
+			line.getPoints().remove(line.getPoints().size()-1);
+		}
+		int size = line.getPoints().size();
+		if(line.getPoints().size() >= 4) {
 			if(nbOccPoint(line, line.getPoints().get(size-2), line.getPoints().get(size-1)) == 1 && size != 2)
 			{
 				if((Math.abs(line.getPoints().get(size-2)-x2)<10) && (Math.abs(line.getPoints().get(size-1)-y2)<10)) {
@@ -933,68 +1014,95 @@ public class HomeController extends Controller {
 					line.getPoints().remove(size-2);
 				}
 			}
-
-			if(Math.abs(x2-x)<10) { 
-				if(Math.abs(y2-y)<10) switching = 0; 
-				else switching = 1;
-			}else {
-				if(Math.abs(y2-y)<10) switching = 0;
-			} 		
-
-			if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
-			else line.getPoints().addAll(x,y2,x2,y2);
-
 		}else {
-			Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
-		}
-		return line;
-	}
-	
-	public Polyline tracerSortieApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) {//Trecer les lignes de sorties apres le collage
-		int i = 0;
-        double x2 = crdDebut.getX();
-        double y2 = crdDebut.getY();
-       // if(!relocate) {
-		x = line.getPoints().get(4);
-		y = line.getPoints().get(5);
-		for (i = 0; i < 4; i++) {
-			line.getPoints().remove((0));
-		}
-		if(line.getPoints().size() > 6) {
-		if(nbOccPoint(line, line.getPoints().get(0), line.getPoints().get(1)) == 1){
-			if((Math.abs(line.getPoints().get(0)-x2)<10) && (Math.abs(line.getPoints().get(1)-y2)<10)) {
-				line.getPoints().remove(0);
-				line.getPoints().remove(0);
-			}
-		}
-		}else {
-			if(!relocate) { //un seul polyline 
+			int sizeArray = Circuit.getListFromPolyline(line).size();
 			if(Circuit.getListFromPolyline(line).size() > 1) { //pour ne pas supprimer le premier polyline
-				Polyline line2 = Circuit.getListFromPolyline(line).get(1).getLinePrincipale();
-				if((Math.abs(line.getPoints().get(line.getPoints().size()-2)-line2.getPoints().get(0))<10) && (Math.abs(line.getPoints().get(line.getPoints().size()-1)-line2.getPoints().get(1))<10)) {
+				//Polyline line2 = Circuit.getListFromPolyline(line).get(sizeArray-2).getLinePrincipale();
+				Polyline line2 = Circuit.getInfoPolylineFromPolyline(line).getLineParent();
+				if((Math.abs(line.getPoints().get(0)-line2.getPoints().get(line2.getPoints().size()-2))<6) && (Math.abs(line.getPoints().get(1)-line2.getPoints().get(line2.getPoints().size()-1))<6)) {
 					//Si le prochain polyline a les memes coordonnees de debut que celle de la derniere du polyline actuel
-					if((Math.abs(line.getPoints().get(0)-x2)<5) && (Math.abs(line.getPoints().get(1)-y2)<5)) {
-					//Suppression
+					if((Math.abs(line.getPoints().get(0)-x2)<6) && (Math.abs(line.getPoints().get(1)-y2)<6)) {
+						//Suppression
 						line.getPoints().clear();
-						Circuit.getListFromPolyline(line).remove(0);
-						listSorties.add(listSorties.indexOf(line), line2);
-						listSorties.remove(line);
-						Circuit.getInfoPolylineFromPolyline(line2).setLineParent(null);
+						line2.getPoints().remove(line2.getPoints().size()-1);line2.getPoints().remove(line2.getPoints().size()-1);
+						line2.getPoints().remove(line2.getPoints().size()-1);line2.getPoints().remove(line2.getPoints().size()-1);
+						InfoPolyline info = Circuit.getInfoPolylineFromPolyline(line2);
+						info.setNbFils(info.getNbFils()-1);
+						info.copierRelierInfo(Circuit.getInfoPolylineFromPolyline(line));
+						Circuit.getListFromPolyline(line).remove(sizeArray-1);
+						listEntrees.add(listEntrees.indexOf(line), line2);
+						listEntrees.remove(line);
 						line = line2;
 					}
 				}
 			}
-		}else{
-			if(!Circuit.getInfoPolylineFromPolyline(line).isRelier())
-				Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
-			}
 		}
-		if(Math.abs(x2-x)<10) { 
-			if(Math.abs(y2-y)<10) switching = 0; 
+
+		if(Math.abs(x2-x)<10) {
+			if(Math.abs(y2-y)<10) switching = 0;
 			else switching = 1;
 		}else {
 			if(Math.abs(y2-y)<10) switching = 0;
-		} 	
+		}
+
+		if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
+		else line.getPoints().addAll(x,y2,x2,y2);
+		return line;
+	}
+
+	public Polyline tracerSortieApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) {//Trecer les lignes de sorties apres le collage
+		int i = 0;
+		double x2 = crdDebut.getX();
+		double y2 = crdDebut.getY();
+
+		x = line.getPoints().get(4);
+		y = line.getPoints().get(5);
+		if(!relocate) {
+			for (i = 0; i < 4; i++) {
+				line.getPoints().remove((0));
+			}
+			if(line.getPoints().size() > 6 ) {
+				if(nbOccPoint(line, line.getPoints().get(0), line.getPoints().get(1)) == 1){
+					if((Math.abs(line.getPoints().get(0)-x2)<10) && (Math.abs(line.getPoints().get(1)-y2)<10)) {
+						line.getPoints().remove(0);
+						line.getPoints().remove(0);
+					}
+				}
+			}else {
+				if(Circuit.getListFromPolyline(line).size() > 1) { //pour ne pas supprimer le premier polyline
+					Polyline line2 = Circuit.getListFromPolyline(line).get(1).getLinePrincipale();
+					if((Math.abs(line.getPoints().get(line.getPoints().size()-2)-line2.getPoints().get(0))<10) && (Math.abs(line.getPoints().get(line.getPoints().size()-1)-line2.getPoints().get(1))<10)) {
+						if((Math.abs(line.getPoints().get(0)-x2)<5) && (Math.abs(line.getPoints().get(1)-y2)<5)) {
+							//Suppression
+							line.getPoints().clear();
+							Circuit.getListFromPolyline(line).remove(0);
+							listSorties.add(listSorties.indexOf(line), line2);
+							listSorties.remove(line);
+							Circuit.getInfoPolylineFromPolyline(line2).setLineParent(null);
+							line = line2;
+						}
+					}
+				}
+			}
+		}else{
+			if(!Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
+				Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
+			}else {
+				for (i = 0; i < 4; i++) {
+					line.getPoints().remove((0));
+				}
+				if((Math.abs(line.getPoints().get(0)-x2)<10) && (Math.abs(line.getPoints().get(1)-y2)<10) && line.getPoints().size()>2) {
+					line.getPoints().remove(0);
+					line.getPoints().remove(0);
+				}
+			}
+		}
+		if(Math.abs(x2-x)<10) {
+			if(Math.abs(y2-y)<10) switching = 0;
+			else switching = 1;
+		}else {
+			if(Math.abs(y2-y)<10) switching = 0;
+		}
 		if(switching == 0) {
 			line.getPoints().add(0, x2);
 			line.getPoints().add(1, y2);
@@ -1007,31 +1115,33 @@ public class HomeController extends Controller {
 			line.getPoints().add(2, x);
 			line.getPoints().add(3, y2);
 		}
-        return line;
+		return line;
 	}
-	
+
 	
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant 
 		//est ajoute dans le workSpace
-
-		eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() { /// apres que la souris est entré dans le composant
-			public void handle(MouseEvent e) {
-				eleementAdrager.setCursor(Cursor.HAND);   
-
-			}
-		});
-
-		eleementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() { /// si la souris sort du composant
-
+		
+	    eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
+	        public void handle(MouseEvent e) {
+	            eleementAdrager.setCursor(Cursor.HAND);   
+	            
+	        }
+	    });
+	    
+	    eleementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() {
+			
 			@Override
 			public void handle(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				eleementAdrager.setCursor(Cursor.DEFAULT);
+				 eleementAdrager.setCursor(Cursor.DEFAULT);
 			}
-		});	    
+		});
+	    
 	    eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
 	        public void handle(MouseEvent e) {
 	        	if (! simul) {		
+
 					posX = eleementAdrager.getLayoutX();
 					posY = eleementAdrager.getLayoutY();
 
@@ -1056,6 +1166,7 @@ public class HomeController extends Controller {
 						});
 
 					}else{
+						
 						double clicDroitX,clicDroitY;
 						Composant composant=Circuit.getCompFromImage(eleementAdrager);
 						clicDroitX = e.getScreenX();
@@ -1066,9 +1177,12 @@ public class HomeController extends Controller {
 
 						//clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY, homeWindow);
 						clickDroitFenetre = new ClickDroit(composant,clicDroitX,clicDroitY,workSpace, homeWindow);
-
 						clickDroitFenetre.show();
-						elementAmodifier=eleementAdrager;	        		
+						if (clickSouris2 != null) {
+							clickSouris2.close();
+						}	        	
+						elementAmodifier=eleementAdrager;
+						elementSeclecionner=eleementAdrager;
 					}
               	//traitement de pressed ajoutergest apres coallge
 	        	int size = 0;
@@ -1081,7 +1195,6 @@ public class HomeController extends Controller {
 	        		if(cmp.getEntrees()[i] != null) {
 	        			crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
 	        			line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
-
 	    	        	listEntrees.add(line);
 	        		}
 	        	}
@@ -1098,6 +1211,7 @@ public class HomeController extends Controller {
 	        		if( ((Sequentiels)cmp).getEntreeHorloge() != null) {
 	        			crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
 	        			line = ((Sequentiels)cmp).getEntreeHorloge().polylineParPoint(crdDebut);
+
 	    	        	listEntrees.add(line);
 	        		}
 
@@ -1122,6 +1236,7 @@ public class HomeController extends Controller {
 	        			line = ((Sequentiels)cmp).getLoad().polylineParPoint(crdDebut);
 	    	        	listEntrees.add(line);
 					}
+
 				}
 	        	listSorties.clear();
 	        	for(i = 0; i < cmp.getNombreSortie();i++){
@@ -1131,6 +1246,7 @@ public class HomeController extends Controller {
 	    	        	listSorties.add(line);
 	        	}
 	        	//hna tekmeel
+
 					eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() { /// si le composant est dragé .
 						public void handle(MouseEvent e) {
 							if (! simul) {
@@ -1213,40 +1329,76 @@ public class HomeController extends Controller {
 
 									updatePolyline(eleementAdrager);   
 
-								}
-							}
-						}
-					});
-					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() { /// quand le user depose le composant
+	        					}
+
+	        					else 
+	        					{
+	        						guideX.setLayoutX(0);
+	        						guideY.setLayoutY(0);
+	        						guideXp.setLayoutX(0);
+	        						guideYp.setLayoutY(0);
+	        						afficheurX.setText("X : 0");
+	        						afficheurY.setText("Y : 0");
+
+	        					}	    
+	        					if(e.getSceneX() > 1275)
+	        					{
+	        						scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+	        						scrollPane.setHvalue(scrollPane.getHvalue()+0.01);
+	        					}
+	        					if(e.getSceneX() < 210)
+	        					{							
+	        						scrollPane.setHvalue(scrollPane.getHvalue()-0.01);
+	        					}
+	        					if(e.getSceneY() > 700)
+	        					{
+	        						scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+	        						scrollPane.setVvalue(scrollPane.getVvalue()+0.01);
+	        					}
+	        					if(e.getSceneY() < 0)
+	        					{							
+	        						scrollPane.setVvalue(scrollPane.getVvalue()-0.01);
+	        					}
+	        					e.consume();
+
+	        					updatePolyline(eleementAdrager);   
+
+	        				}
+	        			}
+	        		
+	        	
+	        	});
+					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent e) {
 							if (! simul) {
-								insererNoedDebut = true;
-								dragItem = null;  	 
-								if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
-								{
-									Donnes sauveGarde=new Donnes();
-									sauveGarde.setTypeDaction(Actions.Mouvement);
-									sauveGarde.setComposantCommeImage(eleementAdrager);
-									sauveGarde.setPosX(posX);
-									sauveGarde.setPosY(posY);
-									undoDeque.addFirst(sauveGarde);
-								}
-								eleementAdrager.setMouseTransparent(false);
-								eleementAdrager.setCursor(Cursor.DEFAULT);
-								if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(eleementAdrager))
-								{
-									eleementAdrager.setLayoutX(posX);
-									eleementAdrager.setLayoutY(posY);
-									updatePolyline(eleementAdrager);
-								}
-								else {
-									posX = eleementAdrager.getLayoutX();
-									posY = eleementAdrager.getLayoutY();
-								}
-								insererNoedDebut = true;
+							dragItem = null;  	 
+							if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
+							{
+							Donnes sauveGarde=new Donnes();
+							sauveGarde.setTypeDaction(Actions.Mouvement);
+							sauveGarde.setComposantCommeImage(eleementAdrager);
+							sauveGarde.setPosX(posX);
+							sauveGarde.setPosY(posY);
+							undoDeque.addFirst(sauveGarde);
+							}
+							eleementAdrager.setMouseTransparent(false);
+							eleementAdrager.setCursor(Cursor.DEFAULT);
+							if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(eleementAdrager))
+							{
+								eleementAdrager.setLayoutX(posX);
+								eleementAdrager.setLayoutY(posY);
+							    updatePolyline(eleementAdrager);
+								
+							}
+							else {
+								posX = eleementAdrager.getLayoutX();
+								posY = eleementAdrager.getLayoutY();
+							}
+							insererNoedDebut = true;
 							}
 						}
 					});
+
 	        	}else {
 	        		if(ListTextPin == null) {
 	        			if (eleementAdrager.getId().equals("pin")) {
@@ -1256,7 +1408,7 @@ public class HomeController extends Controller {
 	        						@Override
 	        						public void handle(MouseEvent e) {
 	        							// TODO Auto-generated method stub
-	        							if(simul) {
+	        							if(simul && ListTextPin == null) {
 	        							if (pin.getEtat() == EtatLogique.ONE) {
 	        								pin.setEtat(EtatLogique.ZERO);
 	        							} 
@@ -1313,7 +1465,12 @@ public class HomeController extends Controller {
 		});
 	}
 	
-	public void transitionDesComposants(Node composants) {// Methode d'animation de vibration des composants
+
+	
+
+	
+	
+	public void transitionDesComposants(Node composants) {// Methode d'animation de 'Shake'
 	    int duration = 100;
 	    int count = 3;
 
@@ -1338,7 +1495,6 @@ public class HomeController extends Controller {
 	    transition2.play();
 	    transition3.play();
 	}
-	
 	 void tracerLesregles(AnchorPane w) {// Methode de tracage des Regles
 		 System.out.println(w.getPrefHeight());
 	        boolean v = true;
@@ -1471,25 +1627,27 @@ public class HomeController extends Controller {
 	        }
 	    }
 	     
-	private void rotationDelogo(ImageView image,int nombreDeboucle,int vitesse,boolean returne) {// Methode de rotation de logo
+	private void rotationDelogo(ImageView image,int nombreDeboucle,int vitesse, boolean returne) {// Methode de rotation de logo
 
 	     RotateTransition rotate = new RotateTransition();           	     
-	        rotate.setAxis(Rotate.Z_AXIS);  	          	       
-	      if(returne)  rotate.setByAngle(360); 
-	      else rotate.setByAngle(1440);
+	        rotate.setAxis(Rotate.Z_AXIS);  
+	        if(returne)
+	        	rotate.setByAngle(360);  	
+	        else
+	        	rotate.setByAngle(1440);
 	        rotate.setCycleCount(nombreDeboucle);  
 	        rotate.setDuration(Duration.millis(vitesse));   
 	        rotate.setAutoReverse(false);  	              
 	        rotate.setNode(image);    
 	        rotate.play();
-	  
+	    
 	        rotate.setOnFinished(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {			         
 				        logo.setRotate(0);
 				}
 			});
-	    
+	     
 	}
  
 	private void tracerLesGuides() {//Methode d'initialitaton des guides
@@ -1553,7 +1711,7 @@ public class HomeController extends Controller {
         guideFilY.setEndX(workSpace.getMaxWidth());
         guideFilY.setEndY(0);
 	}
-	private void instanceComposant(ImageView img) { /// instancer un composant par defaut 
+	private void instanceComposant(ImageView img) {
 		Composant comp;
 		switch (img.getId()) {
 		case "hex" :{
@@ -1628,7 +1786,6 @@ public class HomeController extends Controller {
 		}
 		Circuit.ajouterComposant(comp, img);
 	}
-	
 	/*private Polyline AjouterLignesInitiale(ImageView composant) {
     	double x=composant.getLayoutX()+composant.getBoundsInLocal().getWidth()-5;
     	double y=composant.getLayoutY()+composant.getBoundsInLocal().getHeight()/2;
@@ -1641,9 +1798,10 @@ public class HomeController extends Controller {
 		testPoly = a;
 		return a;
     }*/
-	
-	private boolean intersectionComposant(ImageView image) { /// savoir s'il ya une intersection entre les coordonnées des composants
-		boolean trouv = false;
+
+
+	 private boolean intersectionComposant(ImageView image) {
+		 boolean trouv = false;
 		Collection<ImageView> list = Circuit.getCompUtilises().values();
 		Iterator<ImageView> iterator = list.iterator();
 		ImageView img;
@@ -1656,7 +1814,8 @@ public class HomeController extends Controller {
 		return trouv;
 	}
 	 
-	private boolean intersectionCoordone(ImageView origin,ImageView copie) { /// savoir s'il ya une intersection entre deux images des composants
+	 
+	private boolean intersectionCoordone(ImageView origin,ImageView copie) {
 		
 		boolean verifX = false;
 		boolean verifY = false;
@@ -1692,190 +1851,184 @@ public class HomeController extends Controller {
 		return false;
 	}
 
-	public int nbOccPoint(Polyline line,double x, double y) { /// savoir le nombre d'occurence d'un point dans un polyline
+	public int nbOccPoint(Polyline line,double x, double y) {
 		ArrayList<Double> list = new ArrayList<Double>(line.getPoints());
 		int i = 0, nb=0;
 		while(i < list.size()) {
 			if((list.get(i)==x) && (list.get(i+1)==y ))
-				nb=nb+1;
-			
-			i=i+2;
+				{
+					nb=nb+1;
+				}
+		i=i+2;
 		}
 		return nb;
 	}
 	
 	///////////////////////////////////////////////////////////-> Bar Droite <-/////////////////////////////////////////////////////////////
 	
-	@FXML
-	void supprimerTout(ActionEvent event) { /// la suppression de tout le contenu de la grille
-		if (! simul) {
-			Circuit.clearCircuit();
+
+
+	    @FXML
+	    void supprimerTout(ActionEvent event) {
+	    	if (! simul) {
+				Circuit.clearCircuit();
+				workSpace.getChildren().clear();
+				horloged = false;
+				tracerLesregles(workSpace);	
+			}
+	    }
+	    
+
+	    @FXML
+	    public void copier(ActionEvent event) {
+	    	if(elementSeclecionner != null) {
+	    		setCopierActive(true);
+	    		Stage s = (Stage) copier.getScene().getWindow();
+	    		s.close();
+	    	}
+	    }
+	    public void coller(ActionEvent event) {
+	    		cc = true;
+	    		CopyUses();
+	   	    	Stage stage = (Stage) coller.getScene().getWindow();
+	   	    	stage.close();		
+	    }
+	    
+	    
+	    
+	    public void CopyUses() {
+	    	if (elementSeclecionner != null) {
+	    		if(!pastButton) {
+	    			ImageView dragImageView = new ImageView();
+	    			dragImageView.setLayoutX(ctrlX);
+	    			dragImageView.setLayoutY(ctrlY);
+	    			dragImageView.setId(elementSeclecionner.getId());
+	    			instanceComposant(dragImageView);		
+	    			if(!copyActive)
+	    				composantCopy = Circuit.getCompFromImage(elementSeclecionner);
+	    			Composant cmp2 = Circuit.getCompFromImage(dragImageView);
+	    			cmp2.setDirection(composantCopy.getDirection());
+	    			cmp2.setIcon(composantCopy.getIcon());
+	    			cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
+	    			cmp2.setNom(composantCopy.getNom());
+	    			cmp2.setNombreEntree(composantCopy.getNombreEntree());
+	    			cmp2.setNombreSortieAndUpdateFil(composantCopy.getNombreSortie());
+	    			if(cmp2.getClass().getSimpleName().equals("Multiplexeur")){
+	    				((Multiplexeur)cmp2).setNbCommande(((Multiplexeur)composantCopy).getNbCommande());
+	    				cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
+	    			}
+	    			else
+	    				if(cmp2.getClass().getSimpleName().equals("Demultiplexeur")){
+	    					((Demultiplexeur)cmp2).setNbCommande(((Demultiplexeur)composantCopy).getNbCommande());
+	    					cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
+	    				}
+
+	    			cmp2.setCord();
+	    			cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
+	    			cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
+	    			dragImageView.setImage(elementSeclecionner.getImage());
+	    			dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
+	    			dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());		
+	    			workSpace.getChildren().add(dragImageView);
+	    			ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+	    			addAllPolylinesToWorkSpace(polyline);
+	    			ajouterLeGestApresCollage(dragImageView);
+	    			elementSeclecionner = dragImageView;
+	    		}
+	    	}
+
+	    }
+
+	    /*-----------------------------------------------------*/
+	    
+	    @FXML
+	    void annuler(ActionEvent event) {
+	    	//System.out.println("le boutton annuler est clique");
+	    	undoChanges(workSpace);
+
+	    }
+	    
+	    @FXML
+		void supprimer(ActionEvent event) { /// pour appliquer une suppression sur 
+			if (elementSeclecionner != null) {
+				cmp = Circuit.getCompFromImage(elementSeclecionner);
+				elementAsuprimer = elementSeclecionner;
+				sauveGarderSupression();
+				if(elementAsuprimer.getId().equals("clock"))
+				{
+					HomeController.horloged =false;
+					HomeController.horlogeDeCercuit =null; 
+				}
+				workSpace.getChildren().remove(elementSeclecionner);
+				removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));
+			}
+		}
+	  
+	    
+	    @FXML
+	    void couper(ActionEvent event) {
+	    	copierActive = true;
+            copyActive = true;
+            
+            
+            ImageView sauv = elementSeclecionner;
+            workSpace.getChildren().remove(elementSeclecionner);
+           
+            Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
+           composantCopy = composantCouper;
+            		
+			ArrayList<Polyline> lineListe=Circuit.supprimerComp(composantCouper);
+			 for(Polyline line : lineListe)
+				 workSpace.getChildren().remove(line);
+
+			 
+	             elementSeclecionner  = sauv ;
+	             
+	             Stage s = (Stage) couper.getScene().getWindow();
+	             s.close();
+	    
+	    }
+	    
+
+	    /*----------------------fichier------------------------------------*/
+
+
+	    @FXML
+	    void fermer(ActionEvent event) {
+	    	Stage stage = (Stage) fermer.getScene().getWindow();
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setContentText("Voullez vous vraimment quitter ! ");
+			Optional<ButtonType> result = alert.showAndWait();	    		
+			if(result.get() == ButtonType.OK){
+			Stage s = (Stage) stage.getOwner();
+			s.close();
+			
+			}
+	    }
+
+	    @FXML
+	    void nouveau(ActionEvent event) {
+	    	Stage stage = (Stage) nouveau.getScene().getWindow();
+	    	stage.close();
+	    	Alert alert = new Alert(AlertType.CONFIRMATION);
+	    	alert.setContentText("Voullez vous sauvgarder ce circuit");
+	    	Optional<ButtonType> result = alert.showAndWait();	    		
+	    	if(result.get() == ButtonType.OK){
+	    		final FileChooser fileChooser = new FileChooser();
+	    		File f = fileChooser.showSaveDialog(homeWindow);
+	    		if (f != null) {
+	    			System.out.println("the name of the file is : "+f.getAbsolutePath());
+	    			Sauvegarde sauvegarde = new Sauvegarde();
+	    			sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
+	    		}		
+	    	}
+	    	Circuit.clearCircuit();
 			workSpace.getChildren().clear();
 			horloged = false;
 			tracerLesregles(workSpace);	
-		}
-	}    
-
-	@FXML
-	public void copier(ActionEvent event) { /// faire une copie
-		System.out.println("l'element est bien selecltionner : "+elementSeclecionner.getId());
-		setCopierActive(true);
-		Stage s = (Stage) copier.getScene().getWindow();
-		s.close();
-
-	}
-
-	public void coller(ActionEvent event) { /// coller
-		cc = true;
-		Stage stage = (Stage) coller.getScene().getWindow();
-		stage.close();
-
-	}
-
-	public void copierCollerParBouttons() { /// utilisation des touches pour faire une copie
-		final KeyCombination kb1 = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
-		final KeyCombination kb2 = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_ANY);
-		
-		workSpace.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
-			if(cc) {	
-				cc = false;
-				//x = (int) event.getSceneX()-200;
-				//y= (int) event.getSceneY();
-				ctrlX = event.getX();
-				ctrlY = event.getY();
-				
-				ImageView dragImageView = new ImageView();
-				dragImageView.setLayoutX(ctrlX);
-				dragImageView.setLayoutY(ctrlY);
-				dragImageView.setId(elementSeclecionner.getId());
-				instanceComposant(dragImageView);		
-				Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
-				Composant cmp2 = Circuit.getCompFromImage(dragImageView);
-				
-				cmp2.setDirection(cmp.getDirection());
-				cmp2.setIcon(cmp.getIcon());
-				cmp2.setLesCoordonnees(cmp.getLesCoordonnees());
-				cmp2.setNom(cmp.getNom());
-				cmp2.setNombreEntree(cmp.getNombreEntree());
-				cmp2.setNombreSortie(cmp.getNombreSortie());
-//				cmp2.setCord();
-//				cmp2.generatePolyline(ctrlX, ctrlY);	
-				Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
-				dragImageView.setImage(img);
-				dragImageView.setFitHeight(img.getHeight());
-				dragImageView.setFitWidth(img.getWidth());		
-				workSpace.getChildren().add(dragImageView);
-
-				ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-				addAllPolylinesToWorkSpace(polyline);
-				ajouterLeGestApresCollage(dragImageView);	
-			}
-		});
-
-		homeScene.setOnKeyPressed(new EventHandler<KeyEvent>() { /// si user clique sur "CTRL + C"
-			public void handle(final KeyEvent keyEvent) {
-				if (kb1.match(keyEvent)) {
-					System.out.println("control + c are pressed !");
-					System.out.println("l'element selectionner est : "+ elementSeclecionner.getId());
-					setCopierActive(true);	  
-					keyEvent.consume();
-				}
-
-				keyEvent.consume();
-			   
-				if (kb2.match(keyEvent) && getCopierActive()) {/// si user clique sur "CTRL + V"
-
-					System.out.println("control + v are pressed !");	    
-					ImageView dragImageView = new ImageView();
-					dragImageView.setLayoutX(ctrlX);
-					dragImageView.setLayoutY(ctrlY);
-					dragImageView.setId(elementSeclecionner.getId());
-					instanceComposant(dragImageView);		
-					Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
-					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
-					cmp2.setDirection(cmp.getDirection());
-					cmp2.setIcon(cmp.getIcon());
-					cmp2.setLesCoordonnees(cmp.getLesCoordonnees());
-					cmp2.setNom(cmp.getNom());
-					cmp2.setNombreEntree(cmp.getNombreEntree());
-					cmp2.setNombreSortie(cmp.getNombreSortie());
-					cmp2.setCord();
-					cmp2.generatePolyline(ctrlX, ctrlY);	
-					Image img = new Image(Circuit.getCompFromImage(elementSeclecionner).generatePath());
-					dragImageView.setImage(img);
-					dragImageView.setFitHeight(img.getHeight());
-					dragImageView.setFitWidth(img.getWidth());		
-					workSpace.getChildren().add(dragImageView);
-
-					ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-					addAllPolylinesToWorkSpace(polyline);
-					ajouterLeGestApresCollage(dragImageView);	
-					
-				}
-
-			}
-
-		});
-
-	}
-
-	@FXML
-	void annuler(ActionEvent event) { /// pour appliquer l'opertaion de undo changes
-		undoChanges(workSpace);
-	}
-
-	@FXML
-	void supprimer(ActionEvent event) { /// pour appliquer une suppression sur 
-		if (elementSeclecionner != null) {
-			cmp = Circuit.getCompFromImage(elementSeclecionner);
-			elementAsuprimer = elementSeclecionner;
-			sauveGarderSupression();
-			if(elementAsuprimer.getId().equals("clock"))
-			{
-				HomeController.horloged =false;
-				HomeController.horlogeDeCercuit =null; 
-			}
-			workSpace.getChildren().remove(elementSeclecionner);
-			removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));
-		}
-	}
-
-	@FXML
-	void fermer(ActionEvent event) { /// pour quiter l'application
-		Stage stage = (Stage) fermer.getScene().getWindow();
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setContentText("Voullez vous vraimment quitter ! ");
-		Optional<ButtonType> result = alert.showAndWait();	    		
-		if(result.get() == ButtonType.OK){
-			Stage s = (Stage) stage.getOwner();
-			s.close();		
-		}
-	}
-
-	@FXML
-	void nouveau(ActionEvent event) { /// pour creer une autre fenetre .
-		try {
-			Stage stage = new Stage();
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Home.fxml"));
-			Parent root =(Parent)fxmlLoader.load();
-			HomeController m =(HomeController)fxmlLoader.getController();
-
-			m.setHomeControllerStage(stage);
-			m.setHomeControllerScene(homeScene);
-			m.inisialiser();
-
-			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-			stage.setScene(scene);  
-			stage.setResizable(false);
-
-			stage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
+	    }
 	    @FXML
-	    void ouvrir(ActionEvent event) { /// la fontionalité d'ouverture d'un ficher 
+	    void ouvrir(ActionEvent event) {
 	    	/*final DirectoryChooser directoryChooser = new DirectoryChooser();
 	            final File selectedDirectory = directoryChooser.showDialog(homeWindow);*/
 	            final FileChooser fileChooser = new FileChooser();
@@ -1887,6 +2040,7 @@ public class HomeController extends Controller {
 	                );
 	            
 	            File f = fileChooser.showOpenDialog(homeWindow);
+
 	            /// ils faut afficher une alerte pour dire au user s'il veut sauvegarder son travail ou pas
 	            if (f != null) {
 		            supprimerTout(null);
@@ -1894,23 +2048,22 @@ public class HomeController extends Controller {
 		            ajouterElements();
 				}
 	    }
-	        
+	    
+	    
+	    
+	    
 	    @FXML
-	    void save(ActionEvent event) { /// la fonctionnalité de sauvegarde
-
+	    void save(ActionEvent event) {    	
 	    	if(Circuit.getCompUtilises().isEmpty()) {
 	    		Alert a = new Alert(AlertType.INFORMATION);
-	    		a.setContentText("le circuit est vide y a rien a sauvgarder");
-
-	    		a.show();
+		    	a.setContentText("le circuit est vide y a rien a sauvgarder");
+		    	a.show();
 	    	}
 	    	else
-
 	    	{
 	    		Alert a = new Alert(AlertType.INFORMATION);
-	    		a.setContentText("le circuit est bien sauvgarde");
-
-	    		a.show();
+		    	a.setContentText("le circuit est bien sauvgarde");
+		    	a.show();
 	    	}
 	    }
 	    
@@ -1925,7 +2078,10 @@ public class HomeController extends Controller {
 			}
 	    }
 
+	    
+	    
 	    @FXML
+
 	    void importer(ActionEvent event) { /// la fonctionalité importer circuit integré
 
 	    	final FileChooser fileChooser = new FileChooser();
@@ -1969,10 +2125,12 @@ public class HomeController extends Controller {
 	    		}
 			}
 	    }
-
+	    
+	    
 	    @FXML
-	    void encapsulerEtSauvgarder(ActionEvent event) { /// l'encapsulation et la sauvegarde
+	    void encapsulerEtSauvgarder(ActionEvent event) {
 	    	final FileChooser fileChooser = new FileChooser();
+
 	    	File f = fileChooser.showSaveDialog(homeWindow);
 	    	if (f != null) {
 	    		FileOutputStream fichier ;
@@ -1997,8 +2155,11 @@ public class HomeController extends Controller {
 	    		}
 			}
 	    }
+	    
+	    /*---------------------------affichage--------------------------------*/
 
 	    @FXML
+
 	    void chronogramme(ActionEvent event) { /// charger la fenetre du chronogramme
 	    	if(simul && ! Circuit.getListeEtages().isEmpty() && horloged)
 	    	{
@@ -2043,6 +2204,7 @@ public class HomeController extends Controller {
 	    }
 
 	    @FXML
+
 	    void tableDeVerite(ActionEvent event) { /// charger la fenetre du table de verité
 	    	if(Circuit.getEntreesCircuit().size() != 0) {
 	    	if(ListTextPin == null) {
@@ -2136,52 +2298,90 @@ public class HomeController extends Controller {
 				alert.showAndWait();
 	    	}
 	    }
+	
+	
+	
+	/*------------------------about --------------------------------*/
+	  
 
 	    @FXML
-	    void aboutSimulIni(ActionEvent event) { // charger la fenetre de about simulini
-	    	try {
-	    		Stage s = (Stage) about.getScene().getWindow();
-	    		s.close();   		 
-	    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/About.fxml"));
-	    		Parent root1 = fxmlLoader.load();
-	    		Stage stage = new Stage();
-	    		Scene scene = new Scene(root1);
-	    		scene.getStylesheets().add(getClass().getResource("/styleFile/about.css").toExternalForm());
-	    		stage.setScene(scene);  
-	    		stage.setTitle("About SimulINI");
-	    		stage.setResizable(false);
-	    		stage.initModality(Modality.APPLICATION_MODAL);
-	    		stage.show();
-	    	} catch(Exception e) {
-	    		e.printStackTrace();
-	    	}
+	    void aboutSimulIni(ActionEvent event) {
+	    	 try {
+	    		 
+	    		 	Stage s = (Stage) about.getScene().getWindow();
+	    		 	s.close();
+			        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/About.fxml"));
+			        Parent root1 = fxmlLoader.load();			        
+			        Stage stage = new Stage();
+			        Scene scene = new Scene(root1);
+					scene.getStylesheets().add(getClass().getResource("/styleFile/about.css").toExternalForm());
+			        stage.setScene(scene);  
+			        stage.setTitle("About SimulINI");
+			        stage.initOwner(s.getOwner());
+			        stage.setResizable(false);
+			        
+			        stage.initModality(Modality.APPLICATION_MODAL);
+				    
+			        stage.show();
+			        
+			    } catch(Exception e) {
+			        e.printStackTrace();
+			    }
 
 	    }
-   
-	    public void enligne(String l) {//une methode utilise pour ouvrir un lien dans le navigateur par defaut
-	    	try {
-	    		Desktop.getDesktop().browse(new URL(l).toURI());
-	    	} catch (MalformedURLException e) {
-	    		// TODO Auto-generated catch block
-	    		e.printStackTrace();
-	    	} catch (IOException e) {
-	    		// TODO Auto-generated catch block
-	    		e.printStackTrace();
-	    	} catch (URISyntaxException e) {
-	    		// TODO Auto-generated catch block
-	    		e.printStackTrace();
-	    	}
-	    }
+
+	    
+
+	   
+	public void enligne(String l) {//une methode utilise pour ouvrir un lien dans le navigateur par defaut
+			try {
+				Desktop.getDesktop().browse(new URL(l).toURI());
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
-		public void siteWeb(ActionEvent event) { // pour charger le site web
+		public void siteWeb(ActionEvent event) {
 			enligne("https://simulini.netlify.com");
 		}
 		
-		public void aideEnLigne(ActionEvent event) { // pour charger la documentation
+		public void aideEnLigne(ActionEvent event) {
 			enligne("https://simulini.netlify.com/page-2/");
 		}
+	
+	
+	
+	
+	/*-----------------------------click souris 2----------------------*/
+		
+		 @FXML
+		    private Button undoParSouris;
 
-	 void tracerLagrill() { // pour tracer la grille
+		    @FXML
+		    private Button collerParSouris;
+
+		    @FXML
+		    void annulerParSouris(ActionEvent event) {
+		    	undoChanges(workSpace);
+		    }
+
+		    @FXML
+		    void collerParSouris(ActionEvent event) {
+		    	copyMouse = true;
+	            pastButton = false;
+		    	Stage s = (Stage)collerParSouris.getScene().getWindow();		    	
+		    	s.close();
+		    }
+		    /*------------------------------------------------------*/
+
+	 void tracerLagrill() {
 	        for (int i = 0; i <= workSpace.getPrefWidth(); i += 15 ) {
 	            Line l1 = new Line();
 	            l1.toBack();
@@ -2214,15 +2414,18 @@ public class HomeController extends Controller {
 	        }
 	    }
 
-	 private void undoChanges(AnchorPane workSpace) // pour appliquer des undo des changements sur le circuit
+	 private void undoChanges(AnchorPane workSpace)
 	 {
+	
 		 if(! undoDeque.isEmpty())
 		 {
+			
+			 
 			 Donnes sauveGarde;
 			 sauveGarde= undoDeque.removeFirst();
 			 switch(sauveGarde.getTypeDaction())
 			 {
-
+	
 			 case Mouvement :
 			 {
 				 sauveGarde.getComposantCommeImage().setLayoutX(sauveGarde.getPosX());
@@ -2230,25 +2433,25 @@ public class HomeController extends Controller {
 			 }break;
 			 case Creation :
 			 {
-
+				
 				 System.out.println(sauveGarde.getComposant().toString());
 				 workSpace.getChildren().remove(sauveGarde.getComposantCommeImage());
-
-				 ArrayList<Polyline> lineListe= Circuit.supprimerComp(sauveGarde.getComposant());
+				 
+				ArrayList<Polyline> lineListe= Circuit.supprimerComp(sauveGarde.getComposant());
 				 for(Polyline line : lineListe)
 					 workSpace.getChildren().remove(line);
-
-
+			
+				
 			 }break;
 			 case Modification :
 			 {
 				 ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
 				 Composant composant= Circuit.getCompFromImage( imageDeComposant);
 				 imageDeComposant.setImage(sauveGarde.getImage());
-				 composant.setNombreEntree(sauveGarde.getNombreDesEntrees());
+	    		 composant.setNombreEntree(sauveGarde.getNombreDesEntrees());
 				 if(imageDeComposant.getId().equals("pin")) ((Pin)composant).setInput(sauveGarde.getTypePin());
-				 if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
-
+	             if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
+				 
 			 }break;
 			 case Supression:
 			 {
@@ -2258,30 +2461,32 @@ public class HomeController extends Controller {
 				 imageDeComposant.setLayoutY(sauveGarde.getPosY());
 				 Circuit.ajouterComposant(sauveGarde.getComposant(), imageDeComposant);
 				 ArrayList<Polyline> polyline = Circuit.getCompFromImage(imageDeComposant).generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY());
-				 addAllPolylinesToWorkSpace(polyline);
-				 sauveGarde.getComposant().relierANouveau();
+				addAllPolylinesToWorkSpace(polyline);
+				sauveGarde.getComposant().relierANouveau();
 			 }break;
-			 default:
-				 break;
+			 
+			 
+			default:
+				break;
+			 
 			 }
 		 }
 	 }
-	 
-	 public static void sauveGarderModification() // pour sauvegarder une modification des propriétes
-	 {
-		 Composant composant=Circuit.getCompFromImage(elementAmodifier);
-		 Donnes sauveGarde= new Donnes();
-		 sauveGarde.setTypeDaction(Actions.Modification);
-		 sauveGarde.setComposantCommeImage(elementAmodifier);
-		 sauveGarde.setImage(elementAmodifier.getImage());
-		 sauveGarde.setNombreDesEntrees(composant.getNombreEntree());
-		 if(elementAmodifier.getId().equals("pin")) sauveGarde.setTypePin(((Pin)composant).isInput());
-		 if(composant.getClass().isAssignableFrom(Sequentiels.class)) sauveGarde.setFront(((Sequentiels)composant).getFront());
-		 undoDeque.addFirst(sauveGarde);
-		 elementAmodifier=null;
-	 }
+ public static void sauveGarderModification()
+ {
+	 Composant composant=Circuit.getCompFromImage(elementAmodifier);
+		Donnes sauveGarde= new Donnes();
+		sauveGarde.setTypeDaction(Actions.Modification);
+		sauveGarde.setComposantCommeImage(elementAmodifier);
+		sauveGarde.setImage(elementAmodifier.getImage());
+		sauveGarde.setNombreDesEntrees(composant.getNombreEntree());
+     if(elementAmodifier.getId().equals("pin")) sauveGarde.setTypePin(((Pin)composant).isInput());
+     if(composant.getClass().isAssignableFrom(Sequentiels.class)) sauveGarde.setFront(((Sequentiels)composant).getFront());
+     undoDeque.addFirst(sauveGarde);
+     elementAmodifier=null;
+ }
 	
-	 public void captureEcran() { // pour faire une capture du circuit directement à l'interieur de l'application
+	 public void captureEcran() {
 		 WritableImage image = workSpace.snapshot(new SnapshotParameters(), null);
 		 File file = new File("D:\\Shot.jpg");
 		 try {
@@ -2291,8 +2496,9 @@ public class HomeController extends Controller {
 		 }
 	}
 
-	 public static void sauveGarderSupression() // pour faire une sauvegarde de suppression de composant
+	 public static void sauveGarderSupression()
 	 {
+
 			Donnes sauveGarde= new Donnes();
 			sauveGarde.setTypeDaction(Actions.Supression);
 			sauveGarde.setComposantCommeImage(elementAsuprimer);
@@ -2302,7 +2508,7 @@ public class HomeController extends Controller {
 	        undoDeque.addFirst(sauveGarde);
 	        elementAsuprimer=null;
 	 }
-	 private void updatePolyline(ImageView eleementAdrager) { // pour mettre update au fils utilsés
+	 private void updatePolyline(ImageView eleementAdrager) {
 		 Composant cmp = Circuit.getCompFromImage(eleementAdrager);
 			boolean relocate = false;
 			int i = 0, j = 0 ;
@@ -2391,6 +2597,10 @@ public class HomeController extends Controller {
 	 ArrayList<Polyline> sauv = new ArrayList<Polyline>();
 	 public void ajouterElements() {
 		 for (ImageView img : Circuit.getCompUtilises().values()) {
+			 if (img.getId().equals("clock")) {
+				horloged = true;
+				horlogeDeCercuit = img;
+			}
 			 workSpace.getChildren().add(img);
 			 ajouterLeGestApresCollage(img);
 		 }

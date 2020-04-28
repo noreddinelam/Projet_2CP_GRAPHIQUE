@@ -67,10 +67,11 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
         active=true;	
 		Circuit.initialiser();
 		while(active)// tant que l'horloge est active
-		{
-			this.evaluer();
-			image.setImage(new Image(generatePath()));
-			try {
+		{	
+	    	this.evaluer();
+			image.setImage(new Image(generatePath()) );
+			try {	
+
 			    if(HomeController.chrono) 
 			    	{		
 			    	   Platform.runLater(new Runnable() {
@@ -91,8 +92,14 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 			} catch (InterruptedException e) {// exception traité par la clasee thread
 				e.printStackTrace();
 			}
-		
 		}
+	}
+	
+	@Override
+	public void defaultValue() {
+		// TODO Auto-generated method stub
+		super.defaultValue();
+		etat = EtatLogique.ZERO;
 	}
 	
 	@Override
