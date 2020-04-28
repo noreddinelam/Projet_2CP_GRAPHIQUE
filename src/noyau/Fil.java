@@ -97,23 +97,20 @@ public class Fil implements Serializable{
 	public void addEtages(ArrayList<Integer> etage) {
 		source.addEtages(etage);
 	}
-	public Polyline polylineParPoint(Coordonnees crdrech) {
-		Coordonnees crd = new Coordonnees(0, 0);
-		ArrayList<InfoPolyline> list = Circuit.getPolylineFromFil(this);
-		for (InfoPolyline line : list) {
-			int i = 0;
-			while(i < line.getLinePrincipale().getPoints().size()) {
-				crd.setX(line.getLinePrincipale().getPoints().get(i));
-				crd.setY(line.getLinePrincipale().getPoints().get(i+1));
-				if(crd.equals(crdrech)){
-					System.out.println("dkhal hnaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-					return line.getLinePrincipale();
-				}
-				i=i+2;
-			}
-		}
-		return null;
+	public Polyline polylineParPoint(Coordonnees crdrech) {		
+		Coordonnees crd = new Coordonnees(0, 0);		
+		ArrayList<InfoPolyline> list = Circuit.getPolylineFromFil(this);		
+		for (InfoPolyline line : list) {			
+			int size = line.getLinePrincipale().getPoints().size();			
+			crd.setX(line.getLinePrincipale().getPoints().get(size - 2));			
+			crd.setY(line.getLinePrincipale().getPoints().get(size - 1));			
+			if(crd.equals(crdrech)){				
+				return line.getLinePrincipale();			
+			}		
+		}		
+		return null;	
 	}
+
 
 	public EtatLogique getEtat() {
 		return etat;

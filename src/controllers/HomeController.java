@@ -1000,18 +1000,17 @@ public class HomeController extends Controller {
 			});
 		
 	}
-	public Polyline tracerEntrerApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) {
-        //Trecer les lignes d'entrées apres le collage
+	public Polyline tracerEntrerApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) { ///Trecer les lignes d'entrées apres le collage
 		int i = 0;
 		double x2 = crdDebut.getX();
 		double y2 = crdDebut.getY();
-		if(!relocate) {
-			x = line.getPoints().get(line.getPoints().size()-6);
-			y = line.getPoints().get(line.getPoints().size()-5);
-			for (i = 0; i < 4; i++) {
-				line.getPoints().remove(line.getPoints().size()-1);
-			}
-			int size = line.getPoints().size();
+		x = line.getPoints().get(line.getPoints().size()-6);
+		y = line.getPoints().get(line.getPoints().size()-5);
+		for (i = 0; i < 4; i++) {
+			line.getPoints().remove(line.getPoints().size()-1);
+		}
+		int size = line.getPoints().size();
+		if(line.getPoints().size() >= 4) {
 			if(nbOccPoint(line, line.getPoints().get(size-2), line.getPoints().get(size-1)) == 1 && size != 2)
 			{
 				if((Math.abs(line.getPoints().get(size-2)-x2)<10) && (Math.abs(line.getPoints().get(size-1)-y2)<10)) {
@@ -1019,69 +1018,95 @@ public class HomeController extends Controller {
 					line.getPoints().remove(size-2);
 				}
 			}
-
-			if(Math.abs(x2-x)<10) { 
-				if(Math.abs(y2-y)<10) switching = 0; 
-				else switching = 1;
-			}else {
-				if(Math.abs(y2-y)<10) switching = 0;
-			} 		
-
-			if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
-			else line.getPoints().addAll(x,y2,x2,y2);
-
 		}else {
-			Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
-		}
-		return line;
-	}
-	
-	public Polyline tracerSortieApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) {
-        //Trecer les lignes de sorties apres le collage
-		int i = 0;
-        double x2 = crdDebut.getX();
-        double y2 = crdDebut.getY();
-       // if(!relocate) {
-		x = line.getPoints().get(4);
-		y = line.getPoints().get(5);
-		for (i = 0; i < 4; i++) {
-			line.getPoints().remove((0));
-		}
-		if(line.getPoints().size() > 6) {
-		if(nbOccPoint(line, line.getPoints().get(0), line.getPoints().get(1)) == 1){
-			if((Math.abs(line.getPoints().get(0)-x2)<10) && (Math.abs(line.getPoints().get(1)-y2)<10)) {
-				line.getPoints().remove(0);
-				line.getPoints().remove(0);
-			}
-		}
-		}else {
-			if(!relocate) { //un seul polyline 
+			int sizeArray = Circuit.getListFromPolyline(line).size();
 			if(Circuit.getListFromPolyline(line).size() > 1) { //pour ne pas supprimer le premier polyline
-				Polyline line2 = Circuit.getListFromPolyline(line).get(1).getLinePrincipale();
-				if((Math.abs(line.getPoints().get(line.getPoints().size()-2)-line2.getPoints().get(0))<10) && (Math.abs(line.getPoints().get(line.getPoints().size()-1)-line2.getPoints().get(1))<10)) {
+				//Polyline line2 = Circuit.getListFromPolyline(line).get(sizeArray-2).getLinePrincipale();
+				Polyline line2 = Circuit.getInfoPolylineFromPolyline(line).getLineParent();
+				if((Math.abs(line.getPoints().get(0)-line2.getPoints().get(line2.getPoints().size()-2))<6) && (Math.abs(line.getPoints().get(1)-line2.getPoints().get(line2.getPoints().size()-1))<6)) {
 					//Si le prochain polyline a les memes coordonnees de debut que celle de la derniere du polyline actuel
-					if((Math.abs(line.getPoints().get(0)-x2)<5) && (Math.abs(line.getPoints().get(1)-y2)<5)) {
-					//Suppression
+					if((Math.abs(line.getPoints().get(0)-x2)<6) && (Math.abs(line.getPoints().get(1)-y2)<6)) {
+						//Suppression
 						line.getPoints().clear();
-						Circuit.getListFromPolyline(line).remove(0);
-						listSorties.add(listSorties.indexOf(line), line2);
-						listSorties.remove(line);
-						Circuit.getInfoPolylineFromPolyline(line2).setLineParent(null);
+						line2.getPoints().remove(line2.getPoints().size()-1);line2.getPoints().remove(line2.getPoints().size()-1);
+						line2.getPoints().remove(line2.getPoints().size()-1);line2.getPoints().remove(line2.getPoints().size()-1);
+						InfoPolyline info = Circuit.getInfoPolylineFromPolyline(line2);
+						info.setNbFils(info.getNbFils()-1);
+						info.copierRelierInfo(Circuit.getInfoPolylineFromPolyline(line));
+						Circuit.getListFromPolyline(line).remove(sizeArray-1);
+						listEntrees.add(listEntrees.indexOf(line), line2);
+						listEntrees.remove(line);
 						line = line2;
 					}
 				}
 			}
-		}else{
-			if(!Circuit.getInfoPolylineFromPolyline(line).isRelier())
-				Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
-			}
 		}
-		if(Math.abs(x2-x)<10) { 
-			if(Math.abs(y2-y)<10) switching = 0; 
+
+		if(Math.abs(x2-x)<10) {
+			if(Math.abs(y2-y)<10) switching = 0;
 			else switching = 1;
 		}else {
 			if(Math.abs(y2-y)<10) switching = 0;
-		} 	
+		}
+
+		if(switching == 0) line.getPoints().addAll(x2,y,x2,y2);
+		else line.getPoints().addAll(x,y2,x2,y2);
+		return line;
+	}
+
+	public Polyline tracerSortieApresCollage(Polyline line ,Coordonnees crdDebut,boolean relocate) {//Trecer les lignes de sorties apres le collage
+		int i = 0;
+		double x2 = crdDebut.getX();
+		double y2 = crdDebut.getY();
+
+		x = line.getPoints().get(4);
+		y = line.getPoints().get(5);
+		if(!relocate) {
+			for (i = 0; i < 4; i++) {
+				line.getPoints().remove((0));
+			}
+			if(line.getPoints().size() > 6 ) {
+				if(nbOccPoint(line, line.getPoints().get(0), line.getPoints().get(1)) == 1){
+					if((Math.abs(line.getPoints().get(0)-x2)<10) && (Math.abs(line.getPoints().get(1)-y2)<10)) {
+						line.getPoints().remove(0);
+						line.getPoints().remove(0);
+					}
+				}
+			}else {
+				if(Circuit.getListFromPolyline(line).size() > 1) { //pour ne pas supprimer le premier polyline
+					Polyline line2 = Circuit.getListFromPolyline(line).get(1).getLinePrincipale();
+					if((Math.abs(line.getPoints().get(line.getPoints().size()-2)-line2.getPoints().get(0))<10) && (Math.abs(line.getPoints().get(line.getPoints().size()-1)-line2.getPoints().get(1))<10)) {
+						if((Math.abs(line.getPoints().get(0)-x2)<5) && (Math.abs(line.getPoints().get(1)-y2)<5)) {
+							//Suppression
+							line.getPoints().clear();
+							Circuit.getListFromPolyline(line).remove(0);
+							listSorties.add(listSorties.indexOf(line), line2);
+							listSorties.remove(line);
+							Circuit.getInfoPolylineFromPolyline(line2).setLineParent(null);
+							line = line2;
+						}
+					}
+				}
+			}
+		}else{
+			if(!Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
+				Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
+			}else {
+				for (i = 0; i < 4; i++) {
+					line.getPoints().remove((0));
+				}
+				if((Math.abs(line.getPoints().get(0)-x2)<10) && (Math.abs(line.getPoints().get(1)-y2)<10) && line.getPoints().size()>2) {
+					line.getPoints().remove(0);
+					line.getPoints().remove(0);
+				}
+			}
+		}
+		if(Math.abs(x2-x)<10) {
+			if(Math.abs(y2-y)<10) switching = 0;
+			else switching = 1;
+		}else {
+			if(Math.abs(y2-y)<10) switching = 0;
+		}
 		if(switching == 0) {
 			line.getPoints().add(0, x2);
 			line.getPoints().add(1, y2);
@@ -1094,8 +1119,7 @@ public class HomeController extends Controller {
 			line.getPoints().add(2, x);
 			line.getPoints().add(3, y2);
 		}
-        
-        return line;
+		return line;
 	}
 
 	
@@ -1388,7 +1412,7 @@ public class HomeController extends Controller {
 	        						@Override
 	        						public void handle(MouseEvent e) {
 	        							// TODO Auto-generated method stub
-	        							if(simul) {
+	        							if(simul && ListTextPin == null) {
 	        							if (pin.getEtat() == EtatLogique.ONE) {
 	        								pin.setEtat(EtatLogique.ZERO);
 	        							} 
