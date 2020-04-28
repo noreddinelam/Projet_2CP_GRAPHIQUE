@@ -66,8 +66,8 @@ public class Fil implements Serializable{
 
 		for (InfoPolyline polyline : line) {
 			polyline.getLinePrincipale().setStroke(Color.BLACK);
-			}
 		}
+	}
 	///// les methodes de suppression
 	public void derelierCompFromDestination(Composant composant) {
 		destination.remove(composant);

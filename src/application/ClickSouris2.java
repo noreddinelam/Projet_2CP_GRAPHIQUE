@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class ClickSouris2 extends Stage{
-	public ClickSouris2(Double x,Double y,AnchorPane workSpace, Stage st) {
+	public ClickSouris2(double x,double y,AnchorPane workSpace, Stage st) {
 
 	try
 	{			
@@ -24,7 +24,7 @@ public class ClickSouris2 extends Stage{
 		this.initStyle(StageStyle.UNDECORATED);
 		this.setY(y);
 		this.setFullScreen(false);
-		this.toBack();
+		//this.toBack();
 		this.initOwner(st);
 		this.show();
 		} catch(Exception e) {
@@ -33,10 +33,10 @@ public class ClickSouris2 extends Stage{
 	
 	}
 	
-	public void  setx(double x, double y) {
-		this.setX(x);
-		this.setY(y);
-	}
+//	public void  setx(double x, double y) {
+//		this.setX(x);
+//		this.setY(y);
+//	}
 	
 	
 

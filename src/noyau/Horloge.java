@@ -68,38 +68,35 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 		etat = EtatLogique.ONE;
 		this.evaluer();
 		Circuit.initialiser();
-	
 		while(active)// tant que l'horloge est active
 		{	
 	    	this.evaluer();
 			image.setImage(new Image(generatePath()) );
-	
-			try {
-			    
-		
+			try {	
 			    if(HomeController.chrono) 
 			    	{		
 			    	   Platform.runLater(new Runnable() {
 			               @Override public void run() {
-			            	
 			             	   ChronogrammeController.tracerFront(etat);
 			                   ChronogrammeController.refrecher();
 			                   ChronogrammeController.valeurSuivi();
-			                   
 			               if(etat.getNum()==1)    ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#90EE90;-fx-background-radius:15");
 			               else ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#303337;-fx-background-radius:15");
-		   	    
 			               }
 			           });
 			    	}
 				Thread.sleep(temps);
-			
-			
 			} catch (InterruptedException e) {// exception traité par la clasee thread
 				e.printStackTrace();
 			}
-			
 		}
+	}
+	
+	@Override
+	public void defaultValue() {
+		// TODO Auto-generated method stub
+		super.defaultValue();
+		etat = EtatLogique.ZERO;
 	}
 	
 	@Override

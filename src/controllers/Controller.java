@@ -36,11 +36,11 @@ public abstract class Controller {
 	protected int sauv;
 	
 	protected Composant cmp;
-    protected ClickDroitFil clickDroitFilFenetre;
-    protected Polyline lineDroit;
+    protected static ClickDroitFil clickDroitFilFenetre;
+    protected static Polyline lineDroit;
 	public static Stage homeWindow;
 	public static Scene homeScene;
-    public ClickSouris2 clickSouris2;
+    protected static ClickSouris2 clickSouris2;
 
 
 	//protected AnchorPane workSpace;
@@ -217,7 +217,7 @@ public abstract class Controller {
 					 		clicDroitY = event.getScreenY();
 					 		lineDroit = line;
 					 		line.setStroke(Color.web("00000070"));
-					 		if(clickSouris2.isShowing())
+					 		if(clickSouris2 != null)
 					 			clickSouris2.close();
 					 		clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY, homeWindow);
 					 		
