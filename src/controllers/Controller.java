@@ -299,9 +299,8 @@ public abstract class Controller {
 							if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3)) < 10 ) {
 								if(Math.abs(line.getPoints().get(der-4)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-5)-line.getPoints().get(der-3)) < 10)
 								{
-
 									InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
-									infoLine.supprimerPremierNoeuds();
+									infoLine.supprimerPremierNoeuds2();
 									workSpace.getChildren().remove(line);
 									Circuit.getListFromPolyline(line).remove(new InfoPolyline(line));
 									infoLine = Circuit.getInfoPolylineFromPolyline(infoLine.getLineParent());
