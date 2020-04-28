@@ -446,7 +446,7 @@
                                                    <children>
                                                       <ImageView fx:id="cpt" fitHeight="42.0" fitWidth="91.0" layoutX="7.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../Compteur/4Front_Montant.png" />
+                                                            <Image url="@../Compteur/4Front_MontantCompteur.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>

@@ -89,9 +89,9 @@ public abstract class Bascule extends Sequentiels{
 	@Override
 	public void defaultValue() {
 		// TODO Auto-generated method stub
-		sortieAafficher=EtatLogique.ZERO;
-		etatAvant=EtatLogique.ZERO;
-		sortieBar=EtatLogique.ONE;
+		sortieAafficher = EtatLogique.ZERO;
+		etatAvant = EtatLogique.ZERO;
+		sortieBar = EtatLogique.ONE;
 		super.defaultValue();
 		sorties[0].setEtat(EtatLogique.ZERO);
 		sorties[1].setEtat(EtatLogique.ONE);

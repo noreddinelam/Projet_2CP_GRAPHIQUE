@@ -135,7 +135,9 @@ public class Compteur extends Sequentiels{
 	@Override
 	public String generatePath() {
 		// TODO Auto-generated method stub
-		return "Compteur/"+String.valueOf((int) Math.pow(2, nombreEntree)) + front.toString() + ".png";
+		String path = "Compteur/"+String.valueOf((int) Math.pow(2, nombreEntree)) + front.toString();
+		path += (compter) ? "Compteur" : "Decompteur";
+		return  path + ".png";
 	}
 	
 	@Override

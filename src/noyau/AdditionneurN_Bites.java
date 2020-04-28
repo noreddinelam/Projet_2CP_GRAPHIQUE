@@ -4,7 +4,7 @@ public class AdditionneurN_Bites extends Additionneur {
 	public AdditionneurN_Bites(int nombreEntree,String nom) {
 		super(nombreEntree*2 + 1,nom);
 		nombreSortie = nombreEntree + 1;
-		lesCoordonnees = new LesCoordonnees(nombreEntree, nombreSortie, 0);
+		lesCoordonnees = new LesCoordonnees(this.nombreEntree, nombreSortie, 0);
 		initSorties();
 	}
 

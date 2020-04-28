@@ -1,5 +1,6 @@
 package controllers;
 import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,7 +41,6 @@ import noyau.EtatLogique;
 import noyau.Horloge;
 import noyau.Pin;
 import noyau.Sequentiels;
-import sun.java2d.d3d.D3DSurfaceData;
 import javafx.scene.input.MouseEvent;
 
 
@@ -255,8 +255,9 @@ public class ChronogrammeController implements Initializable {
 			chronogrameField.getChildren().removeAll(frontList);	     
 			detectionBar.setLayoutX(0);
 			playButton.setImage(new Image("/chronoIcones/CHRONO_START_OFF.png"));
-		
+
 		}
+	
 	}
 
 	@Override
@@ -296,6 +297,7 @@ public class ChronogrammeController implements Initializable {
 
 	}
 
+
 	public static void tracerFront(EtatLogique etatDeHorloge) {
 
 		Line horHline=new Line();
@@ -334,8 +336,6 @@ public class ChronogrammeController implements Initializable {
 
 		for(int i=0;i<composantDechrono.size();i++)
 		{
-
-
 			EtatLogique etat= composantDechrono.get(i).getSortieAafficher();
 			Line horline=new Line();
 			Line verline=new Line();
@@ -466,7 +466,6 @@ public class ChronogrammeController implements Initializable {
 		node.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				Point2D localPoint = chronogrameField.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
-
 				detectionBar.relocate(
 						(int)(localPoint.getX() - detectionBar.getBoundsInParent().getWidth()/2),
 						detectionBar.getLayoutY()
@@ -482,7 +481,6 @@ public class ChronogrammeController implements Initializable {
 		});
 		node.setOnMousePressed(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
-
 				detectionBar.setMouseTransparent(true);
 				node.setMouseTransparent(true);
 				node.setCursor(Cursor.CLOSED_HAND);
@@ -497,18 +495,15 @@ public class ChronogrammeController implements Initializable {
 
 			}
 		});
-
 	}
 	public static void valeurSuivi() {
 		for(Line line : valeursDesuivis.keySet())
 		{
-
 			if (line.getStartX() <= detectionBar.getLayoutX()+4 && detectionBar.getLayoutX()+4 <= line.getEndX())
 			{
 				labels[valeursDesuivis.get(line)[0]].setText(String.valueOf(valeursDesuivis.get(line)[1]));
 
 			}
-
 		}
 	}
 }
