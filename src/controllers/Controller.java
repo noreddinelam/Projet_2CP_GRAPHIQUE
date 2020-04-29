@@ -223,6 +223,7 @@ public abstract class Controller {
 						if(clickSouris2 != null)
 				 			clickSouris2.close();
 				 		clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY, homeWindow);
+				 		
 					}
 				}
 			}

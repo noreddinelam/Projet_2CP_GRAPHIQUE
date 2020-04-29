@@ -1,7 +1,10 @@
 package noyau;
 
+import java.util.ArrayList;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polyline;
 
 public class Donnes {
 	Actions typeDaction;
@@ -14,6 +17,22 @@ public class Donnes {
 	Boolean typePin;
 	String label="";
 	Front front=null ;
+	Polyline parent = null;
+	Fil fil = null;
+	public Fil getFil() {
+		return fil;
+	}
+	public void setFil(Fil fil) {
+		this.fil = fil;
+	}
+	public Polyline getParent() {
+		return parent;
+	}
+	public void setParent(Polyline parent) {
+		this.parent = parent;
+	}
+	InfoPolyline infoPolyline = null;
+	ArrayList<InfoPolyline> listPolylines = null;
 	
 	public Actions getTypeDaction() {
 		return typeDaction;
@@ -78,6 +97,20 @@ public class Donnes {
 	public void setComposantCommeImage(ImageView composantCommeImage) {
 		this.composantCommeImage = composantCommeImage;
 	}
+	public InfoPolyline getInfoPolyline() {
+		return infoPolyline;
+	}
+	public void setInfoPolyline(InfoPolyline infoPolyline) {
+		this.infoPolyline = infoPolyline;
+	}
+	public ArrayList<InfoPolyline> getListPolylines() {
+		return listPolylines;
+	}
+	public void setListPolylines(ArrayList<InfoPolyline> listPolylines) {
+		this.listPolylines = listPolylines;
+	}
+	
+	
 	
 	
 }

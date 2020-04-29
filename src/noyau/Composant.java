@@ -10,6 +10,10 @@ import javafx.scene.shape.Polyline;
 
 
 public abstract class Composant implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6537732401092535901L;
 	/*--------- Attributs -------------*/
 	protected String nom=this.getClass().getSimpleName(); // pour le label
 	protected String icon; // le lien vers l'icone

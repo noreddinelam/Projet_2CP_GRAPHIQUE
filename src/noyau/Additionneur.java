@@ -2,7 +2,6 @@ package noyau;
 
 import java.util.ArrayList;
 
-import javafx.scene.shape.Polyline;
 
 public abstract class Additionneur extends Combinatoires{
 	
