@@ -14,7 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import jdk.internal.net.http.hpack.HPACK;
+//import jdk.internal.net.http.hpack.HPACK;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;

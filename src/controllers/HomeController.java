@@ -1807,22 +1807,47 @@ public class HomeController extends Controller {
 
 
 	    @FXML
-	    void supprimerTout(ActionEvent event) {
-	    	if (! simul) {
-				Circuit.clearCircuit();
-				workSpace.getChildren().clear();
-				horloged = false;
-				tracerLesregles(workSpace);	
+	    void supprimerTout(ActionEvent event) {   	
+	    	Stage stage = (Stage) supprimerTout.getScene().getWindow(); 	
+	    	stage.close();
+	    	Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
+			
+			if (! simul) {			
+				if(!(Circuit.getCompUtilises().isEmpty())) {				
+				alert.setContentText("Voullez vous vraimment supprimer toute la zone du circuit ");
+				Optional<ButtonType> result = alert.showAndWait();	    		
+						if(result.get() == ButtonType.OK){
+						Circuit.clearCircuit();
+						workSpace.getChildren().clear();
+						horloged = false;
+						tracerLesregles(workSpace);	
+						}
+				}
+				else {
+					alert.setAlertType(AlertType.INFORMATION);
+					alert.setContentText("le circuit est deja vide !");
+					alert.show();
+		    	}
 			}
+	    else {
+	    	alert.setAlertType(AlertType.INFORMATION);
+			alert.setContentText("veuillez desactiver l'etat de simulation");
+			alert.show();
+	    	
 	    }
+			
+}
 	    
 
 	    @FXML
 	    public void copier(ActionEvent event) {
+	    	Stage s = (Stage) copier.getScene().getWindow();
+    		s.close();
 	    	if(elementSeclecionner != null) {
 	    		setCopierActive(true);
-	    		Stage s = (Stage) copier.getScene().getWindow();
-	    		s.close();
+	    		
 	    	}
 	    }
 	    public void coller(ActionEvent event) {
@@ -1882,12 +1907,16 @@ public class HomeController extends Controller {
 	    @FXML
 	    void annuler(ActionEvent event) {
 	    	//System.out.println("le boutton annuler est clique");
+	    	((Stage)annuler.getScene().getWindow()).close();
 	    	undoChanges(workSpace);
 
 	    }
 	    
 	    @FXML
-		void supprimer(ActionEvent event) { /// pour appliquer une suppression sur 
+		void supprimer(ActionEvent event) {
+	    	/// pour appliquer une suppression sur 
+	    	((Stage)supprimer.getScene().getWindow()).close();
+
 			if (elementSeclecionner != null) {
 				cmp = Circuit.getCompFromImage(elementSeclecionner);
 				elementAsuprimer = elementSeclecionner;
@@ -1906,6 +1935,10 @@ public class HomeController extends Controller {
 	    
 	    @FXML
 	    void couper(ActionEvent event) {
+	    	Stage s = (Stage) couper.getScene().getWindow();
+            s.close();
+			if (elementSeclecionner != null) {
+
 	    	copierActive = true;
             copyActive = true;
             
@@ -1923,8 +1956,8 @@ public class HomeController extends Controller {
 			 
 	             elementSeclecionner  = sauv ;
 	             
-	             Stage s = (Stage) couper.getScene().getWindow();
-	             s.close();
+	             
+			}
 	    
 	    }
 	    
@@ -1935,8 +1968,11 @@ public class HomeController extends Controller {
 	    @FXML
 	    void fermer(ActionEvent event) {
 	    	Stage stage = (Stage) fermer.getScene().getWindow();
+	    	stage.close();
 			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setContentText("Voullez vous vraimment quitter ! ");
+			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
+			alert.setContentText("Voullez vous vraimment quitter sans sauvgarder! ");
 			Optional<ButtonType> result = alert.showAndWait();	    		
 			if(result.get() == ButtonType.OK){
 			Stage s = (Stage) stage.getOwner();
@@ -1950,7 +1986,10 @@ public class HomeController extends Controller {
 	    	Stage stage = (Stage) nouveau.getScene().getWindow();
 	    	stage.close();
 	    	Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+			if(!Circuit.getCompUtilises().isEmpty()) {
 	    	alert.setContentText("Voullez vous sauvgarder ce circuit");
+
 	    	Optional<ButtonType> result = alert.showAndWait();	    		
 	    	if(result.get() == ButtonType.OK){
 	    		final FileChooser fileChooser = new FileChooser();
@@ -1965,9 +2004,17 @@ public class HomeController extends Controller {
 			workSpace.getChildren().clear();
 			horloged = false;
 			tracerLesregles(workSpace);	
+			}
+			else {
+				alert.setAlertType(AlertType.INFORMATION);
+				alert.setContentText("Le circuit est deja vide");
+				alert.show();
+			}
 	    }
 	    @FXML
 	    void ouvrir(ActionEvent event) {
+	    		Stage s = (Stage) ouvrir.getScene().getWindow();
+	    				s.close();
 	            final FileChooser fileChooser = new FileChooser();
 	            fileChooser.setInitialDirectory(
 	                    new File(System.getProperty("user.home"))
@@ -1990,15 +2037,19 @@ public class HomeController extends Controller {
 	    
 	    
 	    @FXML
-	    void save(ActionEvent event) {    	
+	    void save(ActionEvent event) {   
+	    	Stage s = (Stage)sauvegarder.getScene().getWindow();
+	    	s.close();
 	    	if(Circuit.getCompUtilises().isEmpty()) {
 	    		Alert a = new Alert(AlertType.INFORMATION);
+				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 		    	a.setContentText("le circuit est vide y a rien a sauvgarder");
 		    	a.show();
 	    	}
 	    	else
 	    	{
 	    		Alert a = new Alert(AlertType.INFORMATION);
+				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 		    	a.setContentText("le circuit est bien sauvgarde");
 		    	a.show();
 	    	}
@@ -2006,17 +2057,20 @@ public class HomeController extends Controller {
 	    
 	    @FXML
 	    void saveAs(ActionEvent event) { /// la fonctionnalité de sauvegarder as
+	    	Stage s = (Stage)sauvComme.getScene().getWindow();
+	    	s.close();
 	    	final FileChooser fileChooser = new FileChooser();
 	    	File f = fileChooser.showSaveDialog(homeWindow);
 	    	if (f != null) {
 	    		System.out.println("the name of the file is : "+f.getAbsolutePath());
 	    		Sauvegarde sauvegarde = new Sauvegarde();
-	    		sauvegarde.saveCiruit(f.getAbsolutePath()+".bin");
+	    		sauvegarde.saveCiruit(f.getAbsolutePath()+".bin"); 
 			}
 	    }
 
 	    @FXML
 	    void importer(ActionEvent event) { /// la fonctionalité importer circuit integré
+	    	((Stage)importer.getScene().getWindow()).close();
 	    	final FileChooser fileChooser = new FileChooser();
 	    	fileChooser.setInitialDirectory(
 	    			new File(System.getProperty("user.home"))
@@ -2063,6 +2117,7 @@ public class HomeController extends Controller {
 	    
 	    @FXML
 	    void encapsulerEtSauvgarder(ActionEvent event) {
+	    	((Stage)encapsuler.getScene().getWindow()).close();
 	    	final FileChooser fileChooser = new FileChooser();
 
 	    	File f = fileChooser.showSaveDialog(homeWindow);
@@ -2094,7 +2149,8 @@ public class HomeController extends Controller {
 
 	    @FXML
 
-	    void chronogramme(ActionEvent event) { /// charger la fenetre du chronogramme
+	    void chronogramme(ActionEvent event) {/// charger la fenetre du chronogramme
+	    	((Stage)chronogramme.getScene().getWindow()).close();
 	    	if(simul && ! Circuit.getListeEtages().isEmpty() && horloged)
 	    	{
 	    	try {
@@ -2138,7 +2194,8 @@ public class HomeController extends Controller {
 	    }
 
 	    @FXML
-	    void tableDeVerite(ActionEvent event) { /// charger la fenetre du table de verité
+	    void tableDeVerite(ActionEvent event) {/// charger la fenetre du table de verité
+	    	((Stage)tableVerite.getScene().getWindow()).close();
 	    	if (simul) { 
 	    		if(Circuit.getEntreesCircuit().size() != 0) {
 	    			if(ListTextPin == null) {
