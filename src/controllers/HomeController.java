@@ -1198,66 +1198,7 @@ public class HomeController extends Controller {
 						elementSeclecionner=eleementAdrager;
 					}
               	//traitement de pressed ajoutergest apres coallge
-	        	int size = 0;
-	        	Composant cmp = Circuit.getCompFromImage(eleementAdrager);
-	        	Polyline line ;
-	        	listEntrees.clear();
-	        	Coordonnees crdDebut = new Coordonnees(0,0);
-	        	int i = 0;
-	        	for(i = 0; i < cmp.getNombreEntree();i++){
-	        		if(cmp.getEntrees()[i] != null) {
-	        			crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
-	        			line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
-	    	        	listEntrees.add(line);
-	        		}
-	        	}
-	        	if(cmp.getLesCoordonnees().getNbCordCommandes() != 0) {
-	        		for(i = 0; i < cmp.getLesCoordonnees().getNbCordCommandes();i++){
-		        		if( ((Combinatoires)cmp).getCommande()[i] != null) {
-		        			crdDebut = cmp.getLesCoordonnees().coordReelesCommande(eleementAdrager, i);
-		        			line = ((Combinatoires)cmp).getCommande()[i].polylineParPoint(crdDebut);
-		    	        	listEntrees.add(line);
-		        		}
-		        	}
-	        	}
-				if(cmp.getLesCoordonnees().getCordHorloge() != null ) {
-	        		if( ((Sequentiels)cmp).getEntreeHorloge() != null) {
-	        			crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
-	        			line = ((Sequentiels)cmp).getEntreeHorloge().polylineParPoint(crdDebut);
-
-	    	        	listEntrees.add(line);
-	        		}
-
-				}
-				if(cmp.getLesCoordonnees().getCordClear() != null ) {
-					if(((Sequentiels)cmp).getClear().getSource() != null) {
-						crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager, i);
-	        			line = ((Sequentiels)cmp).getClear().polylineParPoint(crdDebut);
-	    	        	listEntrees.add(line);
-					}
-				}
-				if(cmp.getLesCoordonnees().getCordPreset() != null) {
-					if(((Bascule)cmp).getPreset().getSource() != null){
-						crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager, i);
-	        			line = ((Bascule)cmp).getPreset().polylineParPoint(crdDebut);
-	    	        	listEntrees.add(line);
-	    			}
-				}
-				if(cmp.getLesCoordonnees().getCordLoad() != null ) {
-					if(((Sequentiels)cmp).getLoad().getSource() != null) {
-						crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager, i);
-	        			line = ((Sequentiels)cmp).getLoad().polylineParPoint(crdDebut);
-	    	        	listEntrees.add(line);
-					}
-
-				}
-	        	listSorties.clear();
-	        	for(i = 0; i < cmp.getNombreSortie();i++){
-	        			crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, i);
-	        			line = Circuit.getPolylineFromFil(cmp.getSorties()[i]).get(0).getLinePrincipale();
-	        			size = line.getPoints().size();
-	    	        	listSorties.add(line);
-	        	}
+				refrechLists(eleementAdrager); /// kayna lteht
 	        	//hna tekmeel
 
 					eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() { /// si le composant est dragé .
@@ -1265,24 +1206,7 @@ public class HomeController extends Controller {
 							if (! simul) {
 								if (e.getButton() == MouseButton.PRIMARY) {
 									//ajout des points
-		        					Polyline line;
-		        					int i = 0,size = 0;
-		        		        	if(insererNoedDebut) {
-		        		        		for( i = 0; i < listSorties.size();i++){
-		        		        			line = listSorties.get(i);
-		        		        			if(Circuit.getListFromPolyline(line).size()>1 || Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
-		        		        			line.getPoints().add(2,line.getPoints().get(3));
-		        		        			line.getPoints().add(2,line.getPoints().get(3));
-		        		        			}
-		        		        		}
-		        		        		for(i = 0;i < listEntrees.size();i++) {
-		        		        			line = listEntrees.get(i);
-		        		        			size = line.getPoints().size();
-		        		        			line.getPoints().add(size-3,line.getPoints().get(size - 2));
-		        		    	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
-		        		        		}
-		        		        	insererNoedDebut = false;
-		        		        	}
+		        					addPoints();/// ajouter les points 
 		        		        	Composant ci=Circuit.getCompFromImage(eleementAdrager);
 		        		        	if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
 		        		        		CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
@@ -2091,12 +2015,8 @@ public class HomeController extends Controller {
 			}
 	    }
 
-	    
-	    
 	    @FXML
-
 	    void importer(ActionEvent event) { /// la fonctionalité importer circuit integré
-
 	    	final FileChooser fileChooser = new FileChooser();
 	    	fileChooser.setInitialDirectory(
 	    			new File(System.getProperty("user.home"))
@@ -2152,11 +2072,11 @@ public class HomeController extends Controller {
 	    		CircuitIntegre ci = new CircuitIntegre(Circuit.getEntreesCircuit().size(),Circuit.getSortiesCircuit().size(), f.getAbsolutePath());
 	    		Circuit.tableVerite(Circuit.getEntreesCircuit());
 	    		ci.setTableVerite(Circuit.getTableVerite());
+	    		Circuit.defaultCompValue();
 	    		try {
 	    			fichier = new FileOutputStream(f.getAbsolutePath()+".int");
 	    			oo = new ObjectOutputStream(fichier);
 	    			oo.writeObject(ci);
-
 	    		} catch (Exception e) {
 	    			e.printStackTrace();
 	    		}
@@ -2218,99 +2138,107 @@ public class HomeController extends Controller {
 	    }
 
 	    @FXML
-
 	    void tableDeVerite(ActionEvent event) { /// charger la fenetre du table de verité
-	    	if(Circuit.getEntreesCircuit().size() != 0) {
-	    	if(ListTextPin == null) {
-	    		simul = true;
-	    		ListTextPin = new ArrayList<Pin>();
-	    		ListText = new ArrayList<Text>();
-	    		try {
-	    			Stage s = (Stage) tableVerite.getScene().getWindow();
-	    			s.close();
-	    			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Reminder.fxml"));
-	    			Parent root = fxmlLoader.load();
-	    			Stage stage = new Stage();
-	    			Scene scene = new Scene(root);
-	    			stage.setScene(scene);  
-	    			//stage.setTitle("la table de verité");
-	    			stage.setTitle("Remarque");
-	    			stage.setResizable(false);
-	    			stage.initModality(Modality.APPLICATION_MODAL);
-	    			stage.show();
-	    		} catch(Exception e) {
-	    			e.printStackTrace();
-	    		}
-	    		tableVerite.setText("  Générer la table");
-	    		tableVerite.setAlignment(Pos.BASELINE_LEFT);
-	    	}else { //Generer la table et aller vers l'etat normal
-	    		//Generer La table de verité
-	    		if(ListTextPin.size() != 0) {
-	    		Circuit.tableVerite(ListTextPin);
-	    		Circuit.defaultCompValue(); //Tous noir
-	    		Circuit.afficher();
-	    		
-	    		//Supprimer les numeros
- 	    		for (Text num : ListText) {
-					workSpace.getChildren().remove(num);
-				}
- 	    		
-	    		simul = false;		//Mode normal
-	    		//mode normal (opacité 1)
-	    		for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
-	    			entry.getValue().setOpacity(1);
-	    		}
-	    		for (Entry<Fil, ArrayList<InfoPolyline>> entry : Circuit.getfilUtilises().entrySet()) {
+	    	if (simul) { 
+	    		if(Circuit.getEntreesCircuit().size() != 0) {
+	    			if(ListTextPin == null) {
+	    				//	    			simul = true;
+	    				ListTextPin = new ArrayList<Pin>();
+	    				ListText = new ArrayList<Text>();
+	    				try {
+	    					Stage s = (Stage) tableVerite.getScene().getWindow();
+	    					s.close();
+	    					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Reminder.fxml"));
+	    					Parent root = fxmlLoader.load();
+	    					Stage stage = new Stage();
+	    					Scene scene = new Scene(root);
+	    					stage.setScene(scene);  
+	    					//stage.setTitle("la table de verité");
+	    					stage.setTitle("Remarque");
+	    					stage.setResizable(false);
+	    					stage.initModality(Modality.APPLICATION_MODAL);
+	    					stage.show();
+	    				} catch(Exception e) {
+	    					e.printStackTrace();
+	    				}
+	    				tableVerite.setText("  Générer la table");
+	    				tableVerite.setAlignment(Pos.BASELINE_LEFT);
+	    			}else { //Generer la table et aller vers l'etat normal
+	    				//Generer La table de verité
+	    				if(ListTextPin.size() != 0) {
+	    					Circuit.tableVerite(ListTextPin);
+	    					Circuit.defaultCompValue(); //Tous noir
 
-	    			for (InfoPolyline info : entry.getValue()) {
-	    				info.getLinePrincipale().setOpacity(1);
+	    					//Supprimer les numeros
+	    					for (Text num : ListText) {
+	    						workSpace.getChildren().remove(num);
+	    					}
+
+	    					simul = false;		//Mode normal
+	    					//mode normal (opacité 1)
+	    					for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
+	    						entry.getValue().setOpacity(1);
+	    					}
+	    					for (Entry<Fil, ArrayList<InfoPolyline>> entry : Circuit.getfilUtilises().entrySet()) {
+
+	    						for (InfoPolyline info : entry.getValue()) {
+	    							info.getLinePrincipale().setOpacity(1);
+	    						}
+	    					}
+	    					//La fenetre de la table de verité
+	    					try {
+	    						Stage s = (Stage) tableVerite.getScene().getWindow();
+	    						s.close();
+	    						FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/TableDeVerite.fxml"));
+	    						Parent root = fxmlLoader.load();
+	    						TableDeVeriteController c = fxmlLoader.getController();
+	    						ListTextPin.clear();
+	    						ListText.clear();
+	    						ListText = null; 
+	    						ListTextPin = null; //pas de liste
+	    						Stage stage = new Stage();
+	    						Scene scene = new Scene(root);
+	    						stage.setScene(scene);  
+	    						stage.setTitle("la table de verité");
+	    						//stage.setTitle("Remarque");
+	    						stage.setResizable(false);
+	    						stage.initModality(Modality.APPLICATION_MODAL);
+	    						stage.show();
+	    					} catch(Exception e) {
+	    						e.printStackTrace();
+	    					}
+	    					//Boutton Table de verité (Mode normal)
+	    					tableVerite.setText("  Table de vérité");
+	    					tableVerite.setAlignment(Pos.BASELINE_LEFT);
+
+	    				}else {
+	    					Alert alert = new Alert(AlertType.ERROR);
+	    					alert.setTitle("Liste d'entrées vide");
+	    					//alert.getDialogPane().setStyle("-fx-background-color : #000000");
+	    					alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+	    					//alert.getDialogPane().getExpandableContent().setStyle("-fx-background-color : #000000");
+	    					alert.setHeaderText("Aucune entrée selectionnée  ");
+	    					alert.setContentText("Il faut que vous seléctionner au moins une entrée pour générer la table de verité !");
+	    					alert.showAndWait();
+	    				}
 	    			}
+	    		}else {
+	    			Alert alert = new Alert(AlertType.ERROR);
+	    			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+	    			alert.setTitle("Pas d'entrées dans le circuit");
+	    			alert.setHeaderText("Pas d'entrées dans le circuit");
+	    			alert.setContentText("Il faut exister au moins une entrée (Pin d'entré )dans le circuit pour générer la table de verité !");
+	    			alert.showAndWait();
 	    		}
-	    		//La fenetre de la table de verité
-	    		try {
-	    			Stage s = (Stage) tableVerite.getScene().getWindow();
-	    			s.close();
-	    			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/TableDeVerite.fxml"));
-	    			Parent root = fxmlLoader.load();
-	    			TableDeVeriteController c = fxmlLoader.getController();
-	    			ListTextPin.clear();
-	    			ListText.clear();
-	    			ListText = null; 
-		    		ListTextPin = null; //pas de liste
-	    			Stage stage = new Stage();
-	    			Scene scene = new Scene(root);
-	    			stage.setScene(scene);  
-	    			stage.setTitle("la table de verité");
-	    			//stage.setTitle("Remarque");
-	    			stage.setResizable(false);
-	    			stage.initModality(Modality.APPLICATION_MODAL);
-	    			stage.show();
-	    		} catch(Exception e) {
-	    			e.printStackTrace();
-	    		}
-	    		//Boutton Table de verité (Mode normal)
-	    		tableVerite.setText("  Table de vérité");
-	    		tableVerite.setAlignment(Pos.BASELINE_LEFT);
-
-	    	}else {
-	    		Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Liste d'entrées vide");
-				//alert.getDialogPane().setStyle("-fx-background-color : #000000");
-				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-				//alert.getDialogPane().getExpandableContent().setStyle("-fx-background-color : #000000");
-				alert.setHeaderText("Aucune entrée selectionnée  ");
-				alert.setContentText("Il faut que vous seléctionner au moins une entrée pour générer la table de verité !");
-				alert.showAndWait();
 	    	}
-	    }
-	    	}else {
-	    		Alert alert = new Alert(AlertType.ERROR);
-				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-				alert.setTitle("Pas d'entrées dans le circuit");
-				alert.setHeaderText("Pas d'entrées dans le circuit");
-				alert.setContentText("Il faut exister au moins une entrée (Pin d'entré )dans le circuit pour générer la table de verité !");
-				alert.showAndWait();
-	    	}
+	    	else {
+	    		Alert a = new Alert(AlertType.ERROR);
+	    		a.setHeaderText("Table de verité erreur");
+	    		a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+	    		a.setTitle("Table De Verité");
+	    		a.setContentText("Veulliez Simuler le Circuit D'abord");
+	    		a.showAndWait();
+			}
 	    }
 	
 	
@@ -2430,32 +2358,28 @@ public class HomeController extends Controller {
 
 	 private void undoChanges(AnchorPane workSpace)
 	 {
-	
 		 if(! undoDeque.isEmpty())
 		 {
-			
-			 
 			 Donnes sauveGarde;
 			 sauveGarde= undoDeque.removeFirst();
 			 switch(sauveGarde.getTypeDaction())
 			 {
-	
 			 case Mouvement :
 			 {
 				 sauveGarde.getComposantCommeImage().setLayoutX(sauveGarde.getPosX());
 				 sauveGarde.getComposantCommeImage().setLayoutY(sauveGarde.getPosY());
+				 refrechLists(sauveGarde.getComposantCommeImage());
+				 addPoints();
+				 updatePolyline(sauveGarde.getComposantCommeImage());
 			 }break;
 			 case Creation :
-			 {
-				
+			 {				
 				 System.out.println(sauveGarde.getComposant().toString());
 				 workSpace.getChildren().remove(sauveGarde.getComposantCommeImage());
 				 
-				ArrayList<Polyline> lineListe= Circuit.supprimerComp(sauveGarde.getComposant());
+				 ArrayList<Polyline> lineListe= Circuit.supprimerComp(sauveGarde.getComposant());
 				 for(Polyline line : lineListe)
 					 workSpace.getChildren().remove(line);
-			
-				
 			 }break;
 			 case Modification :
 			 {
@@ -2478,27 +2402,57 @@ public class HomeController extends Controller {
 				addAllPolylinesToWorkSpace(polyline);
 				sauveGarde.getComposant().relierANouveau();
 			 }break;
-			 
-			 
+			 case SuppressionFil :{
+				 InfoPolyline infoPolyline = sauveGarde.getInfoPolyline();
+				 Fil filSortieFil =  sauveGarde.getFil();
+				 if (infoPolyline.getLineParent() != null) {
+					 InfoPolyline parent = Circuit.getInfoPolylineFromPolyline(infoPolyline.getLineParent());
+					 parent.setNbFils(parent.getNbFils()+1);
+					 infoPolyline.getLineParent().getPoints().clear();
+					 infoPolyline.getLineParent().getPoints().addAll(sauveGarde.getParent().getPoints());
+					 ArrayList<InfoPolyline> resArrayList =  Circuit.getListFromPolyline(parent.getLinePrincipale());
+					 resArrayList.add(resArrayList.indexOf(parent)+1,infoPolyline);
+				}
+				 workSpace.getChildren().add(infoPolyline.getLinePrincipale());
+				 if (infoPolyline.isRelier()) {
+					 Composant source = filSortieFil.getSource();
+					 int sortie = source.numCmpSorties(filSortieFil);
+					 if(entree >= 0) {
+						 Circuit.relier(source, infoPolyline.getDestination(), sortie, infoPolyline.getEntre());
+					 }else if(-5 < infoPolyline.getEntre()) {
+						 Circuit.relierCommand(source,((Combinatoires)infoPolyline.getDestination()), sortie, Math.abs(infoPolyline.getEntre())-1);
+					 }else if(infoPolyline.getEntre() == -5) {
+						 Circuit.relierHorloge(((Sequentiels)infoPolyline.getDestination()), source, sortie);
+					 }else if(infoPolyline.getEntre() == -6) {
+						 Circuit.relierClear(((Sequentiels)infoPolyline.getDestination()), source, sortie);
+					 }else if(infoPolyline.getEntre() == -7) {
+						 Circuit.relierPreset(((Bascule)infoPolyline.getDestination()), source, sortie);
+					 }else if(infoPolyline.getEntre() == -8) {
+						 Circuit.relierLoad(((Sequentiels)infoPolyline.getDestination()), source, sortie);
+					 }
+					 filSortieFil.addDestination(infoPolyline.getDestination());
+				 }
+						 
+			 }break;
 			default:
-				break;
-			 
+				break;	 
 			 }
 		 }
 	 }
- public static void sauveGarderModification()
- {
-	 Composant composant=Circuit.getCompFromImage(elementAmodifier);
-		Donnes sauveGarde= new Donnes();
-		sauveGarde.setTypeDaction(Actions.Modification);
-		sauveGarde.setComposantCommeImage(elementAmodifier);
-		sauveGarde.setImage(elementAmodifier.getImage());
-		sauveGarde.setNombreDesEntrees(composant.getNombreEntree());
-     if(elementAmodifier.getId().equals("pin")) sauveGarde.setTypePin(((Pin)composant).isInput());
-     if(composant.getClass().isAssignableFrom(Sequentiels.class)) sauveGarde.setFront(((Sequentiels)composant).getFront());
-     undoDeque.addFirst(sauveGarde);
-     elementAmodifier=null;
- }
+	 
+	 public static void sauveGarderModification()
+	 {
+		 Composant composant=Circuit.getCompFromImage(elementAmodifier);
+		 Donnes sauveGarde= new Donnes();
+		 sauveGarde.setTypeDaction(Actions.Modification);
+		 sauveGarde.setComposantCommeImage(elementAmodifier);
+		 sauveGarde.setImage(elementAmodifier.getImage());
+		 sauveGarde.setNombreDesEntrees(composant.getNombreEntree());
+		 if(elementAmodifier.getId().equals("pin")) sauveGarde.setTypePin(((Pin)composant).isInput());
+		 if(composant.getClass().isAssignableFrom(Sequentiels.class)) sauveGarde.setFront(((Sequentiels)composant).getFront());
+		 undoDeque.addFirst(sauveGarde);
+		 elementAmodifier=null;
+	 }
 	
 	 public void captureEcran(String path) {
 		 WritableImage image = workSpace.snapshot(new SnapshotParameters(), null);
@@ -2520,8 +2474,10 @@ public class HomeController extends Controller {
 			sauveGarde.setPosY(elementAsuprimer.getLayoutY());
 	        undoDeque.addFirst(sauveGarde);
 	 }
+	 
+	 
 	 private void updatePolyline(ImageView eleementAdrager) {
-		 Composant cmp = Circuit.getCompFromImage(eleementAdrager);
+		 	Composant cmp = Circuit.getCompFromImage(eleementAdrager);
 			boolean relocate = false;
 			int i = 0, j = 0 ;
 			Coordonnees crdDebut;
@@ -2683,6 +2639,90 @@ public class HomeController extends Controller {
 			i++;
 		}
 		return true;
+	}
+	 
+	 public void addPoints() {
+		 Polyline line;
+			int i = 0,size = 0;
+     	if(insererNoedDebut) {
+     		for( i = 0; i < listSorties.size();i++){
+     			line = listSorties.get(i);
+     			if(Circuit.getListFromPolyline(line).size()>1 || Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
+     			line.getPoints().add(2,line.getPoints().get(3));
+     			line.getPoints().add(2,line.getPoints().get(3));
+     			}
+     		}
+     		for(i = 0;i < listEntrees.size();i++) {
+     			line = listEntrees.get(i);
+     			size = line.getPoints().size();
+     			line.getPoints().add(size-3,line.getPoints().get(size - 2));
+ 	        	line.getPoints().add(size-3,line.getPoints().get(size - 2));
+     		}
+     	insererNoedDebut = false;
+     	}
+	}
+	 
+	 public void refrechLists(ImageView eleementAdrager) {
+		 int size = 0;
+		 Composant cmp = Circuit.getCompFromImage(eleementAdrager);
+     	Polyline line ;
+     	listEntrees.clear();
+     	Coordonnees crdDebut = new Coordonnees(0,0);
+     	int i = 0;
+     	for(i = 0; i < cmp.getNombreEntree();i++){
+     		if(cmp.getEntrees()[i] != null) {
+     			crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
+     			line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
+ 	        	listEntrees.add(line);
+     		}
+     	}
+     	if(cmp.getLesCoordonnees().getNbCordCommandes() != 0) {
+     		for(i = 0; i < cmp.getLesCoordonnees().getNbCordCommandes();i++){
+	        		if( ((Combinatoires)cmp).getCommande()[i] != null) {
+	        			crdDebut = cmp.getLesCoordonnees().coordReelesCommande(eleementAdrager, i);
+	        			line = ((Combinatoires)cmp).getCommande()[i].polylineParPoint(crdDebut);
+	    	        	listEntrees.add(line);
+	        		}
+	        	}
+     	}
+			if(cmp.getLesCoordonnees().getCordHorloge() != null ) {
+     		if( ((Sequentiels)cmp).getEntreeHorloge() != null) {
+     			crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
+     			line = ((Sequentiels)cmp).getEntreeHorloge().polylineParPoint(crdDebut);
+
+ 	        	listEntrees.add(line);
+     		}
+
+			}
+			if(cmp.getLesCoordonnees().getCordClear() != null ) {
+				if(((Sequentiels)cmp).getClear().getSource() != null) {
+					crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager, i);
+     			line = ((Sequentiels)cmp).getClear().polylineParPoint(crdDebut);
+ 	        	listEntrees.add(line);
+				}
+			}
+			if(cmp.getLesCoordonnees().getCordPreset() != null) {
+				if(((Bascule)cmp).getPreset().getSource() != null){
+					crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager, i);
+     			line = ((Bascule)cmp).getPreset().polylineParPoint(crdDebut);
+ 	        	listEntrees.add(line);
+ 			}
+			}
+			if(cmp.getLesCoordonnees().getCordLoad() != null ) {
+				if(((Sequentiels)cmp).getLoad().getSource() != null) {
+					crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager, i);
+     			line = ((Sequentiels)cmp).getLoad().polylineParPoint(crdDebut);
+ 	        	listEntrees.add(line);
+				}
+
+			}
+     	listSorties.clear();
+     	for(i = 0; i < cmp.getNombreSortie();i++){
+     			crdDebut = cmp.getLesCoordonnees().coordReelesSorties(eleementAdrager, i);
+     			line = Circuit.getPolylineFromFil(cmp.getSorties()[i]).get(0).getLinePrincipale();
+     			size = line.getPoints().size();
+ 	        	listSorties.add(line);
+     	}
 	}
 	 
 	 public void setAffX(Label affX) {

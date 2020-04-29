@@ -5,5 +5,6 @@ public enum Actions {
      Creation,
      Supression,
      Modification,
-     Laison;	
+     Laison,
+     SuppressionFil;
 }

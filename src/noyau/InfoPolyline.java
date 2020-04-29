@@ -8,6 +8,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
 public class InfoPolyline implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6025031598304739348L;
 	private  transient Polyline linePrincipale;
 	private ArrayList<Double> noeudLinePrincipale = new ArrayList<Double>();
 	private  transient Polyline lineParent = null;
