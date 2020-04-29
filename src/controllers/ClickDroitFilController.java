@@ -24,14 +24,14 @@ public class ClickDroitFilController {
 
 	private Polyline line;
 	
-	private AnchorPane workSpace;
+	private static AnchorPane workSpace;
 	
-    public AnchorPane getPane() {
+    public static AnchorPane getPane() {
 		return workSpace;
 	}
 
-	public void setPane(AnchorPane workSpace) {
-		this.workSpace = workSpace;
+	public static void setPane(AnchorPane workSpace) {
+		ClickDroitFilController.workSpace = workSpace;
 	}
 
 	public Polyline getLine() {
@@ -74,7 +74,7 @@ public class ClickDroitFilController {
 		Stage s = (Stage)supprimer.getScene().getWindow(); 
     	s.close();
     }
-    public void supprimer(InfoPolyline infoLine) {
+    public static void supprimer(InfoPolyline infoLine) {
     	Polyline line = infoLine.getLinePrincipale();
     	if(infoLine.getNbFils() == 0 ) { //On peut le supprimer
     		

@@ -22,11 +22,13 @@ import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import noyau.Actions;
 import noyau.Bascule;
 import noyau.Circuit;
 import noyau.Combinatoires;
 import noyau.Composant;
 import noyau.Coordonnees;
+import noyau.Donnes;
 import noyau.Fil;
 import noyau.InfoPolyline;
 import noyau.Pin;
@@ -160,7 +162,7 @@ public abstract class Controller {
 						line2.getPoints().clear();
 						line2.getPoints().addAll(line.getPoints());
 						Circuit.remplacerPere(line, line2);
-
+						HomeController.remplacerLineUndoDeque(line, line2);
 						ArrayList<Double> list = new ArrayList<Double>(line.getPoints());
 						int i = list.size()-2;
 
@@ -294,25 +296,16 @@ public abstract class Controller {
 								infoLine.setDestination(destination);
 								infoLine.setEntre(entree);
 								//souuund
+								
 							}
 						}else {
 							der =  line.getPoints().size()-1;
 							if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3)) < 10 ) {
-								if(Math.abs(line.getPoints().get(der-4)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-5)-line.getPoints().get(der-3)) < 10)
-								{
-									InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
-									infoLine.supprimerPremierNoeuds2();
-									workSpace.getChildren().remove(line);
-									Circuit.getListFromPolyline(line).remove(new InfoPolyline(line));
-									infoLine = Circuit.getInfoPolylineFromPolyline(infoLine.getLineParent());
-									infoLine.setNbFils(infoLine.getNbFils() - 1);
-									line.getPoints().clear();
-								}
-								else {
 									line.getPoints().remove(der);line.getPoints().remove(der-1);
-								}
 							}
 						}
+						//sauvgaaarder la creation du fil
+						sauvgardeCreationFil(line);
 					}
 				}
 			}
@@ -449,4 +442,10 @@ public abstract class Controller {
     	ajouterGeste(a);
 		return a;
 	}	
+	public void sauvgardeCreationFil(Polyline line) {
+		Donnes sauvgarde = new Donnes();
+		sauvgarde.setParent(line);
+		sauvgarde.setTypeDaction(Actions.CreationFil);
+		HomeController.undoDeque.addFirst(sauvgarde);
+	}
 }
