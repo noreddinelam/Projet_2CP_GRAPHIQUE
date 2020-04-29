@@ -109,6 +109,11 @@ public class Donnes {
 	public void setListPolylines(ArrayList<InfoPolyline> listPolylines) {
 		this.listPolylines = listPolylines;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return ((Donnes)obj).getTypeDaction().equals(this.getTypeDaction());
+	}//equals fonctionne par raport au type d'action 
 	
 	
 	
