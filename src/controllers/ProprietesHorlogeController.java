@@ -4,8 +4,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import noyau.Circuit;
@@ -34,10 +36,21 @@ public class ProprietesHorlogeController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
+    	if(Double.parseDouble(frequance.getText())<=10)
+    	{
     	cmp.setNom(label.getText());
     	Horloge.temps=arrondi((1/Double.parseDouble(frequance.getText()))*1000, 0);
     	Stage s = (Stage)mdf.getScene().getWindow(); 
     	s.close();
+    	}
+    	else {
+    		Alert a = new Alert(AlertType.ERROR);
+    		a.setHeaderText("Chronogramme erreur");
+    		a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+    		a.setTitle("Chronogramme");
+    		a.setContentText("La frequence d'horloge ne doit pas dépasser 10 Hz");
+    		a.showAndWait();
+    	}
     }
 
 	@Override

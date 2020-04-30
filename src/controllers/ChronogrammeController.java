@@ -215,7 +215,13 @@ public class ChronogrammeController implements Initializable {
 	@FXML
 	void homeEnter(MouseEvent event) {
 		homebutton.setCursor(Cursor.HAND);
+		homebutton.setStyle("-fx-background-color:#E0E0D1");
 	}
+	 @FXML
+	    void homeExit(MouseEvent event) {
+			homebutton.setStyle("-fx-background-color:#5a6572");
+	    }
+
 	@FXML
 	void arreterEnter(MouseEvent event) {
 		stopBotton.setCursor(Cursor.HAND);
