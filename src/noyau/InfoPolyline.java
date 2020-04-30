@@ -8,6 +8,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
 public class InfoPolyline implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6025031598304739348L;
 	private  transient Polyline linePrincipale;
 	private ArrayList<Double> noeudLinePrincipale = new ArrayList<Double>();
 	private  transient Polyline lineParent = null;
@@ -94,7 +98,25 @@ public class InfoPolyline implements Serializable{
 			i = i + 2;	
 		}
 	}
-
+	public void supprimerPremierNoeuds2() {
+		Coordonnees crdPere = new Coordonnees(0,0),crdDebt = new Coordonnees(linePrincipale.getPoints().get(0),linePrincipale.getPoints().get(1)),
+					crdAvant = new Coordonnees(lineParent.getPoints().get(0),lineParent.getPoints().get(1));
+		int i = 2;
+		while(i < lineParent.getPoints().size()) {
+			crdPere.setX(lineParent.getPoints().get(i));
+			crdPere.setY(lineParent.getPoints().get(i+1));
+			if(crdDebt.getX() == crdPere.getX() && crdDebt.getY() == crdPere.getY()) {
+					crdAvant.setX(lineParent.getPoints().get(i-2));
+					crdAvant.setY(lineParent.getPoints().get(i-1));
+						lineParent.getPoints().remove(i);
+						lineParent.getPoints().remove(i);
+						lineParent.getPoints().remove(i);
+						lineParent.getPoints().remove(i);		
+				break;
+			}
+			i = i + 2;	
+		}
+	}
 	public boolean isRelier() {
 		return relier;
 	}

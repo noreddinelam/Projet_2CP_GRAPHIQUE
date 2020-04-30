@@ -9,6 +9,11 @@ import javafx.scene.shape.Polyline;
 
 public abstract class Portes extends Composant {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5439201796119744528L;
+
 	public Portes(int nombreEntree,String nom) { // constructeur
 		super(nombreEntree,nom);
 		nombreSortie=1;

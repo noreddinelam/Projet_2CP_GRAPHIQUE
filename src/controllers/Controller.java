@@ -4,9 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+
 import application.ClickDroitFil;
 import application.ClickSouris2;
 import javafx.event.EventHandler;
@@ -23,11 +25,13 @@ import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import noyau.Actions;
 import noyau.Bascule;
 import noyau.Circuit;
 import noyau.Combinatoires;
 import noyau.Composant;
 import noyau.Coordonnees;
+import noyau.Donnes;
 import noyau.Fil;
 import noyau.InfoPolyline;
 import noyau.Pin;
@@ -162,7 +166,8 @@ public abstract class Controller {
 						line2.getPoints().clear();
 						line2.getPoints().addAll(line.getPoints());
 						Circuit.remplacerPere(line, line2);
-
+						HomeController.remplacerLineUndoDeque(line, line2);
+						HomeController.remplacerLineUndoDequeSupprimer(line, line2);
 						ArrayList<Double> list = new ArrayList<Double>(line.getPoints());
 						int i = list.size() - 2;
 
@@ -223,9 +228,29 @@ public abstract class Controller {
 						clicDroitY = event.getScreenY();
 						lineDroit = line;
 						line.setStroke(Color.web("00000070"));
-						if (clickSouris2 != null)
+						if(clickSouris2 != null)
 							clickSouris2.close();
-						clickDroitFilFenetre = new ClickDroitFil(line, workSpace, clicDroitX, clicDroitY, homeWindow);
+						if (clickDroitFilFenetre != null) {
+							clickDroitFilFenetre.close();
+						}
+						if (clicDroitX > 1100) {
+							if (clicDroitY > 500) {
+								clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX-150,clicDroitY-50, homeWindow);
+							}
+							else {
+								clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX-150,clicDroitY, homeWindow);
+							}
+						}
+						else {
+							if (clicDroitY > 500) {
+								clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY-50, homeWindow);
+							}
+							else {
+								clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY, homeWindow);
+							}
+						}
+
+
 					}
 				}
 			}
@@ -295,21 +320,16 @@ public abstract class Controller {
 								infoLine.setRelier(true);
 								infoLine.setDestination(destination);
 								infoLine.setEntre(entree);
-								// souuund
-							}
-						} else {
-							der = line.getPoints().size() - 1;
-							if (Math.abs(line.getPoints().get(der) - line.getPoints().get(der - 2)) < 10
-									&& Math.abs(line.getPoints().get(der - 1) - line.getPoints().get(der - 3)) < 10) {
-								if (Math.abs(line.getPoints().get(der - 4) - line.getPoints().get(der - 2)) < 10 && Math
-										.abs(line.getPoints().get(der - 5) - line.getPoints().get(der - 3)) < 10) {
+								//souuund
 
-									InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
-									infoLine.supprimerPremierNoeuds();
-									workSpace.getChildren().remove(line);
-									Circuit.getListFromPolyline(line).remove(new InfoPolyline(line));
-									infoLine = Circuit.getInfoPolylineFromPolyline(infoLine.getLineParent());
-									infoLine.setNbFils(infoLine.getNbFils() - 1);
+							}
+						}else {
+							der =  line.getPoints().size()-1;
+							if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3)) < 10 ) {
+								if(Math.abs(line.getPoints().get(der-4)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-5)-line.getPoints().get(der-3)) < 10)
+								{
+									ClickDroitFilController.setPane(workSpace);
+									ClickDroitFilController.supprimer(Circuit.getInfoPolylineFromPolyline(line));
 									line.getPoints().clear();
 								} else {
 									line.getPoints().remove(der);
@@ -317,6 +337,9 @@ public abstract class Controller {
 								}
 							}
 						}
+						//sauvgaaarder la creation du fil
+						if(line.getPoints().size()!=0) 
+							sauvgardeCreationFil(line);
 					}
 				}
 			}
@@ -458,5 +481,13 @@ public abstract class Controller {
 		a.setCursor(Cursor.HAND);
 		ajouterGeste(a);
 		return a;
+
+	}	
+	public void sauvgardeCreationFil(Polyline line) {
+		Donnes sauvgarde = new Donnes();
+		sauvgarde.setParent(line);
+		sauvgarde.setTypeDaction(Actions.CreationFil);
+		HomeController.undoDeque.addFirst(sauvgarde);
+
 	}
 }

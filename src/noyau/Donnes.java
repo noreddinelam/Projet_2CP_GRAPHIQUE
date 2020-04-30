@@ -1,19 +1,53 @@
 package noyau;
 
+import java.util.ArrayList;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polyline;
 
 public class Donnes {
-	Actions typeDaction;
-	ImageView composantCommeImage;
-	Composant composant;
-	Image image=null;
-	int nombreDesEntrees=0;
-	double posX=0;
-	double posY=0;
-	Boolean typePin;
-	String label="";
-	Front front=null ;
+	private Actions typeDaction;
+	private ImageView composantCommeImage;
+	private Composant composant;
+	private Image image=null;
+	private int nombreDesEntrees=0;
+	private double posX=0;
+	private double posY=0;
+	private Boolean typePin;
+	private String label="";
+	private Front front=null ;
+	private Polyline parent = null;
+	private Fil fil = null;
+	private ArrayList<InfoPolyline> arrayList = new ArrayList<InfoPolyline>();
+	private ArrayList<Polyline> listPolyParent = new ArrayList<Polyline>();
+	
+	public ArrayList<Polyline> getListPolyParent() {
+		return listPolyParent;
+	}
+	public void setListPolyParent(ArrayList<Polyline> listPolyParent) {
+		this.listPolyParent = listPolyParent;
+	}
+	public ArrayList<InfoPolyline> getArrayListInfoPoly() {
+		return arrayList;
+	}
+	public void setArrayListInfoPoly(ArrayList<InfoPolyline> arrayList) {
+		this.arrayList = arrayList;
+	}
+	public Fil getFil() {
+		return fil;
+	}
+	public void setFil(Fil fil) {
+		this.fil = fil;
+	}
+	public Polyline getParent() {
+		return parent;
+	}
+	public void setParent(Polyline parent) {
+		this.parent = parent;
+	}
+	InfoPolyline infoPolyline = null;
+	ArrayList<InfoPolyline> listPolylines = null;
 	
 	public Actions getTypeDaction() {
 		return typeDaction;
@@ -78,6 +112,24 @@ public class Donnes {
 	public void setComposantCommeImage(ImageView composantCommeImage) {
 		this.composantCommeImage = composantCommeImage;
 	}
+	public InfoPolyline getInfoPolyline() {
+		return infoPolyline;
+	}
+	public void setInfoPolyline(InfoPolyline infoPolyline) {
+		this.infoPolyline = infoPolyline;
+	}
+	public ArrayList<InfoPolyline> getListPolylines() {
+		return listPolylines;
+	}
+	public void setListPolylines(ArrayList<InfoPolyline> listPolylines) {
+		this.listPolylines = listPolylines;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return ((Donnes)obj).getTypeDaction().equals(this.getTypeDaction());
+	}//equals fonctionne par raport au type d'action 
+	
 	
 	
 }

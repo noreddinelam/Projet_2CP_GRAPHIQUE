@@ -16,9 +16,11 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import noyau.Circuit;
+import noyau.CircuitIntegre;
 import noyau.Composant;
 
 public class ClickDroitController extends Controller implements Initializable{
@@ -114,7 +116,6 @@ public class ClickDroitController extends Controller implements Initializable{
 		HomeController.sauveGarderModification();
     	s.close();
 		String nom = cmp.getClass().getSimpleName(), key;
-		
 		if(bddPortes.contains(nom)) {
 			key = "Portes";
 		}else if(bddBascules.contains(nom)){
@@ -123,7 +124,6 @@ public class ClickDroitController extends Controller implements Initializable{
 		
 			key = nom;
 		}
-		System.out.println(cmp);
 		Proprietes f = new Proprietes(BddFenetre.get(key), cmp,workSpace, HomeController.homeWindow);
 	}
 
@@ -150,6 +150,12 @@ public class ClickDroitController extends Controller implements Initializable{
 			HomeController.horloged =false;
 			HomeController.horlogeDeCercuit =null; 
 		}
+		else if (imageDeComposant.getId().equals("CircuitIntegre")) {
+			ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
+			for (Circle circle : arrayList) {
+				workSpace.getChildren().remove(circle);
+			}
+		} 
 		workSpace.getChildren().remove(imageDeComposant);
 		removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));		 
 		Stage s = (Stage)prop.getScene().getWindow(); 

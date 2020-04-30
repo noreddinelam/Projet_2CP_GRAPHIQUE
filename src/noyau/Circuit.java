@@ -67,7 +67,7 @@ public class Circuit {
 	public static void validerCircuits() {
 		composantsErronee.clear();
 		if (compUtilises.isEmpty()) {
-			circuitException.add(new CircuitVide(TypesExceptions.ALERTE));
+			circuitException.add(new CircuitVide(TypesExceptions.ERREUR));
 		}
 		else {
 			if (entreesCircuit.size() == 0) {

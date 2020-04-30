@@ -10,10 +10,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
+import noyau.Actions;
 import noyau.Bascule;
 import noyau.Circuit;
 import noyau.Combinatoires;
 import noyau.Composant;
+import noyau.Donnes;
 import noyau.Fil;
 import noyau.InfoPolyline;
 import noyau.Sequentiels;
@@ -22,14 +24,14 @@ public class ClickDroitFilController {
 
 	private Polyline line;
 	
-	private AnchorPane workSpace;
+	private static AnchorPane workSpace;
 	
-    public AnchorPane getPane() {
+    public static AnchorPane getPane() {
 		return workSpace;
 	}
 
-	public void setPane(AnchorPane workSpace) {
-		this.workSpace = workSpace;
+	public static void setPane(AnchorPane workSpace) {
+		ClickDroitFilController.workSpace = workSpace;
 	}
 
 	public Polyline getLine() {
@@ -52,28 +54,28 @@ public class ClickDroitFilController {
     @FXML
     void supprimer(ActionEvent event) {
     	InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
-    	System.out.println(infoLine.isRelier());
+    	if (infoLine.getLineParent() != null) {
+    		sauveGarderSuppressionFil(infoLine);
+		}
     	supprimer(infoLine);
-    	Stage s = (Stage)supprimer.getScene().getWindow(); 
+    	Stage s = (Stage)supprimer.getScene().getWindow();
     	s.close();
     }
 
     @FXML
     void supprimerTous(ActionEvent event) {
     	ArrayList<InfoPolyline> list = Circuit.getListFromPolyline(line);
-    	System.out.println("contenu : "+ list);
+    	sauveGarderSuppressionToutFil(new ArrayList<InfoPolyline>(list));
     	int i = list.size()-1;
     	while(i >= 0) {
     		InfoPolyline infoLine = list.get(i);
     		supprimer(infoLine);
-
     	  i--;
-
 		}
 		Stage s = (Stage)supprimer.getScene().getWindow(); 
     	s.close();
     }
-    public void supprimer(InfoPolyline infoLine) {
+    public static void supprimer(InfoPolyline infoLine) {
     	Polyline line = infoLine.getLinePrincipale();
     	if(infoLine.getNbFils() == 0 ) { //On peut le supprimer
     		
@@ -94,7 +96,7 @@ public class ClickDroitFilController {
 				}
     			
     			Circuit.getFilFromPolyline(line).getDestination().remove(infoLine.getDestination());
-    			infoLine.setRelier(false);
+//    			infoLine.setRelier(false);
     		}
     		
     		if(infoLine.getLineParent() != null ) {//n'est pas la racine
@@ -103,19 +105,52 @@ public class ClickDroitFilController {
     			Circuit.getListFromPolyline(line).remove(new InfoPolyline(line));
     			infoLine = Circuit.getInfoPolylineFromPolyline(infoLine.getLineParent());
     			infoLine.setNbFils(infoLine.getNbFils() - 1);
-    			line.getPoints().clear();
+//    			line.getPoints().clear();
     		}else {//la racine
     			infoLine.setNbFils(0);
+    			infoLine.setRelier(false);
     			Composant cmpSource = Circuit.getFilFromPolyline(line).getSource();
     			Fil filDeline = Circuit.getFilFromPolyline(line);
     			double posX = Circuit.getImageFromComp(cmpSource).getLayoutX()+cmpSource.getLesCoordonnees().getCordSortieInIndex(cmpSource.numCmpSorties(filDeline)).getX() ;
     			double posY = Circuit.getImageFromComp(cmpSource).getLayoutY()+cmpSource.getLesCoordonnees().getCordSortieInIndex(cmpSource.numCmpSorties(filDeline)).getY() ;
     			cmpSource.resetPolyline(line, posX, posY);
-        		line.setStroke(Color.BLACK);
+//        		line.setStroke(Color.BLACK);
     		}
-    	}else {
-    		line.setStroke(Color.BLACK);
-    	} 		
+    	}
+//    	else {
+//    		line.setStroke(Color.BLACK);
+//    	} 	
+    	line.setStroke(Color.BLACK);
+    }
+    
+    public void sauveGarderSuppressionFil(InfoPolyline infoPolyline) {
+		Donnes sauveGarde= new Donnes();
+		if (infoPolyline.getLineParent() != null) {
+			Polyline parent = new Polyline();
+			parent.getPoints().addAll(infoPolyline.getLineParent().getPoints());
+			sauveGarde.setParent(parent);
+		}
+		sauveGarde.setFil(Circuit.getFilFromPolyline(infoPolyline.getLinePrincipale()));
+		sauveGarde.setTypeDaction(Actions.SuppressionFil);
+		sauveGarde.setInfoPolyline(infoPolyline);
+		HomeController.undoDeque.addFirst(sauveGarde);
+	}
+    
+    public void sauveGarderSuppressionToutFil(ArrayList<InfoPolyline> infoPolylines) {
+    	Donnes donnes = new Donnes();
+    	ArrayList<Polyline> result=new ArrayList<Polyline>();
+    	for (InfoPolyline infoPolyline : infoPolylines) {
+    		if (infoPolyline.getLineParent() != null) {
+    			Polyline parent = new Polyline();
+    			parent.getPoints().addAll(infoPolyline.getLineParent().getPoints());
+    			result.add(parent);
+			}
+		}
+    	donnes.setArrayListInfoPoly(infoPolylines);
+    	donnes.setListPolyParent(result);
+    	donnes.setFil(Circuit.getFilFromPolyline(infoPolylines.get(0).getLinePrincipale()));
+    	donnes.setTypeDaction(Actions.SuppressionToutFil);
+    	HomeController.undoDeque.addFirst(donnes);
     }
 
 }
