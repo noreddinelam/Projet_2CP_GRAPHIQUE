@@ -17,7 +17,6 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="661.0" prefWidth="700.0" style="-fx-background-color: #303337; -fx-background-radius: 15;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChronogrammeController">
    <top>
       <AnchorPane fx:id="lightBox" style="-fx-background-color: #303337; -fx-background-radius: 15;" BorderPane.alignment="CENTER">
@@ -35,7 +34,7 @@
                         <Image url="@../chronoIcones/CHRONO.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="homebutton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#clickHome" onMouseEntered="#homeEnter" style="-fx-background-color: #5a6572;" text="Home" textAlignment="CENTER" textFill="#78ff69" textOverrun="CENTER_WORD_ELLIPSIS">
+                  <Button fx:id="homebutton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#clickHome" onMouseEntered="#homeEnter" onMouseExited="#homeExit" style="-fx-background-color: #5a6572;" text="Home" textAlignment="CENTER" textOverrun="CENTER_WORD_ELLIPSIS">
                      <HBox.margin>
                         <Insets left="20.0" top="10.0" />
                      </HBox.margin>

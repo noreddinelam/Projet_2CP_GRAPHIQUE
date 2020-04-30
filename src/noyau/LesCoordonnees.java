@@ -6,11 +6,11 @@ import javafx.scene.image.ImageView;
 
 public class LesCoordonnees implements Serializable{
 	private Coordonnees cordEntree[] = new Coordonnees[32]; // coordonees des entrees
-	private int nbCordEntree ;
+	private int nbCordEntree=0 ;
 	private Coordonnees cordSorties[] = new Coordonnees[32]; // coordonees des sorties
-	private int nbCordSorties ;
+	private int nbCordSorties=0 ;
 	private Coordonnees cordCommandes[] = new Coordonnees[32]; // coordonees des cmd
-	private int nbCordCommandes;
+	private int nbCordCommandes=0;
 	private Coordonnees cordLoad = null;
 	private Coordonnees cordClear = null;
 	private Coordonnees cordPreset = null;
