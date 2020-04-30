@@ -1899,91 +1899,121 @@ public class HomeController extends Controller {
 		///////////////////////////////////////////////////////////-> Bar Droite <-/////////////////////////////////////////////////////////////
 
 
+	    @FXML
+	    void supprimerTout(ActionEvent event) {   	
+	    	Stage stage = (Stage) supprimerTout.getScene().getWindow(); 	
+	    	stage.close();
+	    	Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 
-		@FXML
-		void supprimerTout(ActionEvent event) {
-			if (! simul) {
-				Circuit.clearCircuit();
-				workSpace.getChildren().clear();
-				horloged = false;
-				tracerLesregles(workSpace);
-			}
-		}
-
-
-		@FXML
-		public void copier(ActionEvent event) {
-			if(elementSeclecionner != null) {
-				setCopierActive(true);
-				Stage s = (Stage) copier.getScene().getWindow();
-				s.close();
-			}
-		}
-		public void coller(ActionEvent event) {
-			cc = true;
-			CopyUses();
-			Stage stage = (Stage) coller.getScene().getWindow();
-
-			stage.close();
-		}
-
-
-
-		public void CopyUses() {
-			if (elementSeclecionner != null) {
-				if(!pastButton) {
-
-					ImageView dragImageView = new ImageView();
-					dragImageView.setLayoutX(ctrlX);
-					dragImageView.setLayoutY(ctrlY);
-					dragImageView.setId(elementSeclecionner.getId());
-					instanceComposant(dragImageView);
-					if (!copyActive)
-						composantCopy = Circuit.getCompFromImage(elementSeclecionner);
-					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
-					cmp2.setDirection(composantCopy.getDirection());
-					cmp2.setIcon(composantCopy.getIcon());
-					cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
-					cmp2.setNom(composantCopy.getNom());
-					cmp2.setNombreEntree(composantCopy.getNombreEntree());
-					cmp2.setNombreSortieAndUpdateFil(composantCopy.getNombreSortie());
-					if (cmp2.getClass().getSimpleName().equals("Multiplexeur")) {
-						((Multiplexeur) cmp2).setNbCommande(((Multiplexeur) composantCopy).getNbCommande());
-						cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());
-					} else if (cmp2.getClass().getSimpleName().equals("Demultiplexeur")) {
-						((Demultiplexeur) cmp2).setNbCommande(((Demultiplexeur) composantCopy).getNbCommande());
-						cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());
-					}
-
-					cmp2.setCord();
-					cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
-					cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
-					dragImageView.setImage(elementSeclecionner.getImage());
-					dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
-					dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());
-					workSpace.getChildren().add(dragImageView);
-					ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-					addAllPolylinesToWorkSpace(polyline);
-					ajouterLeGestApresCollage(dragImageView);
-					elementSeclecionner = dragImageView;
+			
+			if (! simul) {			
+				if(!(Circuit.getCompUtilises().isEmpty())) {				
+				alert.setContentText("Voullez vous vraimment supprimer toute la zone du circuit ");
+				Optional<ButtonType> result = alert.showAndWait();	    		
+						if(result.get() == ButtonType.OK){
+						Circuit.clearCircuit();
+						workSpace.getChildren().clear();
+						horloged = false;
+						tracerLesregles(workSpace);	
+						}
 				}
-
+				else {
+					alert.setAlertType(AlertType.INFORMATION);
+					alert.setContentText("le circuit est deja vide !");
+					alert.show();
+		    	}
 			}
-		}
+	    else {
+	    	alert.setAlertType(AlertType.INFORMATION);
+			alert.setContentText("veuillez desactiver l'etat de simulation");
+			alert.show();
+	    	
+	    }
+			
+}
+	    
 
+	    @FXML
+	    public void copier(ActionEvent event) {
+	    	Stage s = (Stage) copier.getScene().getWindow();
+    		s.close();
+	    	if(elementSeclecionner != null) {
+	    		setCopierActive(true);
+	    		
+	    	}
+	    }
+	    public void coller(ActionEvent event) {
+	    		cc = true;
+	    		CopyUses();
+	   	    	Stage stage = (Stage) coller.getScene().getWindow();
+	   	    	stage.close();		
+	    }
+	    
+	    
+	    
+	    public void CopyUses() {
+	    	if (elementSeclecionner != null) {
+	    		if(!pastButton) {
+	    			ImageView dragImageView = new ImageView();
+	    			dragImageView.setLayoutX(ctrlX);
+	    			dragImageView.setLayoutY(ctrlY);
+	    			dragImageView.setId(elementSeclecionner.getId());
+	    			instanceComposant(dragImageView);		
+	    			if(!copyActive)
+	    				composantCopy = Circuit.getCompFromImage(elementSeclecionner);
+	    			Composant cmp2 = Circuit.getCompFromImage(dragImageView);
+	    			cmp2.setDirection(composantCopy.getDirection());
+	    			cmp2.setIcon(composantCopy.getIcon());
+	    			cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
+	    			cmp2.setNom(composantCopy.getNom());
+	    			cmp2.setNombreEntree(composantCopy.getNombreEntree());
+	    			cmp2.setNombreSortieAndUpdateFil(composantCopy.getNombreSortie());
+	    			if(cmp2.getClass().getSimpleName().equals("Multiplexeur")){
+	    				((Multiplexeur)cmp2).setNbCommande(((Multiplexeur)composantCopy).getNbCommande());
+	    				cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
+	    			}
+	    			else
+	    				if(cmp2.getClass().getSimpleName().equals("Demultiplexeur")){
+	    					((Demultiplexeur)cmp2).setNbCommande(((Demultiplexeur)composantCopy).getNbCommande());
+	    					cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
+	    				}
 
+	    			cmp2.setCord();
+	    			cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
+	    			cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
+	    			dragImageView.setImage(elementSeclecionner.getImage());
+	    			dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
+	    			dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());		
+	    			workSpace.getChildren().add(dragImageView);
+	    			ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+	    			addAllPolylinesToWorkSpace(polyline);
+	    			ajouterLeGestApresCollage(dragImageView);
+	    			elementSeclecionner = dragImageView;
+	    		}
+	    	}
+
+	    }
+
+	    /*-----------------------------------------------------*/
+	    
+	    @FXML
+	    void annuler(ActionEvent event) {
+	    	//System.out.println("le boutton annuler est clique");
+	    	((Stage)annuler.getScene().getWindow()).close();
+	    	undoChanges(workSpace);
+
+	    }
+	    
 
 		/*-----------------------------------------------------*/
 
-		@FXML
-		void annuler(ActionEvent event) {
-			//System.out.println("le boutton annuler est clique");
-			undoChanges(workSpace);
-
-		}
+		
 
 		@FXML
 		void supprimer(ActionEvent event) { /// pour appliquer une suppression sur
+			    	((Stage)supprimer.getScene().getWindow()).close();
+
 			if (elementSeclecionner != null) {
 				cmp = Circuit.getCompFromImage(elementSeclecionner);
 				elementAsuprimer = elementSeclecionner;
@@ -1998,6 +2028,8 @@ public class HomeController extends Controller {
 				elementAsuprimer=null;
 			}
 		}
+
+
 
 		@FXML
 		void couper(ActionEvent event) {
@@ -2027,10 +2059,14 @@ public class HomeController extends Controller {
 			Stage stage = (Stage) fermer.getScene().getWindow();
 			Alert alertQ = new Alert(AlertType.CONFIRMATION);
 			alertQ.setContentText("Voullez vous vraimment quitter ! ");
+			alertQ.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
 			Optional<ButtonType> resultQ = alertQ.showAndWait();
 			if (resultQ.get() == ButtonType.OK) {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setContentText("Voullez vous sauvgarder ce circuit");
+				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK) {
 					if (fichierCourant == null) {
@@ -2044,6 +2080,8 @@ public class HomeController extends Controller {
 							sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
 							Alert a = new Alert(AlertType.INFORMATION);
 							a.setContentText("le circuit est bien sauvgarde");
+							a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
 							a.showAndWait();
 						}
 					} else {
@@ -2051,6 +2089,8 @@ public class HomeController extends Controller {
 						sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
+						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
 						a.showAndWait();
 					}
 				}
@@ -2065,6 +2105,8 @@ public class HomeController extends Controller {
 			stage.close();
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setContentText("Voullez vous sauvgarder ce circuit");
+			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
 			
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
@@ -2078,6 +2120,7 @@ public class HomeController extends Controller {
 						sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
+						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.showAndWait();
 					}
 				} else {
@@ -2085,6 +2128,7 @@ public class HomeController extends Controller {
 					sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setContentText("le circuit est bien sauvgarde");
+					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.showAndWait();
 				}
 			}
@@ -2093,7 +2137,12 @@ public class HomeController extends Controller {
 			workSpace.getChildren().clear();
 			horloged = false;
 			tracerLesregles(workSpace);
-		}
+	    }
+
+	 
+	 
+	    
+	  
 
 		@FXML
 		void ouvrir(ActionEvent event) {
@@ -2104,6 +2153,8 @@ public class HomeController extends Controller {
 			if (!Circuit.getCompUtilises().isEmpty()) {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setContentText("Voullez vous sauvgarder ce circuit");
+				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK) {
 					if (fichierCourant == null) {
@@ -2114,6 +2165,8 @@ public class HomeController extends Controller {
 							sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
 							Alert a = new Alert(AlertType.INFORMATION);
 							a.setContentText("le circuit est bien sauvgarde");
+							a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
 							a.showAndWait();
 						}
 					} else {
@@ -2121,6 +2174,7 @@ public class HomeController extends Controller {
 						sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
+						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.showAndWait();
 
 					}
@@ -2141,6 +2195,7 @@ public class HomeController extends Controller {
 			if (Circuit.getCompUtilises().isEmpty()) {
 				Alert a = new Alert(AlertType.INFORMATION);
 				a.setContentText("le circuit est vide y a rien a sauvgarder");
+				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 				a.showAndWait();
 			} else {
 				if (fichierCourant == null) {
@@ -2152,6 +2207,7 @@ public class HomeController extends Controller {
 						sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
+						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.showAndWait();
 
 					}
@@ -2160,6 +2216,7 @@ public class HomeController extends Controller {
 					sauvegarde.saveCiruit(fichierCourant.getAbsolutePath() + ".sim");
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setContentText("le circuit est bien sauvgarde");
+					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.showAndWait();
 				}
 			}
@@ -2211,6 +2268,7 @@ public class HomeController extends Controller {
 					// TODO: handle exception
 					e.printStackTrace();
 				}
+
 				finally {
 					try {
 						oo.close();
