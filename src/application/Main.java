@@ -75,15 +75,12 @@ public class Main extends Application {
 		Alert alertQ = new Alert(AlertType.CONFIRMATION);
 		alertQ.setContentText("Voullez vous vraimment quitter ! ");
 		alertQ.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 		Optional<ButtonType> resultQ = alertQ.showAndWait();
 		if (resultQ.get() == ButtonType.OK) {
-
 			if (!Circuit.getCompUtilises().isEmpty()) {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setContentText("Voullez vous sauvgarder ce circuit");
 				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK) {
 					if (HomeController.fichierCourant == null) {
@@ -107,7 +104,6 @@ public class Main extends Application {
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 						a.showAndWait();
 					}
 				}

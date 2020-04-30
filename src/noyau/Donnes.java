@@ -127,9 +127,12 @@ public class Donnes {
 	@Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
-		return ((Donnes)obj).getTypeDaction().equals(this.getTypeDaction());
-	}//equals fonctionne par raport au type d'action 
-	
-	
-	
+		if (((Donnes)obj).getTypeDaction().equals(this.getTypeDaction())) {
+			if(this.composantCommeImage != null && ((Donnes)obj).getComposantCommeImage() != null) {
+				System.out.println("nooooor");
+				return ((Donnes)obj).getComposantCommeImage().getId().equals(this.composantCommeImage.getId());
+			}
+		}
+		return false;
+	}//equals fonctionne par raport au type d'action 	
 }
