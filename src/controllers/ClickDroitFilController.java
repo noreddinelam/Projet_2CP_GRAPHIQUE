@@ -107,6 +107,7 @@ public class ClickDroitFilController {
 //    			line.getPoints().clear();
     		}else {//la racine
     			infoLine.setNbFils(0);
+    			infoLine.setRelier(false);
     			Composant cmpSource = Circuit.getFilFromPolyline(line).getSource();
     			Fil filDeline = Circuit.getFilFromPolyline(line);
     			double posX = Circuit.getImageFromComp(cmpSource).getLayoutX()+cmpSource.getLesCoordonnees().getCordSortieInIndex(cmpSource.numCmpSorties(filDeline)).getX() ;
