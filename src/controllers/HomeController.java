@@ -1185,13 +1185,10 @@ public class HomeController extends Controller {
 							clickDroitFenetre.close();
 
 						//clickDroitFenetre = new ClickDroit(Circuit.getCompFromImage(eleementAdrager),clicDroitX,clicDroitY, homeWindow);
-						if(clicDroitX < 1100 && clicDroitY <500) {
+
 						clickDroitFenetre = new ClickDroit(composant,clicDroitX,clicDroitY,workSpace, homeWindow);
 						clickDroitFenetre.show();
-						}else {
-							clickDroitFenetre = new ClickDroit(composant,clicDroitX-150,clicDroitY,workSpace, homeWindow);
-							clickDroitFenetre.show();
-						}
+	
 						if (clickSouris2 != null) {
 							clickSouris2.close();
 						}	        	
@@ -1207,13 +1204,13 @@ public class HomeController extends Controller {
 							if (! simul) {
 								if (e.getButton() == MouseButton.PRIMARY) {
 									//ajout des points
-									addPoints();/// ajouter les points 
-									Composant ci=Circuit.getCompFromImage(eleementAdrager);
-									if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
-										CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
-										circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());
-										//										workSpace.getChildren().removeAll(((CircuitIntegre)ci).getListeCercles());
-										//										workSpace.getChildren().addAll(((CircuitIntegre)ci).generateCercles(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY()));
+		        					addPoints();/// ajouter les points 
+		        		        	Composant ci=Circuit.getCompFromImage(eleementAdrager);
+		        		        	if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
+		        		        		CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
+		        		        		circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());
+//										workSpace.getChildren().removeAll(((CircuitIntegre)ci).getListeCercles());
+//										workSpace.getChildren().addAll(((CircuitIntegre)ci).generateCercles(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY()));
 									}
 									Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
 									eleementAdrager.relocate(
@@ -2059,38 +2056,39 @@ public class HomeController extends Controller {
 				}
 
 			}
-		}
+	    }
 	}
+	    
+	    
+	    @FXML
+	    void encapsulerEtSauvgarder(ActionEvent event) {
+	    	final FileChooser fileChooser = new FileChooser();
 
-
-	@FXML
-	void encapsulerEtSauvgarder(ActionEvent event) {
-		final FileChooser fileChooser = new FileChooser();
-
-		File f = fileChooser.showSaveDialog(homeWindow);
-		if (f != null) {
-			FileOutputStream fichier ;
-			ObjectOutputStream oo = null;
-			CircuitIntegre ci = new CircuitIntegre(Circuit.getEntreesCircuit().size(),Circuit.getSortiesCircuit().size(), f.getAbsolutePath());
-			Circuit.tableVerite(Circuit.getEntreesCircuit());
-			ci.setTableVerite(Circuit.getTableVerite());
-			Circuit.defaultCompValue();
-			try {
-				fichier = new FileOutputStream(f.getAbsolutePath()+".int");
-				oo = new ObjectOutputStream(fichier);
-				oo.writeObject(ci);
-			} catch (Exception e) {
-				e.printStackTrace();
+	    	File f = fileChooser.showSaveDialog(homeWindow);
+	    	if (f != null) {
+	    		FileOutputStream fichier ;
+	    		ObjectOutputStream oo = null;
+	    		CircuitIntegre ci = new CircuitIntegre(Circuit.getEntreesCircuit().size(),Circuit.getSortiesCircuit().size(), f.getAbsolutePath());
+	    		Circuit.tableVerite(Circuit.getEntreesCircuit());
+	    		ci.setTableVerite(Circuit.getTableVerite());
+	    		Circuit.defaultCompValue();
+	    		try {
+	    			fichier = new FileOutputStream(f.getAbsolutePath()+".int");
+	    			oo = new ObjectOutputStream(fichier);
+	    			oo.writeObject(ci);
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
+	    		finally {
+	    			try {
+	    				oo.close();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
+	    		}
 			}
-			finally {
-				try {
-					oo.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+	    }
+	  
 
 	/*---------------------------affichage--------------------------------*/
 
@@ -2304,6 +2302,7 @@ public class HomeController extends Controller {
 
 
 	/*-----------------------------click souris 2----------------------*/
+
 
 	@FXML
 	private Button undoParSouris;

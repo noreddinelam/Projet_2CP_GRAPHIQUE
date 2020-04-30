@@ -1,6 +1,11 @@
 package noyau;
 
 public class AdditionneurN_Bites extends Additionneur {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1442604529556819263L;
+
 	public AdditionneurN_Bites(int nombreEntree,String nom) {
 		super(nombreEntree*2 + 1,nom);
 		nombreSortie = nombreEntree + 1;
