@@ -782,11 +782,10 @@ public class HomeController extends Controller {
 								System.out.println("control + c are pressed !");
 								System.out.println("l'element selectionner est : " + elementSeclecionner.getId());
 								setCopierActive(true);
-
 							}
-							if (event.isControlDown() && (event.getCode() == KeyCode.V)) {
-								CopyUses();
-							}
+						}
+						if (event.isControlDown() && (event.getCode() == KeyCode.V)) {
+							CopyUses();
 						}
 					}
 				};
@@ -872,10 +871,6 @@ public class HomeController extends Controller {
 		}
 
 
-
-
-
-
 		private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant
 			//est ajoute dans le workSpace
 
@@ -945,7 +940,6 @@ public class HomeController extends Controller {
 										guideY.setLayoutY(dragImageView.getLayoutY());
 										guideXp.setLayoutX(dragImageView.getLayoutX()+ elementAdrager.getBoundsInLocal().getWidth()+1);
 										guideYp.setLayoutY(dragImageView.getLayoutY()+ elementAdrager.getBoundsInLocal().getHeight()+1);
-
 
 										afficheurX.setText("X : "+xString);
 										afficheurY.setText("Y : "+yString);
@@ -2614,10 +2608,24 @@ public class HomeController extends Controller {
 					ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
 					Composant composant= Circuit.getCompFromImage( imageDeComposant);
 					imageDeComposant.setImage(sauveGarde.getImage());
+					imageDeComposant.setFitHeight(sauveGarde.getImage().getHeight());
+					imageDeComposant.setFitWidth(imageDeComposant.getImage().getWidth());
+					removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(composant));
 					composant.setNombreEntree(sauveGarde.getNombreDesEntrees());
+					composant.setNombreSortie(sauveGarde.getNombreDesSorties());
+					composant.getLesCoordonnees().setNbCordEntree(sauveGarde.getNombreDesEntrees());
+					composant.getLesCoordonnees().setNbCordSorties(sauveGarde.getNombreDesSorties());
+					if (composant.getClass().equals("Multiplexeur")) {
+						((Multiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
+						composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
+					}
+					else if(composant.getClass().equals("Demultiplexeur")){
+						((Demultiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
+						composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
+					}
 					if(imageDeComposant.getId().equals("pin")) ((Pin)composant).setInput(sauveGarde.getTypePin());
 					if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
-
+					addAllPolylinesToWorkSpace(composant.generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY()));
 				}break;
 				case Supression:
 				{
@@ -2669,6 +2677,13 @@ public class HomeController extends Controller {
 			sauveGarde.setComposantCommeImage(elementAmodifier);
 			sauveGarde.setImage(elementAmodifier.getImage());
 			sauveGarde.setNombreDesEntrees(composant.getNombreEntree());
+			sauveGarde.setNombreDesSorties(composant.getNombreSortie());
+			if (composant.getClass().getSimpleName().equals("Multiplexeur")) {
+				sauveGarde.setNombreDeCommandes(((Multiplexeur)composant).getNbCommande()); 
+			}
+			else if(composant.getClass().getSimpleName().equals("Demultiplexeur")){
+				sauveGarde.setNombreDeCommandes(((Demultiplexeur)composant).getNbCommande()); 
+			}
 			if(elementAmodifier.getId().equals("pin")) sauveGarde.setTypePin(((Pin)composant).isInput());
 			if(composant.getClass().isAssignableFrom(Sequentiels.class)) sauveGarde.setFront(((Sequentiels)composant).getFront());
 			undoDeque.addFirst(sauveGarde);
