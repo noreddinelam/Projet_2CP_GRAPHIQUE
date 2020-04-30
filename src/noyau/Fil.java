@@ -10,6 +10,10 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polyline;
 
 public class Fil implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1017277749047557467L;
 	private Composant source = null;
 	private ArrayList<Composant> destination = null;
 	private EtatLogique etat = EtatLogique.HAUTE_IMPEDANCE;

@@ -25,7 +25,8 @@ public class Proprietes extends Stage{
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);
-			this.initStyle(StageStyle.UNDECORATED);
+			this.initStyle(StageStyle.UTILITY);
+			this.setTitle("Proprietes");
 			this.initModality(Modality.WINDOW_MODAL);
 			this.setFullScreen(false);
 			this.initOwner(st);

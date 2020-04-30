@@ -8,6 +8,10 @@ import javafx.scene.shape.Polyline;
 
 public class AfficheurSegment extends Composant implements Affichage{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1307600965697277067L;
 	protected int valeur; // la valeur qui sera stocké dans le registre segment 
 	
 	public AfficheurSegment(String nom) {

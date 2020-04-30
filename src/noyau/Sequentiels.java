@@ -6,13 +6,11 @@ import java.util.Collections;
 import controllers.ChronogrammeController;
 
 public abstract class Sequentiels extends Composant implements ComposantDeChronogramme {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	/**
-	 * 
-	 */
+	private static final long serialVersionUID = -1243246494701808257L;
 	protected Fil entreeHorloge = null;
 	protected EtatLogique etatPrecHorloge;
 	protected Fil clear = null;

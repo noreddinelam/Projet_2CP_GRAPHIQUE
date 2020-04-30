@@ -1,6 +1,10 @@
 package noyau;
 
 public abstract class Combinatoires extends Composant {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6434251292315326757L;
 	protected Fil commande[] = new Fil[5];
 	
 	public Combinatoires(int nombreEntree,String nom) { // constructeur
