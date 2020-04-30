@@ -58,13 +58,14 @@ public class ClickDroitFilController {
     		sauveGarderSuppressionFil(infoLine);
 		}
     	supprimer(infoLine);
-    	Stage s = (Stage)supprimer.getScene().getWindow(); 
+    	Stage s = (Stage)supprimer.getScene().getWindow();
     	s.close();
     }
 
     @FXML
     void supprimerTous(ActionEvent event) {
     	ArrayList<InfoPolyline> list = Circuit.getListFromPolyline(line);
+    	sauveGarderSuppressionToutFil(new ArrayList<InfoPolyline>(list));
     	int i = list.size()-1;
     	while(i >= 0) {
     		InfoPolyline infoLine = list.get(i);
@@ -134,5 +135,22 @@ public class ClickDroitFilController {
 		sauveGarde.setInfoPolyline(infoPolyline);
 		HomeController.undoDeque.addFirst(sauveGarde);
 	}
+    
+    public void sauveGarderSuppressionToutFil(ArrayList<InfoPolyline> infoPolylines) {
+    	Donnes donnes = new Donnes();
+    	ArrayList<Polyline> result=new ArrayList<Polyline>();
+    	for (InfoPolyline infoPolyline : infoPolylines) {
+    		if (infoPolyline.getLineParent() != null) {
+    			Polyline parent = new Polyline();
+    			parent.getPoints().addAll(infoPolyline.getLineParent().getPoints());
+    			result.add(parent);
+			}
+		}
+    	donnes.setArrayListInfoPoly(infoPolylines);
+    	donnes.setListPolyParent(result);
+    	donnes.setFil(Circuit.getFilFromPolyline(infoPolylines.get(0).getLinePrincipale()));
+    	donnes.setTypeDaction(Actions.SuppressionToutFil);
+    	HomeController.undoDeque.addFirst(donnes);
+    }
 
 }

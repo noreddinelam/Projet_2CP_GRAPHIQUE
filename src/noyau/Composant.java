@@ -191,7 +191,7 @@ public abstract class Composant implements Serializable{
 			polyline.toBack();
 			listPolylines.add(new InfoPolyline(polyline));
 			reslut.add(polyline);
-			Circuit.ajouterFil(sorties[i], listPolylines); 
+			Circuit.ajouterFil(sorties[i], listPolylines);;
 		}		
 		return reslut;
 	}

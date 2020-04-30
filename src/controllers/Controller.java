@@ -225,7 +225,25 @@ public abstract class Controller {
 						line.setStroke(Color.web("00000070"));
 						if(clickSouris2 != null)
 				 			clickSouris2.close();
-				 		clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY, homeWindow);
+						if (clickDroitFilFenetre != null) {
+							clickDroitFilFenetre.close();
+						}
+						if (clicDroitX > 1100) {
+							if (clicDroitY > 500) {
+								clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX-150,clicDroitY-50, homeWindow);
+							}
+							else {
+								clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX-150,clicDroitY, homeWindow);
+							}
+						}
+						else {
+							if (clicDroitY > 500) {
+								clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY-50, homeWindow);
+							}
+							else {
+								clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY, homeWindow);
+							}
+						}
 				 		
 					}
 				}

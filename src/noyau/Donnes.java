@@ -7,18 +7,33 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
 public class Donnes {
-	Actions typeDaction;
-	ImageView composantCommeImage;
-	Composant composant;
-	Image image=null;
-	int nombreDesEntrees=0;
-	double posX=0;
-	double posY=0;
-	Boolean typePin;
-	String label="";
-	Front front=null ;
-	Polyline parent = null;
-	Fil fil = null;
+	private Actions typeDaction;
+	private ImageView composantCommeImage;
+	private Composant composant;
+	private Image image=null;
+	private int nombreDesEntrees=0;
+	private double posX=0;
+	private double posY=0;
+	private Boolean typePin;
+	private String label="";
+	private Front front=null ;
+	private Polyline parent = null;
+	private Fil fil = null;
+	private ArrayList<InfoPolyline> arrayList = new ArrayList<InfoPolyline>();
+	private ArrayList<Polyline> listPolyParent = new ArrayList<Polyline>();
+	
+	public ArrayList<Polyline> getListPolyParent() {
+		return listPolyParent;
+	}
+	public void setListPolyParent(ArrayList<Polyline> listPolyParent) {
+		this.listPolyParent = listPolyParent;
+	}
+	public ArrayList<InfoPolyline> getArrayListInfoPoly() {
+		return arrayList;
+	}
+	public void setArrayListInfoPoly(ArrayList<InfoPolyline> arrayList) {
+		this.arrayList = arrayList;
+	}
 	public Fil getFil() {
 		return fil;
 	}

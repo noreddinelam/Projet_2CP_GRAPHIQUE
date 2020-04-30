@@ -2424,33 +2424,7 @@ public class HomeController extends Controller {
 			case SuppressionFil :{
 				InfoPolyline infoPolyline = sauveGarde.getInfoPolyline();
 				Fil filSortieFil =  sauveGarde.getFil();
-				if (infoPolyline.getLineParent() != null) {
-					InfoPolyline parent = Circuit.getInfoPolylineFromPolyline(infoPolyline.getLineParent());
-					parent.setNbFils(parent.getNbFils()+1);
-					infoPolyline.getLineParent().getPoints().clear();
-					infoPolyline.getLineParent().getPoints().addAll(sauveGarde.getParent().getPoints());
-					ArrayList<InfoPolyline> resArrayList =  Circuit.getListFromPolyline(parent.getLinePrincipale());
-					resArrayList.add(resArrayList.indexOf(parent)+1,infoPolyline);
-				}
-				workSpace.getChildren().add(infoPolyline.getLinePrincipale());
-				if (infoPolyline.isRelier()) {
-					Composant source = filSortieFil.getSource();
-					int sortie = source.numCmpSorties(filSortieFil);
-					if(entree >= 0) {
-						Circuit.relier(source, infoPolyline.getDestination(), sortie, infoPolyline.getEntre());
-					}else if(-5 < infoPolyline.getEntre()) {
-						Circuit.relierCommand(source,((Combinatoires)infoPolyline.getDestination()), sortie, Math.abs(infoPolyline.getEntre())-1);
-					}else if(infoPolyline.getEntre() == -5) {
-						Circuit.relierHorloge(((Sequentiels)infoPolyline.getDestination()), source, sortie);
-					}else if(infoPolyline.getEntre() == -6) {
-						Circuit.relierClear(((Sequentiels)infoPolyline.getDestination()), source, sortie);
-					}else if(infoPolyline.getEntre() == -7) {
-						Circuit.relierPreset(((Bascule)infoPolyline.getDestination()), source, sortie);
-					}else if(infoPolyline.getEntre() == -8) {
-						Circuit.relierLoad(((Sequentiels)infoPolyline.getDestination()), source, sortie);
-					}
-					filSortieFil.addDestination(infoPolyline.getDestination());
-				}
+				supprimerSauvegarde(infoPolyline, sauveGarde.getParent(), filSortieFil);
 
 			}break;
 			case CreationFil:
@@ -2460,7 +2434,15 @@ public class HomeController extends Controller {
 				//if(infoLine != null)
 					ClickDroitFilController.supprimer(infoLine);
 			}break;
-
+			case SuppressionToutFil :{
+				ArrayList<InfoPolyline> arrayList = sauveGarde.getArrayListInfoPoly();
+				ArrayList<Polyline> arrayParent= sauveGarde.getListPolyParent();
+				Fil filSortieFil =  sauveGarde.getFil();
+				int size =  arrayParent.size();
+				for (int i = 0; i < size; i++) {
+					supprimerSauvegarde(arrayList.get(i+1), arrayParent.get(i), filSortieFil);
+				}
+			}break;
 			default:
 				break;	 
 			}
@@ -2780,6 +2762,36 @@ public class HomeController extends Controller {
 					donnes.getInfoPolyline().setLineParent(line2);
 				}
 			}
+		}
+	}
+	
+	public void supprimerSauvegarde(InfoPolyline infoPolyline,Polyline paren,Fil filSortieFil) {
+		if (infoPolyline.getLineParent() != null) {
+			InfoPolyline parent = Circuit.getInfoPolylineFromPolyline(infoPolyline.getLineParent());
+			parent.setNbFils(parent.getNbFils()+1);
+			infoPolyline.getLineParent().getPoints().clear();
+			infoPolyline.getLineParent().getPoints().addAll(paren.getPoints());
+			ArrayList<InfoPolyline> resArrayList =  Circuit.getListFromPolyline(parent.getLinePrincipale());
+			resArrayList.add(resArrayList.indexOf(parent)+1,infoPolyline);
+		}
+		workSpace.getChildren().add(infoPolyline.getLinePrincipale());
+		if (infoPolyline.isRelier()) {
+			Composant source = filSortieFil.getSource();
+			int sortie = source.numCmpSorties(filSortieFil);
+			if(entree >= 0) {
+				Circuit.relier(source, infoPolyline.getDestination(), sortie, infoPolyline.getEntre());
+			}else if(-5 < infoPolyline.getEntre()) {
+				Circuit.relierCommand(source,((Combinatoires)infoPolyline.getDestination()), sortie, Math.abs(infoPolyline.getEntre())-1);
+			}else if(infoPolyline.getEntre() == -5) {
+				Circuit.relierHorloge(((Sequentiels)infoPolyline.getDestination()), source, sortie);
+			}else if(infoPolyline.getEntre() == -6) {
+				Circuit.relierClear(((Sequentiels)infoPolyline.getDestination()), source, sortie);
+			}else if(infoPolyline.getEntre() == -7) {
+				Circuit.relierPreset(((Bascule)infoPolyline.getDestination()), source, sortie);
+			}else if(infoPolyline.getEntre() == -8) {
+				Circuit.relierLoad(((Sequentiels)infoPolyline.getDestination()), source, sortie);
+			}
+			filSortieFil.addDestination(infoPolyline.getDestination());
 		}
 	}
 	/*public void removePoints() {
