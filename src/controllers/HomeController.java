@@ -1905,8 +1905,7 @@ public class HomeController extends Controller {
 	    	stage.close();
 	    	Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
-			
+		
 			if (! simul) {			
 				if(!(Circuit.getCompUtilises().isEmpty())) {				
 				alert.setContentText("Voullez vous vraimment supprimer toute la zone du circuit ");
@@ -2154,7 +2153,6 @@ public class HomeController extends Controller {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setContentText("Voullez vous sauvgarder ce circuit");
 				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK) {
 					if (fichierCourant == null) {
@@ -2166,7 +2164,6 @@ public class HomeController extends Controller {
 							Alert a = new Alert(AlertType.INFORMATION);
 							a.setContentText("le circuit est bien sauvgarde");
 							a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 							a.showAndWait();
 						}
 					} else {
@@ -2181,9 +2178,18 @@ public class HomeController extends Controller {
 				}
 			}
 			final FileChooser fileChooser = new FileChooser();
+			fileChooser.setInitialDirectory(
+					new File(System.getProperty("user.home"))
+					);                 
+			fileChooser.getExtensionFilters().addAll(
+					new FileChooser.ExtensionFilter("SIM", "*.sim")
+					);
 			File f = fileChooser.showOpenDialog(homeWindow);
 			if (f != null) {
-				supprimerTout(null);
+				Circuit.clearCircuit();
+				workSpace.getChildren().clear();
+				horloged = false;
+				tracerLesregles(workSpace);
 				Sauvegarde.loadCiruit(f.getAbsolutePath());
 				ajouterElements();
 				fichierCourant = f;
@@ -2209,9 +2215,9 @@ public class HomeController extends Controller {
 						a.setContentText("le circuit est bien sauvgarde");
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.showAndWait();
-
 					}
-				} else {
+				} 
+				else {
 					Sauvegarde sauvegarde = new Sauvegarde();
 					sauvegarde.saveCiruit(fichierCourant.getAbsolutePath() + ".sim");
 					Alert a = new Alert(AlertType.INFORMATION);
@@ -2358,6 +2364,8 @@ public class HomeController extends Controller {
 
 		@FXML
 		void tableDeVerite(ActionEvent event) { /// charger la fenetre du table de verité
+			Stage stage1 = (Stage) tableVerite.getScene().getWindow();
+			stage1.close();
 			if (simul) {
 				if(Circuit.getEntreesCircuit().size() != 0) {
 					if(ListTextPin == null) {
@@ -2387,7 +2395,6 @@ public class HomeController extends Controller {
 						if(ListTextPin.size() != 0) {
 							Circuit.tableVerite(ListTextPin);
 							Circuit.defaultCompValue(); //Tous noir
-
 							//Supprimer les numeros
 							for (Text num : ListText) {
 								workSpace.getChildren().remove(num);

@@ -89,7 +89,6 @@ public class Main extends Application {
 						fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("SIM", "*.sim"));
 						File f = fileChooser.showSaveDialog(Controller.homeWindow);
 						if (f != null) {
-
 							Sauvegarde sauvegarde = new Sauvegarde();
 							sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
 							Alert a = new Alert(AlertType.INFORMATION);

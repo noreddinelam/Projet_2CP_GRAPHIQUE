@@ -17,7 +17,7 @@ public class Circuit {
 	private static HashMap<Composant, ImageView> compUtilises = new HashMap<Composant,ImageView>();// tout les composants du circuit
 	private static HashMap<Fil, ArrayList<InfoPolyline>> filUtilises = new HashMap<Fil,ArrayList<InfoPolyline>>();// tout les fils du circuit
 	private static ArrayList<Pin> entreesCircuit = new ArrayList<Pin>(); // toutes les entrees du circuit
-	public static ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>(); // toutes les sorties du circuit
+	public static ArrayList<Pin> sortiesCircuit = new ArrayList<Pin>(); // toutes les sorties du circuit
 	public static EtatLogique tableVerite[][]; // la table de verite du circuit
 	private static ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>(); // la liste des etages pour les elts sequentiels 
 	private static int nbEtages = 0; // nombre des etages	
@@ -141,7 +141,7 @@ public class Circuit {
 	public static void supprimerSourceCte(SourceConstante cte) {
 		listSouceCte.remove(cte);
 	}
-	public static void ajouterSortie(Affichage compAff) { // ajouter une sorties à la liste des sorties
+	public static void ajouterSortie(Pin compAff) { // ajouter une sorties à la liste des sorties
 		sortiesCircuit.add(compAff);
 	}
 	public static  void relier(Composant compS,Composant compD, int s, int e) {// pour relier deux composants 
@@ -225,8 +225,7 @@ public class Circuit {
 				pin.evaluer();// a changer
 				j++;
 			}
-			for ( Affichage aff : sortiesCircuit){ // recuperer l'etat des pins de sorties
-				Pin pin = (Pin) aff ;
+			for ( Pin pin : sortiesCircuit){ // recuperer l'etat des pins de sorties
 				ligne[j]=pin.getEtat();
 				j++;
 			}
@@ -395,7 +394,7 @@ public class Circuit {
 	public static ArrayList<Pin> getEntreesCircuit() {
 		return entreesCircuit;
 	}
-	public static ArrayList<Affichage> getSortiesCircuit() {
+	public static ArrayList<Pin> getSortiesCircuit() {
 		return sortiesCircuit;
 	}
 	public static EtatLogique[][] getTableVerite() {
@@ -423,7 +422,7 @@ public class Circuit {
 	public static void setEntreesCircuit(ArrayList<Pin> entreesCircuit) {
 		Circuit.entreesCircuit = entreesCircuit;
 	}
-	public static void setSortiesCircuit(ArrayList<Affichage> sortiesCircuit) {
+	public static void setSortiesCircuit(ArrayList<Pin> sortiesCircuit) {
 		Circuit.sortiesCircuit = sortiesCircuit;
 	}
 	public static void setTableVerite(EtatLogique[][] tableVerite) {
