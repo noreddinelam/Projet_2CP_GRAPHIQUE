@@ -1,2 +1,34 @@
+<<<<<<< HEAD
 /controllers/
 /noyau/
+=======
+/And/
+/CircuitIntegre/
+/Compteur/
+/D/
+/Decodeur/
+/DemiAdditionneur/
+/Demultiplexeur/
+/Encodeur/
+/Horloge/
+/JK/
+/Multiplexeur/
+/Nand/
+/Nor/
+/Or/
+/Pin/
+/RST/
+/RegistreDecalage/
+/SourceConstante/
+/T/
+/Xor/
+/application/
+/chronoIcones/
+/controllers/
+/homePage_icones/
+/not/
+/noyau/
+/pageEntreeIcones/
+/styleFile/
+/tableIcones/
+>>>>>>> 9809fedf3aa812c22f95f920ab640759594a4f66

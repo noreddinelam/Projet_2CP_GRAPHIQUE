@@ -1204,6 +1204,7 @@ public class HomeController extends Controller {
 							}
 						}
 						clickDroitFenetre.show();
+	
 						if (clickSouris2 != null) {
 							clickSouris2.close();
 						}	        	
@@ -2382,12 +2383,13 @@ public class HomeController extends Controller {
 			{
 			case Mouvement :
 			{
+				refrechLists(sauveGarde.getComposantCommeImage());
+				//removePoints();
+				// addPoints();
 				sauveGarde.getComposantCommeImage().setLayoutX(sauveGarde.getPosX());
 				sauveGarde.getComposantCommeImage().setLayoutY(sauveGarde.getPosY());
-				//refrechLists(sauveGarde.getComposantCommeImage());
-				// CtrlZmouvementFils();
-				// addPoints();
 				updatePolyline(sauveGarde.getComposantCommeImage());
+			
 			}break;
 			case Creation :
 			{				
@@ -2454,7 +2456,9 @@ public class HomeController extends Controller {
 			case CreationFil:
 			{
 				ClickDroitFilController.setPane(workSpace);
-				ClickDroitFilController.supprimer(Circuit.getInfoPolylineFromPolyline(sauveGarde.getParent()));
+				InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(sauveGarde.getParent());
+				//if(infoLine != null)
+					ClickDroitFilController.supprimer(infoLine);
 			}break;
 
 			default:
@@ -2696,6 +2700,7 @@ public class HomeController extends Controller {
 			if(cmp.getEntrees()[i] != null) {
 				crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
 				line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
+				System.out.println("dkhal"+line);
 				listEntrees.add(line);
 			}
 		}
@@ -2768,4 +2773,28 @@ public class HomeController extends Controller {
 			}
 		}
 	}
+	public static void remplacerLineUndoDequeSupprimer(Polyline line1,Polyline line2) {
+		for ( Donnes donnes : undoDeque) {
+			if(donnes.getTypeDaction().equals(Actions.SuppressionFil)) {
+				if(donnes.getInfoPolyline().getLineParent() == line1) {
+					donnes.getInfoPolyline().setLineParent(line2);
+				}
+			}
+		}
+	}
+	/*public void removePoints() {
+		Polyline line;
+		int i = 0,size = 0;
+			for( i = 0; i < listSorties.size();i++){
+				line = listSorties.get(i);
+				line.getPoints().remove(0);
+				line.getPoints().remove(0);
+				}
+			/*for(i = 0;i < listEntrees.size();i++) {
+				line = listEntrees.get(i);
+				size = line.getPoints().size();
+				line.getPoints().add(size-3,line.getPoints().get(size - 2));
+				line.getPoints().add(size-3,line.getPoints().get(size - 2));
+			}
+	}*/
 }

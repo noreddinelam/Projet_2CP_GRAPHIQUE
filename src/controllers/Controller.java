@@ -163,6 +163,7 @@ public abstract class Controller {
 						line2.getPoints().addAll(line.getPoints());
 						Circuit.remplacerPere(line, line2);
 						HomeController.remplacerLineUndoDeque(line, line2);
+						HomeController.remplacerLineUndoDequeSupprimer(line, line2);
 						ArrayList<Double> list = new ArrayList<Double>(line.getPoints());
 						int i = list.size()-2;
 
@@ -301,11 +302,20 @@ public abstract class Controller {
 						}else {
 							der =  line.getPoints().size()-1;
 							if( Math.abs(line.getPoints().get(der)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-1)-line.getPoints().get(der-3)) < 10 ) {
+								if(Math.abs(line.getPoints().get(der-4)-line.getPoints().get(der-2)) < 10  &&  Math.abs(line.getPoints().get(der-5)-line.getPoints().get(der-3)) < 10)
+								{
+									ClickDroitFilController.setPane(workSpace);
+									ClickDroitFilController.supprimer(Circuit.getInfoPolylineFromPolyline(line));
+									line.getPoints().clear();
+								}
+								else {
 									line.getPoints().remove(der);line.getPoints().remove(der-1);
+								}
 							}
 						}
 						//sauvgaaarder la creation du fil
-						sauvgardeCreationFil(line);
+						if(line.getPoints().size()!=0) 
+							sauvgardeCreationFil(line);
 					}
 				}
 			}
