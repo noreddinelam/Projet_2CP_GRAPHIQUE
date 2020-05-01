@@ -336,7 +336,7 @@ public class Circuit {
 		if (composant.getClass().getSimpleName().equals("Pin")) {
 			Pin pin = (Pin)composant;
 			if (pin.isInput()) {
-				entreesCircuit.remove(composant);
+				entreesCircuit.remove(pin);
 			}
 			else {
 				sortiesCircuit.remove(pin);
@@ -344,10 +344,7 @@ public class Circuit {
 		}
 		else { 
 			if (composant.getClass().getSimpleName().equals("SourceConstante")) 
-				entreesCircuit.remove(composant);
-			else if (composant.getClass().getSimpleName().equals("AfficheurSegment")) {
-				sortiesCircuit.remove((AfficheurSegment)composant);
-			}
+				listSouceCte.remove(composant);
 		}
 		if ((composant.getClass().getSuperclass().equals(Bascule.class)) || (composant.getClass().getSuperclass().equals(Sequentiels.class))) {
 			listeEtages.remove(composant);
@@ -464,7 +461,14 @@ public class Circuit {
 		circuitException.clear();
 		filUtilises.clear();
 	}
-	
+	public static int occurencePinHorlogee() {
+		int i = 0;
+		for (Pin pin : entreesCircuit) {
+			if(pin.isHorloge()) 
+				i++;
+		}
+		return i ;
+	}
 	
 	
 }

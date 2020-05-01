@@ -24,7 +24,6 @@ public abstract class Bascule extends Sequentiels{
 
 	public void genererSorties() // executer dans le cas des cmd asynchrones
 	{
-		
 		if(clear.getEtatLogiqueFil().getNum()==0)
 		{
 			sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
