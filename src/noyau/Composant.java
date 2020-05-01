@@ -86,8 +86,6 @@ public abstract class Composant implements Serializable{
 					sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
 				}
 			}
-		}else // to be continued ...
-		{
 		}
 	}
 

@@ -30,12 +30,14 @@ public class Fil implements Serializable{
 		if(valider()) // si le fil est pret 
 		{
 			ArrayList<InfoPolyline> line = Circuit.getPolylineFromFil(this);
-			for (InfoPolyline polyline : line) {
-				if(etat.getNum() == 1) {
-					polyline.getLinePrincipale().setStroke(Color.LIGHTGREEN);
-				}
-				if(etat.getNum() == 0){
-					polyline.getLinePrincipale().setStroke(Color.DARKGREEN.darker());
+			if(line != null) {
+				for (InfoPolyline polyline : line) {
+					if(etat.getNum() == 1) {
+						polyline.getLinePrincipale().setStroke(Color.LIGHTGREEN);
+					}
+					if(etat.getNum() == 0){
+						polyline.getLinePrincipale().setStroke(Color.DARKGREEN.darker());
+					}
 				}
 			}
 			for (Composant composant : destination) // parcourir les destinations

@@ -83,6 +83,7 @@ import noyau.And;
 import noyau.Bascule;
 import noyau.Circuit;
 import noyau.CircuitIntegre;
+import noyau.CircuitIntegreSequentiel;
 import noyau.Combinatoires;
 import noyau.Composant;
 import noyau.Compteur;
@@ -1127,8 +1128,9 @@ public class HomeController extends Controller {
 						}
 					}
 				}
-			} else {
+			}else {
 				if (!Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
+					System.out.println("reaaaaaaaaaaaaaaaaaddyyy");
 					Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
 
 				}else {
@@ -1268,8 +1270,10 @@ public class HomeController extends Controller {
 										if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
 											CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
 											circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());																		
-											//										workSpace.getChildren().removeAll(((CircuitIntegre)ci).getListeCercles());
-											//										workSpace.getChildren().addAll(((CircuitIntegre)ci).generateCercles(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY()));
+										}
+										else if(ci.getClass().getSimpleName().equals("CircuitIntegreSequentiel")) {
+											CircuitIntegreSequentiel circuitIntegre = ((CircuitIntegreSequentiel)ci);
+											circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());																		
 										}
 										Point2D localPoint = workSpace
 												.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
@@ -1373,8 +1377,8 @@ public class HomeController extends Controller {
 									{
 										Donnes sauveGarde=new Donnes();
 										sauveGarde.setTypeDaction(Actions.Mouvement);
-										undoDeque.remove(sauveGarde);
 										sauveGarde.setComposantCommeImage(eleementAdrager);
+										undoDeque.remove(sauveGarde);
 										sauveGarde.setPosX(posX);
 										sauveGarde.setPosY(posY);
 										undoDeque.addFirst(sauveGarde);
@@ -2248,23 +2252,39 @@ public class HomeController extends Controller {
 			if (f != null) {
 				FileInputStream fichier ;
 				ObjectInputStream oo = null;
-				CircuitIntegre circuitIntegre;
+				Composant cmp; 
 				try {
 					fichier = new FileInputStream(f.getAbsolutePath());
 					oo = new ObjectInputStream(fichier);
-					circuitIntegre = (CircuitIntegre) oo.readObject();
-					ImageView imageView = new ImageView(new Image(circuitIntegre.generatePath()));
-					imageView.setLayoutX(10);
-					imageView.setLayoutY(10);
-					imageView.setFitHeight(imageView.getImage().getHeight());
-					imageView.setFitWidth(imageView.getImage().getWidth());
-					imageView.setId("CircuitIntegre");
-					Circuit.ajouterComposant(circuitIntegre, imageView);
-					workSpace.getChildren().add(imageView);
-					ajouterLeGestApresCollage(imageView);
-					addAllPolylinesToWorkSpace(circuitIntegre.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
-					workSpace.getChildren().addAll(circuitIntegre.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
-				} catch (Exception e) {
+					cmp = (Composant)oo.readObject();
+					if(cmp.getClass().getSimpleName().equals("CircuitIntegre")) {
+						CircuitIntegre circuitIntegre = (CircuitIntegre)cmp;
+						ImageView imageView = new ImageView(new Image(circuitIntegre.generatePath()));
+						imageView.setLayoutX(10);
+						imageView.setLayoutY(10);
+						imageView.setFitHeight(imageView.getImage().getHeight());
+						imageView.setFitWidth(imageView.getImage().getWidth());
+						imageView.setId("CircuitIntegre");
+						Circuit.ajouterComposant(circuitIntegre, imageView);
+						workSpace.getChildren().add(imageView);
+						ajouterLeGestApresCollage(imageView);
+						addAllPolylinesToWorkSpace(circuitIntegre.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+						workSpace.getChildren().addAll(circuitIntegre.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
+					}else {
+						CircuitIntegreSequentiel ciq = (CircuitIntegreSequentiel)cmp;
+						ImageView imageView = new ImageView(new Image(ciq.generatePath()));
+						imageView.setLayoutX(10);
+						imageView.setLayoutY(10);
+						imageView.setFitHeight(imageView.getImage().getHeight());
+						imageView.setFitWidth(imageView.getImage().getWidth());
+						imageView.setId("CircuitIntegreSequentiel");
+						Circuit.ajouterComposant(ciq, imageView);
+						workSpace.getChildren().add(imageView);
+						ajouterLeGestApresCollage(imageView);
+						addAllPolylinesToWorkSpace(ciq.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+						workSpace.getChildren().addAll(ciq.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
+					}
+					} catch (Exception e) {
 					// TODO: handle exception
 					e.printStackTrace();
 				}
@@ -2289,14 +2309,69 @@ public class HomeController extends Controller {
 			if (f != null) {
 				FileOutputStream fichier ;
 				ObjectOutputStream oo = null;
-				CircuitIntegre ci = new CircuitIntegre(Circuit.getEntreesCircuit().size(),Circuit.getSortiesCircuit().size(), f.getAbsolutePath());
-				Circuit.tableVerite(Circuit.getEntreesCircuit());
-				ci.setTableVerite(Circuit.getTableVerite());
-				Circuit.defaultCompValue();
+				CircuitIntegre ci = null;
+				CircuitIntegreSequentiel ciq = null;
+				if(Circuit.getListeEtages().size()==0 && !horloged) {
+					ci = new CircuitIntegre(Circuit.getEntreesCircuit().size(),Circuit.getSortiesCircuit().size(), f.getAbsolutePath());
+					Circuit.tableVerite(Circuit.getEntreesCircuit());
+					ci.setTableVerite(Circuit.getTableVerite());
+					Circuit.defaultCompValue();
+				}else {
+					if(!horloged) {
+						if(Circuit.occurencePinHorlogee() == 1) {
+							ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
+							ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
+							for (Pin pin : Circuit.getEntreesCircuit()) {
+								if(!pin.isHorloge()) {
+									entreCircuit.add(pin);
+								}else {
+									pin.setHorloge(false);
+									ciq.setHorloge(pin);
+								}
+							}
+							ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+							ciq.setEntreesCircuit(entreCircuit);
+							ciq.setSortiesCircuit(Circuit.getSortiesCircuit());
+							ciq.setListSouceCte(Circuit.getListSouceCte());
+							ciq.setListeEtages(Circuit.getListeEtages());
+							ciq.setNbEtages(Circuit.getNbEtages());
+							ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
+						}else {
+							//maan9drooooooooooooooooooch
+						}
+					}else {
+						if(Circuit.occurencePinHorlogee() == 0) {
+							ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
+							ArrayList<Pin> entreCircuit = new ArrayList<Pin>(Circuit.getEntreesCircuit());
+							Pin pinHorloge = new Pin(true, "horloge");
+							for (Composant cmp : Circuit.getCompUtilises().keySet()) {
+								if(cmp.getClass().getSimpleName().equals("Horloge")) {
+									pinHorloge.getSorties()[0] = cmp.getSorties()[0];
+									break;
+								}
+							}
+							ciq.setHorloge(pinHorloge);
+							ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+							ciq.setEntreesCircuit(entreCircuit);
+							ciq.setSortiesCircuit(Circuit.getSortiesCircuit());
+							ciq.setListeEtages(Circuit.getListeEtages());
+							ciq.setNbEtages(Circuit.getNbEtages());
+							ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
+						}else {
+							//maan9drooooooooooooooooooch
+
+						}
+					}
+				}
+
 				try {
 					fichier = new FileOutputStream(f.getAbsolutePath()+".int");
 					oo = new ObjectOutputStream(fichier);
-					oo.writeObject(ci);
+					if(ci!=null) {
+						oo.writeObject(ci);
+					}else {
+						oo.writeObject(ciq);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -2814,6 +2889,13 @@ public class HomeController extends Controller {
 				}
 				else if(img.getId().equals("CircuitIntegre")) {
 					ArrayList<Circle> arrayList = ((CircuitIntegre)Circuit.getCompFromImage(img)).generateCercles(img.getLayoutX(), img.getLayoutY());
+					for (Circle circle : arrayList) {
+						workSpace.getChildren().add(circle);
+					}
+				}
+				else if(img.getId().equals("CircuitIntegreSequentiel")) {
+					System.out.println("dkhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaal");
+					ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)Circuit.getCompFromImage(img)).generateCercles(img.getLayoutX(), img.getLayoutY());
 					for (Circle circle : arrayList) {
 						workSpace.getChildren().add(circle);
 					}

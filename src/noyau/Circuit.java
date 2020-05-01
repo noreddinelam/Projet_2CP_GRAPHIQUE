@@ -461,7 +461,14 @@ public class Circuit {
 		circuitException.clear();
 		filUtilises.clear();
 	}
-	
+	public static int occurencePinHorlogee() {
+		int i = 0;
+		for (Pin pin : entreesCircuit) {
+			if(pin.isHorloge()) 
+				i++;
+		}
+		return i ;
+	}
 	
 	
 }
