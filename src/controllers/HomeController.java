@@ -979,7 +979,7 @@ public class HomeController extends Controller {
 									if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView)||( dragImageView.getId().equals("clock") && ( horloged)))
 									{
 										workSpace.getChildren().remove(dragImageView);
-										Circuit.removeCompFromImage(dragImageView);
+										Circuit.supprimerComp(Circuit.getCompFromImage(dragImageView));
 									}
 									else
 									{
@@ -2303,86 +2303,110 @@ public class HomeController extends Controller {
 
 		@FXML
 		void encapsulerEtSauvgarder(ActionEvent event) {
-			final FileChooser fileChooser = new FileChooser();
-
-			File f = fileChooser.showSaveDialog(homeWindow);
-			if (f != null) {
-				FileOutputStream fichier ;
-				ObjectOutputStream oo = null;
-				CircuitIntegre ci = null;
-				CircuitIntegreSequentiel ciq = null;
-				if(Circuit.getListeEtages().size()==0 && !horloged) {
-					ci = new CircuitIntegre(Circuit.getEntreesCircuit().size(),Circuit.getSortiesCircuit().size(), f.getAbsolutePath());
-					Circuit.tableVerite(Circuit.getEntreesCircuit());
-					ci.setTableVerite(Circuit.getTableVerite());
-					Circuit.defaultCompValue();
+			FileOutputStream fichier ;
+			ObjectOutputStream oo = null;
+			CircuitIntegre ci = null;
+			CircuitIntegreSequentiel ciq = null;
+			if (simul) {
+				
+			
+			if(Circuit.getListeEtages().size()==0 && !horloged) {
+				ci = new CircuitIntegre(Circuit.getEntreesCircuit().size(),Circuit.getSortiesCircuit().size(), "CircuitIntegre");
+				Circuit.tableVerite(Circuit.getEntreesCircuit());
+				ci.setTableVerite(Circuit.getTableVerite());
+				Circuit.defaultCompValue();
+			}else {
+				if(!horloged) {
+					if(Circuit.occurencePinHorlogee() == 1) {
+						ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
+						ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
+						for (Pin pin : Circuit.getEntreesCircuit()) {
+							if(!pin.isHorloge()) {
+								entreCircuit.add(pin);
+							}else {
+								pin.setHorloge(false);
+								ciq.setHorloge(pin);
+							}
+						}
+						ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+						ciq.setEntreesCircuit(entreCircuit);
+						ciq.setSortiesCircuit(Circuit.getSortiesCircuit());
+						ciq.setListSouceCte(Circuit.getListSouceCte());
+						ciq.setListeEtages(Circuit.getListeEtages());
+						ciq.setNbEtages(Circuit.getNbEtages());
+						ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
+					}else {
+						//maan9drooooooooooooooooooch
+					}
 				}else {
-					if(!horloged) {
-						if(Circuit.occurencePinHorlogee() == 1) {
-							ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
-							ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
-							for (Pin pin : Circuit.getEntreesCircuit()) {
-								if(!pin.isHorloge()) {
-									entreCircuit.add(pin);
-								}else {
-									pin.setHorloge(false);
-									ciq.setHorloge(pin);
-								}
+					if(Circuit.occurencePinHorlogee() == 0) {
+						ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
+						ArrayList<Pin> entreCircuit = new ArrayList<Pin>(Circuit.getEntreesCircuit());
+						Pin pinHorloge = new Pin(true, "horloge");
+						for (Composant cmp : Circuit.getCompUtilises().keySet()) {
+							if(cmp.getClass().getSimpleName().equals("Horloge")) {
+								pinHorloge.getSorties()[0] = cmp.getSorties()[0];
+								break;
 							}
-							ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
-							ciq.setEntreesCircuit(entreCircuit);
-							ciq.setSortiesCircuit(Circuit.getSortiesCircuit());
-							ciq.setListSouceCte(Circuit.getListSouceCte());
-							ciq.setListeEtages(Circuit.getListeEtages());
-							ciq.setNbEtages(Circuit.getNbEtages());
-							ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
-						}else {
-							//maan9drooooooooooooooooooch
 						}
+						ciq.setHorloge(pinHorloge);
+						ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+						ciq.setEntreesCircuit(entreCircuit);
+						ciq.setSortiesCircuit(Circuit.getSortiesCircuit());
+						ciq.setListeEtages(Circuit.getListeEtages());
+						ciq.setNbEtages(Circuit.getNbEtages());
+						ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
+						ciq.setListSouceCte(Circuit.getListSouceCte());
 					}else {
-						if(Circuit.occurencePinHorlogee() == 0) {
-							ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
-							ArrayList<Pin> entreCircuit = new ArrayList<Pin>(Circuit.getEntreesCircuit());
-							Pin pinHorloge = new Pin(true, "horloge");
-							for (Composant cmp : Circuit.getCompUtilises().keySet()) {
-								if(cmp.getClass().getSimpleName().equals("Horloge")) {
-									pinHorloge.getSorties()[0] = cmp.getSorties()[0];
-									break;
-								}
-							}
-							ciq.setHorloge(pinHorloge);
-							ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
-							ciq.setEntreesCircuit(entreCircuit);
-							ciq.setSortiesCircuit(Circuit.getSortiesCircuit());
-							ciq.setListeEtages(Circuit.getListeEtages());
-							ciq.setNbEtages(Circuit.getNbEtages());
-							ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
-						}else {
-							//maan9drooooooooooooooooooch
+						//maan9drooooooooooooooooooch
 
-						}
-					}
-				}
-
-				try {
-					fichier = new FileOutputStream(f.getAbsolutePath()+".int");
-					oo = new ObjectOutputStream(fichier);
-					if(ci!=null) {
-						oo.writeObject(ci);
-					}else {
-						oo.writeObject(ciq);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				finally {
-					try {
-						oo.close();
-					} catch (IOException e) {
-						e.printStackTrace();
 					}
 				}
 			}
+
+			final FileChooser fileChooser = new FileChooser();
+			if (ciq != null || ci != null) {
+				File f = fileChooser.showSaveDialog(homeWindow);
+				if (f != null) {
+					try {
+						fichier = new FileOutputStream(f.getAbsolutePath()+".int");
+						oo = new ObjectOutputStream(fichier);
+						if(ci!=null) {
+							oo.writeObject(ci);
+						}else if(ciq != null){
+							oo.writeObject(ciq);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					finally {
+						try {
+							oo.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			else {
+				Alert a = new Alert(AlertType.ERROR);
+				a.setHeaderText("Horloge erreur");
+				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				a.setTitle("Circuit Integré");
+				a.setContentText("Un circuit integré doit contenir un seul element horloge  ( Horloge ou Pin ) ");
+				a.showAndWait();
+			}
+			}
+			else {
+				Alert a = new Alert(AlertType.WARNING);
+				a.setHeaderText("Circuit Integré erreur");
+				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				a.setTitle("Circuit Integré");
+				a.setContentText("Le circuit doit etre valider d'abord \nVeulliez passer en mode simulation en cliquant sur le bouton 'simuler'.");
+				a.showAndWait();
+			}
+			Stage s = (Stage) encapsuler.getScene().getWindow();
+			s.close();
 		}
 
 
@@ -2665,10 +2689,17 @@ public class HomeController extends Controller {
 					refrechLists(sauveGarde.getComposantCommeImage());
 					//removePoints();
 					// addPoints();
-					sauveGarde.getComposantCommeImage().setLayoutX(sauveGarde.getPosX());
-					sauveGarde.getComposantCommeImage().setLayoutY(sauveGarde.getPosY());
-					updatePolyline(sauveGarde.getComposantCommeImage());
-
+					ImageView imageView = sauveGarde.getComposantCommeImage();
+					imageView.setLayoutX(sauveGarde.getPosX());
+					imageView.setLayoutY(sauveGarde.getPosY());
+					updatePolyline(imageView);
+					Composant composant = Circuit.getCompFromImage(imageView);
+					if (composant.getClass().equals(CircuitIntegre.class)) {
+						((CircuitIntegre)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
+					}
+					else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
+						((CircuitIntegreSequentiel)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
+					}
 				}break;
 				case Creation :
 				{
@@ -2705,7 +2736,6 @@ public class HomeController extends Controller {
 				case Supression:
 				{
 					ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
-
 					workSpace.getChildren().add(imageDeComposant);
 					imageDeComposant.setLayoutX(sauveGarde.getPosX());
 					imageDeComposant.setLayoutY(sauveGarde.getPosY());
@@ -2713,6 +2743,18 @@ public class HomeController extends Controller {
 					ArrayList<Polyline> polyline = Circuit.getCompFromImage(imageDeComposant).generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY());
 					addAllPolylinesToWorkSpace(polyline);
 					sauveGarde.getComposant().relierANouveau();
+					if (sauveGarde.getComposant().getClass().equals(CircuitIntegre.class)) {
+						ArrayList<Circle> resCircles = ((CircuitIntegre)sauveGarde.getComposant()).generateCercles(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY());
+						for (Circle circle : resCircles) {
+							workSpace.getChildren().add(circle);
+						}
+					}
+					else if (sauveGarde.getComposant().getClass().equals(CircuitIntegreSequentiel.class)) {
+						ArrayList<Circle> resCircles = ((CircuitIntegreSequentiel)sauveGarde.getComposant()).generateCercles(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY());
+						for (Circle circle : resCircles) {
+							workSpace.getChildren().add(circle);
+						}
+					}
 				}break;
 				case SuppressionFil :{
 					InfoPolyline infoPolyline = sauveGarde.getInfoPolyline();

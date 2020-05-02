@@ -140,8 +140,10 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		}
 		etat = EtatLogique.ZERO;
 		ImageView img = Circuit.getImageFromComp(this);
-		Image image = new Image(generatePath());
-		img.setImage(image);
+		if (img != null) {
+			Image image = new Image(generatePath());
+			img.setImage(image);
+		}
 		
 	}
 	public void resetPolyline(Polyline line , double x,double y) {
@@ -168,8 +170,9 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 	}
 	public void setEtat(EtatLogique etat) {
 		this.etat = etat;
-		if(Circuit.getImageFromComp(this)!=null)
-			Circuit.getImageFromComp(this).setImage(new Image(generatePath()));
+		ImageView imageView =Circuit.getImageFromComp(this);
+		if(imageView !=null)
+			imageView.setImage(new Image(generatePath()));
 	}
 	public boolean isHorloge() {
 		return horloge;

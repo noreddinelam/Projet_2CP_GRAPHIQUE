@@ -30,6 +30,18 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 		nombreSortie = sortiesCircuit.size();
 		lesCoordonnees = new LesCoordonnees(10, 10, 0);
 	}
+	
+	@Override
+	public void defaultValue() {
+		// TODO Auto-generated method stub
+		System.out.println("jfdsgqihezgryezilfj;");
+		for (Fil fil : filUtilises) {
+			fil.setEtat(EtatLogique.HAUTE_IMPEDANCE);;
+		}
+		for(Composant composant : compUtilises) {
+			composant.defaultValue();
+		}
+	}
 
 	@Override
 	public void genererSorties() {
@@ -102,7 +114,7 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(80, 131.2), 8);
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(80, 146.4), 9);
 		
-		lesCoordonnees.setCordHorloge(new Coordonnees(48.7, 163));
+		lesCoordonnees.setCordHorloge(new Coordonnees(44, 160));
 		
 	}
 
@@ -252,9 +264,7 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 		for (int i=0;i<nombreEntree;i++) {
 			entreesCircuit.get(i).evaluer();	
 		}
-		for (int i=0;i<listSouceCte.size();i++) {
-			listSouceCte.get(i).evaluer();	
-		}
+
 		if(entreeHorloge.getEtat().getNum() != horloge.getEtat().getNum()) {
 			System.out.println("hooooooooooooooooooooooooooooooorloge");
 			horloge.setEtat(entreeHorloge.getEtatLogiqueFil());
@@ -276,6 +286,7 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 		for (int i=0;i<nombreEntree;i++) {
 			entreesCircuit.get(i).setEtat(entrees[i].getEtatLogiqueFil());
 		}
+		System.out.println("size : "+listSouceCte.size());
 		for (int i=0;i<listSouceCte.size();i++) {
 			listSouceCte.get(i).evaluer();	
 		}

@@ -136,7 +136,6 @@ public class Circuit {
 	}
 	public static void ajouterSourceCte(SourceConstante cte) { // ajouter une entree à la liste des entrees
 		listSouceCte.add(cte);
-		
 	}
 	public static void supprimerSourceCte(SourceConstante cte) {
 		listSouceCte.remove(cte);
