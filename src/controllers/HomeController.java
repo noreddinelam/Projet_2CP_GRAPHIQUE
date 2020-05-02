@@ -1975,7 +1975,14 @@ public class HomeController extends Controller {
 	    					((Demultiplexeur)cmp2).setNbCommande(((Demultiplexeur)composantCopy).getNbCommande());
 	    					cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
 	    				}
-
+	    			else if(cmp2.getClass().getSimpleName().equals("Pin")) {
+	    				boolean input = ((Pin)composantCopy).getInput();
+	    				((Pin)cmp2).setInput(input);
+	    				if (! input) {
+							Circuit.getEntreesCircuit().remove((Pin)cmp2);
+							Circuit.getSortiesCircuit().add((Pin)cmp2);
+						}
+					}
 	    			cmp2.setCord();
 	    			cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
 	    			cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
