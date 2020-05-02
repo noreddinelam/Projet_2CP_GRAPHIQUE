@@ -140,8 +140,13 @@ public class Multiplexeur extends Combinatoires {
 		super.derelierComp();
 		for (int i = 0; i < nbCommande; i++) {
 			if (commande[i] != null) {
-				if (! commande[i].getSource().equals(this))
+				if (! commande[i].getSource().equals(this)) {
 					commande[i].derelierCompFromDestination(this);
+					ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(commande[i]);
+					for (InfoPolyline infoPolyline : resList) {
+						infoPolyline.setRelier(false);
+					}
+				}
 			}
 		}
 	}
@@ -164,7 +169,17 @@ public class Multiplexeur extends Combinatoires {
 		// TODO Auto-generated method stub
 		super.relierANouveau();
 		for (int i = 0; i < nbCommande; i++) {
-			if (commande[i] != null)	commande[i].addDestination(this);
+			if (commande[i] != null) {	
+				ImageView imageView = Circuit.getImageFromComp(this);
+				Polyline polyline = commande[i].polylineParPoint(lesCoordonnees.coordReelesCommande(imageView, i));
+				if (polyline == null) {
+					commande[i] = null;
+				}
+				else {
+					Circuit.getInfoPolylineFromPolyline(polyline).setRelier(true);
+					commande[i].addDestination(this);
+				}
+			}
 		}
 	}
 	

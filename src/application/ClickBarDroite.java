@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -32,6 +33,7 @@ public class ClickBarDroite extends Stage{
 			h.setAffX(label1);
 			h.setAffY(label2);
 			h.setScrollPane(scrollPane);
+			
 			Scene scene = new Scene(root);
 			//scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);
@@ -42,7 +44,6 @@ public class ClickBarDroite extends Stage{
 			//
 			//this.initModality(Modality.WINDOW_MODAL);
 			this.initOwner(st);
-			
 			this.show();
 		} catch(Exception e) {
 			e.printStackTrace();

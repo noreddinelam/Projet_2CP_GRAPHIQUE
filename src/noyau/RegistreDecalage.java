@@ -283,6 +283,10 @@ public class RegistreDecalage extends Sequentiels {
 		if (load.getSource() != null) {
 			if (! load.getSource().equals(this)) {
 				load.derelierCompFromDestination(this);
+				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(load);
+				for (InfoPolyline infoPolyline : resList) {
+					infoPolyline.setRelier(false);
+				}
 			}
 		}
 	}
@@ -301,7 +305,15 @@ public class RegistreDecalage extends Sequentiels {
 	public void relierANouveau() {
 		// TODO Auto-generated method stub
 		super.relierANouveau();
-		load.addDestination(this);
+		ImageView imageView = Circuit.getImageFromComp(this);
+		Polyline polyline = load.polylineParPoint(lesCoordonnees.coordReelesLoad(imageView));
+		if (polyline == null) {
+			load.setSource(null);
+		}
+		else {
+			Circuit.getInfoPolylineFromPolyline(polyline).setRelier(true);
+			load.addDestination(this);
+		}
 	}
 	
 	@Override

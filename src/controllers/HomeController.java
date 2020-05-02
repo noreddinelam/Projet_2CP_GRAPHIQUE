@@ -495,6 +495,8 @@ public class HomeController extends Controller {
 		Circuit.clearException();
 		simul = (!simul);
 		if (simul) {
+			affichage.setOpacity(1);
+			affichage.setDisable(false);
 			if (clickSouris2 != null)
 				clickSouris2.close();
 			Circuit.validerCircuits();
@@ -534,7 +536,8 @@ public class HomeController extends Controller {
 		else {
 			simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
 			Circuit.defaultCompValue();
-
+			affichage.setOpacity(0.4);
+			affichage.setDisable(true);
 			if( horloged)
 			{
 				try {
@@ -574,7 +577,9 @@ public class HomeController extends Controller {
 
 
 	public void inisialiser() { /// pour l'initialisation des effets de la fenetre principale (affichage des guides ajout de
-		/// l'operation du drag and drop pour tout les composants			
+		/// l'operation du drag and drop pour tout les composants	
+		affichage.setOpacity(0.4);
+		affichage.setDisable(true);
 		ajouterGestWorkSpace(); /// ajouter des listners pour capter les operations (clic , drag .. etc)
 		tracerLesGuides(); /// tracer les guides qui aide l'user pour connaitre la position de l'elt
 		afficheurX.setText("X : 0");
@@ -583,7 +588,6 @@ public class HomeController extends Controller {
 		elemanrsMapFillMap = new HashMap<ImageView, Label>() {
 			{
 				put(hex, tHex);
-
 				put(pin, tPin);
 				put(clock, tH);
 				put(vcc, tVcc);
@@ -655,6 +659,7 @@ public class HomeController extends Controller {
 		for (ClickBarDroite click : tableauFenetres) {
 			click.close();
 		}
+		
 		rightbar(fichier, fichierFenetre, tableauFenetres);
 		rightbar(edition, editionFenetre, tableauFenetres);
 		rightbar(affichage, affichageFenetre, tableauFenetres);
@@ -813,8 +818,9 @@ public class HomeController extends Controller {
 						if (cc.equals(click)) {
 							if (cc.isShowing())
 								cc.close();
-							else
+							else {
 								cc.show();
+							}
 						} else
 							click.close();
 					}
@@ -2890,7 +2896,7 @@ public class HomeController extends Controller {
 					p = listEntrees.get(j);
 					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
 					j++;
-					crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager);
 
 					p = tracerEntrerApresCollage(p, crdDebut, relocate);
 					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
@@ -2901,7 +2907,7 @@ public class HomeController extends Controller {
 					p = listEntrees.get(j);
 					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
 					j++;
-					crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager);
 
 					p = tracerEntrerApresCollage(p, crdDebut, relocate);
 					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
@@ -2912,7 +2918,7 @@ public class HomeController extends Controller {
 					p = listEntrees.get(j);
 					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
 					j++;
-					crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager);
 					p = tracerEntrerApresCollage(p, crdDebut, relocate);
 					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
 				}
@@ -2922,7 +2928,7 @@ public class HomeController extends Controller {
 					p = listEntrees.get(j);
 					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
 					j++;
-					crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager);
 					p = tracerEntrerApresCollage(p, crdDebut, relocate);
 					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
 				}
@@ -3067,7 +3073,7 @@ public class HomeController extends Controller {
 			}
 			if(cmp.getLesCoordonnees().getCordHorloge() != null ) {
 				if( ((Sequentiels)cmp).getEntreeHorloge() != null) {
-					crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager);
 					line = ((Sequentiels)cmp).getEntreeHorloge().polylineParPoint(crdDebut);
 
 					listEntrees.add(line);
@@ -3076,21 +3082,21 @@ public class HomeController extends Controller {
 			}
 			if(cmp.getLesCoordonnees().getCordClear() != null ) {
 				if(((Sequentiels)cmp).getClear().getSource() != null) {
-					crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager);
 					line = ((Sequentiels)cmp).getClear().polylineParPoint(crdDebut);
 					listEntrees.add(line);
 				}
 			}
 			if(cmp.getLesCoordonnees().getCordPreset() != null) {
 				if(((Bascule)cmp).getPreset().getSource() != null){
-					crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager);
 					line = ((Bascule)cmp).getPreset().polylineParPoint(crdDebut);
 					listEntrees.add(line);
 				}
 			}
 			if(cmp.getLesCoordonnees().getCordLoad() != null ) {
 				if(((Sequentiels)cmp).getLoad().getSource() != null) {
-					crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager);
 					line = ((Sequentiels)cmp).getLoad().polylineParPoint(crdDebut);
 					listEntrees.add(line);
 				}
