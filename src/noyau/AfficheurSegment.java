@@ -1,7 +1,5 @@
 package noyau;
 
-import java.util.ArrayList;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
@@ -21,17 +19,20 @@ public class AfficheurSegment extends Composant implements Affichage{
 		// TODO Auto-generated constructor stub
 	}
 	
+	@Override
 	public void evaluer() {
 		if (valider()) {
 			genererSorties();
 		}
 	}
+	@Override
 	public void genererSorties() {
 		valeur = Integer.valueOf(concatener(entrees, 4),2);
 		ImageView imageView = Circuit.getImageFromComp(this);
 		imageView.setImage(new Image(generatePath()));
 	}
 	
+	@Override
 	public boolean valider() {
 		if (validerEntrees() == EtatLogique.ONE) { // verifier si les entrees sont toutes reliées .
 			return true;

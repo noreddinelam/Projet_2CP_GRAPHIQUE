@@ -1,13 +1,11 @@
 package noyau;
 
-import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
+
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
@@ -24,6 +22,7 @@ public class Circuit {
 	private static ArrayList<SourceConstante> listSouceCte = new ArrayList<SourceConstante>();//liste des sources constants
 	private static ArrayList<ExceptionProgramme> circuitException = new ArrayList<ExceptionProgramme>();
 	private static ArrayList<Composant> composantsErronee = new ArrayList<Composant>();
+
 	
 	public static void ajouterCompErrone(Composant composant) {
 		composantsErronee.add(composant);
@@ -463,6 +462,13 @@ public class Circuit {
 		circuitException.clear();
 		filUtilises.clear();
 	}
+
+	public static void defaultValuePin() {
+		for(Pin pin : sortiesCircuit)
+			pin.defaultValue();
+	}
+	
+	
 	public static int occurencePinHorlogee() {
 		int i = 0;
 		for (Pin pin : entreesCircuit) {

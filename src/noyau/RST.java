@@ -4,9 +4,11 @@ public class RST extends Bascule{
 
 	public RST(String nom,Front front) {
 		super(2,nom,front);
+		this.icon="RST/Front_Montant.png";
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public void genererSortiesSyncho() {
 		this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
        

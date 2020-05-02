@@ -3,8 +3,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.management.relation.Role;
-
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
@@ -16,7 +14,7 @@ public abstract class Composant implements Serializable{
 	private static final long serialVersionUID = -6537732401092535901L;
 	/*--------- Attributs -------------*/
 	protected String nom=this.getClass().getSimpleName(); // pour le label
-	protected String icon; // le lien vers l'icone
+	protected String icon="T/Front_Montant.png"; // le lien vers l'icone
 	protected Fil entrees[]= new Fil[32] ;
 	protected Fil sorties[] = new Fil[32];
 	protected EtatLogique etatFinal[] = new EtatLogique[32];

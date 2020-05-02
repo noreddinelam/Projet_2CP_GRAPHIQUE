@@ -2,14 +2,11 @@ package noyau;
 
 import java.util.ArrayList;
 
-
-
 import controllers.ChronogrammeController;
 import controllers.HomeController;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Polyline;
 
 public class Horloge extends Composant implements ElementHorloge,Runnable,ComposantDeChronogramme{
 	/**
@@ -32,12 +29,14 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 		sorties[0] = new Fil(this);
 		temps=tempsDeHorloge;
 		lesCoordonnees = new LesCoordonnees(0, 1, 0);
+		this.icon="Horloge/1.png";
 	}
 
 	
 	public void executer() {
 		
 	}
+	@Override
 	public void evaluer() {
 		for(Sequentiels s : Circuit.getListeEtages()) /// initialiser les etats precedents des fils horloge de chaque composant
 			s.etatPrecHorloge = s.entreeHorloge.getEtatLogiqueFil();
@@ -45,6 +44,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 		sorties[0].evaluer(); // sert pour initialser le fil de sortie de l'horloge 
 		tictac(); // c'est la methode responsable de l'execution en mode synchrone des composants sequentiels
 	}
+	@Override
 	public void genererSorties() { // inverser l'etat de l'horloge pour generer sorte de front
 		etat = (etat == EtatLogique.ZERO) ? EtatLogique.ONE : EtatLogique.ZERO ;
 		sorties[0].setEtatLogiqueFil(etat);
@@ -52,10 +52,12 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 		sortieBar=etat.getNum()==1 ? EtatLogique.ZERO: EtatLogique.ONE;
 	}
 	
+	@Override
 	public boolean valider() { // à voir apres si elle est nécessaire
 		return false;
 	}
 	
+	@Override
 	public void addEtages(ArrayList<Integer> etage) { // sert pour la creation des etages dans la simulation
 		if (! etage.contains(0)) {
 			etage.add(0);
@@ -67,19 +69,19 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
         active=true;	
 		Circuit.initialiser();
 		while(active)// tant que l'horloge est active
-		{	
-	    	this.evaluer();
+		{
+			  if(ChronogrammeController.resimul && HomeController.chrono) {
+       		   Circuit.defaultValuePin();
+       		   Circuit.defaultValueSeq();			            		
+       		   ChronogrammeController.resimul=false;
+       	
+       	   }
+		    this.evaluer();
 			image.setImage(new Image(generatePath()) );
-			try {	
-
 			    if(HomeController.chrono) 
 			    	{		
 			    	   Platform.runLater(new Runnable() {
 			               @Override public void run() {
-			            	   if(ChronogrammeController.resimul) {
-			            		   Circuit.defaultValueSeq();
-			            		   ChronogrammeController.resimul=false;
-			            	   }
 			             	   ChronogrammeController.tracerFront(etat);
 			                   ChronogrammeController.refrecher();
 			                   ChronogrammeController.valeurSuivi();			                   
@@ -88,6 +90,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 			               }
 			           });
 			    	}
+				try {
 				Thread.sleep(temps);;		
 			} catch (InterruptedException e) {// exception traité par la clasee thread
 				e.printStackTrace();
@@ -166,6 +169,7 @@ public static void setStartY(double startYh) {
 }
 
 
+@Override
 public EtatLogique getSortieAafficher() {
 	return sortieAafficher;
 }
@@ -176,6 +180,7 @@ public void setSortieAafficher(EtatLogique sortieAafficher) {
 }
 
 
+@Override
 public EtatLogique getSortieBar() {
 	return sortieBar;
 }
