@@ -5,11 +5,12 @@ public class JK extends Bascule{
 	
  public JK(String nom,Front front) {
 		super(2,nom,front);
-		
+		this.icon="JK/Front_Montant.png";
 		// TODO Auto-generated constructor stub
 	}
 
- public void genererSortiesSyncho() {
+ @Override
+public void genererSortiesSyncho() {
 		this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
 	
 	 if(etatPrec[0].getNum()==1)//j=1

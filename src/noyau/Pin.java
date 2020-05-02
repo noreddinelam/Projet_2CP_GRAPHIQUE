@@ -1,17 +1,18 @@
 package noyau;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
-public class Pin extends Composant implements Affichage,ElementHorloge{
+public class Pin extends Composant implements Affichage,ElementHorloge,ComposantDeChronogramme{
 	private boolean input ; // INPUT= vrai ->  entree // faux -> sortie 
 	private EtatLogique etat = EtatLogique.ZERO;
 	private boolean horloge = false ; // pour savoir si le pin fonctionne comme horloge ou pas .
-	
+	private double startX;
+	private double startY;
+	boolean changed=false;
 	public boolean getInput()
 	{
 		return this.input;
@@ -31,8 +32,10 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 			Circuit.ajouterSortie(this);
 			lesCoordonnees = new LesCoordonnees(1,0,0);
 		}
+		this.icon="Pin/0Input.png";
 	}
 	
+	@Override
 	public void evaluer() {
 		if(valider()) // si le composant est pret 
 		{
@@ -55,16 +58,20 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		}
 	}
 	
+	@Override
 	public void genererSorties() { // executer la fonction du pin 
 		if(input) // si pin est une entree ( pour definir les entrees du circuit ) 
 			sorties[0].setEtatLogiqueFil(etat); // transferer l'etat du pin au fil de sortie 
-		else {  // si pin est une sortie ( pour affichage de la valeur de la sortie du circuit )
-			etat = entrees[0].getEtatLogiqueFil(); // transferer l'etat du fil de sortie au pin 
+		else {   // si pin est une sortie ( pour affichage de la valeur de la sortie du circuit )
+			changed= etat.getNum() == entrees[0].getEtatLogiqueFil().getNum() ? false : true;
+			etat = entrees[0].getEtatLogiqueFil(); // transferer l'etat du fil de sortie au pin 			
 			ImageView img = Circuit.getImageFromComp(this);
 			img.setImage(new Image(generatePath()));
+		
 		}
 	}
 	
+	@Override
 	public boolean valider() {
 		return true;
 	}
@@ -75,6 +82,7 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		
 	}
 	
+	@Override
 	public void addEtages(ArrayList<Integer> etage) { // sert pour la creation des etages dans la simulation
 		if (! etage.contains(0)) {
 			etage.add(0);
@@ -96,9 +104,13 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		}break;
 		}
 		if (input) {
+		
 			return path + "Input" +".png";
 		}
+	
 		return path + "Output" +".png";
+		
+		
 	}
 	
 	@Override
@@ -138,11 +150,13 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 			super.defaultValue();
 		}
 		etat = EtatLogique.ZERO;
+		changed=false;
 		ImageView img = Circuit.getImageFromComp(this);
 		Image image = new Image(generatePath());
 		img.setImage(image);
 		
 	}
+	@Override
 	public void resetPolyline(Polyline line , double x,double y) {
 		line.getPoints().clear();
 		line.getPoints().addAll(x,y,x,y+5);
@@ -169,5 +183,36 @@ public class Pin extends Composant implements Affichage,ElementHorloge{
 		this.etat = etat;
 		Circuit.getImageFromComp(this).setImage(new Image(generatePath()));
 	}
+	@Override
+	public EtatLogique getSortieAafficher() {
+		// TODO Auto-generated method stub
+		return etat;
+	}
+	@Override
+	public EtatLogique getSortieBar() {
+		// TODO Auto-generated method stub
+		return this.etat.getNum()==0? EtatLogique.ONE : EtatLogique.ZERO;
+	}
+	public double getStartChronoX() {
+		return startX;
+	}
+	public void setStartChronoX(double startX) {
+		this.startX = startX;
+	}
+	public double getStartChronoY() {
+		return startY;
+	}
+	public void setStartChronoY(double startY) {
+		this.startY = startY;
+	}
+	public boolean isChanged() {
+		return changed;
+	}
+	public void setChanged(boolean changed) {
+		this.changed = changed;
+	}
+
+	
+	
 	
 }

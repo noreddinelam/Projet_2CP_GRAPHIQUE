@@ -1,10 +1,8 @@
 package noyau;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Polyline;
 
 public class RegistreDecalage extends Sequentiels {
 	
@@ -23,8 +21,11 @@ public class RegistreDecalage extends Sequentiels {
 		sorties[0] = new Fil(this);
 		sorties[0].setEtatLogiqueFil(EtatLogique.HAUTE_IMPEDANCE);
 		lesCoordonnees = new LesCoordonnees(nombreEntree, 1, 0);
+		this.icon="/RegistreDecalage/2DroiteFront_Montant.png";
+		this.nom="R_Decalage";
 	}
 
+	@Override
 	public void genererSorties() { // executer une des fonction du registre ( decalage a droite , remise a zero )
 		if(this.clear.getEtatLogiqueFil().getNum()==0)
 		{
@@ -76,6 +77,7 @@ public class RegistreDecalage extends Sequentiels {
 		return EtatLogique.ONE;
 	}
 
+	@Override
 	public boolean valider() { // valider le circuit si clear est à 0 ou bien load à 0 à condition d'avoir toutes les entrees branchées
 		if (clear.getEtatLogiqueFil().getNum() == 0) {
 			return true;

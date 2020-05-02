@@ -4,9 +4,11 @@ public class T extends Bascule{
 	
 	public T(String nom,Front front) {
 		super(1,nom,front);
+		this.icon="T/Front_Montant.png";
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public void genererSortiesSyncho() {
 		this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
 		if (etatPrec[0] == EtatLogique.ONE) {

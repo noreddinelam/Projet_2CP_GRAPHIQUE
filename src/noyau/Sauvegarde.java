@@ -8,7 +8,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import java.util.Map.Entry;
 
 import javafx.scene.image.Image;
@@ -24,7 +23,7 @@ public class Sauvegarde implements Serializable {
 	private HashMap<Composant, String> lesID = new HashMap<Composant, String>();
 	private  HashMap<Fil,ArrayList<InfoPolyline>> filUtilises = new HashMap<Fil, ArrayList<InfoPolyline>>();
 	private  ArrayList<Pin> entreesCircuit = new ArrayList<Pin>();
-	private  ArrayList<Affichage> sortiesCircuit = new ArrayList<Affichage>();
+	private  ArrayList<Pin> sortiesCircuit = new ArrayList<Pin>();
 	private ArrayList<SourceConstante> sourceConstantes = new ArrayList<SourceConstante>();
 	private EtatLogique tableVerite[][];
 	private  ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>();
@@ -139,10 +138,10 @@ public class Sauvegarde implements Serializable {
 	public void setEntreesCircuit(ArrayList<Pin> entreesCircuit) {
 		this.entreesCircuit = entreesCircuit;
 	}
-	public ArrayList<Affichage> getSortiesCircuit() {
+	public ArrayList<Pin> getSortiesCircuit() {
 		return sortiesCircuit;
 	}
-	public void setSortiesCircuit(ArrayList<Affichage> sortiesCircuit) {
+	public void setSortiesCircuit(ArrayList<Pin> sortiesCircuit) {
 		this.sortiesCircuit = sortiesCircuit;
 	}
 	public EtatLogique[][] getTableVerite() {
