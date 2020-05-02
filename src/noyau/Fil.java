@@ -30,12 +30,14 @@ public class Fil implements Serializable{
 		if(valider()) // si le fil est pret 
 		{
 			ArrayList<InfoPolyline> line = Circuit.getPolylineFromFil(this);
-			for (InfoPolyline polyline : line) {
-				if(etat.getNum() == 1) {
-					polyline.getLinePrincipale().setStroke(Color.LIGHTGREEN);
-				}
-				if(etat.getNum() == 0){
-					polyline.getLinePrincipale().setStroke(Color.DARKGREEN.darker());
+			if(line != null) {
+				for (InfoPolyline polyline : line) {
+					if(etat.getNum() == 1) {
+						polyline.getLinePrincipale().setStroke(Color.LIGHTGREEN);
+					}
+					if(etat.getNum() == 0){
+						polyline.getLinePrincipale().setStroke(Color.DARKGREEN.darker());
+					}
 				}
 			}
 			for (Composant composant : destination) // parcourir les destinations
@@ -103,15 +105,17 @@ public class Fil implements Serializable{
 	}
 	public Polyline polylineParPoint(Coordonnees crdrech) {		
 		Coordonnees crd = new Coordonnees(0, 0);		
-		ArrayList<InfoPolyline> list = Circuit.getPolylineFromFil(this);		
-		for (InfoPolyline line : list) {			
-			int size = line.getLinePrincipale().getPoints().size();			
-			crd.setX(line.getLinePrincipale().getPoints().get(size - 2));			
-			crd.setY(line.getLinePrincipale().getPoints().get(size - 1));			
-			if(crd.equals(crdrech)){				
-				return line.getLinePrincipale();			
-			}		
-		}		
+		ArrayList<InfoPolyline> list = Circuit.getPolylineFromFil(this);
+		if (list != null) {
+			for (InfoPolyline line : list) {			
+				int size = line.getLinePrincipale().getPoints().size();			
+				crd.setX(line.getLinePrincipale().getPoints().get(size - 2));			
+				crd.setY(line.getLinePrincipale().getPoints().get(size - 1));			
+				if(crd.equals(crdrech)){				
+					return line.getLinePrincipale();			
+				}		
+			}
+		}
 		return null;	
 	}
 

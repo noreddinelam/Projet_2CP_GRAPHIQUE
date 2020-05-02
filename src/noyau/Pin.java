@@ -66,8 +66,8 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 			changed= etat.getNum() == entrees[0].getEtatLogiqueFil().getNum() ? false : true;
 			etat = entrees[0].getEtatLogiqueFil(); // transferer l'etat du fil de sortie au pin 			
 			ImageView img = Circuit.getImageFromComp(this);
-			img.setImage(new Image(generatePath()));
-		
+			if(img != null)
+				img.setImage(new Image(generatePath()));
 		}
 	}
 	
@@ -152,8 +152,10 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 		etat = EtatLogique.ZERO;
 		changed=false;
 		ImageView img = Circuit.getImageFromComp(this);
-		Image image = new Image(generatePath());
-		img.setImage(image);
+		if (img != null) {
+			Image image = new Image(generatePath());
+			img.setImage(image);
+		}
 		
 	}
 	@Override
@@ -181,7 +183,15 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 	}
 	public void setEtat(EtatLogique etat) {
 		this.etat = etat;
-		Circuit.getImageFromComp(this).setImage(new Image(generatePath()));
+		ImageView imageView =Circuit.getImageFromComp(this);
+		if(imageView !=null)
+			imageView.setImage(new Image(generatePath()));
+	}
+	public boolean isHorloge() {
+		return horloge;
+	}
+	public void setHorloge(boolean horloge) {
+		this.horloge = horloge;
 	}
 	@Override
 	public EtatLogique getSortieAafficher() {

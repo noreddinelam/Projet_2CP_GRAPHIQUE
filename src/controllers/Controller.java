@@ -147,8 +147,12 @@ public abstract class Controller {
 				// TODO Auto-generated method stub
 				if (!simul) {
 					if (event.getButton() == MouseButton.PRIMARY) {
-						workSpace.getChildren().add(guideFilX);
-						workSpace.getChildren().add(guideFilY);
+						if (! workSpace.getChildren().contains(guideFilX)) {
+							workSpace.getChildren().add(guideFilX);
+						}
+						if (! workSpace.getChildren().contains(guideFilY)) {
+							workSpace.getChildren().add(guideFilY);
+						}
 						guideFilX.setLayoutX(event.getX());
 						guideFilY.setLayoutY(event.getY());
 						ArrayList<InfoPolyline> listDePolylines = Circuit.getListFromPolyline(line);
@@ -249,8 +253,6 @@ public abstract class Controller {
 								clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY, homeWindow);
 							}
 						}
-
-
 					}
 				}
 			}
@@ -331,9 +333,10 @@ public abstract class Controller {
 									ClickDroitFilController.setPane(workSpace);
 									ClickDroitFilController.supprimer(Circuit.getInfoPolylineFromPolyline(line));
 									line.getPoints().clear();
-								} else {
+								}
+								else {
 									line.getPoints().remove(der);
-									line.getPoints().remove(der - 1);
+									line.getPoints().remove(der-1);
 								}
 							}
 						}

@@ -135,7 +135,6 @@ public class Circuit {
 	}
 	public static void ajouterSourceCte(SourceConstante cte) { // ajouter une entree à la liste des entrees
 		listSouceCte.add(cte);
-		
 	}
 	public static void supprimerSourceCte(SourceConstante cte) {
 		listSouceCte.remove(cte);
@@ -344,7 +343,6 @@ public class Circuit {
 		else { 
 			if (composant.getClass().getSimpleName().equals("SourceConstante")) 
 				listSouceCte.remove(composant);
-			
 		}
 		if ((composant.getClass().getSuperclass().equals(Bascule.class)) || (composant.getClass().getSuperclass().equals(Sequentiels.class))) {
 			listeEtages.remove(composant);
@@ -468,6 +466,14 @@ public class Circuit {
 	}
 	
 	
+	public static int occurencePinHorlogee() {
+		int i = 0;
+		for (Pin pin : entreesCircuit) {
+			if(pin.isHorloge()) 
+				i++;
+		}
+		return i ;
+	}
 	
 	
 }

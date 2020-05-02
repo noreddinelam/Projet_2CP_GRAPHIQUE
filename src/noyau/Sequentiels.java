@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import controllers.ChronogrammeController;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polyline;
 
 public abstract class Sequentiels extends Composant implements ComposantDeChronogramme {
 	
@@ -38,11 +40,19 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 		if (entreeHorloge != null) {
 			if (! entreeHorloge.getSource().equals(this)) {
 				entreeHorloge.derelierCompFromDestination(this);
+				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(entreeHorloge);
+				for (InfoPolyline infoPolyline : resList) {
+					infoPolyline.setRelier(false);
+				}
 			}
 		}
 		if (clear.getSource() != null) {
 			if (! clear.getSource().equals(this)) {
 				clear.derelierCompFromDestination(this);
+				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(clear);
+				for (InfoPolyline infoPolyline : resList) {
+					infoPolyline.setRelier(false);
+				}
 			}
 		}
 		
@@ -66,8 +76,26 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	public void relierANouveau() {
 		// TODO Auto-generated method stub
 		super.relierANouveau();
-		if (entreeHorloge != null) entreeHorloge.addDestination(this);
-		clear.addDestination(this);
+		ImageView imageView = Circuit.getImageFromComp(this);
+		if (entreeHorloge != null) {
+			Polyline polyline = entreeHorloge.polylineParPoint(lesCoordonnees.coordReelesHorloge(imageView));
+			if (polyline == null) {
+				entreeHorloge = null;
+			}
+			else {
+				Circuit.getInfoPolylineFromPolyline(polyline).setRelier(true);
+				entreeHorloge.addDestination(this);
+			}
+		}
+		Polyline polyline = clear.polylineParPoint(lesCoordonnees.coordReelesClear(imageView));
+		if (polyline == null) {
+			clear = new Fil(null);
+		}
+		else {
+			Circuit.getInfoPolylineFromPolyline(polyline).setRelier(true);
+			clear.addDestination(this);
+		}
+		
 	}
 	
 	@Override

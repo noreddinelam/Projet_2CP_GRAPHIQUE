@@ -1,6 +1,7 @@
 package application;
 
 import java.io.File;
+
 import java.util.Optional;
 
 import controllers.Controller;
@@ -73,12 +74,13 @@ public class Main extends Application {
 		System.out.println("Window close request ...");
 		Alert alertQ = new Alert(AlertType.CONFIRMATION);
 		alertQ.setContentText("Voullez vous vraimment quitter ! ");
+		alertQ.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 		Optional<ButtonType> resultQ = alertQ.showAndWait();
 		if (resultQ.get() == ButtonType.OK) {
-
 			if (!Circuit.getCompUtilises().isEmpty()) {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setContentText("Voullez vous sauvgarder ce circuit");
+				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK) {
 					if (HomeController.fichierCourant == null) {
@@ -87,11 +89,12 @@ public class Main extends Application {
 						fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("SIM", "*.sim"));
 						File f = fileChooser.showSaveDialog(Controller.homeWindow);
 						if (f != null) {
-
 							Sauvegarde sauvegarde = new Sauvegarde();
 							sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
 							Alert a = new Alert(AlertType.INFORMATION);
 							a.setContentText("le circuit est bien sauvgarde");
+							a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
 							a.showAndWait();
 						}
 					} else {
@@ -99,6 +102,7 @@ public class Main extends Application {
 						sauvegarde.saveCiruit(HomeController.fichierCourant.getAbsolutePath());
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
+						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.showAndWait();
 					}
 				}

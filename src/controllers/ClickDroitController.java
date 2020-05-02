@@ -21,6 +21,7 @@ import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import noyau.Circuit;
 import noyau.CircuitIntegre;
+import noyau.CircuitIntegreSequentiel;
 import noyau.Composant;
 
 public class ClickDroitController extends Controller implements Initializable{
@@ -152,6 +153,12 @@ public class ClickDroitController extends Controller implements Initializable{
 		}
 		else if (imageDeComposant.getId().equals("CircuitIntegre")) {
 			ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
+			for (Circle circle : arrayList) {
+				workSpace.getChildren().remove(circle);
+			}
+		} 
+		else if (imageDeComposant.getId().equals("CircuitIntegreSequentiel")) {
+			ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
 			for (Circle circle : arrayList) {
 				workSpace.getChildren().remove(circle);
 			}

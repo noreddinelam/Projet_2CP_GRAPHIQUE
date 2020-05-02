@@ -119,7 +119,10 @@ public class ProprietesPinController extends ProprietesController{
         		cmp.getLesCoordonnees().setNbCordSorties(0);
         	}
         	cmp.setCord();
-        	imageView.setImage(new Image(cmp.generatePath()));
+        	Image image = new Image(cmp.generatePath());
+        	imageView.setImage(image);
+        	imageView.setFitHeight(image.getHeight());
+        	imageView.setFitWidth(image.getWidth());
 		}  else {
 			this.alert();
 		}	

@@ -2,6 +2,7 @@ package noyau;
 import java.lang.Math;
 import java.util.ArrayList;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 public class Compteur extends Sequentiels{
 
@@ -229,6 +230,10 @@ public class Compteur extends Sequentiels{
 		if (load.getSource() != null) {
 			if (! load.getSource().equals(this)) {
 				load.derelierCompFromDestination(this);
+				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(load);
+				for (InfoPolyline infoPolyline : resList) {
+					infoPolyline.setRelier(false);
+				}
 			}
 		}
 	}
@@ -247,7 +252,15 @@ public class Compteur extends Sequentiels{
 	public void relierANouveau() {
 		// TODO Auto-generated method stub
 		super.relierANouveau();
-		load.addDestination(this);
+		ImageView imageView = Circuit.getImageFromComp(this);
+		Polyline polyline = load.polylineParPoint(lesCoordonnees.coordReelesLoad(imageView));
+		if (polyline == null) {
+			load= new Fil(null);
+		}
+		else {
+			Circuit.getInfoPolylineFromPolyline(polyline).setRelier(true);
+			load.addDestination(this);
+		}
 	}
 	
 	@Override

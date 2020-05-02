@@ -5,7 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import noyau.Composant;
 
 public class Proprietes extends Stage{
@@ -23,6 +25,9 @@ public class Proprietes extends Stage{
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);
+			this.initStyle(StageStyle.UTILITY);
+			this.setTitle("Proprietes");
+			this.initModality(Modality.WINDOW_MODAL);
 			this.setFullScreen(false);
 			this.initOwner(st);
 			this.show();

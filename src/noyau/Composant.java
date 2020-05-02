@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
 
@@ -83,8 +84,6 @@ public abstract class Composant implements Serializable{
 					sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
 				}
 			}
-		}else // to be continued ...
-		{
 		}
 	}
 
@@ -198,6 +197,10 @@ public abstract class Composant implements Serializable{
 			if (entrees[i] != null) {
 				if (! entrees[i].getSource().equals(this)) { // pour savoir si une entree est relié avec une sortie du mm composant
 					entrees[i].derelierCompFromDestination(this);
+					ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(entrees[i]);
+					for (InfoPolyline infoPolyline : resList) {
+						infoPolyline.setRelier(false);
+					}
 				}
 			}
 		}
@@ -216,7 +219,15 @@ public abstract class Composant implements Serializable{
 	public void relierANouveau() { // elle permet de relier à nouveau le composant si il est derelier de ces fils
 		for (int i = 0; i < nombreEntree; i++) {
 			if (entrees[i] != null) {
-				entrees[i].addDestination(this);
+				ImageView imageView = Circuit.getImageFromComp(this);
+				Polyline polyline = entrees[i].polylineParPoint(lesCoordonnees.coordReelesEntrees(imageView, i));
+				if (polyline == null) {
+					entrees[i] = null;
+				}
+				else {
+					Circuit.getInfoPolylineFromPolyline(polyline).setRelier(true);
+					entrees[i].addDestination(this);
+				}
 			}
 		}
 	}

@@ -12,6 +12,8 @@ public class Donnes {
 	private Composant composant;
 	private Image image=null;
 	private int nombreDesEntrees=0;
+	private int nombreDesSorties=0;
+	private int nombreDeCommandes=0;
 	private double posX=0;
 	private double posY=0;
 	private Boolean typePin;
@@ -21,7 +23,18 @@ public class Donnes {
 	private Fil fil = null;
 	private ArrayList<InfoPolyline> arrayList = new ArrayList<InfoPolyline>();
 	private ArrayList<Polyline> listPolyParent = new ArrayList<Polyline>();
-	
+	public int getNombreDesSorties() {
+		return nombreDesSorties;
+	}
+	public void setNombreDesSorties(int nombreDesSorties) {
+		this.nombreDesSorties = nombreDesSorties;
+	}
+	public int getNombreDeCommandes() {
+		return nombreDeCommandes;
+	}
+	public void setNombreDeCommandes(int nombreDeCommandes) {
+		this.nombreDeCommandes = nombreDeCommandes;
+	}
 	public ArrayList<Polyline> getListPolyParent() {
 		return listPolyParent;
 	}
@@ -127,9 +140,11 @@ public class Donnes {
 	@Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
-		return ((Donnes)obj).getTypeDaction().equals(this.getTypeDaction());
-	}//equals fonctionne par raport au type d'action 
-	
-	
-	
+		if (((Donnes)obj).getTypeDaction().equals(this.getTypeDaction())) {
+			if(this.composantCommeImage != null && ((Donnes)obj).getComposantCommeImage() != null) {
+				return ((Donnes)obj).getComposantCommeImage().getId().equals(this.composantCommeImage.getId());
+			}
+		}
+		return false;
+	}//equals fonctionne par raport au type d'action 	
 }
