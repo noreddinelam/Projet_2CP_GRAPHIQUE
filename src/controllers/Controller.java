@@ -147,8 +147,12 @@ public abstract class Controller {
 				// TODO Auto-generated method stub
 				if (!simul) {
 					if (event.getButton() == MouseButton.PRIMARY) {
-						workSpace.getChildren().add(guideFilX);
-						workSpace.getChildren().add(guideFilY);
+						if (! workSpace.getChildren().contains(guideFilX)) {
+							workSpace.getChildren().add(guideFilX);
+						}
+						if (! workSpace.getChildren().contains(guideFilY)) {
+							workSpace.getChildren().add(guideFilY);
+						}
 						guideFilX.setLayoutX(event.getX());
 						guideFilY.setLayoutY(event.getY());
 						ArrayList<InfoPolyline> listDePolylines = Circuit.getListFromPolyline(line);

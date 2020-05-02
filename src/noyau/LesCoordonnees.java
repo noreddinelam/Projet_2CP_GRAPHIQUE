@@ -140,22 +140,22 @@ public class LesCoordonnees implements Serializable{
 			return new Coordonnees(cordCommandes[entre].getX() + image.getLayoutX(), cordCommandes[entre].getY() + image.getLayoutY());
 		else return null;
 	}
-	public Coordonnees coordReelesHorloge(ImageView image,int entre) {
+	public Coordonnees coordReelesHorloge(ImageView image) {
 		if(cordHorloge != null)
 			return new Coordonnees(cordHorloge.getX() + image.getLayoutX(), cordHorloge.getY() + image.getLayoutY());
 		else return null;
 	}	
-	public Coordonnees coordReelesClear(ImageView image,int entre) {
+	public Coordonnees coordReelesClear(ImageView image) {
 		if(cordClear != null)
 			return new Coordonnees(cordClear.getX() + image.getLayoutX(), cordClear.getY() + image.getLayoutY());
 		else return null;
 	}	
-	public Coordonnees coordReelesPreset(ImageView image,int entre) {
+	public Coordonnees coordReelesPreset(ImageView image) {
 		if(cordPreset != null)
 			return new Coordonnees(cordPreset.getX() + image.getLayoutX(), cordPreset.getY() + image.getLayoutY());
 		else return null;
 	}	
-	public Coordonnees coordReelesLoad(ImageView image,int entre) {
+	public Coordonnees coordReelesLoad(ImageView image) {
 		if(cordLoad != null)
 			return new Coordonnees(cordLoad.getX() + image.getLayoutX(), cordLoad.getY() + image.getLayoutY());
 		else return null;
