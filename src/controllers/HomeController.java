@@ -2004,7 +2004,14 @@ public class HomeController extends Controller {
 	    					((Demultiplexeur)cmp2).setNbCommande(((Demultiplexeur)composantCopy).getNbCommande());
 	    					cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
 	    				}
-
+	    			else if(cmp2.getClass().getSimpleName().equals("Pin")) {
+	    				boolean input = ((Pin)composantCopy).getInput();
+	    				((Pin)cmp2).setInput(input);
+	    				if (! input) {
+							Circuit.getEntreesCircuit().remove((Pin)cmp2);
+							Circuit.getSortiesCircuit().add((Pin)cmp2);
+						}
+					}
 	    			cmp2.setCord();
 	    			cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
 	    			cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
@@ -2983,7 +2990,7 @@ public class HomeController extends Controller {
 					p = listEntrees.get(j);
 					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
 					j++;
-					crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager);
 
 					p = tracerEntrerApresCollage(p, crdDebut, relocate);
 					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
@@ -2994,7 +3001,7 @@ public class HomeController extends Controller {
 					p = listEntrees.get(j);
 					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
 					j++;
-					crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager);
 
 					p = tracerEntrerApresCollage(p, crdDebut, relocate);
 					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
@@ -3005,7 +3012,7 @@ public class HomeController extends Controller {
 					p = listEntrees.get(j);
 					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
 					j++;
-					crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager);
 					p = tracerEntrerApresCollage(p, crdDebut, relocate);
 					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
 				}
@@ -3015,7 +3022,7 @@ public class HomeController extends Controller {
 					p = listEntrees.get(j);
 					switching = Circuit.getInfoPolylineFromPolyline(p).getSwitching();
 					j++;
-					crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager);
 					p = tracerEntrerApresCollage(p, crdDebut, relocate);
 					Circuit.getInfoPolylineFromPolyline(p).setSwitching(switching);
 				}
@@ -3160,7 +3167,7 @@ public class HomeController extends Controller {
 			}
 			if(cmp.getLesCoordonnees().getCordHorloge() != null ) {
 				if( ((Sequentiels)cmp).getEntreeHorloge() != null) {
-					crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesHorloge(eleementAdrager);
 					line = ((Sequentiels)cmp).getEntreeHorloge().polylineParPoint(crdDebut);
 
 					listEntrees.add(line);
@@ -3169,21 +3176,21 @@ public class HomeController extends Controller {
 			}
 			if(cmp.getLesCoordonnees().getCordClear() != null ) {
 				if(((Sequentiels)cmp).getClear().getSource() != null) {
-					crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesClear(eleementAdrager);
 					line = ((Sequentiels)cmp).getClear().polylineParPoint(crdDebut);
 					listEntrees.add(line);
 				}
 			}
 			if(cmp.getLesCoordonnees().getCordPreset() != null) {
 				if(((Bascule)cmp).getPreset().getSource() != null){
-					crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesPreset(eleementAdrager);
 					line = ((Bascule)cmp).getPreset().polylineParPoint(crdDebut);
 					listEntrees.add(line);
 				}
 			}
 			if(cmp.getLesCoordonnees().getCordLoad() != null ) {
 				if(((Sequentiels)cmp).getLoad().getSource() != null) {
-					crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager, i);
+					crdDebut = cmp.getLesCoordonnees().coordReelesLoad(eleementAdrager);
 					line = ((Sequentiels)cmp).getLoad().polylineParPoint(crdDebut);
 					listEntrees.add(line);
 				}

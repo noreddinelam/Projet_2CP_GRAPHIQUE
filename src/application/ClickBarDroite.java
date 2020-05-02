@@ -52,11 +52,6 @@ public class ClickBarDroite extends Stage{
 	public static AnchorPane getWorkStageFromRightBar() {
 		return workSpace;
 	}
-
-
-
-	
-
 }
 
 

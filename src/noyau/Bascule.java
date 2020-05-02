@@ -2,6 +2,7 @@ package noyau;
 
 import java.util.ArrayList;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
 public abstract class Bascule extends Sequentiels{
@@ -120,6 +121,10 @@ public abstract class Bascule extends Sequentiels{
 		if (preset.getSource() != null) {
 			if (! preset.getSource().equals(this)) {
 				preset.derelierCompFromDestination(this);
+				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(preset);
+				for (InfoPolyline infoPolyline : resList) {
+					infoPolyline.setRelier(false);
+				}
 			}
 		}
 	}
@@ -136,7 +141,16 @@ public abstract class Bascule extends Sequentiels{
 	public void relierANouveau() {
 		// TODO Auto-generated method stub
 		super.relierANouveau();
-		preset.addDestination(this);
+		ImageView imageView = Circuit.getImageFromComp(this);
+		Polyline polyline = preset.polylineParPoint(lesCoordonnees.coordReelesPreset(imageView));
+		if (polyline == null) {
+			System.out.println("dgfisdqgiu");
+			preset = new Fil(null);
+		}
+		else {
+			Circuit.getInfoPolylineFromPolyline(polyline).setRelier(true);
+			preset.addDestination(this);
+		}
 	}
 	
 	@Override
