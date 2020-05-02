@@ -49,18 +49,11 @@ public class TableDeVeriteController extends Controller implements Initializable
 				labels.add(entre);
 				i++;
 			}
-			/*for (Entry<Pin, Text> entry : ListTextPin.entrySet()) {
-				String entre = entry.getKey().getNom();
-				if(entre.equals("")) 
-					entre = "E"+(MapSize-i);
-				labels.add(entre);
-				i++;
-			}*/
 			i=1;
-			for ( Pin sortie : Circuit.sortiesCircuit) {
+			for ( Pin sortie : ListTextPin2) {
 				String sort = sortie.getNom();
 				if(sort.equals("Pin")) 
-					sort = "S"+(Circuit.sortiesCircuit.size()-i);
+					sort = "S"+(ListTextPin2.size()-i);
 				labels.add(sort);
 				i++;
 			}
@@ -71,11 +64,9 @@ public class TableDeVeriteController extends Controller implements Initializable
 			if(nombreLignes <= 2) {
 				tableDeVerite.setPrefHeight(78);
 				pane.setPrefHeight(200);
-				//tableDeVerite.setLayoutY(175);
 			}else if(nombreLignes <= 4) {
 				tableDeVerite.setPrefHeight(130);
 				pane.setPrefHeight(250);
-				//tableDeVerite.setLayoutY(140);
 			}
 			TableColumn<ArrayList<String>,String> c;
 			for( j = 0; j < nombreColonnes; j++) {
@@ -85,11 +76,6 @@ public class TableDeVeriteController extends Controller implements Initializable
 				c.setText(labels.get(j));
 				tableDeVerite.getColumns().add(c);
 			}
-			/*c = new TableColumn<ArrayList<String>, String>();
-				c.setPrefWidth(5);
-		        c.setResizable(false);
-		        tableDeVerite.getColumns().add(ListTextPin.size(),c);*/
-
 			for ( i = 0; i < nombreLignes; i++) {
 				ArrayList<String> ligne = new ArrayList<String>();
 				for ( j = 0; j < nombreColonnes; j++) {

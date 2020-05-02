@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -60,6 +61,10 @@ public abstract class Controller {
 	public static boolean simul = false;
 	protected static ArrayList<Pin> ListTextPin = null;
 	protected static ArrayList<Text> ListText = null;
+	
+	//pour les sorties 
+	protected static ArrayList<Pin> ListTextPin2 = null;
+	protected static ArrayList<Text> ListText2 = null;
 
 	protected Composant destination;
 	protected int entree;
@@ -488,5 +493,20 @@ public abstract class Controller {
 		sauvgarde.setTypeDaction(Actions.CreationFil);
 		HomeController.undoDeque.addFirst(sauvgarde);
 
+	}
+	public void lessOpacite() {
+	//parcourir les composants et les fils et les mettre transparents
+		for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
+			Composant cmp = entry.getKey();
+			if (! cmp.getClass().getSimpleName().equals("Pin") ) {
+				entry.getValue().setOpacity(0.4);
+			}
+		}
+		for (Entry<Fil, ArrayList<InfoPolyline>> entry : Circuit.getfilUtilises().entrySet()) {
+
+			for (InfoPolyline info : entry.getValue()) {
+				info.getLinePrincipale().setOpacity(0.4);
+			}
+		}
 	}
 }

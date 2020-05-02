@@ -21,6 +21,9 @@ import java.util.Map.Entry;
 import java.util.Optional;
 
 import javax.imageio.ImageIO;
+import javax.swing.text.PlainDocument;
+
+import com.sun.media.jfxmediaimpl.platform.Platform;
 
 import application.ClickBarDroite;
 import application.ClickDroit;
@@ -44,6 +47,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -494,6 +498,7 @@ public class HomeController extends Controller {
 	void onSimuler(MouseEvent event) { /// pour lancer la simulation ou l'arreter
 		Circuit.clearException();
 		simul = (!simul);
+		//opacityBouttons(simul);
 		if (simul) {
 			if (clickSouris2 != null)
 				clickSouris2.close();
@@ -579,6 +584,7 @@ public class HomeController extends Controller {
 		tracerLesGuides(); /// tracer les guides qui aide l'user pour connaitre la position de l'elt
 		afficheurX.setText("X : 0");
 		afficheurY.setText("Y : 0");
+		//opacityBouttons(simul); //les bouttons qui ne fonctionnent que en mode simulation
 		// Creation d'une map pour gerer les titres des composants
 		elemanrsMapFillMap = new HashMap<ImageView, Label>() {
 			{
@@ -1130,7 +1136,6 @@ public class HomeController extends Controller {
 				}
 			}else {
 				if (!Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
-					System.out.println("reaaaaaaaaaaaaaaaaaddyyy");
 					Circuit.getFilFromPolyline(line).getSource().resetPolyline(line, x2, y2);
 
 				}else {
@@ -1456,17 +1461,41 @@ public class HomeController extends Controller {
 											for (Text num : ListText) {
 												workSpace.getChildren().remove(num);
 											}
-											//	        							for (Pin pin : ListTextPin) {
-											//	        								workSpace.getChildren().remove(pin); /// a voir avec sari
-											//	        							}
 											ListText.clear();
 											ListTextPin.clear();
 										}
 									}
+								}else {
+									if(!ListTextPin2.contains(compos)){
+										Text number = new Text();
+										number.setLayoutX(eleementAdrager.getLayoutX()+4);
+										number.setLayoutY(eleementAdrager.getLayoutY()+28.5);
+										String id = Integer.toString(ListTextPin2.size()+1);
+										number.setText(id);
+										number.setId(id);
+										number.setStroke(Color.RED);
+										number.setFont(Font.font("Calisto MT",FontWeight.NORMAL,18));
+										workSpace.getChildren().add(number);
+										ListTextPin2.add((Pin)compos);
+										ListText2.add(number);
+									}else {
+										Alert alert = new Alert(AlertType.CONFIRMATION);
+										alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+										alert.setTitle("Confirmation");
+										alert.setHeaderText("Refaire l'ordre ");
+										alert.setContentText("Cette entré est deja selectionnée, Voulez vous reordonner les entrées ?");
+										Optional<ButtonType> result = alert.showAndWait();
+										if(result.get() == ButtonType.OK) {
+
+											for (Text num : ListText2) {
+												workSpace.getChildren().remove(num);
+											}
+											ListText2.clear();
+											ListTextPin2.clear();
+										}
+									}
 								}
 							}
-
-
 						}
 					}
 				}
@@ -2053,19 +2082,18 @@ public class HomeController extends Controller {
 		@FXML
 		void fermer(ActionEvent event) {
 
-			Stage stage = (Stage) fermer.getScene().getWindow();
-			Alert alertQ = new Alert(AlertType.CONFIRMATION);
-			alertQ.setContentText("Voullez vous vraimment quitter ! ");
-			alertQ.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
-			Optional<ButtonType> resultQ = alertQ.showAndWait();
-			if (resultQ.get() == ButtonType.OK) {
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.setContentText("Voullez vous sauvgarder ce circuit");
-				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
-				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == ButtonType.OK) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setContentText("Voullez vous sauvgarder ce circuit avant de quitter ?");
+			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+			alert.getButtonTypes().clear();
+			ButtonType buttonTypeNon = new ButtonType("Non");
+			ButtonType buttonTypeSauvgarder = new ButtonType("Sauvgarder");
+			ButtonType buttonTypeCancel = new ButtonType("Annuler");
+			alert.getButtonTypes().setAll(buttonTypeNon, buttonTypeSauvgarder, buttonTypeCancel);
+			Optional<ButtonType> result = alert.showAndWait();	
+			//Optional<ButtonType> result = alert.showAndWait();
+			if(result.get() != buttonTypeCancel) {
+				if (result.get() == buttonTypeSauvgarder){
 					if (fichierCourant == null) {
 						final FileChooser fileChooser = new FileChooser();
 						fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -2087,12 +2115,12 @@ public class HomeController extends Controller {
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 						a.showAndWait();
 					}
 				}
-				Stage s = (Stage) stage.getOwner();
-				s.close();
+				javafx.application.Platform.exit();
+				//Stage s = (Stage) stage.getOwner();
+				//s.close();
 			}
 		}
 
@@ -2308,94 +2336,157 @@ public class HomeController extends Controller {
 			CircuitIntegre ci = null;
 			CircuitIntegreSequentiel ciq = null;
 			if (simul) {
-				
-			
-			if(Circuit.getListeEtages().size()==0 && !horloged) {
-				ci = new CircuitIntegre(Circuit.getEntreesCircuit().size(),Circuit.getSortiesCircuit().size(), "CircuitIntegre");
-				Circuit.tableVerite(Circuit.getEntreesCircuit());
-				ci.setTableVerite(Circuit.getTableVerite());
-				Circuit.defaultCompValue();
-			}else {
-				if(!horloged) {
-					if(Circuit.occurencePinHorlogee() == 1) {
-						ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
-						ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
-						for (Pin pin : Circuit.getEntreesCircuit()) {
-							if(!pin.isHorloge()) {
-								entreCircuit.add(pin);
-							}else {
-								pin.setHorloge(false);
-								ciq.setHorloge(pin);
-							}
-						}
-						ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
-						ciq.setEntreesCircuit(entreCircuit);
-						ciq.setSortiesCircuit(Circuit.getSortiesCircuit());
-						ciq.setListSouceCte(Circuit.getListSouceCte());
-						ciq.setListeEtages(Circuit.getListeEtages());
-						ciq.setNbEtages(Circuit.getNbEtages());
-						ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
-					}else {
-						//maan9drooooooooooooooooooch
-					}
-				}else {
-					if(Circuit.occurencePinHorlogee() == 0) {
-						ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
-						ArrayList<Pin> entreCircuit = new ArrayList<Pin>(Circuit.getEntreesCircuit());
-						Pin pinHorloge = new Pin(true, "horloge");
-						for (Composant cmp : Circuit.getCompUtilises().keySet()) {
-							if(cmp.getClass().getSimpleName().equals("Horloge")) {
-								pinHorloge.getSorties()[0] = cmp.getSorties()[0];
-								break;
-							}
-						}
-						ciq.setHorloge(pinHorloge);
-						ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
-						ciq.setEntreesCircuit(entreCircuit);
-						ciq.setSortiesCircuit(Circuit.getSortiesCircuit());
-						ciq.setListeEtages(Circuit.getListeEtages());
-						ciq.setNbEtages(Circuit.getNbEtages());
-						ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
-						ciq.setListSouceCte(Circuit.getListSouceCte());
-					}else {
-						//maan9drooooooooooooooooooch
+				if(ListTextPin == null && ListTextPin2 == null) {
+					ListTextPin = new ArrayList<Pin>();
+					ListText = new ArrayList<Text>();
 
-					}
-				}
-			}
-
-			final FileChooser fileChooser = new FileChooser();
-			if (ciq != null || ci != null) {
-				File f = fileChooser.showSaveDialog(homeWindow);
-				if (f != null) {
+					ListTextPin2 = new ArrayList<Pin>();
+					ListText2 = new ArrayList<Text>();
 					try {
-						fichier = new FileOutputStream(f.getAbsolutePath()+".int");
-						oo = new ObjectOutputStream(fichier);
-						if(ci!=null) {
-							oo.writeObject(ci);
-						}else if(ciq != null){
-							oo.writeObject(ciq);
-						}
-					} catch (Exception e) {
+						Stage s = (Stage) encapsuler.getScene().getWindow();
+						s.close();
+						FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/ReminderCI.fxml"));
+						Parent root = fxmlLoader.load();
+						Stage stage = new Stage();
+						Scene scene = new Scene(root);
+						stage.setScene(scene);
+						stage.setTitle("Remarques");
+						stage.setResizable(false);
+						stage.initModality(Modality.APPLICATION_MODAL);
+						stage.show();
+					} catch(Exception e) {
 						e.printStackTrace();
 					}
-					finally {
-						try {
-							oo.close();
-						} catch (IOException e) {
-							e.printStackTrace();
+					encapsuler.setText("  Encapsuler");
+					encapsuler.setAlignment(Pos.BASELINE_LEFT);
+				}else {
+					if(ListTextPin.size() == Circuit.getEntreesCircuit().size() && ListTextPin2.size() == Circuit.getSortiesCircuit().size()) {
+						//mode noormal
+						Circuit.defaultCompValue(); //Tous noir
+						//Supprimer les numeros
+						for (Text num : ListText) {
+							workSpace.getChildren().remove(num);
 						}
+						for (Text num : ListText2) {
+							workSpace.getChildren().remove(num);
+						}
+
+						simul = false;		//Mode normal
+						//mode normal (opacité 1)
+						for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
+							entry.getValue().setOpacity(1);
+						}
+						for (Entry<Fil, ArrayList<InfoPolyline>> entry : Circuit.getfilUtilises().entrySet()) {
+
+							for (InfoPolyline info : entry.getValue()) {
+								info.getLinePrincipale().setOpacity(1);
+							}
+						}
+						//end 
+						if(Circuit.getListeEtages().size()==0 && !horloged) {
+							ci = new CircuitIntegre(ListTextPin.size(),ListTextPin2.size(), "CircuitIntegre");
+							Circuit.tableVerite(ListTextPin,ListTextPin2);
+							ci.setTableVerite(Circuit.getTableVerite());
+							Circuit.defaultCompValue();
+						}else {
+							if(!horloged) {
+								if(Circuit.occurencePinHorlogee() == 1) {
+									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
+									ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
+									for (Pin pin : ListTextPin) {
+										if(!pin.isHorloge()) {
+											entreCircuit.add(pin);
+										}else {
+											pin.setHorloge(false);
+											ciq.setHorloge(pin);
+										}
+									}
+									ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+									ciq.setEntreesCircuit(entreCircuit);
+									ciq.setSortiesCircuit(ListTextPin2);
+									ciq.setListSouceCte(Circuit.getListSouceCte());
+									ciq.setListeEtages(Circuit.getListeEtages());
+									ciq.setNbEtages(Circuit.getNbEtages());
+									ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
+								}else {
+									//maan9drooooooooooooooooooch
+								}
+							}else {
+								if(Circuit.occurencePinHorlogee() == 0) {
+									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
+									ArrayList<Pin> entreCircuit = new ArrayList<Pin>(ListTextPin);
+									Pin pinHorloge = new Pin(true, "horloge");
+									for (Composant cmp : Circuit.getCompUtilises().keySet()) {
+										if(cmp.getClass().getSimpleName().equals("Horloge")) {
+											pinHorloge.getSorties()[0] = cmp.getSorties()[0];
+											break;
+										}
+									}
+									ciq.setHorloge(pinHorloge);
+									ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+									ciq.setEntreesCircuit(entreCircuit);
+									ciq.setSortiesCircuit(ListTextPin2);
+									ciq.setListeEtages(Circuit.getListeEtages());
+									ciq.setNbEtages(Circuit.getNbEtages());
+									ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
+									ciq.setListSouceCte(Circuit.getListSouceCte());
+								}else {
+									//maan9drooooooooooooooooooch
+
+								}
+							}
+						}
+						ListTextPin.clear();
+						ListText.clear();
+						ListText = null;
+						ListTextPin = null; //pas de liste
+
+						ListTextPin2.clear();
+						ListText2.clear();
+						ListText2 = null;
+						ListTextPin2 = null; //pas de liste
+
+						final FileChooser fileChooser = new FileChooser();
+						if (ciq != null || ci != null) {
+							File f = fileChooser.showSaveDialog(homeWindow);
+							if (f != null) {
+								try {
+									fichier = new FileOutputStream(f.getAbsolutePath()+".int");
+									oo = new ObjectOutputStream(fichier);
+									if(ci!=null) {
+										oo.writeObject(ci);
+									}else if(ciq != null){
+										oo.writeObject(ciq);
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+								finally {
+									try {
+										oo.close();
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+								}
+							}
+						}
+						else {
+							Alert a = new Alert(AlertType.ERROR);
+							a.setHeaderText("Horloge erreur");
+							a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+							a.setTitle("Circuit Integré");
+							a.setContentText("Un circuit integré doit contenir un seul element horloge  ( Horloge ou Pin ) ");
+							a.showAndWait();
+						}
+					}else {
+						Alert a = new Alert(AlertType.WARNING);
+						a.setHeaderText("Circuit integré erreur");
+						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+						a.setTitle("Circuit Integré");
+						a.setContentText("Entrée ou sortie non selectionnée");
+						a.showAndWait();
 					}
 				}
-			}
-			else {
-				Alert a = new Alert(AlertType.ERROR);
-				a.setHeaderText("Horloge erreur");
-				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-				a.setTitle("Circuit Integré");
-				a.setContentText("Un circuit integré doit contenir un seul element horloge  ( Horloge ou Pin ) ");
-				a.showAndWait();
-			}
 			}
 			else {
 				Alert a = new Alert(AlertType.WARNING);
@@ -2461,10 +2552,13 @@ public class HomeController extends Controller {
 			stage1.close();
 			if (simul) {
 				if(Circuit.getEntreesCircuit().size() != 0) {
-					if(ListTextPin == null) {
+					if(ListTextPin == null && ListTextPin2 == null) {
 						//	    			simul = true;
 						ListTextPin = new ArrayList<Pin>();
 						ListText = new ArrayList<Text>();
+						
+						ListTextPin2 = new ArrayList<Pin>();
+						ListText2 = new ArrayList<Text>();
 						try {
 							Stage s = (Stage) tableVerite.getScene().getWindow();
 							s.close();
@@ -2485,11 +2579,14 @@ public class HomeController extends Controller {
 						tableVerite.setAlignment(Pos.BASELINE_LEFT);
 					}else { //Generer la table et aller vers l'etat normal
 						//Generer La table de verité
-						if(ListTextPin.size() != 0) {
-							Circuit.tableVerite(ListTextPin);
+						if(ListTextPin.size() != 0 && ListTextPin2.size()!=0) {
+							Circuit.tableVerite(ListTextPin,ListTextPin2);
 							Circuit.defaultCompValue(); //Tous noir
 							//Supprimer les numeros
 							for (Text num : ListText) {
+								workSpace.getChildren().remove(num);
+							}
+							for (Text num : ListText2) {
 								workSpace.getChildren().remove(num);
 							}
 
@@ -2515,6 +2612,11 @@ public class HomeController extends Controller {
 								ListText.clear();
 								ListText = null;
 								ListTextPin = null; //pas de liste
+								
+								ListTextPin2.clear();
+								ListText2.clear();
+								ListText2 = null;
+								ListTextPin2 = null; //pas de liste
 								Stage stage = new Stage();
 								Scene scene = new Scene(root);
 								stage.setScene(scene);
@@ -2533,11 +2635,9 @@ public class HomeController extends Controller {
 						}else {
 							Alert alert = new Alert(AlertType.ERROR);
 							alert.setTitle("Liste d'entrées vide");
-							//alert.getDialogPane().setStyle("-fx-background-color : #000000");
 							alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-							//alert.getDialogPane().getExpandableContent().setStyle("-fx-background-color : #000000");
-							alert.setHeaderText("Aucune entrée selectionnée  ");
-							alert.setContentText("Il faut que vous seléctionner au moins une entrée pour générer la table de verité !");
+							alert.setHeaderText("Pas de selection ");
+							alert.setContentText("Il faut que vous seléctionner au moins une entrée et une sortie pour générer la table de verité !");
 							alert.showAndWait();
 						}
 					}
@@ -3174,4 +3274,15 @@ public class HomeController extends Controller {
 				line.getPoints().add(size-3,line.getPoints().get(size - 2));
 			}
 	}*/
+	public void opacityBouttons(Boolean simul) {
+		if(!simul) {
+			tableVerite.setOpacity(0.4);
+			chronogramme.setOpacity(0.4);
+			//encapsuler.setOpacity(0.4);
+		}else {
+			tableVerite.setOpacity(1);
+			chronogramme.setOpacity(1);
+			//encapsuler.setOpacity(1);
+		}
+	}
 	}

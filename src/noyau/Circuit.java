@@ -197,7 +197,7 @@ public class Circuit {
 		return tableVerite;
 	}
 	
-	public static void tableVerite(ArrayList<Pin> entreesCircuit) // generer la table de verité du ciruit
+	public static void tableVerite(ArrayList<Pin> entreesCircuit,ArrayList<Pin> sortiesCircuit) // generer la table de verité du ciruit
 	{
 		int nbEntrees = entreesCircuit.size(); // nombre d'entrees du circuit
 		int nbSorties = sortiesCircuit.size(); // nombre de sortiees du circuit
