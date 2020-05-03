@@ -6,6 +6,10 @@ import javafx.scene.shape.Polyline;
 
 public class SourceConstante extends Composant{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5844118291526446652L;
 	private EtatLogique etatLogique ;
 
 	public SourceConstante(EtatLogique etatLogique,String nom) {

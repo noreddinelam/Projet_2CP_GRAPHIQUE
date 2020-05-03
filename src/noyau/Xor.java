@@ -2,6 +2,11 @@ package noyau;
 
 public class Xor extends Portes {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2121421558559170522L;
+
 	public Xor(int nombreEntree,String nom) {
 		super(nombreEntree,nom);
 	}

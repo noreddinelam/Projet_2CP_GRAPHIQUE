@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 public abstract class Additionneur extends Combinatoires{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6160822012127544835L;
 	protected EtatLogique retenueSortante = EtatLogique.ZERO;
 
 	public Additionneur(int nombreEntree,String nom) { // constructeur 
