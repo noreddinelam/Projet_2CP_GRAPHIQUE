@@ -820,9 +820,9 @@ public class HomeController extends Controller {
 
 						
 						}
-						if (event.isControlDown() && (event.getCode() == KeyCode.V)) {
-							CopyUses();
-						}
+					}
+					if (event.isControlDown() && (event.getCode() == KeyCode.V)) {
+						CopyUses();
 					}
 				}
 			};
