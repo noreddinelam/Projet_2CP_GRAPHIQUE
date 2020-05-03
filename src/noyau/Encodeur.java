@@ -6,6 +6,11 @@ import javafx.scene.shape.Polyline;
 
 public class Encodeur extends Combinatoires {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7940830455706806931L;
+
 	public Encodeur(int nombreEntree,String nom) { // constructeur 
 		super(nombreEntree,nom);	
 		nombreSortie = Integer.toBinaryString(nombreEntree-1).length();

@@ -2,6 +2,11 @@ package noyau;
 
 public class D extends Bascule{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7211936527795745845L;
+
 	public D(String nom,Front front) {
 		super(1,nom,front);
 		this.icon="D/Front_Montant.png";

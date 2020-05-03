@@ -7,6 +7,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
 public class Pin extends Composant implements Affichage,ElementHorloge,ComposantDeChronogramme{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -130115040793281462L;
 	private boolean input ; // INPUT= vrai ->  entree // faux -> sortie 
 	private EtatLogique etat = EtatLogique.ZERO;
 	private boolean horloge = false ; // pour savoir si le pin fonctionne comme horloge ou pas .

@@ -1,6 +1,9 @@
 package controllers;
 
 import javafx.application.Platform;
+
+import java.util.ArrayList;
+
 import application.*;
 import javafx.event.ActionEvent;
 import noyau.*;
@@ -33,6 +36,8 @@ public class ProprietesAdditionneurController extends ProprietesController{
 	}
 
 	public void initialiser(Composant cmp) {
+		btns.add(imgPlusNbEntrees);
+		btns.add(imgMoinsNbEntrees);
 		this.cmp = cmp;
 		sauv = cmp.getNombreEntree();
 		i=cmp.getNombreEntree();
@@ -40,16 +45,16 @@ public class ProprietesAdditionneurController extends ProprietesController{
 		composant.setText(cmp.getClass().getSimpleName().toString());
 		label.setText(cmp.getNom());
 		if(cmp.getClass().getSimpleName().equals("DemiAdditionneur"))
-    	{
+		{
 			i=i/2;
 			nbEntres.setText(Integer.toString(i));
 			composant.setText("Demi Additionneur");
-    	}
-    	else {
-    		i=(i-1)/2;
-    		nbEntres.setText(Integer.toString(i));
-    		composant.setText("Additionneur Complet");
-    	}
+		}
+		else {
+			i=(i-1)/2;
+			nbEntres.setText(Integer.toString(i));
+			composant.setText("Additionneur Complet");
+		}
 		if(i==1) {
 			moinsNbEntrees.setVisible(false);
 			imgMoinsNbEntrees.setVisible(false);
@@ -58,52 +63,58 @@ public class ProprietesAdditionneurController extends ProprietesController{
 			plusNbEntrees.setVisible(false);
 			imgPlusNbEntrees.setVisible(false);
 		}
+		if (! cmp.isDessocier()) {
+			plusNbEntrees.setDisable(true);
+			moinsNbEntrees.setDisable(true);
+			applyOpaciteForImages(btns);
 		}
+	}
+    
 	@FXML
-    private Pane pane_proprietes;
-
-    @FXML
-    private TextField label;
-
-    @FXML
-    private Label nbEntres;
-
-    @FXML
-    private Button nextDirection;
-
-    @FXML
-    private Button previousDirection;
-
-    @FXML
-    private Button plusNbEntrees;
-
-    @FXML
-    private Button moinsNbEntrees;
-
-    @FXML
-    private Button mdf;
-
-    @FXML
-    private Button annuler;
-
-    @FXML
-    private Label direction;
-
-    @FXML
-    private Label composant;
-
-    @FXML
-    private ImageView imgPlusNbEntrees;
-    
-    @FXML
-    private ImageView imgMoinsNbEntrees;
-    
-    @FXML
-    private ImageView imgNextDirection;
-
-    @FXML
-    private ImageView imgPreviousDirection;
-    
+	private Pane pane_proprietes;
+	
+	@FXML
+	private TextField label;
+	
+	@FXML
+	private Label nbEntres;
+	
+	@FXML
+	private Button nextDirection;
+	
+	@FXML
+	private Button previousDirection;
+	
+	@FXML
+	private Button plusNbEntrees;
+	
+	@FXML
+	private Button moinsNbEntrees;
+	
+	@FXML
+	private Button mdf;
+	
+	@FXML
+	private Button annuler;
+	
+	@FXML
+	private Label direction;
+	
+	@FXML
+	private Label composant;
+	
+	@FXML
+	private ImageView imgPlusNbEntrees;
+	
+	@FXML
+	private ImageView imgMoinsNbEntrees;
+	
+	@FXML
+	private ImageView imgNextDirection;
+	
+	@FXML
+	private ImageView imgPreviousDirection;
+	
     @FXML
     void annuler(ActionEvent event) {
     	Stage s = (Stage)annuler.getScene().getWindow(); 
@@ -113,8 +124,6 @@ public class ProprietesAdditionneurController extends ProprietesController{
     @FXML
     void modifier(ActionEvent event) {
     	cmp.setNom(label.getText());
-    	if((cmp.getNombreEntree() != i*2) && (cmp.getNombreEntree() != i*2+1))
-    	{
     		if (cmp.isDessocier()) {
     			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
     			if(cmp.getClass().getSimpleName().equals("DemiAdditionneur"))
@@ -134,14 +143,9 @@ public class ProprietesAdditionneurController extends ProprietesController{
     			imageView.setFitHeight(image.getHeight());
     			imageView.setFitWidth(image.getWidth());
     			cmp.setNombreSortieAndUpdateFil(i+1);
-    			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
-    			
+    			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));	
     		}
-    		else {
-    		this.alert();
-    		}
-    	}
-    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	Stage s = (Stage)mdf.getScene().getWindow(); 
     	s.close();
     }
 

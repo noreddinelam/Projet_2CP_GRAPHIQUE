@@ -7,6 +7,10 @@ import javafx.scene.shape.Polyline;
 
 public class Multiplexeur extends Combinatoires {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 695849189053262617L;
 	private int nbCommande;
 	
 	public Multiplexeur(int nombreEntree,String nom) { // constructeur 

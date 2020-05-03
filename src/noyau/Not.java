@@ -4,6 +4,11 @@ import javafx.scene.image.ImageView;
 
 public class Not extends Portes{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3351932009983831005L;
+
 	public Not(String nom) {
 		super(1,nom);
 		

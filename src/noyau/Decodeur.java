@@ -11,6 +11,11 @@ import javafx.scene.shape.Polyline;
 public class Decodeur extends Combinatoires{	
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1808981700392692475L;
+
 	public Decodeur(int nombreEntree,String nom) { // constructeur
 		super(nombreEntree,nom);
 		this.nombreSortie = (int) Math.pow(2, nombreEntree);

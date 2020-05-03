@@ -6,6 +6,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 public class Compteur extends Sequentiels{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7221135581703596717L;
 	private int valeur = 0 ;
 	private int valeurMax; 
 	private boolean compter = true; // true -> compteur /  false ->decompteur	

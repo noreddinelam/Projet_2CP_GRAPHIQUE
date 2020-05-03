@@ -2,6 +2,11 @@ package noyau;
 
 public class DemiAdditionneur extends Additionneur{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5601887539655929033L;
+
 	public DemiAdditionneur(int nombreEntree,String nom) { // constructeur
 		super(nombreEntree*2,nom);
 		nombreSortie = nombreEntree + 1 ;

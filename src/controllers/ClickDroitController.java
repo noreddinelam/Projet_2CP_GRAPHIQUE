@@ -24,7 +24,7 @@ import noyau.CircuitIntegre;
 import noyau.CircuitIntegreSequentiel;
 import noyau.Composant;
 
-public class ClickDroitController extends Controller implements Initializable{
+public class ClickDroitController extends Controller{
 
 	private ArrayList<String> bddPortes = new ArrayList<String>(Arrays.asList("And","Or","Xor","Nor","Nand"));
 	private ArrayList<String> bddBascules = new ArrayList<String>(Arrays.asList("JK","D","RST","T"));
@@ -168,18 +168,31 @@ public class ClickDroitController extends Controller implements Initializable{
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
 	}
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+	public void initialiser() {
 		copier.setCursor(Cursor.HAND);
 		couper.setCursor(Cursor.HAND);
 		supprimer.setCursor(Cursor.HAND);
 		rotationD.setCursor(Cursor.HAND);
 		rotationG.setCursor(Cursor.HAND);
-		prop.setCursor(Cursor.HAND);	
+		if (cmp.getClass().equals(CircuitIntegre.class) || cmp.getClass().equals(CircuitIntegreSequentiel.class)) {
+			prop.setDisable(true);
+		}
+		else {
+			prop.setCursor(Cursor.HAND);
+		}
 	}
-	
+//	@Override
+//	public void initialize(URL arg0, ResourceBundle arg1) {
+//		// TODO Auto-generated method stub
+//		copier.setCursor(Cursor.HAND);
+//		couper.setCursor(Cursor.HAND);
+//		supprimer.setCursor(Cursor.HAND);
+//		rotationD.setCursor(Cursor.HAND);
+//		rotationG.setCursor(Cursor.HAND);
+//		prop.setCursor(Cursor.HAND);
+//		System.out.println("cmp : "+cmp + " super cmp :"+Controller.cmp);
+//	}
+//	
 	
 	
 	

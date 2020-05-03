@@ -2,6 +2,11 @@ package noyau;
 
 public class Nand extends And{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5992267225135063709L;
+
 	public Nand(int nombreEntree,String nom) {
 		super(nombreEntree,nom);
 	}

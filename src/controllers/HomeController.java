@@ -836,6 +836,33 @@ public class HomeController extends Controller {
 					if (event.isControlDown() && (event.getCode() == KeyCode.V)) {
 						CopyUses();
 					}
+					if (event.getCode() == KeyCode.DELETE) {
+						if (elementSeclecionner != null) {
+							Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
+							elementAsuprimer=elementSeclecionner;
+							sauveGarderSupression();		
+							if(elementAsuprimer.getId().equals("clock"))
+							{
+								horloged =false;
+								horlogeDeCercuit =null; 
+							}
+							else if (elementAsuprimer.getId().equals("CircuitIntegre")) {
+								ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
+								for (Circle circle : arrayList) {
+									workSpace.getChildren().remove(circle);
+								}
+							} 
+							else if (elementAsuprimer.getId().equals("CircuitIntegreSequentiel")) {
+								ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
+								for (Circle circle : arrayList) {
+									workSpace.getChildren().remove(circle);
+								}
+							} 
+							workSpace.getChildren().remove(elementAsuprimer);
+							removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));	
+							
+						}
+					}
 				}
 			};
 		}
@@ -1313,8 +1340,10 @@ public class HomeController extends Controller {
 									if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
 										CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
 										circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());																		
-										//										workSpace.getChildren().removeAll(((CircuitIntegre)ci).getListeCercles());
-										//										workSpace.getChildren().addAll(((CircuitIntegre)ci).generateCercles(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY()));
+									}
+									else if(ci.getClass().equals(CircuitIntegreSequentiel.class)) {
+										CircuitIntegreSequentiel circuitIntegre = ((CircuitIntegreSequentiel)ci);
+										circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());
 									}
 									Point2D localPoint = workSpace
 											.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
