@@ -4,16 +4,17 @@ import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
-import noyau.*;
+import noyau.Circuit;
+import noyau.Composant;
+import noyau.Direction;
+import noyau.Pin;
 
 public class ProprietesPinController extends ProprietesController{
 
@@ -23,14 +24,17 @@ public class ProprietesPinController extends ProprietesController{
 	int putInt;
 	
 	
-    public Composant getCmp() {
+    @Override
+	public Composant getCmp() {
 		return cmp;
 	}
 
+	@Override
 	public void setCmp(Composant cmp) {
 		this.cmp = cmp;
 	}
 	
+	@Override
 	public void initialiser(Composant cmp){
 		this.cmp = cmp;
 		label.setText(cmp.getNom());
@@ -106,6 +110,7 @@ public class ProprietesPinController extends ProprietesController{
         		pin.setInput(false);
     			Circuit.getEntreesCircuit().remove(pin);
     			Circuit.getSortiesCircuit().add(pin);
+
         		ArrayList<Polyline> line = Circuit.supprimerAllPolylinesForCompounent(pin);
         		removeAllPolylinesFromWorkSpace(line);
         		cmp.setNombreEntree(1);

@@ -4,9 +4,11 @@ public class D extends Bascule{
 	
 	public D(String nom,Front front) {
 		super(1,nom,front);
+		this.icon="D/Front_Montant.png";
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public void genererSortiesSyncho() { // generer la sortie de la bascule D
 		this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
 		if(etatPrec[0].getNum()==1)

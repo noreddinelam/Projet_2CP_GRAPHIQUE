@@ -1,12 +1,9 @@
 package controllers;
 import java.net.URL;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
-import com.sun.media.jfxmediaimpl.platform.Platform;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.EventHandler;
@@ -16,32 +13,23 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.PointLight;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
-import noyau.Circuit;
-import noyau.Composant;
 import noyau.ComposantDeChronogramme;
 import noyau.EtatLogique;
 import noyau.Horloge;
 import noyau.Pin;
 import noyau.Sequentiels;
-import javafx.scene.input.MouseEvent;
 
 
 
@@ -50,15 +38,16 @@ public class ChronogrammeController implements Initializable {
 
 	private static ImageView detectionBar=new ImageView();
 	public static ArrayList<Sequentiels> composantDechrono = new ArrayList<Sequentiels>();
+	public static ArrayList<Pin> pinDeSorties=new ArrayList<Pin>();
 
 	@FXML
 	private AnchorPane chronogrameField;
 	private static Horloge horlogeDecHRONO;
-	private static HashMap< Line, Integer[]> valeursDesuivis = new HashMap<Line, Integer[]>();
+	public static HashMap< Line, Integer[]> valeursDesuivis = new HashMap<Line, Integer[]>();
 	@FXML
 	private  TableView<ComposantDeChronogramme> tableView;
 
-	private static TableView<ComposantDeChronogramme> extTableView;
+	public static TableView<ComposantDeChronogramme> extTableView;
 	@FXML
 	private  TableColumn<ComposantDeChronogramme, String> elementsColumn;
 
@@ -121,7 +110,7 @@ public class ChronogrammeController implements Initializable {
 
 	@FXML
 	private  ScrollPane scrollPane;
-	private static ScrollPane scrolDeChrono;
+	public static ScrollPane scrolDeChrono;
 	@FXML
 	private Line line;
 
@@ -158,7 +147,7 @@ public class ChronogrammeController implements Initializable {
 
 
 	private static Label[] labels;
-    public static boolean resimul=false;
+	public static boolean resimul=false;
 	double origineDeChronogramme; 
 	double translationDeSouris;
 	public static ArrayList<PointLight> pointsDeDepart=new ArrayList<PointLight>();
@@ -177,6 +166,12 @@ public class ChronogrammeController implements Initializable {
 			composantDechrono.get(i).setStartChronoX(1);
 			composantDechrono.get(i).setStartChronoY(pointsDeDepart.get(i).getLayoutY());
 		}
+		for(int j=0;j<pinDeSorties.size();j++)
+		{
+			pinDeSorties.get(j).setStartChronoX(1);
+			pinDeSorties.get(j).setStartChronoY(pointsDeDepart.get(composantDechrono.size()+j).getLayoutY());
+		}
+
 		Horloge.setStartX(1);
 		Horloge.setStartY(76);
 		first=true;
@@ -202,6 +197,7 @@ public class ChronogrammeController implements Initializable {
 		s.close();	
 		composantDechrono.clear();
 		valeursDesuivis.clear();
+		pinDeSorties.clear();
 		extTableView.getItems().clear();    		
 		first=true;
 		i=1;
@@ -217,10 +213,10 @@ public class ChronogrammeController implements Initializable {
 		homebutton.setCursor(Cursor.HAND);
 		homebutton.setStyle("-fx-background-color:#E0E0D1");
 	}
-	 @FXML
-	    void homeExit(MouseEvent event) {
-			homebutton.setStyle("-fx-background-color:#5a6572");
-	    }
+	@FXML
+	void homeExit(MouseEvent event) {
+		homebutton.setStyle("-fx-background-color:#5a6572");
+	}
 
 	@FXML
 	void arreterEnter(MouseEvent event) {
@@ -240,6 +236,12 @@ public class ChronogrammeController implements Initializable {
 				composantDechrono.get(i).setStartChronoX(1);
 				composantDechrono.get(i).setStartChronoY(pointsDeDepart.get(i).getLayoutY());
 			}
+			for(int j=0;j<pinDeSorties.size();j++)
+			{
+				pinDeSorties.get(j).setStartChronoX(1);
+				pinDeSorties.get(j).setStartChronoY(pointsDeDepart.get(composantDechrono.size()+j).getLayoutY());
+			}
+
 			Horloge.setStartX(1);
 			Horloge.setStartY(76);
 			first=true;
@@ -252,7 +254,7 @@ public class ChronogrammeController implements Initializable {
 	void play(MouseEvent event) {
 		if(HomeController.chrono ==false)
 		{
-		   
+
 			HomeController.chrono=true;
 			resimul=true;
 			Horloge.etat=EtatLogique.ZERO;
@@ -263,18 +265,18 @@ public class ChronogrammeController implements Initializable {
 			playButton.setImage(new Image("/chronoIcones/CHRONO_START_OFF.png"));
 
 		}
-	
+
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		tracerGrilleChrono();	
 		lightBoxH=lightBox;
 		pauseBotton.setImage(new Image("/chronoIcones/CHRONO_STOP_OFF.png"));
 		labels=new Label[] {label0,label1,label2,label3,label4,label5,label6,label7,label8,label9,label10};
-		tracerGrilleChrono();			
+		pointsDeDepart.addAll(Arrays.asList(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10));		
 		i=1;
-		scrolDeChrono=scrollPane;
-		pointsDeDepart.addAll(Arrays.asList(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10));
+		scrolDeChrono=scrollPane;	
 		extTableView=tableView;
 		extTableView.getItems().add(horlogeDecHRONO);
 		field= chronogrameField;
@@ -288,10 +290,14 @@ public class ChronogrammeController implements Initializable {
 			composantDechrono.get(i).setStartChronoX(1);
 			composantDechrono.get(i).setStartChronoY(pointsDeDepart.get(i).getLayoutY());
 		}
-
+		for(int j=0;j<pinDeSorties.size();j++)
+		{
+			tableView.getItems().add(pinDeSorties.get(j));
+			pinDeSorties.get(j).setStartChronoX(1);
+			pinDeSorties.get(j).setStartChronoY(pointsDeDepart.get(composantDechrono.size()+j).getLayoutY());
+		}
 		scrollPane.setPannable(false);
 		detectionBar.setImage(new Image("/chronoIcones/SUIVIT.png"));
-
 		chronogrameField.getChildren().add(detectionBar);
 		ajouterDragX(detectionBar);
 	}
@@ -339,15 +345,14 @@ public class ChronogrammeController implements Initializable {
 					);
 			Horloge.setStartX(Horloge.getStartX()+25);
 		}
-
+        if(! composantDechrono.isEmpty())
+        {
 		for(int i=0;i<composantDechrono.size();i++)
 		{
 			EtatLogique etat= composantDechrono.get(i).getSortieAafficher();
 			Line horline=new Line();
 			Line verline=new Line();
-
 			verline.setStroke(Color.web("90EE90"));
-
 			verline.setStyle("-fx-stroke-width: 2px;");
 
 			if(composantDechrono.get(i).getFront().getNum()==composantDechrono.get(i).getEntreeHorloge().getEtat().getNum()
@@ -415,12 +420,97 @@ public class ChronogrammeController implements Initializable {
 			field.getChildren().add(horline);
 			frontList.add(horline);
 			valeursDesuivis.put(horline, new Integer[] {i+1,etat.getNum()});
+		}
+	}
+		if(!pinDeSorties.isEmpty())
+		{
+			for(int j=0;j<pinDeSorties.size();j++)
+			{
+				EtatLogique etatDePin=pinDeSorties.get(j).getSortieAafficher();
+				Line horPline=new Line();
+				Line verPline=new Line();
 
-		}	 
+				if(pinDeSorties.get(j).isChanged())
+				{
+
+					if(etatDePin.getNum()==1)
+					{
+
+						verPline=new Line(
+								pinDeSorties.get(j).getStartChronoX(),pinDeSorties.get(j).getStartChronoY(),
+								pinDeSorties.get(j).getStartChronoX(),pinDeSorties.get(j).getStartChronoY()-22
+								);
+						pinDeSorties.get(j).setStartChronoY( pinDeSorties.get(j).getStartChronoY()-22);
+						horPline=new Line(
+								pinDeSorties.get(j).getStartChronoX(),pinDeSorties.get(j).getStartChronoY(),
+								pinDeSorties.get(j).getStartChronoX()+25,pinDeSorties.get(j).getStartChronoY()
+								);
+						pinDeSorties.get(j).setStartChronoX( pinDeSorties.get(j).getStartChronoX()+25);
+					}
+					else {
+						if(first) pinDeSorties.get(j).setStartChronoY( pinDeSorties.get(j).getStartChronoY()-22);
+						verPline=new Line(
+								pinDeSorties.get(j).getStartChronoX(),pinDeSorties.get(j).getStartChronoY(),
+								pinDeSorties.get(j).getStartChronoX(),pinDeSorties.get(j).getStartChronoY()+22
+								);
+						pinDeSorties.get(j).setStartChronoY( pinDeSorties.get(j).getStartChronoY()+22);
+						horPline=new Line(
+								pinDeSorties.get(j).getStartChronoX(),pinDeSorties.get(j).getStartChronoY(),
+								pinDeSorties.get(j).getStartChronoX()+25,pinDeSorties.get(j).getStartChronoY()
+								);
+						pinDeSorties.get(j).setStartChronoX( pinDeSorties.get(j).getStartChronoX()+25);
+
+					}
+					verPline.setStroke(Color.web("90EE90"));					
+					verPline.setStyle("-fx-stroke-width: 2px;");
+					field.getChildren().add(verPline);		
+					frontList.add(verPline);
+				}
+				else {
+					if(etatDePin.getNum()==1 && first) pinDeSorties.get(j).setStartChronoY( pinDeSorties.get(j).getStartChronoY()-22);
+					horPline=new Line(
+							pinDeSorties.get(j).getStartChronoX(),pinDeSorties.get(j).getStartChronoY(),
+							pinDeSorties.get(j).getStartChronoX()+25,pinDeSorties.get(j).getStartChronoY()
+							);
+					pinDeSorties.get(j).setStartChronoX( pinDeSorties.get(j).getStartChronoX()+25);
+
+				}				
+				horPline.setStroke(Color.web("90EE90"));
+				horPline.setStyle("-fx-stroke-width: 2px;");
+				field.getChildren().add(horPline);
+				valeursDesuivis.put(horPline, new Integer[] {composantDechrono.size()+j+1,etatDePin.getNum()});
+				frontList.add(horPline);
+				pinDeSorties.get(j).setChanged(false);
+			}
+
+		}
 		if(Horloge.getStartX()>470*i) 
 		{
 			scrolDeChrono.setHvalue(scrolDeChrono.getHvalue()+0.1);
 			i++;
+		}
+		if(scrolDeChrono.getHvalue()>0.96)
+		{
+			field.getChildren().removeAll(frontList);
+			frontList.clear();
+			valeursDesuivis.clear();
+			for(int i=0 ; i<composantDechrono.size();i++)
+			{
+				composantDechrono.get(i).setStartChronoX(1);
+				composantDechrono.get(i).setStartChronoY(pointsDeDepart.get(i).getLayoutY());
+			}
+			for(int j=0;j<pinDeSorties.size();j++)
+			{
+				pinDeSorties.get(j).setStartChronoX(1);
+				pinDeSorties.get(j).setStartChronoY(pointsDeDepart.get(composantDechrono.size()+j).getLayoutY());
+			}
+
+			Horloge.setStartX(1);
+			Horloge.setStartY(76);
+			first=true;
+			scrolDeChrono.setHvalue(0);
+			i=1;
+			detectionBar.setLayoutX(0);
 		}
 		horHline.setStyle("-fx-stroke-width: 2px;");
 		verHline.setStyle("-fx-stroke-width: 2px;");
@@ -461,6 +551,7 @@ public class ChronogrammeController implements Initializable {
 
 	private void ajouterDragX(final ImageView node) {
 		node.setOnDragDetected(new EventHandler<MouseEvent>() {
+			@Override
 			public void handle(MouseEvent e) {
 				SnapshotParameters snapParams = new SnapshotParameters();
 				snapParams.setFill(Color.TRANSPARENT);           
@@ -470,6 +561,7 @@ public class ChronogrammeController implements Initializable {
 			}
 		});
 		node.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
 			public void handle(MouseEvent e) {
 				Point2D localPoint = chronogrameField.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
 				detectionBar.relocate(
@@ -481,11 +573,13 @@ public class ChronogrammeController implements Initializable {
 			}
 		});
 		node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
 			public void handle(MouseEvent e) {
 				node.setCursor(Cursor.HAND);
 			}
 		});
 		node.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
 			public void handle(MouseEvent e) {
 				detectionBar.setMouseTransparent(true);
 				node.setMouseTransparent(true);
@@ -493,6 +587,7 @@ public class ChronogrammeController implements Initializable {
 			}
 		});
 		node.setOnMouseReleased(new EventHandler<MouseEvent>() {
+			@Override
 			public void handle(MouseEvent e) {
 
 				detectionBar.setMouseTransparent(false);
