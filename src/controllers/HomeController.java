@@ -1123,7 +1123,7 @@ public class HomeController extends Controller {
 			line.getPoints().addAll(x, y2, x2, y2);
 		return line;
 	}
-
+	boolean ctrlz = false;
 	public Polyline tracerSortieApresCollage(Polyline line, Coordonnees crdDebut, boolean relocate) {// Trecer les
 		// lignes de
 		// sorties apres
@@ -1201,7 +1201,6 @@ public class HomeController extends Controller {
 				line.getPoints().add(2, x);
 				line.getPoints().add(3, y2);
 			}
-
 		}
 		return line;
 	}
@@ -1248,7 +1247,7 @@ public class HomeController extends Controller {
 
 								SnapshotParameters snapParams = new SnapshotParameters();
 								snapParams.setFill(Color.TRANSPARENT);
-								eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
+								//eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
 								eleementAdrager.startFullDrag();
 								e.consume();
 							}
@@ -1407,7 +1406,7 @@ public class HomeController extends Controller {
 										Donnes sauveGarde=new Donnes();
 										sauveGarde.setTypeDaction(Actions.Mouvement);
 										sauveGarde.setComposantCommeImage(eleementAdrager);
-										undoDeque.remove(sauveGarde);
+										//undoDeque.remove(sauveGarde);
 										sauveGarde.setPosX(posX);
 										sauveGarde.setPosY(posY);
 										undoDeque.addFirst(sauveGarde);
@@ -2771,7 +2770,9 @@ public void opacityElements4(){
 			{
 			case Mouvement :
 			{
+				ctrlz = true;
 				refrechLists(sauveGarde.getComposantCommeImage());
+				SupprimerPoint();
 				//removePoints();
 				// addPoints();
 				ImageView imageView = sauveGarde.getComposantCommeImage();
@@ -2788,11 +2789,14 @@ public void opacityElements4(){
 			}break;
 			case Creation :
 			{
-				System.out.println(sauveGarde.getComposant().toString());
 				workSpace.getChildren().remove(sauveGarde.getComposantCommeImage());
 				ArrayList<Polyline> lineListe= Circuit.supprimerComp(sauveGarde.getComposant());
 				for(Polyline line : lineListe)
 					workSpace.getChildren().remove(line);
+				if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge")) {
+					horloged = false;
+					horlogeDeCercuit = null;
+				}
 			}break;
 			case Modification :
 			{
@@ -2839,6 +2843,9 @@ public void opacityElements4(){
 					for (Circle circle : resCircles) {
 						workSpace.getChildren().add(circle);
 					}
+				}else if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge")) {
+					horloged = true;
+					horlogeDeCercuit = sauveGarde.getComposantCommeImage();
 				}
 			}break;
 			case SuppressionFil :{
@@ -3264,6 +3271,21 @@ public void opacityElements4(){
 
 	public void setChronogramme(Button chronogramme) {
 		this.chronogramme = chronogramme;
+	}
+	public void SupprimerPoint() {
+		Polyline line;
+		int i = 0,size = 0;
+			for( i = 0; i < listSorties.size();i++){
+				line = listSorties.get(i);
+				if(Circuit.getListFromPolyline(line).size()>1 || Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
+					Coordonnees crd = new Coordonnees(line.getPoints().get(4),line.getPoints().get(5));
+					//if(line.getPoints().size()>10) {
+					if(nbOccPoint(line, crd.getX(), crd.getY())==1) {
+					line.getPoints().remove(0);
+					line.getPoints().remove(0);
+					}
+				}
+			}
 	}
 	
 }

@@ -1,8 +1,11 @@
 package controllers;
 
+import javafx.animation.Animation;
+import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import application.*;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import noyau.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,12 +19,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class ProprietesPortesController extends ProprietesController{
 
 	private int i; //Nombre d'entrees
-	private Direction bddDirection[] = {Direction.Nord,Direction.Est,Direction.West,Direction.Sud}; //base de données de directions
+	private String bddDirection[] = {"Est","Sud","West","Nord"}; //base de données de directions
 	private int direct; //indice 
 	
     public Composant getcmp() {
@@ -36,7 +41,8 @@ public class ProprietesPortesController extends ProprietesController{
 		this.cmp = cmp;
 		
 		i=cmp.getNombreEntree();
-		direct = 0;
+		direct = cmp.getDirection();
+		direction.setText(bddDirection[direct]);
 		composant.setText(cmp.getClass().getSimpleName().toString());
 		label.setText(cmp.getNom());
 		nbEntres.setText(Integer.toString(i));
@@ -104,10 +110,33 @@ public class ProprietesPortesController extends ProprietesController{
     void modifier(ActionEvent event) {
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
+    		ImageView img= Circuit.getImageFromComp(cmp);
     		cmp.setNombreEntree(i);
     		cmp.setCord();
     		cmp.getLesCoordonnees().setNbCordEntree(i);
-    		Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
+    		img.setImage(new Image(cmp.generatePath()));
+    		((Portes)cmp).rotation(direct);
+    		
+    		if(cmp.getDirection() != direct) {
+        		cmp.setDirection(direct);
+    			removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(cmp.getSorties()[0]));
+    			addAllPolylinesToWorkSpace(((Portes)cmp).generatePolyRotation(img.getLayoutX(), img.getLayoutY()));
+    		}
+    		//cmp.resetPolyline(Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale(),img.getLayoutX(),img.getLayoutY());
+    		switch (direct) {
+    		case 0:
+    			img.setRotate(0);
+    			break;
+    		case 1:
+    			img.setRotate(90);
+    			break;
+    		case 2:
+    			img.setRotate(180);
+    			break;
+    		case 3:
+    			img.setRotate(270);
+    			break;
+    		}
     	}else {
     		this.alert();
 		}
@@ -131,7 +160,7 @@ public class ProprietesPortesController extends ProprietesController{
     void nextDirection(ActionEvent event) {
     	direct ++;
     	if(direct > 3) direct=0;
-    	direction.setText(bddDirection[direct].toString());
+    	direction.setText(bddDirection[direct]);
     }
 
     @FXML
@@ -150,7 +179,7 @@ public class ProprietesPortesController extends ProprietesController{
     void previousDirection(ActionEvent event) {
     	direct--;
     	if(direct < 0) direct = 3;
-    	direction.setText(bddDirection[direct].toString());
+    	direction.setText(bddDirection[direct]);
     }
 
 }

@@ -69,7 +69,7 @@
                <font>
                   <Font name="Calisto MT" size="14.0" />
                </font></Button>
-            <Label fx:id="direction" layoutX="286.0" layoutY="79.0" text="Nord" textFill="#b2b2b2">
+            <Label fx:id="direction" layoutX="290.0" layoutY="79.0" text="Est" textFill="#b2b2b2">
                <font>
                   <Font name="Calisto MT" size="15.0" />
                </font>
