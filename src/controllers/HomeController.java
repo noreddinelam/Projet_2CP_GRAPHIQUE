@@ -489,7 +489,8 @@ public class HomeController extends Controller {
 	}
 
 	@FXML void screenShot(MouseEvent event){
-		final FileChooser fileChooser=new FileChooser();File f=fileChooser.showSaveDialog(homeWindow);
+		final FileChooser fileChooser=new FileChooser();
+		File f=fileChooser.showSaveDialog(homeWindow);
 		if(f!=null){
 			captureEcran(f.getAbsolutePath());
 		}
@@ -501,6 +502,9 @@ public class HomeController extends Controller {
 		simul = (!simul);
 		//opacityBouttons(simul);
 		if (simul) {
+			closeRightWindows();
+			edition.setDisable(true);
+			edition.setOpacity(0.4);
 			affichage.setOpacity(1);
 			affichage.setDisable(false);
 
@@ -514,6 +518,10 @@ public class HomeController extends Controller {
 				if (Circuit.isThereAnyError()) {
 					simul = false;
 					simulation.setImage(new Image("homePage_icones/simulation.png"));
+					edition.setDisable(false);
+					edition.setOpacity(1);
+					affichage.setOpacity(0.4);
+					affichage.setDisable(true);
 				}
 				else {
 					simulation.setImage(new Image("homePage_icones/SIMULATION_ON.png"));
@@ -571,7 +579,8 @@ public class HomeController extends Controller {
 			affichage.setDisable(true);
 			Controller.getRightBareButtons().get(0).setOpacity(0.4);
 			Controller.getRightBareButtons().get(0).setDisable(true);
-
+			edition.setDisable(false);
+			edition.setOpacity(1);
 			simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
 			Circuit.defaultCompValue();
 			if(ListTextPin != null ) {
@@ -1443,16 +1452,16 @@ public class HomeController extends Controller {
 						public void handle(MouseEvent e) {
 							if (! simul) {
 								dragItem = null;
-//								if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
-//								{
-//									Donnes sauveGarde=new Donnes();
-//									sauveGarde.setTypeDaction(Actions.Mouvement);
-//									sauveGarde.setComposantCommeImage(eleementAdrager);
-//									undoDeque.remove(sauveGarde);
-//									sauveGarde.setPosX(posX);
-//									sauveGarde.setPosY(posY);
-//									undoDeque.addFirst(sauveGarde);
-//								}
+								if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
+								{
+									Donnes sauveGarde=new Donnes();
+									sauveGarde.setTypeDaction(Actions.Mouvement);
+									sauveGarde.setComposantCommeImage(eleementAdrager);
+									undoDeque.remove(sauveGarde);
+									sauveGarde.setPosX(posX);
+									sauveGarde.setPosY(posY);
+									undoDeque.addFirst(sauveGarde);
+								}
 								eleementAdrager.setMouseTransparent(false);
 								eleementAdrager.setCursor(Cursor.DEFAULT);
 								if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(eleementAdrager))
@@ -2834,23 +2843,23 @@ public class HomeController extends Controller {
 			sauveGarde= undoDeque.removeFirst();
 			switch(sauveGarde.getTypeDaction())
 			{
-//			case Mouvement :
-//			{
-//				refrechLists(sauveGarde.getComposantCommeImage());
-//				//removePoints();
-//				// addPoints();
-//				ImageView imageView = sauveGarde.getComposantCommeImage();
-//				imageView.setLayoutX(sauveGarde.getPosX());
-//				imageView.setLayoutY(sauveGarde.getPosY());
-//				updatePolyline(imageView);
-//				Composant composant = Circuit.getCompFromImage(imageView);
-//				if (composant.getClass().equals(CircuitIntegre.class)) {
-//					((CircuitIntegre)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
-//				}
-//				else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
-//					((CircuitIntegreSequentiel)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
-//				}
-//			}break;
+			case Mouvement :
+			{
+				refrechLists(sauveGarde.getComposantCommeImage());
+				//removePoints();
+				// addPoints();
+				ImageView imageView = sauveGarde.getComposantCommeImage();
+				imageView.setLayoutX(sauveGarde.getPosX());
+				imageView.setLayoutY(sauveGarde.getPosY());
+				updatePolyline(imageView);
+				Composant composant = Circuit.getCompFromImage(imageView);
+				if (composant.getClass().equals(CircuitIntegre.class)) {
+					((CircuitIntegre)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
+				}
+				else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
+					((CircuitIntegreSequentiel)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
+				}
+			}break;
 			case Creation :
 			{
 				System.out.println(sauveGarde.getComposant().toString());
@@ -3328,6 +3337,21 @@ public class HomeController extends Controller {
 
 	public void setChronogramme(Button chronogramme) {
 		this.chronogramme = chronogramme;
+	}
+	
+	public void closeRightWindows() {
+		if (fichierFenetre != null) {
+			fichierFenetre.close();
+		}
+		if (editionFenetre != null) {
+			editionFenetre.close();
+		}
+		if (aideFenetre != null) {
+			aideFenetre.close();
+		}
+		if (affichage != null) {
+			affichageFenetre.close();
+		}
 	}
 
 }
