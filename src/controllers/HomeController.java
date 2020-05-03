@@ -1899,6 +1899,9 @@ public class HomeController extends Controller {
 		break;
 		case "demiAdd": {
 			comp = new DemiAdditionneur(1, "");
+		}break;
+		case "CircuitIntegre" : {
+			comp = new CircuitIntegre(0, 0, "CircuitIntegre");
 		}
 		break;
 		default: {
@@ -2043,48 +2046,57 @@ public class HomeController extends Controller {
 	public void CopyUses() {
 		if (elementSeclecionner != null) {
 			if(!pastButton) {
-				ImageView dragImageView = new ImageView();
-				dragImageView.setLayoutX(ctrlX);
-				dragImageView.setLayoutY(ctrlY);
-				dragImageView.setId(elementSeclecionner.getId());
-				instanceComposant(dragImageView);		
-				if(!copyActive)
-					composantCopy = Circuit.getCompFromImage(elementSeclecionner);
-				Composant cmp2 = Circuit.getCompFromImage(dragImageView);
-				cmp2.setDirection(composantCopy.getDirection());
-				cmp2.setIcon(composantCopy.getIcon());
-				cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
-				cmp2.setNom(composantCopy.getNom());
-				cmp2.setNombreEntree(composantCopy.getNombreEntree());
-				cmp2.setNombreSortieAndUpdateFil(composantCopy.getNombreSortie());
-				if(cmp2.getClass().getSimpleName().equals("Multiplexeur")){
-					((Multiplexeur)cmp2).setNbCommande(((Multiplexeur)composantCopy).getNbCommande());
-					cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
-				}
-				else
-					if(cmp2.getClass().getSimpleName().equals("Demultiplexeur")){
-						((Demultiplexeur)cmp2).setNbCommande(((Demultiplexeur)composantCopy).getNbCommande());
+				if (! elementSeclecionner.getId().equals("CircuitIntegreSequentiel")) {
+					ImageView dragImageView = new ImageView();
+					dragImageView.setLayoutX(ctrlX);
+					dragImageView.setLayoutY(ctrlY);
+					dragImageView.setId(elementSeclecionner.getId());
+					instanceComposant(dragImageView);		
+					if(!copyActive)
+						composantCopy = Circuit.getCompFromImage(elementSeclecionner);
+					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
+					cmp2.setDirection(composantCopy.getDirection());
+					cmp2.setIcon(composantCopy.getIcon());
+					cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
+					cmp2.setNom(composantCopy.getNom());
+					cmp2.setNombreEntree(composantCopy.getNombreEntree());
+					cmp2.setNombreSortieAndUpdateFil(composantCopy.getNombreSortie());
+					if(cmp2.getClass().getSimpleName().equals("Multiplexeur")){
+						((Multiplexeur)cmp2).setNbCommande(((Multiplexeur)composantCopy).getNbCommande());
 						cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
 					}
-					else if(cmp2.getClass().getSimpleName().equals("Pin")) {
-						boolean input = ((Pin)composantCopy).getInput();
-						((Pin)cmp2).setInput(input);
-						if (! input) {
-							Circuit.getEntreesCircuit().remove((Pin)cmp2);
-							Circuit.getSortiesCircuit().add((Pin)cmp2);
+					else
+						if(cmp2.getClass().getSimpleName().equals("Demultiplexeur")){
+							((Demultiplexeur)cmp2).setNbCommande(((Demultiplexeur)composantCopy).getNbCommande());
+							cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
 						}
-					}
-				cmp2.setCord();
-				cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
-				cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
-				dragImageView.setImage(elementSeclecionner.getImage());
-				dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
-				dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());		
-				workSpace.getChildren().add(dragImageView);
-				ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-				addAllPolylinesToWorkSpace(polyline);
-				ajouterLeGestApresCollage(dragImageView);
-				elementSeclecionner = dragImageView;
+						else if(cmp2.getClass().getSimpleName().equals("Pin")) {
+							boolean input = ((Pin)composantCopy).getInput();
+							((Pin)cmp2).setInput(input);
+							if (! input) {
+								Circuit.getEntreesCircuit().remove((Pin)cmp2);
+								Circuit.getSortiesCircuit().add((Pin)cmp2);
+							}
+						}
+						else if(cmp2.getClass().getSimpleName().equals("CircuitIntegre")) {
+							((CircuitIntegre)cmp2).setTableVerite(((CircuitIntegre)composantCopy).getTableVerite());
+							ArrayList<Circle> reList = ((CircuitIntegre)cmp2).generateCercles(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+							for (Circle circle : reList) {
+								workSpace.getChildren().add(circle);
+							}
+						}
+					cmp2.setCord();
+					cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
+					cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
+					dragImageView.setImage(elementSeclecionner.getImage());
+					dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
+					dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());		
+					workSpace.getChildren().add(dragImageView);
+					ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+					addAllPolylinesToWorkSpace(polyline);
+					ajouterLeGestApresCollage(dragImageView);
+					elementSeclecionner = dragImageView;
+				}
 			}
 		}
 
@@ -3049,7 +3061,6 @@ public class HomeController extends Controller {
 				}
 			}
 			else if(img.getId().equals("CircuitIntegreSequentiel")) {
-				System.out.println("dkhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaal");
 				ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)Circuit.getCompFromImage(img)).generateCercles(img.getLayoutX(), img.getLayoutY());
 				for (Circle circle : arrayList) {
 					workSpace.getChildren().add(circle);
