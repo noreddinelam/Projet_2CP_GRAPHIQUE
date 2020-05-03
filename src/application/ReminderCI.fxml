@@ -24,7 +24,7 @@
             <Font name="Calisto MT" size="16.0" />
          </font>
       </Button>
-      <Text fx:id="messageAlerte1" fill="#e4e4e4" layoutX="39.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1er pin selectinné correspond au poid fort ." wrappingWidth="336.0">
+      <Text fx:id="messageAlerte1" fill="#e4e4e4" layoutX="39.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1er pin selectinné correspond à la premiere entrée/sortie dans le circuit integré ." wrappingWidth="336.0">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>
@@ -39,7 +39,7 @@
             <Font size="29.0" />
          </font>
       </Text>
-      <Text fill="#b2b2b2" layoutX="23.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
+      <Text fill="#b2b2b2" layoutX="23.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
          <font>
             <Font size="29.0" />
          </font>

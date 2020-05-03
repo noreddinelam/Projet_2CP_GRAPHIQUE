@@ -16,6 +16,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -71,6 +72,7 @@ public abstract class Controller {
 	protected int sortie;
 	protected int rel;
 
+	protected static ArrayList<Button> rightBareButtons = new ArrayList<Button>() ;
 	@FXML
 	protected AnchorPane workSpace;
 
@@ -513,4 +515,15 @@ public abstract class Controller {
 			}
 		}
 	}
+
+	public static ArrayList<Button> getRightBareButtons() {
+		return rightBareButtons;
+	}
+
+	public static void setRightBareButtons(ArrayList<Button> rightBareButtons) {
+		Controller.rightBareButtons = rightBareButtons;
+	}
+
+	
+	
 }

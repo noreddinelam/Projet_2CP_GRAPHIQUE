@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -500,6 +501,11 @@ public class HomeController extends Controller {
 		simul = (!simul);
 		//opacityBouttons(simul);
 		if (simul) {
+			affichage.setOpacity(1);
+			affichage.setDisable(false);
+			Controller.getRightBareButtons().get(0).setOpacity(1);
+			Controller.getRightBareButtons().get(0).setDisable(false);
+			
 			if (clickSouris2 != null)
 				clickSouris2.close();
 			Circuit.validerCircuits();
@@ -533,13 +539,31 @@ public class HomeController extends Controller {
 					t1.start();
 				}
 				rotationDelogo(logo, 1, 1000, false);
-			}
+				if(Circuit.getListeEtages().size()==0 && !horloged) {
+					rightBareButtons.get(1).setDisable(false);
+					rightBareButtons.get(1).setOpacity(1);
+					rightBareButtons.get(2).setDisable(true);
+					rightBareButtons.get(2).setOpacity(0.4);
 
+				}else {
+					rightBareButtons.get(1).setDisable(true);
+					rightBareButtons.get(1).setOpacity(0.4);
+					rightBareButtons.get(2).setDisable(false);
+					rightBareButtons.get(2).setOpacity(1);
+				}
+			}
 		}
 		else {
+			affichage.setOpacity(0.4);
+			affichage.setDisable(true);
+			Controller.getRightBareButtons().get(0).setOpacity(0.4);
+			Controller.getRightBareButtons().get(0).setDisable(true);
+			
 			simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
 			Circuit.defaultCompValue();
-
+			if(ListTextPin != null ) {
+				opacityElements4();
+			}
 			if( horloged)
 			{
 				try {
@@ -580,6 +604,8 @@ public class HomeController extends Controller {
 
 	public void inisialiser() { /// pour l'initialisation des effets de la fenetre principale (affichage des guides ajout de
 		/// l'operation du drag and drop pour tout les composants			
+		affichage.setOpacity(0.4);
+		affichage.setDisable(true);
 		ajouterGestWorkSpace(); /// ajouter des listners pour capter les operations (clic , drag .. etc)
 		tracerLesGuides(); /// tracer les guides qui aide l'user pour connaitre la position de l'elt
 		afficheurX.setText("X : 0");
@@ -657,7 +683,7 @@ public class HomeController extends Controller {
 				scrollPane);
 
 		ClickBarDroite tableauFenetres[] = { fichierFenetre, editionFenetre, affichageFenetre, aideFenetre };
-
+		//tableVerite.setVisible(false);
 		for (ClickBarDroite click : tableauFenetres) {
 			click.close();
 		}
@@ -819,8 +845,11 @@ public class HomeController extends Controller {
 						if (cc.equals(click)) {
 							if (cc.isShowing())
 								cc.close();
-							else
-								cc.show();
+							else {
+							     cc.show();
+							     if(tableVerite!= null)
+							    	 tableVerite.setVisible(false);
+							}
 						} else
 							click.close();
 					}
@@ -2368,33 +2397,12 @@ public class HomeController extends Controller {
 					encapsuler.setAlignment(Pos.BASELINE_LEFT);
 				}else {
 					if(ListTextPin.size() == Circuit.getEntreesCircuit().size() && ListTextPin2.size() == Circuit.getSortiesCircuit().size()) {
-						//mode noormal
-						Circuit.defaultCompValue(); //Tous noir
-						//Supprimer les numeros
-						for (Text num : ListText) {
-							workSpace.getChildren().remove(num);
-						}
-						for (Text num : ListText2) {
-							workSpace.getChildren().remove(num);
-						}
-
-						simul = false;		//Mode normal
-						//mode normal (opacité 1)
-						for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
-							entry.getValue().setOpacity(1);
-						}
-						for (Entry<Fil, ArrayList<InfoPolyline>> entry : Circuit.getfilUtilises().entrySet()) {
-
-							for (InfoPolyline info : entry.getValue()) {
-								info.getLinePrincipale().setOpacity(1);
-							}
-						}
-						//end 
+						
 						if(Circuit.getListeEtages().size()==0 && !horloged) {
 							ci = new CircuitIntegre(ListTextPin.size(),ListTextPin2.size(), "CircuitIntegre");
+							Collections.reverse(ListTextPin);
 							Circuit.tableVerite(ListTextPin,ListTextPin2);
 							ci.setTableVerite(Circuit.getTableVerite());
-							Circuit.defaultCompValue();
 						}else {
 							if(!horloged) {
 								if(Circuit.occurencePinHorlogee() == 1) {
@@ -2443,15 +2451,7 @@ public class HomeController extends Controller {
 								}
 							}
 						}
-						ListTextPin.clear();
-						ListText.clear();
-						ListText = null;
-						ListTextPin = null; //pas de liste
-
-						ListTextPin2.clear();
-						ListText2.clear();
-						ListText2 = null;
-						ListTextPin2 = null; //pas de liste
+						opacityElements4();
 
 						final FileChooser fileChooser = new FileChooser();
 						if (ciq != null || ci != null) {
@@ -2563,7 +2563,6 @@ public class HomeController extends Controller {
 						//	    			simul = true;
 						ListTextPin = new ArrayList<Pin>();
 						ListText = new ArrayList<Text>();
-						
 						ListTextPin2 = new ArrayList<Pin>();
 						ListText2 = new ArrayList<Text>();
 						try {
@@ -2589,41 +2588,16 @@ public class HomeController extends Controller {
 						if(ListTextPin.size() != 0 && ListTextPin2.size()!=0) {
 							Circuit.tableVerite(ListTextPin,ListTextPin2);
 							Circuit.defaultCompValue(); //Tous noir
+							Circuit.initialiser();
 							//Supprimer les numeros
-							for (Text num : ListText) {
-								workSpace.getChildren().remove(num);
-							}
-							for (Text num : ListText2) {
-								workSpace.getChildren().remove(num);
-							}
-
-							simul = false;		//Mode normal
-							//mode normal (opacité 1)
-							for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
-								entry.getValue().setOpacity(1);
-							}
-							for (Entry<Fil, ArrayList<InfoPolyline>> entry : Circuit.getfilUtilises().entrySet()) {
-
-								for (InfoPolyline info : entry.getValue()) {
-									info.getLinePrincipale().setOpacity(1);
-								}
-							}
 							//La fenetre de la table de verité
 							try {
 								Stage s = (Stage) tableVerite.getScene().getWindow();
 								s.close();
 								FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/TableDeVerite.fxml"));
 								Parent root = fxmlLoader.load();
-								TableDeVeriteController c = fxmlLoader.getController();
-								ListTextPin.clear();
-								ListText.clear();
-								ListText = null;
-								ListTextPin = null; //pas de liste
-								
-								ListTextPin2.clear();
-								ListText2.clear();
-								ListText2 = null;
-								ListTextPin2 = null; //pas de liste
+								TableDeVeriteController c = fxmlLoader.getController();				
+								opacityElements4();
 								Stage stage = new Stage();
 								Scene scene = new Scene(root);
 								stage.setScene(scene);
@@ -2666,7 +2640,35 @@ public class HomeController extends Controller {
 				a.showAndWait();
 			}
 		}
+public void opacityElements4(){
+	for (Text num : ListText) {
+		workSpace.getChildren().remove(num);
+	}
+	for (Text num : ListText2) {
+		workSpace.getChildren().remove(num);
+	}
 
+	//simul = false;		//Mode normal
+	//mode normal (opacité 1)
+	for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
+		entry.getValue().setOpacity(1);
+	}
+	for (Entry<Fil, ArrayList<InfoPolyline>> entry : Circuit.getfilUtilises().entrySet()) {
+
+		for (InfoPolyline info : entry.getValue()) {
+			info.getLinePrincipale().setOpacity(1);
+		}
+	}
+	ListTextPin.clear();
+	ListText.clear();
+	ListText = null;
+	ListTextPin = null; //pas de liste
+	
+	ListTextPin2.clear();
+	ListText2.clear();
+	ListText2 = null;
+	ListTextPin2 = null; //pas de liste
+}
 
 
 		/*------------------------about --------------------------------*/
@@ -3292,4 +3294,29 @@ public class HomeController extends Controller {
 			//encapsuler.setOpacity(1);
 		}
 	}
+
+	public Button getEncapsuler() {
+		return encapsuler;
 	}
+
+	public void setEncapsuler(Button encapsuler) {
+		this.encapsuler = encapsuler;
+	}
+
+	public Button getTableVerite() {
+		return tableVerite;
+	}
+
+	public void setTableVerite(Button tableVerite) {
+		this.tableVerite = tableVerite;
+	}
+
+	public Button getChronogramme() {
+		return chronogramme;
+	}
+
+	public void setChronogramme(Button chronogramme) {
+		this.chronogramme = chronogramme;
+	}
+	
+}

@@ -76,6 +76,7 @@ public class ClickDroitFilController {
     	s.close();
     }
     public static void supprimer(InfoPolyline infoLine) {
+    	if(infoLine!=null) {
     	Polyline line = infoLine.getLinePrincipale();
     	if(infoLine.getNbFils() == 0 ) { //On peut le supprimer
     		
@@ -121,6 +122,7 @@ public class ClickDroitFilController {
 //    		line.setStroke(Color.BLACK);
 //    	} 	
     	line.setStroke(Color.BLACK);
+    	}
     }
     
     public void sauveGarderSuppressionFil(InfoPolyline infoPolyline) {

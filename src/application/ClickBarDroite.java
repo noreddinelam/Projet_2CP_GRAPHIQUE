@@ -1,6 +1,7 @@
 
 package application;
 
+import controllers.Controller;
 import controllers.HomeController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,15 @@ public class ClickBarDroite extends Stage{
 			h.setAffX(label1);
 			h.setAffY(label2);
 			h.setScrollPane(scrollPane);
+			if(s.equals("Fichier.fxml")) {
+				Controller.getRightBareButtons().add(h.getEncapsuler());
+				h.getEncapsuler().setDisable(true);
+				h.getEncapsuler().setOpacity(0.4);
+			}else if (s.equals("Affichage.fxml")) {
+				Controller.getRightBareButtons().add(h.getTableVerite());
+				Controller.getRightBareButtons().add(h.getChronogramme());
+			}
+			//Fichier.fxmlAffichage.fxml
 			Scene scene = new Scene(root);
 			//scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);
