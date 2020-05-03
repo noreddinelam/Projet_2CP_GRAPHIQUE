@@ -1443,16 +1443,16 @@ public class HomeController extends Controller {
 						public void handle(MouseEvent e) {
 							if (! simul) {
 								dragItem = null;
-//								if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
-//								{
-//									Donnes sauveGarde=new Donnes();
-//									sauveGarde.setTypeDaction(Actions.Mouvement);
-//									sauveGarde.setComposantCommeImage(eleementAdrager);
-//									undoDeque.remove(sauveGarde);
-//									sauveGarde.setPosX(posX);
-//									sauveGarde.setPosY(posY);
-//									undoDeque.addFirst(sauveGarde);
-//								}
+								if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
+								{
+									Donnes sauveGarde=new Donnes();
+									sauveGarde.setTypeDaction(Actions.Mouvement);
+									sauveGarde.setComposantCommeImage(eleementAdrager);
+									undoDeque.remove(sauveGarde);
+									sauveGarde.setPosX(posX);
+									sauveGarde.setPosY(posY);
+									undoDeque.addFirst(sauveGarde);
+								}
 								eleementAdrager.setMouseTransparent(false);
 								eleementAdrager.setCursor(Cursor.DEFAULT);
 								if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(eleementAdrager))
@@ -2834,23 +2834,23 @@ public class HomeController extends Controller {
 			sauveGarde= undoDeque.removeFirst();
 			switch(sauveGarde.getTypeDaction())
 			{
-//			case Mouvement :
-//			{
-//				refrechLists(sauveGarde.getComposantCommeImage());
-//				//removePoints();
-//				// addPoints();
-//				ImageView imageView = sauveGarde.getComposantCommeImage();
-//				imageView.setLayoutX(sauveGarde.getPosX());
-//				imageView.setLayoutY(sauveGarde.getPosY());
-//				updatePolyline(imageView);
-//				Composant composant = Circuit.getCompFromImage(imageView);
-//				if (composant.getClass().equals(CircuitIntegre.class)) {
-//					((CircuitIntegre)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
-//				}
-//				else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
-//					((CircuitIntegreSequentiel)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
-//				}
-//			}break;
+			case Mouvement :
+			{
+				refrechLists(sauveGarde.getComposantCommeImage());
+				//removePoints();
+				// addPoints();
+				ImageView imageView = sauveGarde.getComposantCommeImage();
+				imageView.setLayoutX(sauveGarde.getPosX());
+				imageView.setLayoutY(sauveGarde.getPosY());
+				updatePolyline(imageView);
+				Composant composant = Circuit.getCompFromImage(imageView);
+				if (composant.getClass().equals(CircuitIntegre.class)) {
+					((CircuitIntegre)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
+				}
+				else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
+					((CircuitIntegreSequentiel)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
+				}
+			}break;
 			case Creation :
 			{
 				System.out.println(sauveGarde.getComposant().toString());
