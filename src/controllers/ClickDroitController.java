@@ -169,43 +169,29 @@ public class ClickDroitController extends Controller{
     	s.close();
 	}
 	public void initialiser() {
-		copier.setCursor(Cursor.HAND);
-		couper.setCursor(Cursor.HAND);
 		supprimer.setCursor(Cursor.HAND);
-		rotationD.setCursor(Cursor.HAND);
-		rotationG.setCursor(Cursor.HAND);
 		if (cmp.getClass().equals(CircuitIntegre.class) || cmp.getClass().equals(CircuitIntegreSequentiel.class)) {
 			prop.setDisable(true);
 		}
 		else {
 			prop.setCursor(Cursor.HAND);
 		}
-	}
-//	@Override
-//	public void initialize(URL arg0, ResourceBundle arg1) {
-//		// TODO Auto-generated method stub
-//		copier.setCursor(Cursor.HAND);
-//		couper.setCursor(Cursor.HAND);
-//		supprimer.setCursor(Cursor.HAND);
-//		rotationD.setCursor(Cursor.HAND);
-//		rotationG.setCursor(Cursor.HAND);
-//		prop.setCursor(Cursor.HAND);
-//		System.out.println("cmp : "+cmp + " super cmp :"+Controller.cmp);
-//	}
-//	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		if (!bddPortes.contains(cmp.getClass().getSimpleName())) {
+			rotationD.setDisable(true);
+			rotationG.setDisable(true);
+		}
+		else {
+			rotationD.setCursor(Cursor.HAND);
+			rotationG.setCursor(Cursor.HAND);
+		}
+		if (cmp.getClass().equals(CircuitIntegreSequentiel.class)) {
+			copier.setDisable(true);
+			couper.setDisable(true);
+		}
+		else {
+			copier.setCursor(Cursor.HAND);
+			couper.setCursor(Cursor.HAND);
+		}
+	}	
 	
 }

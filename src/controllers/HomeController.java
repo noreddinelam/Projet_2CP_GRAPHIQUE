@@ -1443,16 +1443,16 @@ public class HomeController extends Controller {
 						public void handle(MouseEvent e) {
 							if (! simul) {
 								dragItem = null;
-								if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
-								{
-									Donnes sauveGarde=new Donnes();
-									sauveGarde.setTypeDaction(Actions.Mouvement);
-									sauveGarde.setComposantCommeImage(eleementAdrager);
-									undoDeque.remove(sauveGarde);
-									sauveGarde.setPosX(posX);
-									sauveGarde.setPosY(posY);
-									undoDeque.addFirst(sauveGarde);
-								}
+//								if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
+//								{
+//									Donnes sauveGarde=new Donnes();
+//									sauveGarde.setTypeDaction(Actions.Mouvement);
+//									sauveGarde.setComposantCommeImage(eleementAdrager);
+//									undoDeque.remove(sauveGarde);
+//									sauveGarde.setPosX(posX);
+//									sauveGarde.setPosY(posY);
+//									undoDeque.addFirst(sauveGarde);
+//								}
 								eleementAdrager.setMouseTransparent(false);
 								eleementAdrager.setCursor(Cursor.DEFAULT);
 								if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(eleementAdrager))
@@ -1742,7 +1742,6 @@ public class HomeController extends Controller {
 				logo.setRotate(0);
 			}
 		});
-
 	}
 
 	private void tracerLesGuides() {//Methode d'initialitaton des guides
@@ -2211,7 +2210,6 @@ public class HomeController extends Controller {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setContentText("Voullez vous sauvgarder ce circuit");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 			if (fichierCourant == null) {
@@ -2221,12 +2219,16 @@ public class HomeController extends Controller {
 				File f = fileChooser.showSaveDialog(homeWindow);
 				if (f != null) {
 					Sauvegarde sauvegarde = new Sauvegarde();
-					sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
+					sauvegarde.saveCiruit(f.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 					a.showAndWait();
+					Circuit.clearCircuit();
+					fichierCourant = null;
+					workSpace.getChildren().clear();
+					horloged = false;
+					tracerLesregles(workSpace);
 				}
 			} else {
 				Sauvegarde sauvegarde = new Sauvegarde();
@@ -2234,23 +2236,20 @@ public class HomeController extends Controller {
 				Alert a = new Alert(AlertType.INFORMATION);
 				a.setContentText("le circuit est bien sauvgarde");
 				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 				a.showAndWait();
+				Circuit.clearCircuit();
+				fichierCourant = null;
+				workSpace.getChildren().clear();
+				horloged = false;
+				tracerLesregles(workSpace);
 			}
 		}
-		Circuit.clearCircuit();
-		fichierCourant = null;
-		workSpace.getChildren().clear();
-		horloged = false;
-		tracerLesregles(workSpace);
 	}
 
 	@FXML
 	void ouvrir(ActionEvent event) {
-		/*
-		 * final DirectoryChooser directoryChooser = new DirectoryChooser(); final File
-		 * selectedDirectory = directoryChooser.showDialog(homeWindow);
-		 */
+		Stage stage = (Stage) ouvrir.getScene().getWindow();
+		stage.close();
 		if (!Circuit.getCompUtilises().isEmpty()) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setContentText("Voullez vous sauvgarder ce circuit");
@@ -2260,9 +2259,15 @@ public class HomeController extends Controller {
 				if (fichierCourant == null) {
 					final FileChooser fileChooser = new FileChooser();
 					File f = fileChooser.showSaveDialog(homeWindow);
+					fileChooser.setInitialDirectory(
+							new File(System.getProperty("user.home"))
+							);                 
+					fileChooser.getExtensionFilters().addAll(
+							new FileChooser.ExtensionFilter("SIM", "*.sim")
+							);
 					if (f != null) {
 						Sauvegarde sauvegarde = new Sauvegarde();
-						sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
+						sauvegarde.saveCiruit(f.getAbsolutePath());
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
@@ -2300,6 +2305,8 @@ public class HomeController extends Controller {
 
 	@FXML
 	void save(ActionEvent event) {
+		Stage stage = (Stage) sauvegarder.getScene().getWindow();
+		stage.close();
 		if (Circuit.getCompUtilises().isEmpty()) {
 			Alert a = new Alert(AlertType.INFORMATION);
 			a.setContentText("le circuit est vide y a rien a sauvgarder");
@@ -2309,9 +2316,15 @@ public class HomeController extends Controller {
 			if (fichierCourant == null) {
 				final FileChooser fileChooser = new FileChooser();
 				File f = fileChooser.showSaveDialog(homeWindow);
+				fileChooser.setInitialDirectory(
+						new File(System.getProperty("user.home"))
+						);                 
+				fileChooser.getExtensionFilters().addAll(
+						new FileChooser.ExtensionFilter("SIM", "*.sim")
+						);
 				if (f != null) {
 					Sauvegarde sauvegarde = new Sauvegarde();
-					sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
+					sauvegarde.saveCiruit(f.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
@@ -2334,10 +2347,16 @@ public class HomeController extends Controller {
 	void saveAs(ActionEvent event) { /// la fonctionnalité de sauvegarder as
 		final FileChooser fileChooser = new FileChooser();
 		File f = fileChooser.showSaveDialog(homeWindow);
+		fileChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+				);                 
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("SIM", "*.sim")
+				);
 		if (f != null) {
 			System.out.println("the name of the file is : " + f.getAbsolutePath());
 			Sauvegarde sauvegarde = new Sauvegarde();
-			sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
+			sauvegarde.saveCiruit(f.getAbsolutePath());
 			fichierCourant = f;
 		}
 	}
@@ -2498,11 +2517,17 @@ public class HomeController extends Controller {
 					opacityElements4();
 
 					final FileChooser fileChooser = new FileChooser();
+					fileChooser.setInitialDirectory(
+							new File(System.getProperty("user.home"))
+							);                 
+					fileChooser.getExtensionFilters().addAll(
+							new FileChooser.ExtensionFilter("INT", "*.int")
+							);
 					if (ciq != null || ci != null) {
 						File f = fileChooser.showSaveDialog(homeWindow);
 						if (f != null) {
 							try {
-								fichier = new FileOutputStream(f.getAbsolutePath()+".int");
+								fichier = new FileOutputStream(f.getAbsolutePath());
 								oo = new ObjectOutputStream(fichier);
 								if(ci!=null) {
 									oo.writeObject(ci);
@@ -2542,11 +2567,10 @@ public class HomeController extends Controller {
 	@FXML
 
 	void chronogramme(ActionEvent event) { /// charger la fenetre du chronogramme
+		Stage s = (Stage) chronogramme.getScene().getWindow();
+		s.close();
 		if (simul &&  horloged) {
-
 			try {
-				Stage s = (Stage) chronogramme.getScene().getWindow();
-				s.close();
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/elementDechronogramme.fxml"));
 				Parent root = fxmlLoader.load();
 				Stage stage = new Stage();
@@ -2810,23 +2834,23 @@ public class HomeController extends Controller {
 			sauveGarde= undoDeque.removeFirst();
 			switch(sauveGarde.getTypeDaction())
 			{
-			case Mouvement :
-			{
-				refrechLists(sauveGarde.getComposantCommeImage());
-				//removePoints();
-				// addPoints();
-				ImageView imageView = sauveGarde.getComposantCommeImage();
-				imageView.setLayoutX(sauveGarde.getPosX());
-				imageView.setLayoutY(sauveGarde.getPosY());
-				updatePolyline(imageView);
-				Composant composant = Circuit.getCompFromImage(imageView);
-				if (composant.getClass().equals(CircuitIntegre.class)) {
-					((CircuitIntegre)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
-				}
-				else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
-					((CircuitIntegreSequentiel)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
-				}
-			}break;
+//			case Mouvement :
+//			{
+//				refrechLists(sauveGarde.getComposantCommeImage());
+//				//removePoints();
+//				// addPoints();
+//				ImageView imageView = sauveGarde.getComposantCommeImage();
+//				imageView.setLayoutX(sauveGarde.getPosX());
+//				imageView.setLayoutY(sauveGarde.getPosY());
+//				updatePolyline(imageView);
+//				Composant composant = Circuit.getCompFromImage(imageView);
+//				if (composant.getClass().equals(CircuitIntegre.class)) {
+//					((CircuitIntegre)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
+//				}
+//				else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
+//					((CircuitIntegreSequentiel)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
+//				}
+//			}break;
 			case Creation :
 			{
 				System.out.println(sauveGarde.getComposant().toString());
