@@ -9,5 +9,6 @@ public enum Actions {
      SuppressionFil,
      SuppressionToutFil,
      CreationFil,
+     Rotation,
      Copier;
 }

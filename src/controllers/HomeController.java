@@ -2076,8 +2076,8 @@ public class HomeController extends Controller {
 					dragImageView.setLayoutY(ctrlY);
 					dragImageView.setId(elementSeclecionner.getId());
 					instanceComposant(dragImageView);		
-					if(!copyActive)
-						composantCopy = Circuit.getCompFromImage(elementSeclecionner);
+//					if(!copyActive)
+//						composantCopy = Circuit.getCompFromImage(elementSeclecionner);
 					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
 					sauveGardeCopier(dragImageView,cmp2);
 					cmp2.setDirection(composantCopy.getDirection());
@@ -2123,6 +2123,7 @@ public class HomeController extends Controller {
 					addAllPolylinesToWorkSpace(polyline);
 					ajouterLeGestApresCollage(dragImageView);
 					elementSeclecionner = dragImageView;
+					
 				}
 			}
 		}
@@ -3015,6 +3016,17 @@ public class HomeController extends Controller {
 						}
 					}
 			}break;
+			case Rotation :{
+				ImageView img = sauveGarde.getComposantCommeImage();
+				Composant composant = sauveGarde.getComposant(); 
+				composant.setDirection(sauveGarde.getRotation());
+				removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(composant.getSorties()[0]));
+				Image image = new Image(composant.generatePath());
+    			img.setImage(image);
+    			img.setFitHeight(image.getHeight());
+    			img.setFitWidth(image.getWidth());
+    			addAllPolylinesToWorkSpace(composant.generatePolyline(img.getLayoutX(), img.getLayoutY()));
+			}
 			default:
 				break;
 
@@ -3452,6 +3464,15 @@ public class HomeController extends Controller {
 		donnes.setTypeDaction(Actions.Copier);
 		donnes.setComposantCommeImage(imageView);
 		donnes.setComposant(composant);
+		undoDeque.addFirst(donnes);
+	}
+	
+	public static void sauveGarderRotation(Composant composant,ImageView imageView,int rotation) {
+		Donnes donnes = new Donnes();
+		donnes.setTypeDaction(Actions.Rotation);
+		donnes.setComposant(composant);
+		donnes.setRotation(rotation);
+		donnes.setComposantCommeImage(imageView);
 		undoDeque.addFirst(donnes);
 	}
 }

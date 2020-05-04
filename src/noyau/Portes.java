@@ -57,6 +57,7 @@ public abstract class Portes extends Composant {
 	@Override
 	public String generatePath() {
 		// TODO Auto-generated method stub
+		System.out.println(this.getClass().getSimpleName() + "/" + (String.valueOf(getNombreEntree()))+Integer.toString(direction)+".png");
 		return this.getClass().getSimpleName() + "/" + (String.valueOf(getNombreEntree()))+Integer.toString(direction)+".png";
 	}
 	

@@ -83,7 +83,7 @@ public class ClickDroitController extends Controller{
 	void couper(ActionEvent event) {
 		Stage s = (Stage)prop.getScene().getWindow(); 
 		s.close();
-		HomeController.pastButton = true;
+		HomeController.pastButton = false;
 		HomeController.cc = true;
 		HomeController.setCopierActive(true);	  
 		HomeController.copyActive = true;

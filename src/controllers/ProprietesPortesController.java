@@ -125,15 +125,21 @@ public class ProprietesPortesController extends ProprietesController{
     		cmp.setNombreEntree(i);
     		cmp.getLesCoordonnees().setNbCordEntree(i);  		
     		if(cmp.getDirection() != direct) {
+    			HomeController.sauveGarderRotation(cmp, img, cmp.getDirection());
     			cmp.setDirection(direct);
     			removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(cmp.getSorties()[0]));
-
-    		Image image = new Image(cmp.generatePath());
-    		img.setImage(image);
-    		img.setFitHeight(image.getHeight());
-    		img.setFitWidth(image.getWidth());
-    		addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
+    			Image image = new Image(cmp.generatePath());
+    			img.setImage(image);
+    			img.setFitHeight(image.getHeight());
+    			img.setFitWidth(image.getWidth());
+    			addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
     		}
+    		else {
+    			Image image = new Image(cmp.generatePath());
+    			img.setImage(image);
+    			img.setFitHeight(image.getHeight());
+    			img.setFitWidth(image.getWidth());
+			}
     	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
