@@ -133,6 +133,11 @@ public class ProprietesPortesController extends ProprietesController{
     		img.setFitHeight(image.getHeight());
     		img.setFitWidth(image.getWidth());
     		addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
+    		}else {
+    			Image image = new Image(cmp.generatePath());
+        		img.setImage(image);
+        		img.setFitHeight(image.getHeight());
+        		img.setFitWidth(image.getWidth());
     		}
     	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
