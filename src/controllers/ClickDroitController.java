@@ -82,33 +82,38 @@ public class ClickDroitController extends Controller{
 	@FXML
 	void couper(ActionEvent event) {
 		Stage s = (Stage)prop.getScene().getWindow(); 
-    	s.close();
-    	
-    	HomeController.pastButton = true;
-    	
-    	HomeController.cc = true;
-    	
-    	HomeController.setCopierActive(true);	  
-
-    	
-        
-    	HomeController.copyActive = true;
-        
-        
-        ImageView sauv = HomeController.elementSeclecionner;
-        workSpace.getChildren().remove(HomeController.elementSeclecionner);
-       
-        Composant composantCouper = Circuit.getCompFromImage(HomeController.elementSeclecionner);
-       HomeController.composantCopy = composantCouper;
-        		
+		s.close();
+		HomeController.pastButton = true;
+		HomeController.cc = true;
+		HomeController.setCopierActive(true);	  
+		HomeController.copyActive = true;
+		ImageView sauv = HomeController.elementSeclecionner;
+		HomeController.elementAsuprimer = sauv;
+		HomeController.sauveGarderSupression();
+		if(sauv.getId().equals("clock"))
+		{
+			HomeController.horloged =false;
+			HomeController.horlogeDeCercuit =null; 
+		}
+		else if (sauv.getId().equals("CircuitIntegre")) {
+			ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
+			for (Circle circle : arrayList) {
+				workSpace.getChildren().remove(circle);
+			}
+		} 
+		else if (sauv.getId().equals("CircuitIntegreSequentiel")) {
+			ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
+			for (Circle circle : arrayList) {
+				workSpace.getChildren().remove(circle);
+			}
+		} 
+		workSpace.getChildren().remove(HomeController.elementSeclecionner);
+		Composant composantCouper = Circuit.getCompFromImage(HomeController.elementSeclecionner);
+		HomeController.composantCopy = composantCouper;
 		ArrayList<Polyline> lineListe=Circuit.supprimerComp(composantCouper);
-		 for(Polyline line : lineListe)
-			 workSpace.getChildren().remove(line);
-
-		 
-		 HomeController.elementSeclecionner  = sauv ;
-	
-    	
+		for(Polyline line : lineListe)
+			workSpace.getChildren().remove(line);
+		HomeController.elementSeclecionner  = sauv ;
 	}
 
 	@FXML

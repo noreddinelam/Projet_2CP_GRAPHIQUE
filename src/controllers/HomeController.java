@@ -823,12 +823,31 @@ public class HomeController extends Controller {
 						copierActive = true;
 						copyActive = true;
 						ImageView sauv = elementSeclecionner;
+						elementAsuprimer = elementSeclecionner;
+						sauveGarderSupression();
 						workSpace.getChildren().remove(elementSeclecionner);
 						Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
 						composantCopy = composantCouper;
 						ArrayList<Polyline> lineListe = Circuit.supprimerComp(composantCouper);
 						for (Polyline line : lineListe)
 							workSpace.getChildren().remove(line);
+						if(elementSeclecionner.getId().equals("clock"))
+						{
+							HomeController.horloged =false;
+							HomeController.horlogeDeCercuit =null; 
+						}
+						else if (elementSeclecionner.getId().equals("CircuitIntegre")) {
+							ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
+							for (Circle circle : arrayList) {
+								workSpace.getChildren().remove(circle);
+							}
+						} 
+						else if (elementSeclecionner.getId().equals("CircuitIntegreSequentiel")) {
+							ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
+							for (Circle circle : arrayList) {
+								workSpace.getChildren().remove(circle);
+							}
+						} 
 						elementSeclecionner = sauv;
 
 					}
@@ -838,7 +857,6 @@ public class HomeController extends Controller {
 							System.out.println("control + c are pressed !");
 							System.out.println("l'element selectionner est : " + elementSeclecionner.getId());
 							setCopierActive(true);
-
 
 						}
 					}
@@ -1345,6 +1363,7 @@ public class HomeController extends Controller {
 									//ajout des points
 									addPoints();/// ajouter les points
 									Composant ci=Circuit.getCompFromImage(eleementAdrager);
+									System.out.println("la direction : "+ci.getDirection());
 									if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
 										CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
 										circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());																		
@@ -2051,7 +2070,7 @@ public class HomeController extends Controller {
 	public void CopyUses() {
 		if (elementSeclecionner != null) {
 			if(!pastButton) {
-				if (! elementSeclecionner.getId().equals("CircuitIntegreSequentiel")) {
+				if (! elementSeclecionner.getId().equals("CircuitIntegreSequentiel") && ((elementSeclecionner.getId().equals("clock") && ( ! horloged)) || (!elementSeclecionner.getId().equals("clock")))) {
 					ImageView dragImageView = new ImageView();
 					dragImageView.setLayoutX(ctrlX);
 					dragImageView.setLayoutY(ctrlY);
@@ -2060,9 +2079,9 @@ public class HomeController extends Controller {
 					if(!copyActive)
 						composantCopy = Circuit.getCompFromImage(elementSeclecionner);
 					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
+					sauveGardeCopier(dragImageView,cmp2);
 					cmp2.setDirection(composantCopy.getDirection());
 					cmp2.setIcon(composantCopy.getIcon());
-					cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
 					cmp2.setNom(composantCopy.getNom());
 					cmp2.setNombreEntree(composantCopy.getNombreEntree());
 					cmp2.setNombreSortieAndUpdateFil(composantCopy.getNombreSortie());
@@ -2090,6 +2109,10 @@ public class HomeController extends Controller {
 								workSpace.getChildren().add(circle);
 							}
 						}
+					else if(cmp2.getClass().equals(Horloge.class)) {
+						horloged = true;
+						horlogeDeCercuit = dragImageView;
+					}
 					cmp2.setCord();
 					cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
 					cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
@@ -2134,6 +2157,18 @@ public class HomeController extends Controller {
 				HomeController.horloged =false;
 				HomeController.horlogeDeCercuit =null;
 			}
+			else if (elementSeclecionner.getId().equals("CircuitIntegre")) {
+				ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
+				for (Circle circle : arrayList) {
+					workSpace.getChildren().remove(circle);
+				}
+			} 
+			else if (elementSeclecionner.getId().equals("CircuitIntegreSequentiel")) {
+				ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
+				for (Circle circle : arrayList) {
+					workSpace.getChildren().remove(circle);
+				}
+			}
 			workSpace.getChildren().remove(elementSeclecionner);
 			removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));
 			elementAsuprimer=null;
@@ -2147,6 +2182,25 @@ public class HomeController extends Controller {
 		copierActive = true;
 		copyActive = true;
 		ImageView sauv = elementSeclecionner;
+		elementAsuprimer = elementSeclecionner;
+		sauveGarderSupression();
+		if(elementSeclecionner.getId().equals("clock"))
+		{
+			HomeController.horloged =false;
+			HomeController.horlogeDeCercuit =null; 
+		}
+		else if (elementSeclecionner.getId().equals("CircuitIntegre")) {
+			ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
+			for (Circle circle : arrayList) {
+				workSpace.getChildren().remove(circle);
+			}
+		} 
+		else if (elementSeclecionner.getId().equals("CircuitIntegreSequentiel")) {
+			ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
+			for (Circle circle : arrayList) {
+				workSpace.getChildren().remove(circle);
+			}
+		} 
 		workSpace.getChildren().remove(elementSeclecionner);
 		Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
 		composantCopy = composantCouper;
@@ -2930,7 +2984,6 @@ public class HomeController extends Controller {
 			{
 				ClickDroitFilController.setPane(workSpace);
 				InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(sauveGarde.getParent());
-				//if(infoLine != null)
 				ClickDroitFilController.supprimer(infoLine);
 			}break;
 			case SuppressionToutFil :{
@@ -2941,6 +2994,27 @@ public class HomeController extends Controller {
 				for (int i = 0; i < size; i++) {
 					supprimerSauvegarde(arrayList.get(i+1), arrayParent.get(i), filSortieFil);
 				}
+			}break;
+			case Copier :{
+				 removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(sauveGarde.getComposant()));
+				 workSpace.getChildren().remove(sauveGarde.getComposantCommeImage());
+				 if(sauveGarde.getComposantCommeImage().getId().equals("clock"))
+					{
+						HomeController.horloged =false;
+						HomeController.horlogeDeCercuit =null; 
+					}
+					else if (sauveGarde.getComposantCommeImage().equals("CircuitIntegre")) {
+						ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
+						for (Circle circle : arrayList) {
+							workSpace.getChildren().remove(circle);
+						}
+					} 
+					else if (sauveGarde.getComposantCommeImage().equals("CircuitIntegreSequentiel")) {
+						ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
+						for (Circle circle : arrayList) {
+							workSpace.getChildren().remove(circle);
+						}
+					}
 			}break;
 			default:
 				break;
@@ -2984,7 +3058,6 @@ public class HomeController extends Controller {
 	public static void sauveGarderSupression()
 	{
 		Donnes sauveGarde= new Donnes();
-
 		sauveGarde.setTypeDaction(Actions.Supression);
 		sauveGarde.setComposantCommeImage(elementAsuprimer);
 		sauveGarde.setComposant(Circuit.getCompFromImage(elementAsuprimer));
@@ -3362,16 +3435,24 @@ public class HomeController extends Controller {
 	public void SupprimerPoint() {
 		Polyline line;
 		int i = 0,size = 0;
-			for( i = 0; i < listSorties.size();i++){
-				line = listSorties.get(i);
-				if(Circuit.getListFromPolyline(line).size()>1) { //|| Circuit.getInfoPolylineFromPolyline(line).isRelier()
-					Coordonnees crd = new Coordonnees(line.getPoints().get(4),line.getPoints().get(5));
-					//if(line.getPoints().size()>10) {
-					if(nbOccPoint(line, crd.getX(), crd.getY())==1) {
+		for( i = 0; i < listSorties.size();i++){
+			line = listSorties.get(i);
+			if(Circuit.getListFromPolyline(line).size()>1) { //|| Circuit.getInfoPolylineFromPolyline(line).isRelier()
+				Coordonnees crd = new Coordonnees(line.getPoints().get(4),line.getPoints().get(5));
+				//if(line.getPoints().size()>10) {
+				if(nbOccPoint(line, crd.getX(), crd.getY())==1) {
 					line.getPoints().remove(0);
 					line.getPoints().remove(0);
-					}
 				}
 			}
+		}
+	}
+	
+	public static void sauveGardeCopier(ImageView imageView , Composant composant) {
+		Donnes donnes = new Donnes();
+		donnes.setTypeDaction(Actions.Copier);
+		donnes.setComposantCommeImage(imageView);
+		donnes.setComposant(composant);
+		undoDeque.addFirst(donnes);
 	}
 }

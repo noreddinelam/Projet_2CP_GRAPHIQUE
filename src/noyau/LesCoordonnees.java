@@ -129,7 +129,7 @@ public class LesCoordonnees implements Serializable{
 		this.nbCordCommandes = nbCordCommandes;
 	}
 	public Coordonnees coordReelesSorties(ImageView image,int sortie) {
-		if(sortie < nbCordSorties)
+		if(sortie < nbCordSorties) 
 			return new Coordonnees(cordSorties[sortie].getX() + image.getLayoutX(), cordSorties[sortie].getY() + image.getLayoutY());
 		else return null;
 	}
