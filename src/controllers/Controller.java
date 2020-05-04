@@ -42,7 +42,7 @@ import noyau.Sequentiels;
 public abstract class Controller {
 	protected int sauv;
 
-	protected Composant cmp;
+	protected  Composant cmp;
 	protected static ClickDroitFil clickDroitFilFenetre;
 	protected static Polyline lineDroit;
 	public static Stage homeWindow;

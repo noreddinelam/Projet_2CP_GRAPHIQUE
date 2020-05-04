@@ -8,6 +8,10 @@ import javafx.scene.shape.Polyline;
 
 public class RegistreDecalage extends Sequentiels {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3916477022228922584L;
 	private int taille;
 	private EtatLogique[] valeur = new EtatLogique[8];
 	private boolean decalageDroite; // si true dec droite sinon dec gauche

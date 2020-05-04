@@ -25,9 +25,15 @@ public class ProprietesNotController extends ProprietesController{
 	}
 	
 	public void initialiser(Composant cmp) {
+		btns.add(imgNextDirection);
+		btns.add(imgPreviousDirection);
 		this.cmp = cmp;
 		direct = 0;
 		label.setText(cmp.getNom());
+		if (!cmp.isDessocier()) {
+			nextDirection.setDisable(true);
+			previousDirection.setDisable(true);
+		}
 	}
 
 

@@ -1,6 +1,11 @@
 package noyau;
 
 public class Nor extends Or {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2282609156842086617L;
+
 	public Nor(int nombreEntree,String nom) {
 		super(nombreEntree,nom);
 		// TODO Auto-generated constructor stub

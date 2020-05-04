@@ -5,6 +5,10 @@ import java.io.Serializable;
 import javafx.scene.image.ImageView;
 
 public class LesCoordonnees implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2271723942606943555L;
 	private Coordonnees cordEntree[] = new Coordonnees[32]; // coordonees des entrees
 	private int nbCordEntree=0 ;
 	private Coordonnees cordSorties[] = new Coordonnees[32]; // coordonees des sorties

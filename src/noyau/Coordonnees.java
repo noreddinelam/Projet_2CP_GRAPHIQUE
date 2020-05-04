@@ -3,6 +3,10 @@ package noyau;
 import java.io.Serializable;
 
 public class Coordonnees implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3810549458198793318L;
 	private double x;
 	private double y;
 	public Coordonnees(double x,double y) {

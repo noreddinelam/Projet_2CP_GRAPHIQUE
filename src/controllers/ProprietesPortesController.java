@@ -38,8 +38,11 @@ public class ProprietesPortesController extends ProprietesController{
 	}
 
 	public void initialiser(Composant cmp) {
+		btns.add(imgMoinsNbEntrees);
+		btns.add(imgNextDirection);
+		btns.add(imgPlusNbEntrees);
+		btns.add(imgPreviousDirection);
 		this.cmp = cmp;
-		
 		i=cmp.getNombreEntree();
 		direct = cmp.getDirection();
 		direction.setText(bddDirection[direct]);
@@ -54,7 +57,14 @@ public class ProprietesPortesController extends ProprietesController{
 			plusNbEntrees.setVisible(false);
 			imgPlusNbEntrees.setVisible(false);
 		}
+		if (! cmp.isDessocier()) {
+			nextDirection.setDisable(true);
+			previousDirection.setDisable(true);
+			plusNbEntrees.setDisable(true);
+			moinsNbEntrees.setDisable(true);
+			applyOpaciteForImages(btns);
 		}
+	}
 	@FXML
     private Pane pane_proprietes;
 
@@ -137,11 +147,10 @@ public class ProprietesPortesController extends ProprietesController{
     			img.setRotate(270);
     			break;
     		}
-    	}else {
-    		this.alert();
-		}
+    	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
+    	
     }
 
     @FXML

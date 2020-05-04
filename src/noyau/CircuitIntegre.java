@@ -15,9 +15,7 @@ public class CircuitIntegre extends Composant implements Serializable{
 	 */
 	private static final long serialVersionUID = -1334102629412553408L;
 	private  EtatLogique tableVerite[][]; // la table de verite du circuit
-	private boolean sequentiel ;
 	private transient ArrayList<Circle> listeCercles = new ArrayList<Circle>();
-	private Front front;
 	public CircuitIntegre(int nombreEntree,int nombreSortie, String nom) {
 		super(nombreEntree, nom);
 		this.nombreSortie = nombreSortie;
@@ -75,9 +73,6 @@ public class CircuitIntegre extends Composant implements Serializable{
 	@Override
 	public String generatePath() {
 		// TODO Auto-generated method stub
-		if (sequentiel) {
-			return "CircuitIntegre/Horloge"+front+".png";
-		}
 		return "CircuitIntegre/Simple.png";
 	}
 
@@ -107,10 +102,6 @@ public class CircuitIntegre extends Composant implements Serializable{
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(80, 131.2), 8);
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(80, 146.4), 9);
 		
-		if (sequentiel) {
-			lesCoordonnees.setCordHorloge(new Coordonnees(48.7, 163));
-		}
-		
 	}
 
 
@@ -121,16 +112,6 @@ public class CircuitIntegre extends Composant implements Serializable{
 
 	public void setTableVerite(EtatLogique[][] tableVerite) {
 		this.tableVerite = tableVerite;
-	}
-
-
-	public boolean isSequentiel() {
-		return sequentiel;
-	}
-
-
-	public void setSequentiel(boolean sequentiel) {
-		this.sequentiel = sequentiel;
 	}
 
 
@@ -173,6 +154,7 @@ public class CircuitIntegre extends Composant implements Serializable{
 	}
 	
 	public void resetCirclesPosition(double x,double y) {
+		System.out.println("nnnnnn : "+nombreSortie);
 		for (int i = 0; i < nombreSortie; i++) {
 			listeCercles.get(i).setLayoutX( x + lesCoordonnees.getCordSortieInIndex(i).getX()+4);
 			listeCercles.get(i).setLayoutY( y + lesCoordonnees.getCordSortieInIndex(i).getY());

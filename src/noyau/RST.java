@@ -2,6 +2,11 @@ package noyau;
 
 public class RST extends Bascule{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2760611765665795164L;
+
 	public RST(String nom,Front front) {
 		super(2,nom,front);
 		this.icon="RST/Front_Montant.png";

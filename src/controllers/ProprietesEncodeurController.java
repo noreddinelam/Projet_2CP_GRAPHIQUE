@@ -32,6 +32,10 @@ public class ProprietesEncodeurController extends ProprietesController{
 	}
 
 	public void initialiser(Composant cmp) {
+		btns.add(imgMoinsNbEntrees);
+		btns.add(imgNextDirection);
+		btns.add(imgPlusNbEntrees);
+		btns.add(imgPreviousDirection);
 		this.cmp = cmp;
 		i=cmp.getNombreSortie();
 		direct = 0;
@@ -44,6 +48,13 @@ public class ProprietesEncodeurController extends ProprietesController{
 		if(i==4){
 			plusNbEntrees.setVisible(false);
 			imgPlusNbEntrees.setVisible(false);
+		}
+		if (! cmp.isDessocier()) {
+			nextDirection.setDisable(true);
+			previousDirection.setDisable(true);
+			plusNbEntrees.setDisable(true);
+			moinsNbEntrees.setDisable(true);
+			applyOpaciteForImages(btns);
 		}
 	}
 	
@@ -101,25 +112,23 @@ public class ProprietesEncodeurController extends ProprietesController{
     @FXML
     void modifier(ActionEvent event) {
     	cmp.setNom(label.getText());
-    	if (i != cmp.getNombreSortie()) {
-    		if (cmp.isDessocier()) {
-    			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
-    			cmp.setNombreSortieAndUpdateFil(i);
-    			int nbEntree = (int)Math.pow(2, i);
-    			cmp.setNombreEntree(nbEntree);    	
-    			cmp.getLesCoordonnees().setNbCordEntree(nbEntree);
-    			cmp.getLesCoordonnees().setNbCordSorties(i);
-    			ImageView imageView = Circuit.getImageFromComp(cmp);
-    			Image img = new Image(cmp.generatePath());
-    			imageView.setImage(img);
-    			imageView.setFitHeight(img.getHeight());
-    			imageView.setFitWidth(img.getWidth());
-    			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
-    		}else {
-    			this.alert();
-    		}
+
+    	if (cmp.isDessocier()) {
+    		removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
+    		cmp.setNombreSortieAndUpdateFil(i);
+    		int nbEntree = (int)Math.pow(2, i);
+    		cmp.setNombreEntree(nbEntree);    	
+    		cmp.getLesCoordonnees().setNbCordEntree(nbEntree);
+    		cmp.getLesCoordonnees().setNbCordSorties(i);
+    		ImageView imageView = Circuit.getImageFromComp(cmp);
+    		Image img = new Image(cmp.generatePath());
+    		imageView.setImage(img);
+    		imageView.setFitHeight(img.getHeight());
+    		imageView.setFitWidth(img.getWidth());
+    		addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
     	}
-    	Stage s = (Stage)annuler.getScene().getWindow(); 
+
+    	Stage s = (Stage)mdf.getScene().getWindow(); 
     	s.close();
     }
 

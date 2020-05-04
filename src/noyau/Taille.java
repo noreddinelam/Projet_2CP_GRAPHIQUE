@@ -3,6 +3,10 @@ package noyau;
 import java.io.Serializable;
 
 public class Taille implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5269101959393701629L;
 	private double height;
 	private double width;
 	public Taille(double height,double width) {

@@ -16,7 +16,7 @@ public class AucuneEntree extends ExceptionProgramme{
 	@Override
 	public String getSolution() {
 		// TODO Auto-generated method stub
-		return "Ajouter des elements d'entree";
+		return "Ajouter des elements d'entree (PIN / HORLOGE)";
 	}
 
 }

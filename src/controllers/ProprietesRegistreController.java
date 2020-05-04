@@ -29,6 +29,12 @@ public class ProprietesRegistreController extends ProprietesController{
 		}
 
 		public void initialiser(Composant cmp){
+			btns.add(imgNextDecalage);
+			btns.add(imgNextFront);
+			btns.add(imgPreviousDecalage);
+			btns.add(imgPreviousFront);
+			btns.add(imgMoinsNbBits);
+			btns.add(imgPlusNbBits);
 			this.cmp = cmp;
 			label.setText(cmp.getNom());
 			i=((RegistreDecalage)cmp).getTaille();
@@ -45,6 +51,15 @@ public class ProprietesRegistreController extends ProprietesController{
 			if(i==8){
 				plusNbBits.setVisible(false);
 				imgPlusNbBits.setVisible(false);
+			}
+			if (! cmp.isDessocier()) {
+				moinsNbBits.setDisable(true);
+				nextDecalage.setDisable(true);
+				nextFront.setDisable(true);
+				plusNbBits.setDisable(true);
+				previousDecalage.setDisable(true);
+				previousFront.setDisable(true);
+				applyOpaciteForImages(btns);
 			}
 		}
     @FXML
@@ -131,9 +146,7 @@ public class ProprietesRegistreController extends ProprietesController{
     		imageView.setFitHeight(image.getHeight());
     		imageView.setFitWidth(image.getWidth());
     		addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
-    	}else {
-    		this.alert();
-		}
+    	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

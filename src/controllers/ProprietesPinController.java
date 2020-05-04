@@ -36,10 +36,21 @@ public class ProprietesPinController extends ProprietesController{
 	
 	@Override
 	public void initialiser(Composant cmp){
+		btns.add(imgNextput);
+		btns.add(imgNextput1);
+		btns.add(imgPreviousput);
+		btns.add(imgPreviousput1);
 		this.cmp = cmp;
 		label.setText(cmp.getNom());
 		putInt = (((Pin)cmp).getInput() == true) ? 0 : 1 ;
 		put.setText(bddPut[putInt]);
+		if (! cmp.isDessocier()) {
+			nextDirection.setDisable(true);
+			previousDirection.setDisable(true);
+			nextput.setDisable(true);
+			previousput.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
 		
 	}
 
@@ -90,7 +101,6 @@ public class ProprietesPinController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
-    	
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
         	Pin pin =((Pin)cmp);
@@ -123,9 +133,7 @@ public class ProprietesPinController extends ProprietesController{
         	imageView.setImage(image);
         	imageView.setFitHeight(image.getHeight());
         	imageView.setFitWidth(image.getWidth());
-		}  else {
-			this.alert();
-		}	
+		} 	
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

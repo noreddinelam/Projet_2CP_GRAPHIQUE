@@ -23,6 +23,7 @@ public class ClickDroit extends Stage{
 			ClickDroitController c=loader.getController();
 			c.setCmp(cmp);
             c.setWorkSpace(workSpace);
+            c.initialiser();
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);

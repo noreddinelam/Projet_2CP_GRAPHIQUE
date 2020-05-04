@@ -503,7 +503,7 @@ public class HomeController extends Controller {
 		if (simul) {
 			affichage.setOpacity(1);
 			affichage.setDisable(false);
-			
+
 			Controller.getRightBareButtons().get(0).setOpacity(1);
 			Controller.getRightBareButtons().get(0).setDisable(false);
 
@@ -525,6 +525,18 @@ public class HomeController extends Controller {
 						t1.start();
 					}
 					rotationDelogo(logo,1,1000,false);
+					if(Circuit.getListeEtages().size()==0 && !horloged) {
+						rightBareButtons.get(1).setDisable(false);
+						rightBareButtons.get(1).setOpacity(1);
+						rightBareButtons.get(2).setDisable(true);
+						rightBareButtons.get(2).setOpacity(0.4);
+
+					}else {
+						rightBareButtons.get(1).setDisable(true);
+						rightBareButtons.get(1).setOpacity(0.4);
+						rightBareButtons.get(2).setDisable(false);
+						rightBareButtons.get(2).setOpacity(1);
+					}
 				}
 				new FenetreDesErreurs(homeWindow);
 			}
@@ -559,7 +571,7 @@ public class HomeController extends Controller {
 			affichage.setDisable(true);
 			Controller.getRightBareButtons().get(0).setOpacity(0.4);
 			Controller.getRightBareButtons().get(0).setDisable(true);
-			
+
 			simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
 			Circuit.defaultCompValue();
 			if(ListTextPin != null ) {
@@ -687,7 +699,7 @@ public class HomeController extends Controller {
 		for (ClickBarDroite click : tableauFenetres) {
 			click.close();
 		}
-		
+
 		rightbar(fichier, fichierFenetre, tableauFenetres);
 		rightbar(edition, editionFenetre, tableauFenetres);
 		rightbar(affichage, affichageFenetre, tableauFenetres);
@@ -818,11 +830,38 @@ public class HomeController extends Controller {
 							System.out.println("l'element selectionner est : " + elementSeclecionner.getId());
 							setCopierActive(true);
 
-						
+
 						}
 					}
 					if (event.isControlDown() && (event.getCode() == KeyCode.V)) {
 						CopyUses();
+					}
+					if (event.getCode() == KeyCode.DELETE) {
+						if (elementSeclecionner != null) {
+							Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
+							elementAsuprimer=elementSeclecionner;
+							sauveGarderSupression();		
+							if(elementAsuprimer.getId().equals("clock"))
+							{
+								horloged =false;
+								horlogeDeCercuit =null; 
+							}
+							else if (elementAsuprimer.getId().equals("CircuitIntegre")) {
+								ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
+								for (Circle circle : arrayList) {
+									workSpace.getChildren().remove(circle);
+								}
+							} 
+							else if (elementAsuprimer.getId().equals("CircuitIntegreSequentiel")) {
+								ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
+								for (Circle circle : arrayList) {
+									workSpace.getChildren().remove(circle);
+								}
+							} 
+							workSpace.getChildren().remove(elementAsuprimer);
+							removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));	
+							
+						}
 					}
 				}
 			};
@@ -841,23 +880,23 @@ public class HomeController extends Controller {
 		});
 	}
 
-		public void rightbar(ImageView icon, ClickBarDroite cc, ClickBarDroite tableauDeFenetres[]) {
-			icon.setOnMousePressed(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					for (ClickBarDroite click : tableauDeFenetres) {
-						if (cc.equals(click)) {
-							if (cc.isShowing())
-								cc.close();
-							else 
-								cc.show();
-							
-						} else
-							click.close();
-					}
+	public void rightbar(ImageView icon, ClickBarDroite cc, ClickBarDroite tableauDeFenetres[]) {
+		icon.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				for (ClickBarDroite click : tableauDeFenetres) {
+					if (cc.equals(click)) {
+						if (cc.isShowing())
+							cc.close();
+						else 
+							cc.show();
+
+					} else
+						click.close();
 				}
 			}
-		
+		}
+
 				);
 	}
 
@@ -910,8 +949,8 @@ public class HomeController extends Controller {
 	}
 
 
-		private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant
-			//est ajoute dans le workSpace
+	private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant
+		//est ajoute dans le workSpace
 
 
 		elementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -979,8 +1018,8 @@ public class HomeController extends Controller {
 									guideY.setLayoutY(dragImageView.getLayoutY());
 									guideXp.setLayoutX(dragImageView.getLayoutX()+ elementAdrager.getBoundsInLocal().getWidth()+1);
 									guideYp.setLayoutY(dragImageView.getLayoutY()+ elementAdrager.getBoundsInLocal().getHeight()+1);
-							afficheurX.setText("X : "+xString);
-										afficheurY.setText("Y : "+yString);
+									afficheurX.setText("X : "+xString);
+									afficheurY.setText("Y : "+yString);
 
 								}
 
@@ -996,30 +1035,30 @@ public class HomeController extends Controller {
 								e.consume();
 							}
 						}
-						});
+					});
 
-						elementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
-							@Override
-							public void handle(MouseEvent e) {
-								if (!simul) {
-									dragItem = null;
-									dragImageView.setMouseTransparent(false);
-									elementAdrager.setMouseTransparent(false);
-									elementAdrager.setCursor(Cursor.DEFAULT);
-									dragImageView.setId(elementAdrager.getId());
-									instanceComposant(dragImageView);
-									Image img = new Image(Circuit.getCompFromImage(dragImageView).generatePath());
-									dragImageView.setImage(img);
-									dragImageView.setFitHeight(img.getHeight());
-									dragImageView.setFitWidth(img.getWidth());
-									System.out.println((e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2)+ "----------------------");
-									if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView)||( dragImageView.getId().equals("clock") && ( horloged)))
-									{
-										workSpace.getChildren().remove(dragImageView);
-										Circuit.supprimerComp(Circuit.getCompFromImage(dragImageView));
-									}
-									else
-									{
+					elementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent e) {
+							if (!simul) {
+								dragItem = null;
+								dragImageView.setMouseTransparent(false);
+								elementAdrager.setMouseTransparent(false);
+								elementAdrager.setCursor(Cursor.DEFAULT);
+								dragImageView.setId(elementAdrager.getId());
+								instanceComposant(dragImageView);
+								Image img = new Image(Circuit.getCompFromImage(dragImageView).generatePath());
+								dragImageView.setImage(img);
+								dragImageView.setFitHeight(img.getHeight());
+								dragImageView.setFitWidth(img.getWidth());
+								System.out.println((e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2)+ "----------------------");
+								if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView)||( dragImageView.getId().equals("clock") && ( horloged)))
+								{
+									workSpace.getChildren().remove(dragImageView);
+									Circuit.supprimerComp(Circuit.getCompFromImage(dragImageView));
+								}
+								else
+								{
 									if( dragImageView.getId().equals("clock")  ) {
 										horloged =true;
 										horlogeDeCercuit=dragImageView;
@@ -1225,7 +1264,7 @@ public class HomeController extends Controller {
 				eleementAdrager.setCursor(Cursor.DEFAULT);
 			}
 		});
-			
+
 
 
 		eleementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -1300,8 +1339,10 @@ public class HomeController extends Controller {
 									if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
 										CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
 										circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());																		
-										//										workSpace.getChildren().removeAll(((CircuitIntegre)ci).getListeCercles());
-										//										workSpace.getChildren().addAll(((CircuitIntegre)ci).generateCercles(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY()));
+									}
+									else if(ci.getClass().equals(CircuitIntegreSequentiel.class)) {
+										CircuitIntegreSequentiel circuitIntegre = ((CircuitIntegreSequentiel)ci);
+										circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());
 									}
 									Point2D localPoint = workSpace
 											.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
@@ -1700,7 +1741,6 @@ public class HomeController extends Controller {
 				logo.setRotate(0);
 			}
 		});
-
 	}
 
 	private void tracerLesGuides() {//Methode d'initialitaton des guides
@@ -1857,6 +1897,9 @@ public class HomeController extends Controller {
 		break;
 		case "demiAdd": {
 			comp = new DemiAdditionneur(1, "");
+		}break;
+		case "CircuitIntegre" : {
+			comp = new CircuitIntegre(0, 0, "CircuitIntegre");
 		}
 		break;
 		default: {
@@ -1943,143 +1986,152 @@ public class HomeController extends Controller {
 		return nb;
 	}
 
-		///////////////////////////////////////////////////////////-> Bar Droite <-/////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////-> Bar Droite <-/////////////////////////////////////////////////////////////
 
 
-	    @FXML
-	    void supprimerTout(ActionEvent event) {   	
-	    	Stage stage = (Stage) supprimerTout.getScene().getWindow(); 	
-	    	stage.close();
-	    	Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-		
-			if (! simul) {			
-				if(!(Circuit.getCompUtilises().isEmpty())) {				
+	@FXML
+	void supprimerTout(ActionEvent event) {   	
+		Stage stage = (Stage) supprimerTout.getScene().getWindow(); 	
+		stage.close();
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+
+		if (! simul) {			
+			if(!(Circuit.getCompUtilises().isEmpty())) {				
 				alert.setContentText("Voullez vous vraimment supprimer toute la zone du circuit ");
 				Optional<ButtonType> result = alert.showAndWait();	    		
-						if(result.get() == ButtonType.OK){
-						Circuit.clearCircuit();
-						workSpace.getChildren().clear();
-						horloged = false;
-						tracerLesregles(workSpace);	
-						}
+				if(result.get() == ButtonType.OK){
+					Circuit.clearCircuit();
+					workSpace.getChildren().clear();
+					horloged = false;
+					tracerLesregles(workSpace);	
 				}
-				else {
-					alert.setAlertType(AlertType.INFORMATION);
-					alert.setContentText("le circuit est deja vide !");
-					alert.show();
-		    	}
 			}
-	    else {
-	    	alert.setAlertType(AlertType.INFORMATION);
+			else {
+				alert.setAlertType(AlertType.INFORMATION);
+				alert.setContentText("le circuit est deja vide !");
+				alert.show();
+			}
+		}
+		else {
+			alert.setAlertType(AlertType.INFORMATION);
 			alert.setContentText("veuillez desactiver l'etat de simulation");
 			alert.show();
-	    	
-	    }
-			
-}
-	    
 
-	    @FXML
-	    public void copier(ActionEvent event) {
-	    	Stage s = (Stage) copier.getScene().getWindow();
-    		s.close();
-	    	if(elementSeclecionner != null) {
-	    		setCopierActive(true);
-	    		
-	    	}
-	    }
-	    public void coller(ActionEvent event) {
-	    		cc = true;
-	    		CopyUses();
-	   	    	Stage stage = (Stage) coller.getScene().getWindow();
-	   	    	stage.close();		
-	    }
-	    
-	    
-	    
-	    public void CopyUses() {
-	    	if (elementSeclecionner != null) {
-	    		if(!pastButton) {
-	    			ImageView dragImageView = new ImageView();
-	    			dragImageView.setLayoutX(ctrlX);
-	    			dragImageView.setLayoutY(ctrlY);
-	    			dragImageView.setId(elementSeclecionner.getId());
-	    			instanceComposant(dragImageView);		
-	    			if(!copyActive)
-	    				composantCopy = Circuit.getCompFromImage(elementSeclecionner);
-	    			Composant cmp2 = Circuit.getCompFromImage(dragImageView);
-	    			cmp2.setDirection(composantCopy.getDirection());
-	    			cmp2.setIcon(composantCopy.getIcon());
-	    			cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
-	    			cmp2.setNom(composantCopy.getNom());
-	    			cmp2.setNombreEntree(composantCopy.getNombreEntree());
-	    			cmp2.setNombreSortieAndUpdateFil(composantCopy.getNombreSortie());
-	    			if(cmp2.getClass().getSimpleName().equals("Multiplexeur")){
-	    				((Multiplexeur)cmp2).setNbCommande(((Multiplexeur)composantCopy).getNbCommande());
-	    				cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
-	    			}
-	    			else
-	    				if(cmp2.getClass().getSimpleName().equals("Demultiplexeur")){
-	    					((Demultiplexeur)cmp2).setNbCommande(((Demultiplexeur)composantCopy).getNbCommande());
-	    					cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
-	    				}
-	    			else if(cmp2.getClass().getSimpleName().equals("Pin")) {
-	    				boolean input = ((Pin)composantCopy).getInput();
-	    				((Pin)cmp2).setInput(input);
-	    				if (! input) {
-							Circuit.getEntreesCircuit().remove((Pin)cmp2);
-							Circuit.getSortiesCircuit().add((Pin)cmp2);
-						}
+		}
+
+	}
+
+
+	@FXML
+	public void copier(ActionEvent event) {
+		Stage s = (Stage) copier.getScene().getWindow();
+		s.close();
+		if(elementSeclecionner != null) {
+			setCopierActive(true);
+
+		}
+	}
+	public void coller(ActionEvent event) {
+		cc = true;
+		CopyUses();
+		Stage stage = (Stage) coller.getScene().getWindow();
+		stage.close();		
+	}
+
+
+
+	public void CopyUses() {
+		if (elementSeclecionner != null) {
+			if(!pastButton) {
+				if (! elementSeclecionner.getId().equals("CircuitIntegreSequentiel")) {
+					ImageView dragImageView = new ImageView();
+					dragImageView.setLayoutX(ctrlX);
+					dragImageView.setLayoutY(ctrlY);
+					dragImageView.setId(elementSeclecionner.getId());
+					instanceComposant(dragImageView);		
+					if(!copyActive)
+						composantCopy = Circuit.getCompFromImage(elementSeclecionner);
+					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
+					cmp2.setDirection(composantCopy.getDirection());
+					cmp2.setIcon(composantCopy.getIcon());
+					cmp2.setLesCoordonnees(composantCopy.getLesCoordonnees());
+					cmp2.setNom(composantCopy.getNom());
+					cmp2.setNombreEntree(composantCopy.getNombreEntree());
+					cmp2.setNombreSortieAndUpdateFil(composantCopy.getNombreSortie());
+					if(cmp2.getClass().getSimpleName().equals("Multiplexeur")){
+						((Multiplexeur)cmp2).setNbCommande(((Multiplexeur)composantCopy).getNbCommande());
+						cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
 					}
-	    			cmp2.setCord();
-	    			cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
-	    			cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
-	    			dragImageView.setImage(elementSeclecionner.getImage());
-	    			dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
-	    			dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());		
-	    			workSpace.getChildren().add(dragImageView);
-	    			ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-	    			addAllPolylinesToWorkSpace(polyline);
-	    			ajouterLeGestApresCollage(dragImageView);
-	    			elementSeclecionner = dragImageView;
-	    		}
-	    	}
+					else
+						if(cmp2.getClass().getSimpleName().equals("Demultiplexeur")){
+							((Demultiplexeur)cmp2).setNbCommande(((Demultiplexeur)composantCopy).getNbCommande());
+							cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
+						}
+						else if(cmp2.getClass().getSimpleName().equals("Pin")) {
+							boolean input = ((Pin)composantCopy).getInput();
+							((Pin)cmp2).setInput(input);
+							if (! input) {
+								Circuit.getEntreesCircuit().remove((Pin)cmp2);
+								Circuit.getSortiesCircuit().add((Pin)cmp2);
+							}
+						}
+						else if(cmp2.getClass().getSimpleName().equals("CircuitIntegre")) {
+							((CircuitIntegre)cmp2).setTableVerite(((CircuitIntegre)composantCopy).getTableVerite());
+							ArrayList<Circle> reList = ((CircuitIntegre)cmp2).generateCercles(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+							for (Circle circle : reList) {
+								workSpace.getChildren().add(circle);
+							}
+						}
+					cmp2.setCord();
+					cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
+					cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
+					dragImageView.setImage(elementSeclecionner.getImage());
+					dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
+					dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());		
+					workSpace.getChildren().add(dragImageView);
+					ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+					addAllPolylinesToWorkSpace(polyline);
+					ajouterLeGestApresCollage(dragImageView);
+					elementSeclecionner = dragImageView;
+				}
+			}
+		}
 
-	    }
+	}
 
-	    /*-----------------------------------------------------*/
-	    
-	    @FXML
-	    void annuler(ActionEvent event) {
-	    	//System.out.println("le boutton annuler est clique");
-	    	((Stage)annuler.getScene().getWindow()).close();
-	    	undoChanges(workSpace);
+	/*-----------------------------------------------------*/
 
-	    }
-	    
+	@FXML
+	void annuler(ActionEvent event) {
+		//System.out.println("le boutton annuler est clique");
+		((Stage)annuler.getScene().getWindow()).close();
+		undoChanges(workSpace);
+
+	}
+
 
 	/*-----------------------------------------------------*/
 
 
-		@FXML
-		void supprimer(ActionEvent event) { /// pour appliquer une suppression sur
-			    	((Stage)supprimer.getScene().getWindow()).close();
+	@FXML
+	void supprimer(ActionEvent event) { /// pour appliquer une suppression sur
+		((Stage)supprimer.getScene().getWindow()).close();
 
-			if (elementSeclecionner != null) {
-				cmp = Circuit.getCompFromImage(elementSeclecionner);
-				elementAsuprimer = elementSeclecionner;
-				sauveGarderSupression();
-				if(elementAsuprimer.getId().equals("clock"))
-				{
-					HomeController.horloged =false;
-					HomeController.horlogeDeCercuit =null;
-				}
-				workSpace.getChildren().remove(elementSeclecionner);
-				removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));
-				elementAsuprimer=null;
+		if (elementSeclecionner != null) {
+			cmp = Circuit.getCompFromImage(elementSeclecionner);
+			elementAsuprimer = elementSeclecionner;
+			sauveGarderSupression();
+			if(elementAsuprimer.getId().equals("clock"))
+			{
+				HomeController.horloged =false;
+				HomeController.horlogeDeCercuit =null;
 			}
+			workSpace.getChildren().remove(elementSeclecionner);
+			removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));
+			elementAsuprimer=null;
 		}
+	}
 
 
 
@@ -2148,7 +2200,7 @@ public class HomeController extends Controller {
 		}
 	}
 
-			
+
 
 	@FXML
 	void nouveau(ActionEvent event) {
@@ -2157,7 +2209,6 @@ public class HomeController extends Controller {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setContentText("Voullez vous sauvgarder ce circuit");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 			if (fichierCourant == null) {
@@ -2167,104 +2218,61 @@ public class HomeController extends Controller {
 				File f = fileChooser.showSaveDialog(homeWindow);
 				if (f != null) {
 					Sauvegarde sauvegarde = new Sauvegarde();
-					sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
+					sauvegarde.saveCiruit(f.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 					a.showAndWait();
+					Circuit.clearCircuit();
+					fichierCourant = null;
+					workSpace.getChildren().clear();
+					horloged = false;
+					tracerLesregles(workSpace);
 				}
 			} else {
 				Sauvegarde sauvegarde = new Sauvegarde();
 				sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
 				Alert a = new Alert(AlertType.INFORMATION);
 				a.setContentText("le circuit est bien sauvgarde");
-                a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
+				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 				a.showAndWait();
-			}
-		}
-			Circuit.clearCircuit();
-			fichierCourant = null;
-			workSpace.getChildren().clear();
-			horloged = false;
-			tracerLesregles(workSpace);
-	    }
-
-		@FXML
-		void ouvrir(ActionEvent event) {
-			/*
-			 * final DirectoryChooser directoryChooser = new DirectoryChooser(); final File
-			 * selectedDirectory = directoryChooser.showDialog(homeWindow);
-			 */
-			if (!Circuit.getCompUtilises().isEmpty()) {
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.setContentText("Voullez vous sauvgarder ce circuit");
-				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == ButtonType.OK) {
-					if (fichierCourant == null) {
-						final FileChooser fileChooser = new FileChooser();
-						File f = fileChooser.showSaveDialog(homeWindow);
-						if (f != null) {
-							Sauvegarde sauvegarde = new Sauvegarde();
-							sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
-							Alert a = new Alert(AlertType.INFORMATION);
-							a.setContentText("le circuit est bien sauvgarde");
-							a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-							a.showAndWait();
-						}
-					} else {
-						Sauvegarde sauvegarde = new Sauvegarde();
-						sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
-						Alert a = new Alert(AlertType.INFORMATION);
-						a.setContentText("le circuit est bien sauvgarde");
-						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-						a.showAndWait();
-
-					}
-				}
-			}
-			final FileChooser fileChooser = new FileChooser();
-			fileChooser.setInitialDirectory(
-					new File(System.getProperty("user.home"))
-					);                 
-			fileChooser.getExtensionFilters().addAll(
-					new FileChooser.ExtensionFilter("SIM", "*.sim")
-					);
-			File f = fileChooser.showOpenDialog(homeWindow);
-			if (f != null) {
 				Circuit.clearCircuit();
+				fichierCourant = null;
 				workSpace.getChildren().clear();
 				horloged = false;
 				tracerLesregles(workSpace);
-				Sauvegarde.loadCiruit(f.getAbsolutePath());
-				ajouterElements();
-				fichierCourant = f;
 			}
 		}
-	
-		@FXML
-		void save(ActionEvent event) {
-			if (Circuit.getCompUtilises().isEmpty()) {
-				Alert a = new Alert(AlertType.INFORMATION);
-				a.setContentText("le circuit est vide y a rien a sauvgarder");
-				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-				a.showAndWait();
-			} else {
+	}
+
+	@FXML
+	void ouvrir(ActionEvent event) {
+		Stage stage = (Stage) ouvrir.getScene().getWindow();
+		stage.close();
+		if (!Circuit.getCompUtilises().isEmpty()) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setContentText("Voullez vous sauvgarder ce circuit");
+			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
 				if (fichierCourant == null) {
 					final FileChooser fileChooser = new FileChooser();
 					File f = fileChooser.showSaveDialog(homeWindow);
+					fileChooser.setInitialDirectory(
+							new File(System.getProperty("user.home"))
+							);                 
+					fileChooser.getExtensionFilters().addAll(
+							new FileChooser.ExtensionFilter("SIM", "*.sim")
+							);
 					if (f != null) {
 						Sauvegarde sauvegarde = new Sauvegarde();
-						sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
+						sauvegarde.saveCiruit(f.getAbsolutePath());
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.showAndWait();
 					}
-				} 
-				else {
+				} else {
 					Sauvegarde sauvegarde = new Sauvegarde();
 					sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
@@ -2275,225 +2283,282 @@ public class HomeController extends Controller {
 				}
 			}
 		}
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+				);                 
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("SIM", "*.sim")
+				);
+		File f = fileChooser.showOpenDialog(homeWindow);
+		if (f != null) {
+			Circuit.clearCircuit();
+			workSpace.getChildren().clear();
+			horloged = false;
+			tracerLesregles(workSpace);
+			Sauvegarde.loadCiruit(f.getAbsolutePath());
+			ajouterElements();
+			fichierCourant = f;
+		}
+	}
+
+	@FXML
+	void save(ActionEvent event) {
+		Stage stage = (Stage) sauvegarder.getScene().getWindow();
+		stage.close();
+		if (Circuit.getCompUtilises().isEmpty()) {
+			Alert a = new Alert(AlertType.INFORMATION);
+			a.setContentText("le circuit est vide y a rien a sauvgarder");
+			a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+			a.showAndWait();
+		} else {
+			if (fichierCourant == null) {
+				final FileChooser fileChooser = new FileChooser();
+				File f = fileChooser.showSaveDialog(homeWindow);
+				fileChooser.setInitialDirectory(
+						new File(System.getProperty("user.home"))
+						);                 
+				fileChooser.getExtensionFilters().addAll(
+						new FileChooser.ExtensionFilter("SIM", "*.sim")
+						);
+				if (f != null) {
+					Sauvegarde sauvegarde = new Sauvegarde();
+					sauvegarde.saveCiruit(f.getAbsolutePath());
+					Alert a = new Alert(AlertType.INFORMATION);
+					a.setContentText("le circuit est bien sauvgarde");
+					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+					a.showAndWait();
+				}
+			} 
+			else {
+				Sauvegarde sauvegarde = new Sauvegarde();
+				sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
+				Alert a = new Alert(AlertType.INFORMATION);
+				a.setContentText("le circuit est bien sauvgarde");
+				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				a.showAndWait();
+
+			}
+		}
+	}
 
 	@FXML
 	void saveAs(ActionEvent event) { /// la fonctionnalité de sauvegarder as
 		final FileChooser fileChooser = new FileChooser();
 		File f = fileChooser.showSaveDialog(homeWindow);
+		fileChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+				);                 
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("SIM", "*.sim")
+				);
 		if (f != null) {
 			System.out.println("the name of the file is : " + f.getAbsolutePath());
 			Sauvegarde sauvegarde = new Sauvegarde();
-			sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
+			sauvegarde.saveCiruit(f.getAbsolutePath());
 			fichierCourant = f;
 		}
 	}
 
 
-		@FXML
-		void importer(ActionEvent event) { /// la fonctionalité importer circuit integré
-			final FileChooser fileChooser = new FileChooser();
-			fileChooser.setInitialDirectory(
-					new File(System.getProperty("user.home"))
-					);
-			fileChooser.getExtensionFilters().addAll(
-					new FileChooser.ExtensionFilter("INT", "*.int")
-					);
+	@FXML
+	void importer(ActionEvent event) { /// la fonctionalité importer circuit integré
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+				);
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("INT", "*.int")
+				);
 
-			File f = fileChooser.showOpenDialog(homeWindow);
-			if (f != null) {
-				FileInputStream fichier ;
-				ObjectInputStream oo = null;
-				Composant cmp; 
+		File f = fileChooser.showOpenDialog(homeWindow);
+		if (f != null) {
+			FileInputStream fichier ;
+			ObjectInputStream oo = null;
+			Composant cmp; 
+			try {
+				fichier = new FileInputStream(f.getAbsolutePath());
+				oo = new ObjectInputStream(fichier);
+				cmp = (Composant)oo.readObject();
+				if(cmp.getClass().getSimpleName().equals("CircuitIntegre")) {
+					CircuitIntegre circuitIntegre = (CircuitIntegre)cmp;
+					ImageView imageView = new ImageView(new Image(circuitIntegre.generatePath()));
+					imageView.setLayoutX(10);
+					imageView.setLayoutY(10);
+					imageView.setFitHeight(imageView.getImage().getHeight());
+					imageView.setFitWidth(imageView.getImage().getWidth());
+					imageView.setId("CircuitIntegre");
+					Circuit.ajouterComposant(circuitIntegre, imageView);
+					workSpace.getChildren().add(imageView);
+					ajouterLeGestApresCollage(imageView);
+					addAllPolylinesToWorkSpace(circuitIntegre.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+					workSpace.getChildren().addAll(circuitIntegre.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
+				}else {
+					CircuitIntegreSequentiel ciq = (CircuitIntegreSequentiel)cmp;
+					ImageView imageView = new ImageView(new Image(ciq.generatePath()));
+					imageView.setLayoutX(10);
+					imageView.setLayoutY(10);
+					imageView.setFitHeight(imageView.getImage().getHeight());
+					imageView.setFitWidth(imageView.getImage().getWidth());
+					imageView.setId("CircuitIntegreSequentiel");
+					Circuit.ajouterComposant(ciq, imageView);
+					workSpace.getChildren().add(imageView);
+					ajouterLeGestApresCollage(imageView);
+					addAllPolylinesToWorkSpace(ciq.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+					workSpace.getChildren().addAll(ciq.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+
+			finally {
 				try {
-					fichier = new FileInputStream(f.getAbsolutePath());
-					oo = new ObjectInputStream(fichier);
-					cmp = (Composant)oo.readObject();
-					if(cmp.getClass().getSimpleName().equals("CircuitIntegre")) {
-						CircuitIntegre circuitIntegre = (CircuitIntegre)cmp;
-						ImageView imageView = new ImageView(new Image(circuitIntegre.generatePath()));
-						imageView.setLayoutX(10);
-						imageView.setLayoutY(10);
-						imageView.setFitHeight(imageView.getImage().getHeight());
-						imageView.setFitWidth(imageView.getImage().getWidth());
-						imageView.setId("CircuitIntegre");
-						Circuit.ajouterComposant(circuitIntegre, imageView);
-						workSpace.getChildren().add(imageView);
-						ajouterLeGestApresCollage(imageView);
-						addAllPolylinesToWorkSpace(circuitIntegre.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
-						workSpace.getChildren().addAll(circuitIntegre.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
-					}else {
-						CircuitIntegreSequentiel ciq = (CircuitIntegreSequentiel)cmp;
-						ImageView imageView = new ImageView(new Image(ciq.generatePath()));
-						imageView.setLayoutX(10);
-						imageView.setLayoutY(10);
-						imageView.setFitHeight(imageView.getImage().getHeight());
-						imageView.setFitWidth(imageView.getImage().getWidth());
-						imageView.setId("CircuitIntegreSequentiel");
-						Circuit.ajouterComposant(ciq, imageView);
-						workSpace.getChildren().add(imageView);
-						ajouterLeGestApresCollage(imageView);
-						addAllPolylinesToWorkSpace(ciq.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
-						workSpace.getChildren().addAll(ciq.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
-					}
-					} catch (Exception e) {
-					// TODO: handle exception
+					oo.close();
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
-				finally {
-					try {
-						oo.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 
 			}
 		}
 	}
 
 
-		@FXML
-		void encapsulerEtSauvgarder(ActionEvent event) {
-			FileOutputStream fichier ;
-			ObjectOutputStream oo = null;
-			CircuitIntegre ci = null;
-			CircuitIntegreSequentiel ciq = null;
-			if (simul) {
-				if(ListTextPin == null && ListTextPin2 == null) {
-					ListTextPin = new ArrayList<Pin>();
-					ListText = new ArrayList<Text>();
+	@FXML
+	void encapsulerEtSauvgarder(ActionEvent event) {
+		FileOutputStream fichier ;
+		ObjectOutputStream oo = null;
+		CircuitIntegre ci = null;
+		CircuitIntegreSequentiel ciq = null;
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Plusieurs éléments horloges");
+		alert.setContentText("Le circuit doit contenire un seule élément horloge ");
+		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+		if (simul) {
+			if(ListTextPin == null && ListTextPin2 == null) {
+				ListTextPin = new ArrayList<Pin>();
+				ListText = new ArrayList<Text>();
 
-					ListTextPin2 = new ArrayList<Pin>();
-					ListText2 = new ArrayList<Text>();
-					try {
-						Stage s = (Stage) encapsuler.getScene().getWindow();
-						s.close();
-						FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/ReminderCI.fxml"));
-						Parent root = fxmlLoader.load();
-						Stage stage = new Stage();
-						Scene scene = new Scene(root);
-						stage.setScene(scene);
-						stage.setTitle("Remarques");
-						stage.setResizable(false);
-						stage.initModality(Modality.APPLICATION_MODAL);
-						stage.show();
-					} catch(Exception e) {
-						e.printStackTrace();
-					}
-					encapsuler.setText("  Encapsuler");
-					encapsuler.setAlignment(Pos.BASELINE_LEFT);
-				}else {
-					if(ListTextPin.size() == Circuit.getEntreesCircuit().size() && ListTextPin2.size() == Circuit.getSortiesCircuit().size()) {
-						
-						if(Circuit.getListeEtages().size()==0 && !horloged) {
-							ci = new CircuitIntegre(ListTextPin.size(),ListTextPin2.size(), "CircuitIntegre");
-							Collections.reverse(ListTextPin);
-							Circuit.tableVerite(ListTextPin,ListTextPin2);
-							ci.setTableVerite(Circuit.getTableVerite());
-						}else {
-							if(!horloged) {
-								if(Circuit.occurencePinHorlogee() == 1) {
-									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
-									ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
-									for (Pin pin : ListTextPin) {
-										if(!pin.isHorloge()) {
-											entreCircuit.add(pin);
-										}else {
-											pin.setHorloge(false);
-											ciq.setHorloge(pin);
-										}
+				ListTextPin2 = new ArrayList<Pin>();
+				ListText2 = new ArrayList<Text>();
+				try {
+					Stage s = (Stage) encapsuler.getScene().getWindow();
+					s.close();
+					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/ReminderCI.fxml"));
+					Parent root = fxmlLoader.load();
+					Stage stage = new Stage();
+					Scene scene = new Scene(root);
+					stage.setScene(scene);
+					stage.setTitle("Remarques");
+					stage.setResizable(false);
+					stage.initModality(Modality.APPLICATION_MODAL);
+					stage.show();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+				encapsuler.setText("  Encapsuler");
+				encapsuler.setAlignment(Pos.BASELINE_LEFT);
+			}else {
+				if(ListTextPin.size() == Circuit.getEntreesCircuit().size() && ListTextPin2.size() == Circuit.getSortiesCircuit().size()) {
+
+					if(Circuit.getListeEtages().size()==0 && !horloged) {
+						ci = new CircuitIntegre(ListTextPin.size(),ListTextPin2.size(), "CircuitIntegre");
+						Collections.reverse(ListTextPin);
+						Circuit.tableVerite(ListTextPin,ListTextPin2);
+						ci.setTableVerite(Circuit.getTableVerite());
+					}else {
+						if(!horloged) {
+							if(Circuit.occurencePinHorlogee() == 1) {
+								ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
+								ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
+								for (Pin pin : ListTextPin) {
+									if(!pin.isHorloge()) {
+										entreCircuit.add(pin);
+									}else {
+										pin.setHorloge(false);
+										ciq.setHorloge(pin);
 									}
-									ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
-									ciq.setEntreesCircuit(entreCircuit);
-									ciq.setSortiesCircuit(ListTextPin2);
-									ciq.setListSouceCte(Circuit.getListSouceCte());
-									ciq.setListeEtages(Circuit.getListeEtages());
-									ciq.setNbEtages(Circuit.getNbEtages());
-									ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
-								}else {
-									//maan9drooooooooooooooooooch
 								}
+								ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+								ciq.setEntreesCircuit(entreCircuit);
+								ciq.setSortiesCircuit(ListTextPin2);
+								ciq.setListSouceCte(Circuit.getListSouceCte());
+								ciq.setListeEtages(Circuit.getListeEtages());
+								ciq.setNbEtages(Circuit.getNbEtages());
+								ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
 							}else {
-								if(Circuit.occurencePinHorlogee() == 0) {
-									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
-									ArrayList<Pin> entreCircuit = new ArrayList<Pin>(ListTextPin);
-									Pin pinHorloge = new Pin(true, "horloge");
-									for (Composant cmp : Circuit.getCompUtilises().keySet()) {
-										if(cmp.getClass().getSimpleName().equals("Horloge")) {
-											pinHorloge.getSorties()[0] = cmp.getSorties()[0];
-											break;
-										}
+								alert.showAndWait();
+							}
+						}else {
+							if(Circuit.occurencePinHorlogee() == 0) {
+								ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
+								ArrayList<Pin> entreCircuit = new ArrayList<Pin>(ListTextPin);
+								Pin pinHorloge = new Pin(true, "horloge");
+								for (Composant cmp : Circuit.getCompUtilises().keySet()) {
+									if(cmp.getClass().getSimpleName().equals("Horloge")) {
+										pinHorloge.getSorties()[0] = cmp.getSorties()[0];
+										break;
 									}
-									ciq.setHorloge(pinHorloge);
-									ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
-									ciq.setEntreesCircuit(entreCircuit);
-									ciq.setSortiesCircuit(ListTextPin2);
-									ciq.setListeEtages(Circuit.getListeEtages());
-									ciq.setNbEtages(Circuit.getNbEtages());
-									ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
-									ciq.setListSouceCte(Circuit.getListSouceCte());
-								}else {
-									//maan9drooooooooooooooooooch
-
 								}
+								ciq.setHorloge(pinHorloge);
+								ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+								ciq.setEntreesCircuit(entreCircuit);
+								ciq.setSortiesCircuit(ListTextPin2);
+								ciq.setListeEtages(Circuit.getListeEtages());
+								ciq.setNbEtages(Circuit.getNbEtages());
+								ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
+								ciq.setListSouceCte(Circuit.getListSouceCte());
+							}else {
+								alert.showAndWait();
 							}
 						}
-						opacityElements4();
+					}
+					opacityElements4();
 
-						final FileChooser fileChooser = new FileChooser();
-						if (ciq != null || ci != null) {
-							File f = fileChooser.showSaveDialog(homeWindow);
-							if (f != null) {
+					final FileChooser fileChooser = new FileChooser();
+					fileChooser.setInitialDirectory(
+							new File(System.getProperty("user.home"))
+							);                 
+					fileChooser.getExtensionFilters().addAll(
+							new FileChooser.ExtensionFilter("INT", "*.int")
+							);
+					if (ciq != null || ci != null) {
+						File f = fileChooser.showSaveDialog(homeWindow);
+						if (f != null) {
+							try {
+								fichier = new FileOutputStream(f.getAbsolutePath());
+								oo = new ObjectOutputStream(fichier);
+								if(ci!=null) {
+									oo.writeObject(ci);
+								}else if(ciq != null){
+									oo.writeObject(ciq);
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							finally {
 								try {
-									fichier = new FileOutputStream(f.getAbsolutePath()+".int");
-									oo = new ObjectOutputStream(fichier);
-									if(ci!=null) {
-										oo.writeObject(ci);
-									}else if(ciq != null){
-										oo.writeObject(ciq);
-									}
-								} catch (Exception e) {
+									oo.close();
+								} catch (IOException e) {
 									e.printStackTrace();
 								}
-								finally {
-									try {
-										oo.close();
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								}
 							}
 						}
-						else {
-							Alert a = new Alert(AlertType.ERROR);
-							a.setHeaderText("Horloge erreur");
-							a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-							a.setTitle("Circuit Integré");
-							a.setContentText("Un circuit integré doit contenir un seul element horloge  ( Horloge ou Pin ) ");
-							a.showAndWait();
-						}
-					}else {
-						Alert a = new Alert(AlertType.WARNING);
-						a.setHeaderText("Circuit integré erreur");
-						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-						a.setTitle("Circuit Integré");
-						a.setContentText("Entrée ou sortie non selectionnée");
-						a.showAndWait();
 					}
+				}else {
+					Alert a = new Alert(AlertType.WARNING);
+					a.setHeaderText("Circuit integré erreur");
+					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+					a.setTitle("Circuit Integré");
+					a.setContentText("Entrée ou sortie non selectionnée");
+					a.showAndWait();
 				}
 			}
-			else {
-				Alert a = new Alert(AlertType.WARNING);
-				a.setHeaderText("Circuit Integré erreur");
-				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-				a.setTitle("Circuit Integré");
-				a.setContentText("Le circuit doit etre valider d'abord \nVeulliez passer en mode simulation en cliquant sur le bouton 'simuler'.");
-				a.showAndWait();
-			}
-			Stage s = (Stage) encapsuler.getScene().getWindow();
-			s.close();
 		}
-	
+		Stage s = (Stage) encapsuler.getScene().getWindow();
+		s.close();
+	}
+
 
 
 	/*---------------------------affichage--------------------------------*/
@@ -2501,11 +2566,10 @@ public class HomeController extends Controller {
 	@FXML
 
 	void chronogramme(ActionEvent event) { /// charger la fenetre du chronogramme
+		Stage s = (Stage) chronogramme.getScene().getWindow();
+		s.close();
 		if (simul &&  horloged) {
-
-		try {
-	        	Stage s = (Stage) chronogramme.getScene().getWindow();
-        		s.close();
+			try {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/elementDechronogramme.fxml"));
 				Parent root = fxmlLoader.load();
 				Stage stage = new Stage();
@@ -2532,28 +2596,58 @@ public class HomeController extends Controller {
 		}
 	}
 
-		@FXML
-		void tableDeVerite(ActionEvent event) { /// charger la fenetre du table de verité
-			Stage stage1 = (Stage) tableVerite.getScene().getWindow();
-			stage1.close();
-			if (simul) {
-				if(Circuit.getEntreesCircuit().size() != 0) {
-					if(ListTextPin == null && ListTextPin2 == null) {
-						//	    			simul = true;
-						ListTextPin = new ArrayList<Pin>();
-						ListText = new ArrayList<Text>();
-						ListTextPin2 = new ArrayList<Pin>();
-						ListText2 = new ArrayList<Text>();
+	@FXML
+	void tableDeVerite(ActionEvent event) { /// charger la fenetre du table de verité
+		Stage stage1 = (Stage) tableVerite.getScene().getWindow();
+		stage1.close();
+		if (simul) {
+			if(Circuit.getEntreesCircuit().size() != 0 && Circuit.getSortiesCircuit().size() !=0) {
+				if(ListTextPin == null && ListTextPin2 == null) {
+					//	    			simul = true;
+					ListTextPin = new ArrayList<Pin>();
+					ListText = new ArrayList<Text>();
+					ListTextPin2 = new ArrayList<Pin>();
+					ListText2 = new ArrayList<Text>();
+					try {
+						Stage s = (Stage) tableVerite.getScene().getWindow();
+						s.close();
+						FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Reminder.fxml"));
+						Parent root = fxmlLoader.load();
+						Stage stage = new Stage();
+						Scene scene = new Scene(root);
+						stage.setScene(scene);
+						//stage.setTitle("la table de verité");
+						stage.setTitle("Remarque");
+						stage.setResizable(false);
+						stage.initModality(Modality.APPLICATION_MODAL);
+						stage.show();
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+					//Boutton Table de verité (Mode normal)
+					tableVerite.setText("  Générer la Table");
+					tableVerite.setAlignment(Pos.BASELINE_LEFT);
+				}else { //Generer la table et aller vers l'etat normal
+					//Generer La table de verité
+					System.out.println(ListTextPin2);
+					if(ListTextPin.size() != 0 && ListTextPin2.size()!=0) {
+						Circuit.tableVerite(ListTextPin,ListTextPin2);
+						Circuit.defaultCompValue(); //Tous noir
+						Circuit.initialiser();
+						//Supprimer les numeros
+						//La fenetre de la table de verité
 						try {
 							Stage s = (Stage) tableVerite.getScene().getWindow();
 							s.close();
-							FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Reminder.fxml"));
+							FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/TableDeVerite.fxml"));
 							Parent root = fxmlLoader.load();
+							TableDeVeriteController c = fxmlLoader.getController();				
+							opacityElements4();
 							Stage stage = new Stage();
 							Scene scene = new Scene(root);
 							stage.setScene(scene);
-							//stage.setTitle("la table de verité");
-							stage.setTitle("Remarque");
+							stage.setTitle("la table de verité");
+							//stage.setTitle("Remarque");
 							stage.setResizable(false);
 							stage.initModality(Modality.APPLICATION_MODAL);
 							stage.show();
@@ -2561,89 +2655,60 @@ public class HomeController extends Controller {
 							e.printStackTrace();
 						}
 						//Boutton Table de verité (Mode normal)
-						tableVerite.setText("  Générer la Table");
+						tableVerite.setText("  Table de vérité");
 						tableVerite.setAlignment(Pos.BASELINE_LEFT);
-					}else { //Generer la table et aller vers l'etat normal
-						//Generer La table de verité
-						System.out.println(ListTextPin2);
-						if(ListTextPin.size() != 0 && ListTextPin2.size()!=0) {
-							Circuit.tableVerite(ListTextPin,ListTextPin2);
-							Circuit.defaultCompValue(); //Tous noir
-							Circuit.initialiser();
-							//Supprimer les numeros
-							//La fenetre de la table de verité
-							try {
-								Stage s = (Stage) tableVerite.getScene().getWindow();
-								s.close();
-								FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/TableDeVerite.fxml"));
-								Parent root = fxmlLoader.load();
-								TableDeVeriteController c = fxmlLoader.getController();				
-								opacityElements4();
-								Stage stage = new Stage();
-								Scene scene = new Scene(root);
-								stage.setScene(scene);
-								stage.setTitle("la table de verité");
-								//stage.setTitle("Remarque");
-								stage.setResizable(false);
-								stage.initModality(Modality.APPLICATION_MODAL);
-								stage.show();
-							} catch(Exception e) {
-								e.printStackTrace();
-							}
-							//Boutton Table de verité (Mode normal)
-							tableVerite.setText("  Table de vérité");
-							tableVerite.setAlignment(Pos.BASELINE_LEFT);
 
-						}else {
-							Alert alert = new Alert(AlertType.ERROR);
-							alert.setTitle("Liste d'entrées vide");
-							alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-							alert.setHeaderText("Pas de selection ");
-							alert.setContentText("Il faut que vous seléctionner au moins une entrée et une sortie pour générer la table de verité !");
-							alert.showAndWait();
-						}
 					}
-				
-				}else {
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-					alert.setTitle("Pas d'entrées dans le circuit");
-					alert.setHeaderText("Pas d'entrées dans le circuit");
-					alert.setContentText("Il faut exister au moins une entrée (Pin d'entré )dans le circuit pour générer la table de verité !");
-					alert.showAndWait();
+					else {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Liste d'entrées vide");
+						alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+						alert.setHeaderText("Pas de selection ");
+						alert.setContentText("Il faut que vous sélectionner au moins une entrée et une sortie pour générer la table de verité !");
+						alert.showAndWait();
+					}
 				}
+
+			}else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				alert.setTitle("Entree / sortie manquante");
+				alert.setHeaderText("Pas d'entrées ou de sorties dans le circuit");
+				alert.setContentText("Il faut exister au moins une entrée et une sortie pour générer la table de verité");
+				alert.showAndWait();
 			}
 		}
-		
-public void opacityElements4(){
-	for (Text num : ListText) {
-		workSpace.getChildren().remove(num);
-	}
-	for (Text num : ListText2) {
-		workSpace.getChildren().remove(num);
 	}
 
-	//simul = false;		//Mode normal
-	//mode normal (opacité 1)
-	for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
-		entry.getValue().setOpacity(1);
-	}
-	for (Entry<Fil, ArrayList<InfoPolyline>> entry : Circuit.getfilUtilises().entrySet()) {
-
-		for (InfoPolyline info : entry.getValue()) {
-			info.getLinePrincipale().setOpacity(1);
+	public void opacityElements4(){
+		for (Text num : ListText) {
+			workSpace.getChildren().remove(num);
 		}
+		for (Text num : ListText2) {
+			workSpace.getChildren().remove(num);
+		}
+
+		//simul = false;		//Mode normal
+		//mode normal (opacité 1)
+		for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
+			entry.getValue().setOpacity(1);
+		}
+		for (Entry<Fil, ArrayList<InfoPolyline>> entry : Circuit.getfilUtilises().entrySet()) {
+
+			for (InfoPolyline info : entry.getValue()) {
+				info.getLinePrincipale().setOpacity(1);
+			}
+		}
+		ListTextPin.clear();
+		ListText.clear();
+		ListText = null;
+		ListTextPin = null; //pas de liste
+
+		ListTextPin2.clear();
+		ListText2.clear();
+		ListText2 = null;
+		ListTextPin2 = null; //pas de liste
 	}
-	ListTextPin.clear();
-	ListText.clear();
-	ListText = null;
-	ListTextPin = null; //pas de liste
-	
-	ListTextPin2.clear();
-	ListText2.clear();
-	ListText2 = null;
-	ListTextPin2 = null; //pas de liste
-}
 
 
 	/*------------------------about --------------------------------*/
@@ -3027,7 +3092,6 @@ public void opacityElements4(){
 				}
 			}
 			else if(img.getId().equals("CircuitIntegreSequentiel")) {
-				System.out.println("dkhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaal");
 				ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)Circuit.getCompFromImage(img)).generateCercles(img.getLayoutX(), img.getLayoutY());
 				for (Circle circle : arrayList) {
 					workSpace.getChildren().add(circle);
@@ -3287,5 +3351,4 @@ public void opacityElements4(){
 				}
 			}
 	}
-	
 }

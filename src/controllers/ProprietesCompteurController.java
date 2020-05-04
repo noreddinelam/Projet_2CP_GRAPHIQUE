@@ -29,6 +29,12 @@ public class ProprietesCompteurController extends ProprietesController{
 	}
 
 	public void initialiser(Composant cmp){
+		btns.add(imgNextCompteur);
+		btns.add(imgNextFront);
+		btns.add(imgPreviousCompteur);
+		btns.add(imgPreviousFront);
+		btns.add(imgMoinsNbBits);
+		btns.add(imgPlusNbBits);
 		this.cmp = cmp;
 		label.setText(cmp.getNom());		
 		i=cmp.getNombreEntree();
@@ -44,6 +50,15 @@ public class ProprietesCompteurController extends ProprietesController{
 		if(i==4){
 			plusNbBits.setVisible(false);
 			imgPlusNbBits.setVisible(false);
+		}
+		if (!cmp.isDessocier()) {
+			plusNbBits.setDisable(true);
+			moinsNbBits.setDisable(true);
+			nextFront.setDisable(true);
+			previousFront.setDisable(true);
+			nextCompteur.setDisable(true);
+			previousCompteur.setDisable(true);
+			applyOpaciteForImages(btns);
 		}
 	}
 	@FXML
@@ -105,7 +120,8 @@ public class ProprietesCompteurController extends ProprietesController{
 
     @FXML
     void annuler(ActionEvent event) {
-
+    	Stage s = (Stage)annuler.getScene().getWindow(); 
+    	s.close();
     }
 
     @FXML
@@ -132,9 +148,7 @@ public class ProprietesCompteurController extends ProprietesController{
     		imageView.setFitHeight(img.getHeight());
     		imageView.setFitWidth(img.getWidth());
     		addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
-    	}	else {
-    		this.alert();
-		}
+    	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

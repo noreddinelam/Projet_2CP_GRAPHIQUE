@@ -1,6 +1,11 @@
 package noyau;
 
 public class And extends Portes {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6769294463092098669L;
+
 	public And(int nombreEntree,String nom) { // constructeur
 		super(nombreEntree,nom);
 	}

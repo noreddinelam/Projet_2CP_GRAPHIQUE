@@ -8,6 +8,10 @@ import javafx.scene.shape.Polyline;
 
 public class Demultiplexeur extends Combinatoires{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8309920624094733575L;
 	private int nbCommande;
 
 	public Demultiplexeur(int nbCommande,String nom) { // constructeur

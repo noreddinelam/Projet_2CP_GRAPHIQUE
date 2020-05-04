@@ -7,6 +7,10 @@ import javafx.scene.shape.Polyline;
 
 public abstract class Bascule extends Sequentiels{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2271314050334630883L;
 	protected Fil preset = null;
 		
 	public Bascule(int nombreEntree,String nom,Front front) { // constructeur

@@ -26,11 +26,18 @@ public class ProprietesBasculesController extends ProprietesController {
 	}
 
 	public void initialiser(Composant cmp) {
+		btns.add(imgNextFront);
+		btns.add(imgPreviousFront);
 		this.cmp = cmp;
 		composant.setText(cmp.getClass().getSimpleName());
 		i=((Bascule)cmp).getFront().ordinal();
 		label.setText(cmp.getNom());
 		front.setText(bddNbFront[i]);
+		if (! cmp.isDessocier()) {
+			nextFront.setDisable(true);
+			previousFront.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
 	}
 	
     @FXML
@@ -76,9 +83,7 @@ public class ProprietesBasculesController extends ProprietesController {
         		((Bascule)cmp).setFront(Front.Front_Descendant);
         	
         	Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
-		}else {
-    		this.alert();
-    		}
+		}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

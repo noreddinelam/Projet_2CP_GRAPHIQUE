@@ -35,6 +35,8 @@ public class ProprietesSourceConstController extends ProprietesController {
 	}
 
 	public void initialiser(Composant cmp) {
+		btns.add(imgNextDirection);
+		btns.add(imgPreviousDirection);
 		this.cmp = cmp;
 		SourceConstante sourceconstanteComposant = (SourceConstante) cmp;
 		if (sourceconstanteComposant.getEtatLogique() != EtatLogique.ONE) {
@@ -46,6 +48,11 @@ public class ProprietesSourceConstController extends ProprietesController {
 		direct = 0;
 //		composant.setText(cmp.getClass().getSimpleName().toString());
 		label.setText(cmp.getNom());
+		if (! cmp.isDessocier()) {
+			nextDirection.setDisable(true);
+			previousDirection.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
 
 	}
 
@@ -107,10 +114,8 @@ public class ProprietesSourceConstController extends ProprietesController {
 		if (cmp.isDessocier()) {
 			cmp.setCord();
 			Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
-		} else {
-			this.alert();
-		}
-		Stage s = (Stage) annuler.getScene().getWindow();
+		} 
+		Stage s = (Stage) mdf.getScene().getWindow();
 		s.close();
 	}
 

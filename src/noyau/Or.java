@@ -2,6 +2,11 @@ package noyau;
 
 public class Or extends Portes{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 87427809768695712L;
+
 	public Or(int nombreEntree,String nom) {
 		super(nombreEntree,nom);
 	}

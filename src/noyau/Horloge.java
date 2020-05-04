@@ -9,10 +9,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Horloge extends Composant implements ElementHorloge,Runnable,ComposantDeChronogramme{
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4974039401043051548L;
 	public static EtatLogique etat = EtatLogique.ZERO;
 	public static long temps=1000;
 	public volatile static boolean active = true;// on met l'horloge toujours active pour le test
