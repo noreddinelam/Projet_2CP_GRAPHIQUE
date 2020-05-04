@@ -2113,7 +2113,6 @@ public class HomeController extends Controller {
 						horloged = true;
 						horlogeDeCercuit = dragImageView;
 					}
-					cmp2.setCord();
 					cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
 					cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
 					dragImageView.setImage(elementSeclecionner.getImage());

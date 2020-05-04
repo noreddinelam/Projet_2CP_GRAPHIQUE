@@ -164,15 +164,15 @@ public class LesCoordonnees implements Serializable{
 			return new Coordonnees(cordLoad.getX() + image.getLayoutX(), cordLoad.getY() + image.getLayoutY());
 		else return null;
 	}	
-	public void rotationXY() {
+	public void rotationXY(ImageView imageView) {
 		double perm ;
 		for(int i=0;i<nbCordEntree;i++) {
 			perm = cordEntree[i].getX();
 			cordEntree[i].setX(cordEntree[i].getY());
 			cordEntree[i].setY(perm);
 		}
-		cordSorties[0].setX( cordSorties[0].getX() /2 );
-		cordSorties[0].setY(cordSorties[0].getY()*2);	
+		cordSorties[0].setX(imageView.getFitWidth() / 2);
+		cordSorties[0].setY(imageView.getFitHeight() );	
 	}
 	
 	public void rotationXX() {

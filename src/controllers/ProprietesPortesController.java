@@ -123,18 +123,17 @@ public class ProprietesPortesController extends ProprietesController{
     	if (cmp.isDessocier()) {
     		ImageView img= Circuit.getImageFromComp(cmp);
     		cmp.setNombreEntree(i);
-    		cmp.setCord();
     		cmp.getLesCoordonnees().setNbCordEntree(i);  		
-    		((Portes)cmp).rotation(direct);    		
     		if(cmp.getDirection() != direct) {
     			cmp.setDirection(direct);
     			removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(cmp.getSorties()[0]));
-    			addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
-    		}
+
     		Image image = new Image(cmp.generatePath());
     		img.setImage(image);
     		img.setFitHeight(image.getHeight());
     		img.setFitWidth(image.getWidth());
+    		addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
+    		}
     	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();

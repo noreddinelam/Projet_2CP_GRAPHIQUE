@@ -66,15 +66,16 @@ public abstract class Portes extends Composant {
 	}
 	
 	public void rotation(int direc) {
+		ImageView imageView = Circuit.getImageFromComp(this);
 		switch (direc) {
 		case 1:
-			lesCoordonnees.rotationXY();
+			lesCoordonnees.rotationXY(imageView);
 			break;
 		case 2:
 			lesCoordonnees.rotationXX();
 			break;
 		case 3:
-			lesCoordonnees.rotationXY();
+			lesCoordonnees.rotationXY(imageView);
 			lesCoordonnees.rotationYY();
 			break;
 		}
@@ -136,40 +137,5 @@ public abstract class Portes extends Composant {
 		}		
 		return reslut;
 	}
-//	public ArrayList<Polyline> generatePolyRotation(double x,double y) {
-//		Polyline polyline = null;
-//		double posX ;
-//		double posY ;
-//		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
-//		ArrayList<InfoPolyline> listPolylines ;
-//		for (int i = 0; i < nombreSortie; i++) {
-//			listPolylines = new ArrayList<InfoPolyline>();
-//			posX = x+ lesCoordonnees.getCordSortieInIndex(i).getX() ;
-//			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
-//			switch (direction) {
-//			case 0:
-//				polyline = new Polyline(posX ,posY,posX+5,posY);
-//				break;
-//			case 1:
-//				polyline = new Polyline(posX ,posY,posX,posY+5);
-//				break;
-//			case 2:
-//				polyline = new Polyline(posX ,posY,posX-5,posY);
-//				break;
-//			case 3:
-//				polyline = new Polyline(posX ,posY,posX,posY-5);
-//				break;
-//				default:
-//					break;
-//			}
-//			
-//			//polyline.setViewOrder(2); //l'ordre 
-//			polyline.toBack();
-//			listPolylines.add(new InfoPolyline(polyline));
-//			reslut.add(polyline);
-//			Circuit.ajouterFil(sorties[i], listPolylines);;
-//		}		
-//		return reslut;
-//	}
 	
 }
