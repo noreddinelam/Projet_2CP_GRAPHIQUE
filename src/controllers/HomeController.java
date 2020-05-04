@@ -1171,7 +1171,7 @@ public class HomeController extends Controller {
 			line.getPoints().addAll(x, y2, x2, y2);
 		return line;
 	}
-
+	boolean ctrlz = false;
 	public Polyline tracerSortieApresCollage(Polyline line, Coordonnees crdDebut, boolean relocate) {// Trecer les
 		// lignes de
 		// sorties apres
@@ -1249,7 +1249,6 @@ public class HomeController extends Controller {
 				line.getPoints().add(2, x);
 				line.getPoints().add(3, y2);
 			}
-
 		}
 		return line;
 	}
@@ -1296,7 +1295,7 @@ public class HomeController extends Controller {
 
 								SnapshotParameters snapParams = new SnapshotParameters();
 								snapParams.setFill(Color.TRANSPARENT);
-								eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
+								//eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
 								eleementAdrager.startFullDrag();
 								e.consume();
 							}
@@ -1444,43 +1443,41 @@ public class HomeController extends Controller {
 
 							}
 						}
-
-
-					});
-					eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
-						@Override
-						public void handle(MouseEvent e) {
-							if (! simul) {
-								dragItem = null;
-								if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
-								{
-									Donnes sauveGarde=new Donnes();
-									sauveGarde.setTypeDaction(Actions.Mouvement);
-									sauveGarde.setComposantCommeImage(eleementAdrager);
-									undoDeque.remove(sauveGarde);
-									sauveGarde.setPosX(posX);
-									sauveGarde.setPosY(posY);
-									undoDeque.addFirst(sauveGarde);
-								}
-								eleementAdrager.setMouseTransparent(false);
-								eleementAdrager.setCursor(Cursor.DEFAULT);
-								if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(eleementAdrager))
-								{
-									eleementAdrager.setLayoutX(posX);
-									eleementAdrager.setLayoutY(posY);
-									updatePolyline(eleementAdrager);
-									afficheurX.setText(String.valueOf(posX));
-									afficheurY.setText(String.valueOf(posY));
-									workSpace.getChildren().remove(guideX);
-									workSpace.getChildren().remove(guideXp);
-									workSpace.getChildren().remove(guideY);
-									workSpace.getChildren().remove(guideYp);
-								}
-								else {
-									posX = eleementAdrager.getLayoutX();
-									posY = eleementAdrager.getLayoutY();
-								}
-								insererNoedDebut = true;
+						});
+						eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
+							@Override
+							public void handle(MouseEvent e) {
+								if (! simul) {
+									dragItem = null;
+									if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
+									{
+										Donnes sauveGarde=new Donnes();
+										sauveGarde.setTypeDaction(Actions.Mouvement);
+										sauveGarde.setComposantCommeImage(eleementAdrager);
+										//undoDeque.remove(sauveGarde);
+										sauveGarde.setPosX(posX);
+										sauveGarde.setPosY(posY);
+										undoDeque.addFirst(sauveGarde);
+									}
+									eleementAdrager.setMouseTransparent(false);
+									eleementAdrager.setCursor(Cursor.DEFAULT);
+									if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(eleementAdrager))
+									{
+										eleementAdrager.setLayoutX(posX);
+										eleementAdrager.setLayoutY(posY);
+										updatePolyline(eleementAdrager);
+										afficheurX.setText(String.valueOf(posX));
+										afficheurY.setText(String.valueOf(posY));
+										workSpace.getChildren().remove(guideX);
+										workSpace.getChildren().remove(guideXp);
+										workSpace.getChildren().remove(guideY);
+										workSpace.getChildren().remove(guideYp);
+									}
+									else {
+										posX = eleementAdrager.getLayoutX();
+										posY = eleementAdrager.getLayoutY();
+									}
+									insererNoedDebut = true;
 							}
 						}
 					});
@@ -2845,7 +2842,9 @@ public class HomeController extends Controller {
 			{
 			case Mouvement :
 			{
+				ctrlz = true;
 				refrechLists(sauveGarde.getComposantCommeImage());
+				SupprimerPoint();
 				//removePoints();
 				// addPoints();
 				ImageView imageView = sauveGarde.getComposantCommeImage();
@@ -2862,11 +2861,14 @@ public class HomeController extends Controller {
 			}break;
 			case Creation :
 			{
-				System.out.println(sauveGarde.getComposant().toString());
 				workSpace.getChildren().remove(sauveGarde.getComposantCommeImage());
 				ArrayList<Polyline> lineListe= Circuit.supprimerComp(sauveGarde.getComposant());
 				for(Polyline line : lineListe)
 					workSpace.getChildren().remove(line);
+				if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge")) {
+					horloged = false;
+					horlogeDeCercuit = null;
+				}
 			}break;
 			case Modification :
 			{
@@ -2913,6 +2915,9 @@ public class HomeController extends Controller {
 					for (Circle circle : resCircles) {
 						workSpace.getChildren().add(circle);
 					}
+				}else if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge")) {
+					horloged = true;
+					horlogeDeCercuit = sauveGarde.getComposantCommeImage();
 				}
 			}break;
 			case SuppressionFil :{
@@ -3354,4 +3359,19 @@ public class HomeController extends Controller {
 		}
 	}
 
+	public void SupprimerPoint() {
+		Polyline line;
+		int i = 0,size = 0;
+			for( i = 0; i < listSorties.size();i++){
+				line = listSorties.get(i);
+				if(Circuit.getListFromPolyline(line).size()>1 || Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
+					Coordonnees crd = new Coordonnees(line.getPoints().get(4),line.getPoints().get(5));
+					//if(line.getPoints().size()>10) {
+					if(nbOccPoint(line, crd.getX(), crd.getY())==1) {
+					line.getPoints().remove(0);
+					line.getPoints().remove(0);
+					}
+				}
+			}
+	}
 }

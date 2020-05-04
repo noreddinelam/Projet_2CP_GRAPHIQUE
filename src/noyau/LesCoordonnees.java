@@ -164,4 +164,31 @@ public class LesCoordonnees implements Serializable{
 			return new Coordonnees(cordLoad.getX() + image.getLayoutX(), cordLoad.getY() + image.getLayoutY());
 		else return null;
 	}	
+	public void rotationXY() {
+		double perm ;
+		for(int i=0;i<nbCordEntree;i++) {
+			perm = cordEntree[i].getX();
+			cordEntree[i].setX(cordEntree[i].getY());
+			cordEntree[i].setY(perm);
+		}
+		cordSorties[0].setX( cordSorties[0].getX() /2 );
+		cordSorties[0].setY(cordSorties[0].getY()*2);	
+	}
+	
+	public void rotationXX() {
+		double x = cordSorties[0].getX();
+		cordSorties[0].setX(cordEntree[0].getX());
+		for(int i=0;i<nbCordEntree;i++) {
+			cordEntree[i].setX(x);
+		}
+		
+	}
+	
+	public void rotationYY() {
+		double y = cordSorties[0].getY();
+		cordSorties[0].setY(cordEntree[0].getY());
+		for(int i=0;i<nbCordEntree;i++) {
+			cordEntree[i].setY(y);
+		}
+	}
 }
