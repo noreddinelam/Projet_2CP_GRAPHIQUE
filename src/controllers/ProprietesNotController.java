@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 public class ProprietesNotController extends ProprietesController{
 
-	private Direction bddDirection[] = {Direction.Nord,Direction.Est,Direction.West,Direction.Sud};
+	private String bddDirection[] = {"Est","Sud","West","Nord"}; //base de données de directions
 	int direct;
 	
     public Composant getNot() {
@@ -27,6 +27,8 @@ public class ProprietesNotController extends ProprietesController{
 	public void initialiser(Composant cmp) {
 		btns.add(imgNextDirection);
 		btns.add(imgPreviousDirection);
+		direct = cmp.getDirection();
+		direction.setText(bddDirection[direct]);
 		this.cmp = cmp;
 		direct = 0;
 		label.setText(cmp.getNom());
@@ -70,6 +72,18 @@ public class ProprietesNotController extends ProprietesController{
     @FXML
     void modifier(ActionEvent event) {
     	cmp.setNom(label.getText());
+    	ImageView img= Circuit.getImageFromComp(cmp);
+		cmp.setCord();
+		((Portes)cmp).rotation(direct);    		
+		if(cmp.getDirection() != direct) {
+			cmp.setDirection(direct);
+			removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(cmp.getSorties()[0]));
+			addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
+		}
+		Image image = new Image(cmp.generatePath());
+		img.setImage(image);
+		img.setFitHeight(image.getHeight());
+		img.setFitWidth(image.getWidth());
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }
@@ -78,14 +92,14 @@ public class ProprietesNotController extends ProprietesController{
     void nextDirection(ActionEvent event) {
     	direct ++;
     	if(direct > 3) direct=0;
-    	direction.setText(bddDirection[direct].toString());
+    	direction.setText(bddDirection[direct]);
     }
 
     @FXML
     void previousDirection(ActionEvent event) {
     	direct--;
     	if(direct < 0) direct = 3;
-    	direction.setText(bddDirection[direct].toString());
+    	direction.setText(bddDirection[direct]);
     }
 
 }

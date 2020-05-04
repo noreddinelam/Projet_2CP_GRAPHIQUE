@@ -57,11 +57,10 @@ public abstract class Portes extends Composant {
 	@Override
 	public String generatePath() {
 		// TODO Auto-generated method stub
-		return this.getClass().getSimpleName() + "/" + (String.valueOf(getNombreEntree()))+".png";
+		return this.getClass().getSimpleName() + "/" + (String.valueOf(getNombreEntree()))+Integer.toString(direction)+".png";
 	}
 	
 	public void setCord() {
-		System.out.println("seeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeet cord");
 		ImageView img = Circuit.getImageFromComp(this);
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(),img.getBoundsInLocal().getHeight()/2), 0) ;
 	}

@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import noyau.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point3D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -123,34 +124,21 @@ public class ProprietesPortesController extends ProprietesController{
     		ImageView img= Circuit.getImageFromComp(cmp);
     		cmp.setNombreEntree(i);
     		cmp.setCord();
-    		cmp.getLesCoordonnees().setNbCordEntree(i);
-    		img.setImage(new Image(cmp.generatePath()));
-    		((Portes)cmp).rotation(direct);
-    		
+    		cmp.getLesCoordonnees().setNbCordEntree(i);  		
+    		((Portes)cmp).rotation(direct);    		
     		if(cmp.getDirection() != direct) {
-        		cmp.setDirection(direct);
+    			cmp.setDirection(direct);
     			removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(cmp.getSorties()[0]));
-    			addAllPolylinesToWorkSpace(((Portes)cmp).generatePolyRotation(img.getLayoutX(), img.getLayoutY()));
+    			addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
     		}
-    		//cmp.resetPolyline(Circuit.getPolylineFromFil(cmp.getSorties()[0]).get(0).getLinePrincipale(),img.getLayoutX(),img.getLayoutY());
-    		switch (direct) {
-    		case 0:
-    			img.setRotate(0);
-    			break;
-    		case 1:
-    			img.setRotate(90);
-    			break;
-    		case 2:
-    			img.setRotate(180);
-    			break;
-    		case 3:
-    			img.setRotate(270);
-    			break;
-    		}
+    		Image image = new Image(cmp.generatePath());
+    		img.setImage(image);
+    		img.setFitHeight(image.getHeight());
+    		img.setFitWidth(image.getWidth());
     	}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
-    	
+
     }
 
     @FXML

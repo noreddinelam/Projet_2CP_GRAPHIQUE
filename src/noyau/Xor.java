@@ -49,6 +49,7 @@ public class Xor extends Portes {
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 73.1), 4);
 		}break;
 		}
+		rotation(direction);
 	}
 	
 }
