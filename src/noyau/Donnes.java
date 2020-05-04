@@ -23,6 +23,13 @@ public class Donnes {
 	private Fil fil = null;
 	private ArrayList<InfoPolyline> arrayList = new ArrayList<InfoPolyline>();
 	private ArrayList<Polyline> listPolyParent = new ArrayList<Polyline>();
+	private int rotation;
+	public int getRotation() {
+		return rotation;
+	}
+	public void setRotation(int rotation) {
+		this.rotation = rotation;
+	}
 	public int getNombreDesSorties() {
 		return nombreDesSorties;
 	}
