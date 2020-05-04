@@ -3364,7 +3364,7 @@ public class HomeController extends Controller {
 		int i = 0,size = 0;
 			for( i = 0; i < listSorties.size();i++){
 				line = listSorties.get(i);
-				if(Circuit.getListFromPolyline(line).size()>1 || Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
+				if(Circuit.getListFromPolyline(line).size()>1) { //|| Circuit.getInfoPolylineFromPolyline(line).isRelier()
 					Coordonnees crd = new Coordonnees(line.getPoints().get(4),line.getPoints().get(5));
 					//if(line.getPoints().size()>10) {
 					if(nbOccPoint(line, crd.getX(), crd.getY())==1) {
