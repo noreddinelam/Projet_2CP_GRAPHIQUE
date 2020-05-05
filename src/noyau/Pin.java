@@ -24,6 +24,7 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 	public Pin(boolean input,String nom) {
 		// TODO Auto-generated constructor stub
 		super(0,nom);
+		this.direction = 1;
 		this.input = input;
 		if (input) { // pour verifier si c'est un pin d'entree ou de sortie
 			nombreSortie = 1;
@@ -36,7 +37,7 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 			Circuit.ajouterSortie(this);
 			lesCoordonnees = new LesCoordonnees(1,0,0);
 		}
-		this.icon="Pin/0Input.png";
+		this.icon="Pin/0Input1.png";
 	}
 	
 	@Override
@@ -109,10 +110,10 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 		}
 		if (input) {
 		
-			return path + "Input" +".png";
+			return path + "Input"+Integer.toString(direction) +".png";
 		}
 	
-		return path + "Output" +".png";
+		return path + "Output"+Integer.toString(direction) +".png";
 		
 		
 	}
@@ -127,17 +128,34 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 		else {
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(img.getBoundsInLocal().getWidth() / 2, img.getBoundsInLocal().getHeight()), 0);
 		}
+		rotation(direction);
 	}
 	
 	@Override
 	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
 		setCord();
-		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX();
-		double posY = y+lesCoordonnees.getCordSortieInIndex(0).getY();
 		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
 		if (input) {
-			Polyline polyline = new Polyline(posX,posY,posX,posY+5);
+			double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX();
+			double posY = y+lesCoordonnees.getCordSortieInIndex(0).getY();
+			Polyline polyline = null;
+			switch (direction) {
+			case 0:
+				polyline = new Polyline(posX ,posY,posX+5,posY);
+				break;
+			case 1:
+				polyline = new Polyline(posX ,posY,posX,posY+5);
+				break;
+			case 2:
+				polyline = new Polyline(posX ,posY,posX-5,posY);
+				break;
+			case 3:
+				polyline = new Polyline(posX ,posY,posX,posY-5);
+				break;
+				default:
+					break;
+			}
 			polyline.setStrokeWidth(3);
 			ArrayList<InfoPolyline> listPolylines = new ArrayList<InfoPolyline>();
 			listPolylines.add(new InfoPolyline(polyline));
@@ -162,10 +180,25 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 		}
 		
 	}
-	@Override
 	public void resetPolyline(Polyline line , double x,double y) {
 		line.getPoints().clear();
-		line.getPoints().addAll(x,y,x,y+5);
+		System.out.println("hfdjqdgshj");
+		switch (direction) {
+		case 0:
+			line.getPoints().addAll(x,y,x+5,y);
+			break;
+		case 1:
+			line.getPoints().addAll(x,y,x,y+5);
+			break;
+		case 2:
+			line.getPoints().addAll(x,y,x-5,y);
+			break;
+		case 3:
+			line.getPoints().addAll(x,y,x,y-5);
+			break;
+			default:
+				break;
+		}
 	}
 	@Override
 	public void validerComposant() {
@@ -206,6 +239,23 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 	public EtatLogique getSortieBar() {
 		// TODO Auto-generated method stub
 		return this.etat.getNum()==0? EtatLogique.ONE : EtatLogique.ZERO;
+	}
+	public void rotation(int direc) {
+		ImageView imageView = Circuit.getImageFromComp(this);
+		switch (direc) {
+		case 0:
+			lesCoordonnees.rotationYYPin();
+			lesCoordonnees.rotationXYPin(imageView);
+			break;
+		case 2:
+			lesCoordonnees.rotationYYPin();
+			lesCoordonnees.rotationXYPin(imageView);
+			lesCoordonnees.rotationXXPin();
+			break;
+		case 3:
+			lesCoordonnees.rotationYYPin();
+			break;
+		}
 	}
 	public double getStartChronoX() {
 		return startX;

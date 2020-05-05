@@ -135,6 +135,7 @@ public class ProprietesPortesController extends ProprietesController{
     			addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
     		}
     		else {
+    			cmp.setCord();
     			Image image = new Image(cmp.generatePath());
     			img.setImage(image);
     			img.setFitHeight(image.getHeight());

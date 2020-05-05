@@ -73,17 +73,25 @@ public class ProprietesNotController extends ProprietesController{
     void modifier(ActionEvent event) {
     	cmp.setNom(label.getText());
     	ImageView img= Circuit.getImageFromComp(cmp);
-		cmp.setCord();
-		((Portes)cmp).rotation(direct);    		
+		
+		//((Portes)cmp).rotation(direct);    		
 		if(cmp.getDirection() != direct) {
+			HomeController.sauveGarderRotation(cmp, img, cmp.getDirection());
 			cmp.setDirection(direct);
 			removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(cmp.getSorties()[0]));
+			Image image = new Image(cmp.generatePath());
+			img.setImage(image);
+			img.setFitHeight(image.getHeight());
+			img.setFitWidth(image.getWidth());
 			addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
 		}
-		Image image = new Image(cmp.generatePath());
-		img.setImage(image);
-		img.setFitHeight(image.getHeight());
-		img.setFitWidth(image.getWidth());
+		else {
+			cmp.setCord();
+			Image image = new Image(cmp.generatePath());
+			img.setImage(image);
+			img.setFitHeight(image.getHeight());
+			img.setFitWidth(image.getWidth());
+		}
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }
