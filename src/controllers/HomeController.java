@@ -28,6 +28,7 @@ import com.sun.media.jfxmediaimpl.platform.Platform;
 
 import application.ClickBarDroite;
 import application.ClickDroit;
+import application.ClickDroitLabel;
 import application.ClickSouris2;
 import application.FenetreDesErreurs;
 import javafx.animation.Interpolator;
@@ -55,6 +56,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -67,6 +70,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -125,7 +129,7 @@ public class HomeController extends Controller {
 
 	ImageView dragItem;
 	private static ClickDroit clickDroitFenetre;
-
+    private ClickDroitLabel clickDroitLabel=null;
 	private static ClickBarDroite fichierFenetre;
 	private static ClickBarDroite affichageFenetre;
 	private static ClickBarDroite editionFenetre;
@@ -159,7 +163,6 @@ public class HomeController extends Controller {
 	private static Line guideY = new Line();
 	private static Line guideYp = new Line();
 	private static boolean copierActive;
-
 	private ArrayList<Polyline> listEntrees = new ArrayList<Polyline>();
 	private ArrayList<Polyline> listSorties = new ArrayList<Polyline>();
 	private boolean insererNoedDebut = true;
@@ -169,6 +172,7 @@ public class HomeController extends Controller {
 	static boolean cc;
 	@FXML
 	private Button annuler;
+
 
 	@FXML
 	private Button dupliquer;
@@ -375,6 +379,12 @@ public class HomeController extends Controller {
 
 	@FXML
 	private Label tAddc;
+	
+	@FXML
+	private Label title;
+
+	@FXML
+	private ImageView titleImageView;
 
 	@FXML
 	private ImageView addcomplet;
@@ -509,6 +519,8 @@ public class HomeController extends Controller {
 
 			if (clickSouris2 != null)
 				clickSouris2.close();
+			if (clickDroitLabel != null)
+				clickDroitLabel.close();
 			Circuit.validerCircuits();
 			if ( Circuit.isThereAnyException()) {
 				if (Circuit.isThereAnyError()) {
@@ -626,6 +638,11 @@ public class HomeController extends Controller {
 		//opacityBouttons(simul); //les bouttons qui ne fonctionnent que en mode simulation
 		// Creation d'une map pour gerer les titres des composants
 		elemanrsMapFillMap = new HashMap<ImageView, Label>() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 7398456253712524242L;
+
 			{
 				put(hex, tHex);
 				put(pin, tPin);
@@ -650,6 +667,7 @@ public class HomeController extends Controller {
 				put(enco, tEnc);
 				put(addcomplet, tAddc);
 				put(demiAdd, tDadd);
+				put(titleImageView,title);
 			}
 		};
 		//// Ajouter pour chaque Composant les gestes de drag and drop
@@ -677,7 +695,7 @@ public class HomeController extends Controller {
 		ajouterLeGest(rs);
 		ajouterLeGest(cpt);
 		ajouterLeGest(registreDecalge);
-
+        ajouterLeGestLabel(titleImageView);
 		tracerLesregles(workSpace); /// tracer les regles qui entoure la fenetre et ils aident aussi dans le
 		/// deplacement
 		scrollPane.setHmax(1);
@@ -708,7 +726,9 @@ public class HomeController extends Controller {
 		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (!simul) {
+
+				if (!simul ) {
+		         
 					ctrlX = event.getX();
 					ctrlY = event.getY();
 					if(cc && elementSeclecionner != null) {
@@ -1276,6 +1296,10 @@ public class HomeController extends Controller {
 					posY = eleementAdrager.getLayoutY();
 					if (e.getButton() != MouseButton.SECONDARY) {
 						if(clickDroitFenetre != null) clickDroitFenetre.close();
+						if(clickDroitLabel!=null) {
+							clickDroitLabel.close();
+							clickDroitLabel=null;
+						}
 						dragItem = eleementAdrager;
 						eleementAdrager.setMouseTransparent(true);
 						eleementAdrager.setMouseTransparent(true);
@@ -2095,6 +2119,7 @@ public class HomeController extends Controller {
 					addAllPolylinesToWorkSpace(polyline);
 					ajouterLeGestApresCollage(dragImageView);
 					elementSeclecionner = dragImageView;
+					
 				}
 			}
 		}
@@ -2147,9 +2172,7 @@ public class HomeController extends Controller {
 		ArrayList<Polyline> lineListe = Circuit.supprimerComp(composantCouper);
 		for (Polyline line : lineListe)
 			workSpace.getChildren().remove(line);
-
 		elementSeclecionner = sauv;
-
 		Stage s = (Stage) couper.getScene().getWindow();
 		s.close();
 
@@ -2170,7 +2193,7 @@ public class HomeController extends Controller {
 		Optional<ButtonType> result = alert.showAndWait();	
 		//Optional<ButtonType> result = alert.showAndWait();
 		if(result.get() != buttonTypeCancel) {
-			if (result.get() == buttonTypeSauvgarder){
+			if (result.get() == buttonTypeSauvgarder && ! Circuit.getCompUtilises().isEmpty()){
 				if (fichierCourant == null) {
 					final FileChooser fileChooser = new FileChooser();
 					fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -2194,6 +2217,23 @@ public class HomeController extends Controller {
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.showAndWait();
 				}
+			}else if(Circuit.getCompUtilises().isEmpty()&&result.get() == buttonTypeSauvgarder) {
+				Alert a = new Alert(AlertType.INFORMATION);
+				a.setContentText("le circuit est vide il y a rien a sauvegarder");
+				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				a.showAndWait();
+			}
+			
+			if ( HomeController.horloged && Controller.simul) {
+				Horloge horloge = ((Horloge) Circuit.getCompFromImage(HomeController.horlogeDeCercuit));
+
+				try {
+					horloge.stop();
+					HomeController.t1.join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			javafx.application.Platform.exit();
 			//Stage s = (Stage) stage.getOwner();
@@ -2210,8 +2250,11 @@ public class HomeController extends Controller {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setContentText("Voullez vous sauvgarder ce circuit");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+		ButtonType buttonTypeNon = new ButtonType("Non");
+		ButtonType buttonTypeSauvgarder = new ButtonType("Sauvgarder");
+		alert.getButtonTypes().setAll(buttonTypeNon, buttonTypeSauvgarder);
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK) {
+		if (result.get() ==buttonTypeSauvgarder) {
 			if (fichierCourant == null) {
 				final FileChooser fileChooser = new FileChooser();
 				fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -2223,12 +2266,7 @@ public class HomeController extends Controller {
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-					a.showAndWait();
-					Circuit.clearCircuit();
-					fichierCourant = null;
-					workSpace.getChildren().clear();
-					horloged = false;
-					tracerLesregles(workSpace);
+					a.showAndWait();		
 				}
 			} else {
 				Sauvegarde sauvegarde = new Sauvegarde();
@@ -2237,13 +2275,14 @@ public class HomeController extends Controller {
 				a.setContentText("le circuit est bien sauvgarde");
 				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 				a.showAndWait();
-				Circuit.clearCircuit();
-				fichierCourant = null;
-				workSpace.getChildren().clear();
-				horloged = false;
-				tracerLesregles(workSpace);
 			}
 		}
+		Circuit.clearCircuit();
+		fichierCourant = null;
+		workSpace.getChildren().clear();
+		horloged = false;
+		horlogeDeCercuit=null;
+		tracerLesregles(workSpace);
 	}
 
 	@FXML
@@ -2254,8 +2293,11 @@ public class HomeController extends Controller {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setContentText("Voullez vous sauvgarder ce circuit");
 			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+			ButtonType buttonTypeNon = new ButtonType("Non");
+			ButtonType buttonTypeSauvgarder = new ButtonType("Sauvgarder");
+			alert.getButtonTypes().setAll(buttonTypeNon, buttonTypeSauvgarder);
 			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == ButtonType.OK) {
+			if (result.get() ==buttonTypeSauvgarder) {
 				if (fichierCourant == null) {
 					final FileChooser fileChooser = new FileChooser();
 					File f = fileChooser.showSaveDialog(homeWindow);
@@ -2581,6 +2623,16 @@ public class HomeController extends Controller {
 				stage.initStyle(StageStyle.UNDECORATED);
 				scene.setFill(Color.TRANSPARENT);
 				stage.initStyle(StageStyle.TRANSPARENT);
+			    scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+					@Override
+					public void handle(MouseEvent arg0) {
+						stage.setOpacity(1.0);
+						
+					}
+			    	
+			    });
+		
 				stage.show();
 			} catch(Exception e) {
 				e.printStackTrace();
@@ -2858,6 +2910,11 @@ public class HomeController extends Controller {
 				ArrayList<Polyline> lineListe= Circuit.supprimerComp(sauveGarde.getComposant());
 				for(Polyline line : lineListe)
 					workSpace.getChildren().remove(line);
+				if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge"))
+				{
+					horloged=false;
+					horlogeDeCercuit= null;
+				}
 			}break;
 			case Modification :
 			{
@@ -2885,6 +2942,7 @@ public class HomeController extends Controller {
 			}break;
 			case Supression:
 			{
+				
 				ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
 				workSpace.getChildren().add(imageDeComposant);
 				imageDeComposant.setLayoutX(sauveGarde.getPosX());
@@ -2904,6 +2962,11 @@ public class HomeController extends Controller {
 					for (Circle circle : resCircles) {
 						workSpace.getChildren().add(circle);
 					}
+				}
+				if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge"))
+				{
+					horloged=true;
+					horlogeDeCercuit= sauveGarde.getComposantCommeImage();
 				}
 			}break;
 			case SuppressionFil :{
@@ -3329,5 +3392,189 @@ public class HomeController extends Controller {
 	public void setChronogramme(Button chronogramme) {
 		this.chronogramme = chronogramme;
 	}
+	
+	private void ajouterLeGestLabel( ImageView node) {
+		node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				node.setCursor(Cursor.HAND);
+				elemanrsMapFillMap.get(node).setStyle("-fx-background-color:#000000;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
+				transitionDesComposants(node);
+			}
+
+		});
+		node.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				elemanrsMapFillMap.get(node).setStyle("-fx-background-color:#303337;-fx-background-radius:10;-fx-effect:dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0)");
+				node.setCursor(Cursor.DEFAULT);
+			}
+		});
+	  
+	
+	    node.setOnMousePressed(new EventHandler<MouseEvent>() {
+	        public void handle(MouseEvent e) {
+	        	ImageView dragImageView=new ImageView();
+	            dragImageView.setMouseTransparent(true);
+	            node.setMouseTransparent(true);
+	            node.setCursor(Cursor.CLOSED_HAND);	            
+	            node.setOnDragDetected(new EventHandler<MouseEvent>() {
+	    	        public void handle(MouseEvent e) {                   
+	    	            SnapshotParameters snapParams = new SnapshotParameters();
+	    	            snapParams.setFill(Color.TRANSPARENT);
+	    	            dragImageView.setImage(node.snapshot(snapParams, null));
+	    	            workSpace.getChildren().add(dragImageView);
+	    	            dragImageView.startFullDrag();
+	    	            e.consume();
+	    	        }
+	    	    });
+	            
+	    	    node.setOnMouseDragged(new EventHandler<MouseEvent>() {
+	    	        public void handle(MouseEvent e) {
+	    	            Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+	    	            dragImageView.relocate(
+	    	                    (int)(localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2),
+	    	                    (int)(localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2)
+	    	            );
+	    	            e.consume();
+	    	        }
+	    	    });
+	    	    
+	    	    node.setOnMouseReleased(new EventHandler<MouseEvent>() {
+	    	        public void handle(MouseEvent e) {
+						if( dragImageView.getLayoutX() > 0 &&dragImageView.getLayoutY() > 0&& (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) < 1310 && e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)<700 && ! intersictionLabel(dragImageView))
+
+	    	        	{	    	        			    	        	
+	    	        	TextArea text=new TextArea("titre");
+	    	        	AnchorPane container=new AnchorPane();
+	    	        	  container.setPrefHeight(50);
+		    	            container.setPrefWidth(130);
+		    	            container.setStyle("-fx-background-color:#303337;-fx-background-radius:5");
+		    	            container.getChildren().add(text);
+	    	        	 container.setLayoutX(dragImageView.getLayoutX());
+		    	            container.setLayoutY(dragImageView.getLayoutY());
+		    	            text.setPrefHeight(20);
+		    	            text.setPrefWidth(100);
+		    	            text.setWrapText(false);
+		    	        	 text.setLayoutX(15);
+			    	            text.setLayoutY(7.5);
+	    	               workSpace.getChildren().add(container);
+	    	              ajouterLeGestApresCollageLabel(container);
+	    	        	}
+					     dragImageView.setMouseTransparent(false);
+		    	            node.setMouseTransparent(false);
+		    	            node.setCursor(Cursor.DEFAULT);
+	    	            workSpace.getChildren().remove(dragImageView);
+	    	        }
+	    	    });
+	    	    
+	        }
+	    });
+	
+
+	}
+	private void ajouterLeGestApresCollageLabel( AnchorPane node) {
+		  
+	    node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+	        public void handle(MouseEvent e) {
+	            node.setCursor(Cursor.HAND);
+	        }
+	    });				
+	    node.setOnMousePressed(new EventHandler<MouseEvent>() {
+	        public void handle(MouseEvent e) {
+	        	 double posXl=node.getLayoutX();
+	         	double posYl=node.getLayoutY();
+	          	if(clickDroitLabel!=null) {
+	          		clickDroitLabel.close();
+	          		clickDroitLabel=null;
+	          	}
+	          	
+				// TODO Auto-generated method stub
+	            if(e.getButton() == MouseButton.SECONDARY) {
+		              
+	             	if(clickDroitLabel!=null) {
+	             		clickDroitLabel.close();
+	             		clickDroitLabel=null;
+	             	}
+	             	clickDroitLabel = new ClickDroitLabel((TextArea)node.getChildren().get(0),e.getSceneX(),e.getSceneY(),workSpace,homeWindow);
+	            
+					}
+	            node.setMouseTransparent(true);
+	            node.setMouseTransparent(true);
+	            node.setCursor(Cursor.CLOSED_HAND);	            
+	            node.setOnDragDetected(new EventHandler<MouseEvent>() {
+	    	        public void handle(MouseEvent e) {                   
+	    	            SnapshotParameters snapParams = new SnapshotParameters();
+	    	            snapParams.setFill(Color.TRANSPARENT);
+	    	            node.startFullDrag();
+	    	            e.consume();
+	    	        }
+	    	    });
+	            
+	    	    node.setOnMouseDragged(new EventHandler<MouseEvent>() {
+	    	        public void handle(MouseEvent e) {
+	    	            Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+	    	            node.relocate(
+	    	                    (int)(localPoint.getX() - node.getBoundsInLocal().getWidth() / 2),
+	    	                    (int)(localPoint.getY() - node.getBoundsInLocal().getHeight() / 2)
+	    	            );
+	    	        	if(e.getSceneX() > 1275)
+						{
+							scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+							scrollPane.setHvalue(scrollPane.getHvalue()+0.01);
+						}
+						if(e.getSceneX() < 210)
+						{
+							scrollPane.setHvalue(scrollPane.getHvalue()-0.01);
+						}
+						if(e.getSceneY() > 700)
+						{
+							scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+							scrollPane.setVvalue(scrollPane.getVvalue()+0.01);
+						}
+						if(e.getSceneY() < 0)
+						{
+							scrollPane.setVvalue(scrollPane.getVvalue()-0.01);
+						}
+	    	            e.consume();
+	    	        }
+	    	    });
+	    	    
+	    	    node.setOnMouseReleased(new EventHandler<MouseEvent>() {
+	    	        public void handle(MouseEvent e) {
+	    	        	if(node.getLayoutX()<0 || node.getLayoutY()<0 || intersictionLabel(node) )//intersiction nor
+	    	        	{
+	    	        		node.setLayoutX(posXl);
+	    	        		node.setLayoutY(posYl);
+	    	        	}
+	    	        	
+	    	            node.setMouseTransparent(false);
+	    	            node.setMouseTransparent(false);
+	    	            node.setCursor(Cursor.DEFAULT);
+	    	        }
+	    	    });
+	    	    
+	        }
+	    });
+	
+
+	}
+	private boolean intersictionLabel(ImageView imgCmp) {
+		for(ImageView image : Circuit.getCompUtilises().values())
+		{
+			if(imgCmp.getBoundsInParent().intersects(image.getBoundsInParent()))
+				return true;
+		}
+		return false;
+	}
+	private boolean intersictionLabel(AnchorPane cmp) {
+		for(ImageView image : Circuit.getCompUtilises().values())
+		{
+			if(cmp.getBoundsInParent().intersects(image.getBoundsInParent()))
+				return true;
+		}
+		return false;
+	}
+	
 
 }

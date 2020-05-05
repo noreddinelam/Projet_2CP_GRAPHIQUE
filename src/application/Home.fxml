@@ -42,7 +42,7 @@
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.13" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox fx:id="vBoxComp" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
@@ -161,6 +161,29 @@
                                                       <Insets left="30.0" right="30.0" top="15.0" />
                                                    </VBox.margin>
                                                 </AnchorPane>
+                                                <Label fx:id="title" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: #303337; -fx-background-radius: 10 10 10 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);" text="TITLE" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Calisto MT" size="13.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets left="10.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets left="53.0" top="15.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <AnchorPane prefHeight="99.0" prefWidth="100.0" style="-fx-background-color: #303337; -fx-background-radius: 32; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);">
+                                                   <children>
+                                                      <ImageView fx:id="titleImageView" fitHeight="48.0" fitWidth="86.0" layoutX="24.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+                                                         <image>
+                                                            <Image url="@../homePage_icones/label-01.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets left="30.0" right="30.0" top="15.0" />
+                                                   </VBox.margin>
+                                                </AnchorPane>
                                              </children>
                                           </VBox>
                                        </content>
@@ -176,7 +199,7 @@
                            <content>
                               <AnchorPane prefHeight="512.0" prefWidth="185.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="509.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane layoutX="10.0" prefHeight="509.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
@@ -332,7 +355,7 @@
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.54" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefHeight="923.0" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>
@@ -491,7 +514,7 @@
                            <content>
                               <AnchorPane prefHeight="513.0" prefWidth="179.0" style="-fx-background-color: #4b535e;">
                                  <children>
-                                    <ScrollPane hvalue="0.39" layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" vvalue="0.98" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
+                                    <ScrollPane layoutX="10.0" prefHeight="525.0" prefWidth="179.0" style="-fx-background-color: #4b535e;" stylesheets="@../styleFile/scrolPane.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0">
                                        <content>
                                           <VBox prefHeight="923.0" prefWidth="165.0" style="-fx-background-color: #4b535e;">
                                              <children>

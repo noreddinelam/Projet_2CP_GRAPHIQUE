@@ -1,13 +1,17 @@
 package controllers;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Map.Entry;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,14 +19,18 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import noyau.Circuit;
+import noyau.Composant;
 import noyau.ComposantDeChronogramme;
+import noyau.Fil;
 import noyau.Horloge;
+import noyau.InfoPolyline;
 
 public class ElementChronoController implements Initializable {
 
@@ -43,9 +51,32 @@ public class ElementChronoController implements Initializable {
 
     @FXML
     private Button chronogrameBtn;
+    @FXML
+    private Button afficher;
 
     @FXML
     private Button fermerBtn;
+    @FXML
+    private HBox header;
+   
+    Stage stage ;
+    private static double xOffset = 0;
+    private static double yOffset = 0;
+    private static double xOffsete = 0;
+    private static double yOffsete = 0;
+    @FXML
+    void onAfficher(MouseEvent event) {
+       if(listeCircuit.getSelectionModel().getSelectedItem() != null ||listeChrono.getSelectionModel().getSelectedItem() != null)
+       {
+    	   
+    	  header.getScene().getWindow().setHeight(50);
+    	   if(listeCircuit.getSelectionModel().getSelectedItem() != null )
+    		   showComposant((Composant) listeCircuit.getSelectionModel().getSelectedItem());
+    	   else showComposant((Composant) listeChrono.getSelectionModel().getSelectedItem());
+    	
+    	   
+       }
+    }
 
     @FXML
     void mouseClickAjouter(MouseEvent event) {
@@ -56,6 +87,18 @@ public class ElementChronoController implements Initializable {
     		i++;
     		listeCircuit.getSelectionModel().selectIndices(-1);
     	}
+    }
+    @FXML
+    void afficherEnter(MouseEvent event) {
+   	 afficher.setStyle("-fx-background-color:green;-fx-background-radius:15");
+
+
+    }
+
+    @FXML
+    void afficherExit(MouseEvent event) {
+    	 afficher.setStyle("-fx-background-color:#e0e0d1;-fx-background-radius:15");
+
     }
 
     @FXML
@@ -79,26 +122,45 @@ public class ElementChronoController implements Initializable {
 	        s.close();
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/Chronogramme.fxml"));
 			Parent root = fxmlLoader.load();
-			Stage stage = new Stage();
+		    stage= new Stage();
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.setResizable(false);
-			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.initModality(Modality.NONE);
 			stage.initStyle(StageStyle.UNDECORATED);
 			scene.setFill(Color.TRANSPARENT);
 			stage.initStyle(StageStyle.TRANSPARENT);
+			stage.setAlwaysOnTop(true);
 			scene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST,
 					this::closeWindowEvent);
+			scene.setFill(Color.TRANSPARENT);
+			annulerOpacity();
 			stage.show();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		ChronogrammeController.lightBoxH.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset =stage.getX() - event.getScreenX();
+                yOffset =stage.getY() - event.getScreenY();
+            }
+        });
+		ChronogrammeController.lightBoxH.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setX(event.getScreenX() + xOffset);
+                stage.setY(event.getScreenY() + yOffset);
+            }
+        });
 	
     }
 
     @FXML
     void mouseClickFermer(MouseEvent event) {
     	Stage s= (Stage) fermerBtn.getScene().getWindow();
+    	annulerOpacity();
         s.close();
     }
 
@@ -165,6 +227,7 @@ public class ElementChronoController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+
 		composantDeListAgauche = FXCollections.observableArrayList();
 		composantDeListAdroite=  FXCollections.observableArrayList();
 		composantDeListAdroite.add((Horloge)Circuit.getCompFromImage(HomeController.horlogeDeCercuit));
@@ -174,6 +237,29 @@ public class ElementChronoController implements Initializable {
 	if(!composantDeListAdroite.isEmpty())	    listeChrono.setItems(composantDeListAdroite);
 		 listeCircuit.setCellFactory(composantDeListAgauche -> new ListCellController());
 		 listeChrono.setCellFactory(composantDeListAdroite -> new ListCellController());
+		 header.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				header.getScene().getWindow().setHeight(600);
+				
+			}
+			 
+		 });
+			header.setOnMousePressed(new EventHandler<MouseEvent>() {
+	            @Override
+	            public void handle(MouseEvent event) {
+	                xOffsete =header.getScene().getWindow().getX() - event.getScreenX();
+	                yOffsete =header.getScene().getWindow().getY() - event.getScreenY();
+	            }
+	        });
+			header.setOnMouseDragged(new EventHandler<MouseEvent>() {
+	            @Override
+	            public void handle(MouseEvent event) {
+	            	header.getScene().getWindow().setX(event.getScreenX() + xOffsete);
+	            	header.getScene().getWindow().setY(event.getScreenY() + yOffsete);
+	            }
+	        });
 	}
 	private void closeWindowEvent(WindowEvent event) {
 		ChronogrammeController.composantDechrono.clear();
@@ -187,6 +273,37 @@ public class ElementChronoController implements Initializable {
 		HomeController.chrono=false;
 		ChronogrammeController.scrolDeChrono.setHvalue(0);	
 
+	}
+	
+	public void showComposant(Composant composant)
+	{
+		for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
+			Composant cmp = entry.getKey();
+			if (! cmp.equals(composant) ) {
+				entry.getValue().setOpacity(0.1);
+			}
+			else entry.getValue().setOpacity(1);
+		}
+		for (Entry<Fil, ArrayList<InfoPolyline>> entry : Circuit.getfilUtilises().entrySet()) {
+
+			for (InfoPolyline info : entry.getValue()) {
+				info.getLinePrincipale().setOpacity(0.1);
+			}
+		}
+		
+	}
+	public void annulerOpacity() {
+		for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
+			Composant cmp = entry.getKey();
+		     entry.getValue().setOpacity(1);
+		}
+		for (Entry<Fil, ArrayList<InfoPolyline>> entry : Circuit.getfilUtilises().entrySet()) {
+
+			for (InfoPolyline info : entry.getValue()) {
+				info.getLinePrincipale().setOpacity(1);
+			}
+		}
+		
 	}
 
 

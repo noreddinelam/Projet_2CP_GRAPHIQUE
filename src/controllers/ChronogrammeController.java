@@ -145,7 +145,7 @@ public class ChronogrammeController implements Initializable {
 	@FXML
 	private PointLight p10;
 
-
+	
 	private static Label[] labels;
 	public static boolean resimul=false;
 	double origineDeChronogramme; 
@@ -181,6 +181,7 @@ public class ChronogrammeController implements Initializable {
 		HomeController.chrono=true;
 
 
+		
 	}
 	@FXML
 	void playEnter(MouseEvent event) {
@@ -270,6 +271,7 @@ public class ChronogrammeController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+	
 		tracerGrilleChrono();	
 		lightBoxH=lightBox;
 		pauseBotton.setImage(new Image("/chronoIcones/CHRONO_STOP_OFF.png"));
@@ -607,5 +609,6 @@ public class ChronogrammeController implements Initializable {
 			}
 		}
 	}
+
 }
 
