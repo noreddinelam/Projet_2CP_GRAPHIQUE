@@ -97,7 +97,6 @@ public class ClickDroitController extends Controller{
     	s.close();
     	HomeController.setCopierActive(true);
     	HomeController.copyActive = false;
- 	
 	}
 
 	@FXML
@@ -229,7 +228,7 @@ public class ClickDroitController extends Controller{
 		else {
 			prop.setCursor(Cursor.HAND);
 		}
-		if (!bddPortes.contains(cmp.getClass().getSimpleName()) || ! cmp.isDessocier()) {
+		if ( (!bddPortes.contains(cmp.getClass().getSimpleName()) && !cmp.getClass().getSimpleName().equals("Pin"))  || ! cmp.isDessocier()) {
 			rotationD.setDisable(true);
 			rotationG.setDisable(true);
 			imgRotationD.setOpacity(0.4);

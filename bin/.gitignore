@@ -18,6 +18,7 @@
 /T/
 /Xor/
 /application/
+<<<<<<< HEAD
 /chronoIcones/
 /controllers/
 /homePage_icones/
@@ -26,3 +27,6 @@
 /pageEntreeIcones/
 /styleFile/
 /tableIcones/
+=======
+/Pin/
+>>>>>>> 5592b7c5883bfc8c542fd3b0b9f8345e8de8ba93

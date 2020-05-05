@@ -858,7 +858,6 @@ public class HomeController extends Controller {
 							System.out.println("l'element selectionner est : " + elementSeclecionner.getId());
 							setCopierActive(true);
 							copyActive = false ;
-
 						}
 					}
 					if (event.isControlDown() && (event.getCode() == KeyCode.V)) {
@@ -888,7 +887,7 @@ public class HomeController extends Controller {
 							} 
 							workSpace.getChildren().remove(elementAsuprimer);
 							removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));	
-							
+
 						}
 					}
 				}
@@ -2031,6 +2030,7 @@ public class HomeController extends Controller {
 					Circuit.clearCircuit();
 					workSpace.getChildren().clear();
 					horloged = false;
+					horlogeDeCercuit = null;
 					tracerLesregles(workSpace);	
 				}
 			}
@@ -2298,13 +2298,14 @@ public class HomeController extends Controller {
 				a.setContentText("le circuit est bien sauvgarde");
 				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 				a.showAndWait();
-				Circuit.clearCircuit();
-				fichierCourant = null;
-				workSpace.getChildren().clear();
-				horloged = false;
-				tracerLesregles(workSpace);
 			}
 		}
+		Circuit.clearCircuit();
+		fichierCourant = null;
+		workSpace.getChildren().clear();
+		horloged = false;
+		horlogeDeCercuit = null;
+		tracerLesregles(workSpace);
 	}
 
 	@FXML
@@ -2376,13 +2377,13 @@ public class HomeController extends Controller {
 		} else {
 			if (fichierCourant == null) {
 				final FileChooser fileChooser = new FileChooser();
-				File f = fileChooser.showSaveDialog(homeWindow);
 				fileChooser.setInitialDirectory(
 						new File(System.getProperty("user.home"))
 						);                 
 				fileChooser.getExtensionFilters().addAll(
 						new FileChooser.ExtensionFilter("SIM", "*.sim")
 						);
+				File f = fileChooser.showSaveDialog(homeWindow);
 				if (f != null) {
 					Sauvegarde sauvegarde = new Sauvegarde();
 					sauvegarde.saveCiruit(f.getAbsolutePath());
@@ -2407,13 +2408,13 @@ public class HomeController extends Controller {
 	@FXML
 	void saveAs(ActionEvent event) { /// la fonctionnalité de sauvegarder as
 		final FileChooser fileChooser = new FileChooser();
-		File f = fileChooser.showSaveDialog(homeWindow);
 		fileChooser.setInitialDirectory(
 				new File(System.getProperty("user.home"))
 				);                 
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("SIM", "*.sim")
 				);
+		File f = fileChooser.showSaveDialog(homeWindow);
 		if (f != null) {
 			System.out.println("the name of the file is : " + f.getAbsolutePath());
 			Sauvegarde sauvegarde = new Sauvegarde();
@@ -2457,6 +2458,7 @@ public class HomeController extends Controller {
 					workSpace.getChildren().addAll(circuitIntegre.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
 				}else {
 					CircuitIntegreSequentiel ciq = (CircuitIntegreSequentiel)cmp;
+					System.out.println("fdhgfhqdsg : "+ciq.getSortiesCircuit());
 					ImageView imageView = new ImageView(new Image(ciq.generatePath()));
 					imageView.setLayoutX(10);
 					imageView.setLayoutY(10);
@@ -2521,6 +2523,7 @@ public class HomeController extends Controller {
 				encapsuler.setText("  Encapsuler");
 				encapsuler.setAlignment(Pos.BASELINE_LEFT);
 			}else {
+				System.out.println("fhvqdg : "+ListTextPin2);
 				if(ListTextPin.size() == Circuit.getEntreesCircuit().size() && ListTextPin2.size() == Circuit.getSortiesCircuit().size()) {
 
 					if(Circuit.getListeEtages().size()==0 && !horloged) {
@@ -2562,6 +2565,7 @@ public class HomeController extends Controller {
 										break;
 									}
 								}
+								System.out.println("fhvqdg : "+ListTextPin2);
 								ciq.setHorloge(pinHorloge);
 								ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
 								ciq.setEntreesCircuit(entreCircuit);
@@ -2761,13 +2765,10 @@ public class HomeController extends Controller {
 				info.getLinePrincipale().setOpacity(1);
 			}
 		}
-		ListTextPin.clear();
-		ListText.clear();
+
 		ListText = null;
 		ListTextPin = null; //pas de liste
 
-		ListTextPin2.clear();
-		ListText2.clear();
 		ListText2 = null;
 		ListTextPin2 = null; //pas de liste
 	}
