@@ -182,7 +182,6 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 	}
 	public void resetPolyline(Polyline line , double x,double y) {
 		line.getPoints().clear();
-		System.out.println("hfdjqdgshj");
 		switch (direction) {
 		case 0:
 			line.getPoints().addAll(x,y,x+5,y);

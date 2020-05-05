@@ -857,7 +857,7 @@ public class HomeController extends Controller {
 							System.out.println("control + c are pressed !");
 							System.out.println("l'element selectionner est : " + elementSeclecionner.getId());
 							setCopierActive(true);
-							copyActive = false;
+							copyActive = false ;
 						}
 					}
 					if (event.isControlDown() && (event.getCode() == KeyCode.V)) {
@@ -2056,7 +2056,7 @@ public class HomeController extends Controller {
 		s.close();
 		if(elementSeclecionner != null) {
 			setCopierActive(true);
-			copyActive = false;
+			copyActive = false ;
 		}
 	}
 	public void coller(ActionEvent event) {

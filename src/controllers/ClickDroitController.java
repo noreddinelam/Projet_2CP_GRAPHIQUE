@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -26,6 +27,7 @@ import noyau.Composant;
 
 public class ClickDroitController extends Controller{
 
+	int direct ;
 	private ArrayList<String> bddPortes = new ArrayList<String>(Arrays.asList("And","Or","Xor","Nor","Nand"));
 	private ArrayList<String> bddBascules = new ArrayList<String>(Arrays.asList("JK","D","RST","T"));
 	private static HashMap<String, String> BddFenetre = new HashMap<String, String>();
@@ -71,6 +73,24 @@ public class ClickDroitController extends Controller{
 	
 	static boolean copierColler;
 
+	@FXML
+    private ImageView imgCopier;
+
+    @FXML
+    private ImageView imgCouper;
+
+    @FXML
+    private ImageView imgSupprimer;
+
+    @FXML
+    private ImageView imgRotationD;
+
+    @FXML
+    private ImageView imgProprietes;
+
+    @FXML
+    private ImageView imgRotationG;
+    
 	@FXML
 	void copier(ActionEvent event) {
 		Stage s = (Stage)prop.getScene().getWindow(); 
@@ -135,14 +155,39 @@ public class ClickDroitController extends Controller{
 
 	@FXML
 	void rotationD(ActionEvent event) {
+		direct ++;
+		if(direct > 3) direct=0;
+
+		ImageView img= Circuit.getImageFromComp(cmp);
+		HomeController.sauveGarderRotation(cmp, img, cmp.getDirection());
+		cmp.setDirection(direct);
+		removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(cmp.getSorties()[0]));
+		Image image = new Image(cmp.generatePath());
+		img.setImage(image);
+		img.setFitHeight(image.getHeight());
+		img.setFitWidth(image.getWidth());
+		addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
 		Stage s = (Stage)prop.getScene().getWindow(); 
-    	s.close();
+		s.close();
 	}
 
 	@FXML
 	void rotationG(ActionEvent event) {
+		direct--;
+		if(direct < 0) direct = 3;
+		
+		ImageView img= Circuit.getImageFromComp(cmp);
+		HomeController.sauveGarderRotation(cmp, img, cmp.getDirection());
+		cmp.setDirection(direct);
+		removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(cmp.getSorties()[0]));
+		Image image = new Image(cmp.generatePath());
+		img.setImage(image);
+		img.setFitHeight(image.getHeight());
+		img.setFitWidth(image.getWidth());
+		addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
+
 		Stage s = (Stage)prop.getScene().getWindow(); 
-    	s.close();
+		s.close();
 	}
 
 	@FXML
@@ -175,15 +220,19 @@ public class ClickDroitController extends Controller{
 	}
 	public void initialiser() {
 		supprimer.setCursor(Cursor.HAND);
+		direct = cmp.getDirection();
 		if (cmp.getClass().equals(CircuitIntegre.class) || cmp.getClass().equals(CircuitIntegreSequentiel.class)) {
 			prop.setDisable(true);
+			imgProprietes.setOpacity(0.4);
 		}
 		else {
 			prop.setCursor(Cursor.HAND);
 		}
-		if (!bddPortes.contains(cmp.getClass().getSimpleName())) {
+		if ( (!bddPortes.contains(cmp.getClass().getSimpleName()) && !cmp.getClass().getSimpleName().equals("Pin"))  || ! cmp.isDessocier()) {
 			rotationD.setDisable(true);
 			rotationG.setDisable(true);
+			imgRotationD.setOpacity(0.4);
+			imgRotationG.setOpacity(0.4);
 		}
 		else {
 			rotationD.setCursor(Cursor.HAND);
@@ -191,7 +240,9 @@ public class ClickDroitController extends Controller{
 		}
 		if (cmp.getClass().equals(CircuitIntegreSequentiel.class)) {
 			copier.setDisable(true);
+			imgCopier.setOpacity(0.4);
 			couper.setDisable(true);
+			imgCouper.setOpacity(0.4);
 		}
 		else {
 			copier.setCursor(Cursor.HAND);

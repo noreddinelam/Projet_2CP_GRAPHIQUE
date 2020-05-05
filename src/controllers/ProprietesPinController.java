@@ -18,7 +18,7 @@ import noyau.Pin;
 
 public class ProprietesPinController extends ProprietesController{
 
-	private String bddDirection[] = {"Est","Sud","West","Nord"};
+	private String bddDirection[] = {"Est","Sud","West","Nord"}; //base de données de directions
 	int direct;
 	String bddPut[] = {"Entrée","Sortie"};
 	int putInt;
@@ -41,6 +41,8 @@ public class ProprietesPinController extends ProprietesController{
 		btns.add(imgPreviousput);
 		btns.add(imgPreviousput1);
 		this.cmp = cmp;
+		direct = cmp.getDirection();
+		direction.setText(bddDirection[direct]);
 		label.setText(cmp.getNom());
 		putInt = (((Pin)cmp).getInput() == true) ? 0 : 1 ;
 		put.setText(bddPut[putInt]);
