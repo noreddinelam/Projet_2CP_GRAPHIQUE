@@ -421,6 +421,11 @@ public class HomeController extends Controller {
 	private ImageView logo;
 
 	///////////////////////////// Les lignes de Guide
+	 @FXML
+	 private VBox rightVBox;
+	 
+	 @FXML
+	 private VBox vbar;
 
 	///////////////////////////////////////////////
 	// relier
@@ -662,7 +667,6 @@ public class HomeController extends Controller {
 			}
 		};
 		//// Ajouter pour chaque Composant les gestes de drag and drop
-
 		ajouterLeGest(hex);
 		ajouterLeGest(pin);
 		ajouterLeGest(clock);
@@ -713,7 +717,7 @@ public class HomeController extends Controller {
 		rightbar(edition, editionFenetre, tableauFenetres);
 		rightbar(affichage, affichageFenetre, tableauFenetres);
 		rightbar(aide, aideFenetre, tableauFenetres);
-
+		ajouterLeGestWindow();
 		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -2516,6 +2520,8 @@ public class HomeController extends Controller {
 					stage.setTitle("Remarques");
 					stage.setResizable(false);
 					stage.initModality(Modality.APPLICATION_MODAL);
+					stage.initOwner(homeWindow);
+					stage.centerOnScreen();
 					stage.show();
 				} catch(Exception e) {
 					e.printStackTrace();
@@ -2686,6 +2692,10 @@ public class HomeController extends Controller {
 						stage.setTitle("Remarque");
 						stage.setResizable(false);
 						stage.initModality(Modality.APPLICATION_MODAL);
+						stage.initOwner(homeWindow);
+						stage.initStyle(StageStyle.UTILITY);
+						stage.setX(homeWindow.getX()+500);
+						stage.setY(homeWindow.getY()+250);
 						stage.show();
 					} catch(Exception e) {
 						e.printStackTrace();
@@ -3476,5 +3486,26 @@ public class HomeController extends Controller {
 		donnes.setRotation(rotation);
 		donnes.setComposantCommeImage(imageView);
 		undoDeque.addFirst(donnes);
+	}
+	
+	public void ajouterLeGestWindow() {
+		homeWindow.xProperty().addListener((obs, oldVal, newVal) -> {
+			if(clickDroitFenetre != null) clickDroitFenetre.close();
+			if(clickDroitFilFenetre != null) clickDroitFilFenetre.close();
+			if(clickSouris2 != null) clickSouris2.close();
+			fichierFenetre.setX(newVal.doubleValue()+1055);
+			editionFenetre.setX(newVal.doubleValue()+1055);
+			affichageFenetre.setX(newVal.doubleValue()+1055);
+			aideFenetre.setX(newVal.doubleValue()+1055);
+		});
+		homeWindow.yProperty().addListener((obs, oldVal, newVal) -> {
+			if(clickDroitFenetre != null) clickDroitFenetre.close();
+			if(clickDroitFilFenetre != null) clickDroitFilFenetre.close();
+			if(clickSouris2 != null) clickSouris2.close();
+			fichierFenetre.setY(newVal.doubleValue()+50);
+			editionFenetre.setY(newVal.doubleValue()+115);
+			affichageFenetre.setY(newVal.doubleValue()+225);
+			aideFenetre.setY(newVal.doubleValue()+300);
+		});
 	}
 }

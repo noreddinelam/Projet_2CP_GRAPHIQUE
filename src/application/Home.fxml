@@ -14,9 +14,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HomeController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HomeController">
    <left>
-      <VBox prefHeight="200.0" prefWidth="184.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
+      <VBox fx:id="rightVBox" prefHeight="200.0" prefWidth="184.0" style="-fx-background-color: #4b535e;" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane prefHeight="125.0" prefWidth="170.0" style="-fx-background-color: #e0e0d1; -fx-border-radius: 120 120 120 120; -fx-background-radius: 120 120 120 120;">
                <VBox.margin>
