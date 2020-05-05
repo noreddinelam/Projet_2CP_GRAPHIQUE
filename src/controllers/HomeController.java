@@ -857,6 +857,7 @@ public class HomeController extends Controller {
 							System.out.println("control + c are pressed !");
 							System.out.println("l'element selectionner est : " + elementSeclecionner.getId());
 							setCopierActive(true);
+							copyActive = false ;
 
 						}
 					}
@@ -2055,7 +2056,7 @@ public class HomeController extends Controller {
 		s.close();
 		if(elementSeclecionner != null) {
 			setCopierActive(true);
-
+			copyActive = false ;
 		}
 	}
 	public void coller(ActionEvent event) {
@@ -2076,8 +2077,8 @@ public class HomeController extends Controller {
 					dragImageView.setLayoutY(ctrlY);
 					dragImageView.setId(elementSeclecionner.getId());
 					instanceComposant(dragImageView);		
-//					if(!copyActive)
-//						composantCopy = Circuit.getCompFromImage(elementSeclecionner);
+					if(!copyActive)
+						composantCopy = Circuit.getCompFromImage(elementSeclecionner);
 					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
 					sauveGardeCopier(dragImageView,cmp2);
 					cmp2.setDirection(composantCopy.getDirection());

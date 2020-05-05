@@ -133,10 +133,10 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 	public ArrayList<Polyline> generatePolyline(double x,double y) {
 		// TODO Auto-generated method stub
 		setCord();
-		double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX();
-		double posY = y+lesCoordonnees.getCordSortieInIndex(0).getY();
 		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
 		if (input) {
+			double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX();
+			double posY = y+lesCoordonnees.getCordSortieInIndex(0).getY();
 			Polyline polyline = new Polyline(posX,posY,posX,posY+5);
 			polyline.setStrokeWidth(3);
 			ArrayList<InfoPolyline> listPolylines = new ArrayList<InfoPolyline>();

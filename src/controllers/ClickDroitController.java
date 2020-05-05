@@ -74,10 +74,29 @@ public class ClickDroitController extends Controller{
 	static boolean copierColler;
 
 	@FXML
+    private ImageView imgCopier;
+
+    @FXML
+    private ImageView imgCouper;
+
+    @FXML
+    private ImageView imgSupprimer;
+
+    @FXML
+    private ImageView imgRotationD;
+
+    @FXML
+    private ImageView imgProprietes;
+
+    @FXML
+    private ImageView imgRotationG;
+    
+	@FXML
 	void copier(ActionEvent event) {
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
     	HomeController.setCopierActive(true);
+    	HomeController.copyActive = false;
  	
 	}
 
@@ -139,9 +158,10 @@ public class ClickDroitController extends Controller{
 	void rotationD(ActionEvent event) {
 		direct ++;
 		if(direct > 3) direct=0;
-		cmp.setDirection(direct);
 
 		ImageView img= Circuit.getImageFromComp(cmp);
+		HomeController.sauveGarderRotation(cmp, img, cmp.getDirection());
+		cmp.setDirection(direct);
 		removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(cmp.getSorties()[0]));
 		Image image = new Image(cmp.generatePath());
 		img.setImage(image);
@@ -158,6 +178,7 @@ public class ClickDroitController extends Controller{
 		if(direct < 0) direct = 3;
 		
 		ImageView img= Circuit.getImageFromComp(cmp);
+		HomeController.sauveGarderRotation(cmp, img, cmp.getDirection());
 		cmp.setDirection(direct);
 		removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(cmp.getSorties()[0]));
 		Image image = new Image(cmp.generatePath());
@@ -203,6 +224,7 @@ public class ClickDroitController extends Controller{
 		direct = cmp.getDirection();
 		if (cmp.getClass().equals(CircuitIntegre.class) || cmp.getClass().equals(CircuitIntegreSequentiel.class)) {
 			prop.setDisable(true);
+			imgProprietes.setOpacity(0.4);
 		}
 		else {
 			prop.setCursor(Cursor.HAND);
@@ -210,6 +232,8 @@ public class ClickDroitController extends Controller{
 		if (!bddPortes.contains(cmp.getClass().getSimpleName()) || ! cmp.isDessocier()) {
 			rotationD.setDisable(true);
 			rotationG.setDisable(true);
+			imgRotationD.setOpacity(0.4);
+			imgRotationG.setOpacity(0.4);
 		}
 		else {
 			rotationD.setCursor(Cursor.HAND);
@@ -217,16 +241,14 @@ public class ClickDroitController extends Controller{
 		}
 		if (cmp.getClass().equals(CircuitIntegreSequentiel.class)) {
 			copier.setDisable(true);
+			imgCopier.setOpacity(0.4);
 			couper.setDisable(true);
+			imgCouper.setOpacity(0.4);
 		}
 		else {
 			copier.setCursor(Cursor.HAND);
 			couper.setCursor(Cursor.HAND);
 		}
-		/*if (! cmp.isDessocier()) {
-			rotationD.setDisable(true);
-			rotationG.setDisable(true);
-		}*/
 	}	
 	
 }
