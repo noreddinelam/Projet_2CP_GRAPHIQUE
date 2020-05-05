@@ -171,8 +171,8 @@ public class LesCoordonnees implements Serializable{
 			cordEntree[i].setX(cordEntree[i].getY());
 			cordEntree[i].setY(perm);
 		}
-		cordSorties[0].setX(imageView.getFitWidth() / 2);
-		cordSorties[0].setY(imageView.getFitHeight() );	
+			cordSorties[0].setX(imageView.getFitWidth() / 2);
+			cordSorties[0].setY(imageView.getFitHeight() );	
 	}
 	
 	public void rotationXX() {
@@ -189,6 +189,35 @@ public class LesCoordonnees implements Serializable{
 		cordSorties[0].setY(cordEntree[0].getY());
 		for(int i=0;i<nbCordEntree;i++) {
 			cordEntree[i].setY(y);
+		}
+	}
+	
+	public void rotationXYPin(ImageView imageView) {
+		if (nbCordEntree == 0) {
+			cordSorties[0].setX(imageView.getFitWidth() );
+			cordSorties[0].setY(imageView.getFitHeight() /2 );	
+		}
+		else {
+			cordEntree[0].setX(imageView.getFitWidth() );
+			cordEntree[0].setY(imageView.getFitHeight() /2);
+		}
+	}
+	
+	public void rotationXXPin() {
+		if (nbCordEntree != 0) {
+			cordEntree[0].setX(0);
+		}
+		else {
+			cordSorties[0].setX(0);
+		}
+	}
+	
+	public void rotationYYPin() {
+		if (nbCordEntree != 0) {
+			cordEntree[0].setY(0);
+		}
+		else {
+			cordSorties[0].setY(0);
 		}
 	}
 }

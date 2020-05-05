@@ -76,7 +76,7 @@ public class ClickDroitController extends Controller{
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
     	HomeController.setCopierActive(true);
- 	
+    	HomeController.copyActive = false;
 	}
 
 	@FXML

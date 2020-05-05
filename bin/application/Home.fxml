@@ -82,9 +82,9 @@
                                                 </Label>
                                                 <AnchorPane prefHeight="99.0" prefWidth="100.0" style="-fx-background-color: #303337; -fx-background-radius: 32; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0) dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 2.0, 2.0);">
                                                    <children>
-                                                      <ImageView fx:id="pin" fitHeight="67.0" fitWidth="63.0" layoutX="23.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fx:id="pin" fitHeight="55.0" fitWidth="46.0" layoutX="30.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../Pin/1Output.png" />
+                                                            <Image url="@../Pin/0Input1.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
