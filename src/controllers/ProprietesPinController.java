@@ -18,7 +18,7 @@ import noyau.Pin;
 
 public class ProprietesPinController extends ProprietesController{
 
-	private Direction bddDirection[] = {Direction.Nord,Direction.Est,Direction.West,Direction.Sud};
+	private String bddDirection[] = {"Est","Sud","West","Nord"}; //base de données de directions
 	int direct;
 	String bddPut[] = {"Entrée","Sortie"};
 	int putInt;
@@ -41,9 +41,13 @@ public class ProprietesPinController extends ProprietesController{
 		btns.add(imgPreviousput);
 		btns.add(imgPreviousput1);
 		this.cmp = cmp;
+		direct = cmp.getDirection();
+		direction.setText(bddDirection[direct]);
 		label.setText(cmp.getNom());
 		putInt = (((Pin)cmp).getInput() == true) ? 0 : 1 ;
 		put.setText(bddPut[putInt]);
+		direct = cmp.getDirection();
+		direction.setText(bddDirection[direct]);
 		if (! cmp.isDessocier()) {
 			nextDirection.setDisable(true);
 			previousDirection.setDisable(true);
@@ -128,11 +132,28 @@ public class ProprietesPinController extends ProprietesController{
         		cmp.getLesCoordonnees().setNbCordEntree(1);
         		cmp.getLesCoordonnees().setNbCordSorties(0);
         	}
-        	cmp.setCord();
-        	Image image = new Image(cmp.generatePath());
-        	imageView.setImage(image);
-        	imageView.setFitHeight(image.getHeight());
-        	imageView.setFitWidth(image.getWidth());
+//        	cmp.setCord();
+//        	Image image = new Image(cmp.generatePath());
+//        	imageView.setImage(image);
+//        	imageView.setFitHeight(image.getHeight());
+//        	imageView.setFitWidth(image.getWidth());
+        	if(cmp.getDirection() != direct) {
+    			HomeController.sauveGarderRotation(cmp, imageView, cmp.getDirection());
+    			cmp.setDirection(direct);
+    			removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(cmp.getSorties()[0]));
+    			Image image = new Image(cmp.generatePath());
+    			imageView.setImage(image);
+    			imageView.setFitHeight(image.getHeight());
+    			imageView.setFitWidth(image.getWidth());
+    			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+    		}
+    		else {
+    			cmp.setCord();
+    			Image image = new Image(cmp.generatePath());
+    			imageView.setImage(image);
+    			imageView.setFitHeight(image.getHeight());
+    			imageView.setFitWidth(image.getWidth());
+			}
 		} 	
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
@@ -142,7 +163,7 @@ public class ProprietesPinController extends ProprietesController{
     void nextDirection(ActionEvent event) {
     	direct ++;
     	if(direct > 3) direct=0;
-    	direction.setText(bddDirection[direct].toString());
+    	direction.setText(bddDirection[direct]);
     }
 
     @FXML
@@ -156,7 +177,7 @@ public class ProprietesPinController extends ProprietesController{
     void previousDirection(ActionEvent event) {
     	direct--;
     	if(direct < 0) direct = 3;
-    	direction.setText(bddDirection[direct].toString());
+    	direction.setText(bddDirection[direct]);
     }
 
     @FXML

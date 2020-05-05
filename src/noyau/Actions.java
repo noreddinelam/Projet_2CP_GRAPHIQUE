@@ -8,5 +8,7 @@ public enum Actions {
      Laison,
      SuppressionFil,
      SuppressionToutFil,
-     CreationFil;
+     CreationFil,
+     Rotation,
+     Copier;
 }

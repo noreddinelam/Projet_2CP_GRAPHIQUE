@@ -21,7 +21,7 @@ public class Not extends Portes{
 	@Override
 	public String generatePath() {
 		// TODO Auto-generated method stub
-		return "Not/Not.png";
+		return "Not/Not"+Integer.toString(direction)+".png";
 	}
 	
 	@Override
@@ -30,6 +30,7 @@ public class Not extends Portes{
 		super.setCord();
 		ImageView img = Circuit.getImageFromComp(this);
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0,img.getBoundsInLocal().getHeight()/2), 0) ;
+		rotation(direction);
 	}
 
 }

@@ -129,7 +129,7 @@ public class LesCoordonnees implements Serializable{
 		this.nbCordCommandes = nbCordCommandes;
 	}
 	public Coordonnees coordReelesSorties(ImageView image,int sortie) {
-		if(sortie < nbCordSorties)
+		if(sortie < nbCordSorties) 
 			return new Coordonnees(cordSorties[sortie].getX() + image.getLayoutX(), cordSorties[sortie].getY() + image.getLayoutY());
 		else return null;
 	}
@@ -164,4 +164,60 @@ public class LesCoordonnees implements Serializable{
 			return new Coordonnees(cordLoad.getX() + image.getLayoutX(), cordLoad.getY() + image.getLayoutY());
 		else return null;
 	}	
+	public void rotationXY(ImageView imageView) {
+		double perm ;
+		for(int i=0;i<nbCordEntree;i++) {
+			perm = cordEntree[i].getX();
+			cordEntree[i].setX(cordEntree[i].getY());
+			cordEntree[i].setY(perm);
+		}
+			cordSorties[0].setX(imageView.getFitWidth() / 2);
+			cordSorties[0].setY(imageView.getFitHeight() );	
+	}
+	
+	public void rotationXX() {
+		double x = cordSorties[0].getX();
+		cordSorties[0].setX(cordEntree[0].getX());
+		for(int i=0;i<nbCordEntree;i++) {
+			cordEntree[i].setX(x);
+		}
+		
+	}
+	
+	public void rotationYY() {
+		double y = cordSorties[0].getY();
+		cordSorties[0].setY(cordEntree[0].getY());
+		for(int i=0;i<nbCordEntree;i++) {
+			cordEntree[i].setY(y);
+		}
+	}
+	
+	public void rotationXYPin(ImageView imageView) {
+		if (nbCordEntree == 0) {
+			cordSorties[0].setX(imageView.getFitWidth() );
+			cordSorties[0].setY(imageView.getFitHeight() /2 );	
+		}
+		else {
+			cordEntree[0].setX(imageView.getFitWidth() );
+			cordEntree[0].setY(imageView.getFitHeight() /2);
+		}
+	}
+	
+	public void rotationXXPin() {
+		if (nbCordEntree != 0) {
+			cordEntree[0].setX(0);
+		}
+		else {
+			cordSorties[0].setX(0);
+		}
+	}
+	
+	public void rotationYYPin() {
+		if (nbCordEntree != 0) {
+			cordEntree[0].setY(0);
+		}
+		else {
+			cordSorties[0].setY(0);
+		}
+	}
 }

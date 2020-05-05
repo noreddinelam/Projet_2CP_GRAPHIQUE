@@ -404,6 +404,7 @@ public abstract class Controller {
 			boolean trouve = false;
 			int i = 0;
 			while (i < nbCord && trouve == false) {
+				System.out.println("dgfiqhgdifh : "+tabCoord[i]);
 				Coordonnees crdTab = new Coordonnees(tabCoord[i].getX() + imgCmp.getLayoutX(),
 						tabCoord[i].getY() + imgCmp.getLayoutY());
 				if (crdTab.equals(crd)) {

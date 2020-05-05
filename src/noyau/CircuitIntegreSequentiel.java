@@ -228,13 +228,13 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 		}
 		for (int i = 0; i < nombreSortie; i++) 
 		{
-			
 			if(sorties[i].getEtatLogiqueFil().getNum() != sortiesCircuit.get(i).getEtat().getNum())  //verifier si l'etat precedent du composant a changé ou non 
 			{
 				sorties[i].setEtatLogiqueFil(sortiesCircuit.get(i).getEtat()); //mettre a jour l'etat final du composant 
 				sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
 			}
-		}	}
+		}	
+	}
 	
 	public void  tictac() { // sert dans l'execution des composants sequentiels qui sont relier avec une horloge
 		int etage = 0 ;

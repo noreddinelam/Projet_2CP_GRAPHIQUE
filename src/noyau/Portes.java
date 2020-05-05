@@ -57,7 +57,8 @@ public abstract class Portes extends Composant {
 	@Override
 	public String generatePath() {
 		// TODO Auto-generated method stub
-		return this.getClass().getSimpleName() + "/" + (String.valueOf(getNombreEntree()))+".png";
+		System.out.println(this.getClass().getSimpleName() + "/" + (String.valueOf(getNombreEntree()))+Integer.toString(direction)+".png");
+		return this.getClass().getSimpleName() + "/" + (String.valueOf(getNombreEntree()))+Integer.toString(direction)+".png";
 	}
 	
 	public void setCord() {
@@ -65,5 +66,77 @@ public abstract class Portes extends Composant {
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(),img.getBoundsInLocal().getHeight()/2), 0) ;
 	}
 	
+	public void rotation(int direc) {
+		ImageView imageView = Circuit.getImageFromComp(this);
+		switch (direc) {
+		case 1:
+			lesCoordonnees.rotationXY(imageView);
+			break;
+		case 2:
+			lesCoordonnees.rotationXX();
+			break;
+		case 3:
+			lesCoordonnees.rotationXY(imageView);
+			lesCoordonnees.rotationYY();
+			break;
+		}
+	}
+	public void resetPolyline(Polyline line , double x,double y) {
+		line.getPoints().clear();
+		switch (direction) {
+		case 0:
+			line.getPoints().addAll(x,y,x+5,y);
+			break;
+		case 1:
+			line.getPoints().addAll(x,y,x,y+5);
+			break;
+		case 2:
+			line.getPoints().addAll(x,y,x-5,y);
+			break;
+		case 3:
+			line.getPoints().addAll(x,y,x,y-5);
+			break;
+			default:
+				break;
+		}
+	}
+	
+	public ArrayList<Polyline> generatePolyline(double x,double y) {
+		// TODO Auto-generated method stub
+		setCord();	
+		Polyline polyline = null;
+		double posX ;
+		double posY ;
+		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
+		ArrayList<InfoPolyline> listPolylines ;
+		for (int i = 0; i < nombreSortie; i++) {
+			listPolylines = new ArrayList<InfoPolyline>();
+			posX = x+ lesCoordonnees.getCordSortieInIndex(i).getX() ;
+			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
+			switch (direction) {
+			case 0:
+				polyline = new Polyline(posX ,posY,posX+5,posY);
+				break;
+			case 1:
+				polyline = new Polyline(posX ,posY,posX,posY+5);
+				break;
+			case 2:
+				polyline = new Polyline(posX ,posY,posX-5,posY);
+				break;
+			case 3:
+				polyline = new Polyline(posX ,posY,posX,posY-5);
+				break;
+				default:
+					break;
+			}
+			
+			//polyline.setViewOrder(2); //l'ordre 
+			polyline.toBack();
+			listPolylines.add(new InfoPolyline(polyline));
+			reslut.add(polyline);
+			Circuit.ajouterFil(sorties[i], listPolylines);;
+		}		
+		return reslut;
+	}
 	
 }

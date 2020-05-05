@@ -22,6 +22,7 @@ import noyau.Horloge;
 import noyau.Sauvegarde;
 
 public class Main extends Application {
+	private Stage pStage;
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -63,6 +64,7 @@ public class Main extends Application {
 					this::closeWindowEvent);
 
 			primaryStage.setResizable(false);
+			pStage=primaryStage;
 			primaryStage.show();
 
 		} catch (Exception e) {
@@ -75,6 +77,7 @@ public class Main extends Application {
 		alert.setContentText("Voullez vous sauvgarder ce circuit avant de quitter ?");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 		alert.getButtonTypes().clear();
+		alert.initOwner(pStage);
 		ButtonType buttonTypeNon = new ButtonType("Non");
 		ButtonType buttonTypeSauvgarder = new ButtonType("Sauvgarder");
 		ButtonType buttonTypeCancel = new ButtonType("Annuler");

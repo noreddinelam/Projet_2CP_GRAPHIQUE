@@ -54,5 +54,6 @@ public class Or extends Portes{
 			
 		}break;
 		}
+		rotation(direction);
 	}
 }

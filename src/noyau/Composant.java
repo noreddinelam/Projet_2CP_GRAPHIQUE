@@ -21,7 +21,7 @@ public abstract class Composant implements Serializable{
 	protected int nombreEntree;
 	protected int nombreSortie;
 	protected boolean sleep = false;
-	protected Direction direction = Direction.Est;
+	protected int direction = 0;
 	protected LesCoordonnees lesCoordonnees ;
 
 		
@@ -43,14 +43,12 @@ public abstract class Composant implements Serializable{
 		this.icon = icon;
 	}
 
-	public Direction getDirection() {
+	public int getDirection() {
 		return direction;
 	}
-
-	public void setDirection(Direction direction) {
+	public void setDirection(int direction) {
 		this.direction = direction;
 	}
-
 	public void setNom(String nom) {
 		this.nom = nom;
 	}

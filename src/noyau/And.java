@@ -55,6 +55,7 @@ public class And extends Portes {
 			
 		}break;
 		}
+		rotation(direction);
 	}
 
 }
