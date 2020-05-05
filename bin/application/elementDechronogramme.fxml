@@ -15,7 +15,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" style="-fx-background-radius: 15; -fx-background-color: #303337;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ElementChronoController">
    <top>
-      <HBox prefHeight="55.0" prefWidth="700.0" style="-fx-background-color: #303337; -fx-background-radius: 15;" BorderPane.alignment="CENTER">
+      <HBox fx:id="header" prefHeight="55.0" prefWidth="700.0" style="-fx-background-color: #303337; -fx-background-radius: 15;" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="36.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -137,15 +137,23 @@
                   <Insets left="10.0" top="5.0" />
                </VBox.margin>
             </Text>
-            <Button fx:id="chronogrameBtn" mnemonicParsing="false" onMouseClicked="#mouseClickChrono" onMouseEntered="#mouseEnterChrono" onMouseExited="#mouseExitChrono" prefHeight="35.0" prefWidth="2001.0" style="-fx-background-radius: 15; -fx-background-color: #e0e0d1;" text="Chronogramme">
+            <Button fx:id="afficher" mnemonicParsing="false" onMouseClicked="#onAfficher" onMouseEntered="#afficherEnter" onMouseExited="#afficherExit" prefHeight="35.0" prefWidth="203.0" style="-fx-background-radius: 15; -fx-background-color: #e0e0d1;" text="Afficher composant">
                <VBox.margin>
-                  <Insets top="30.0" />
+                  <Insets bottom="3.0" />
                </VBox.margin>
                <font>
                   <Font name="Calisto MT" size="17.0" />
                </font>
             </Button>
-            <Button fx:id="fermerBtn" mnemonicParsing="false" onMouseClicked="#mouseClickFermer" onMouseEntered="#mouseEnterFermer" onMouseExited="#mouseExitFermer" prefHeight="35.0" prefWidth="2001.0" style="-fx-background-radius: 15; -fx-background-color: #e0e0d1;" text="Fermer">
+            <Button fx:id="chronogrameBtn" mnemonicParsing="false" onMouseClicked="#mouseClickChrono" onMouseEntered="#mouseEnterChrono" onMouseExited="#mouseExitChrono" prefHeight="20.0" prefWidth="2001.0" style="-fx-background-radius: 15; -fx-background-color: #e0e0d1;" text="Chronogramme">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <font>
+                  <Font name="Calisto MT" size="17.0" />
+               </font>
+            </Button>
+            <Button fx:id="fermerBtn" mnemonicParsing="false" onMouseClicked="#mouseClickFermer" onMouseEntered="#mouseEnterFermer" onMouseExited="#mouseExitFermer" prefHeight="20.0" prefWidth="2001.0" style="-fx-background-radius: 15; -fx-background-color: #e0e0d1;" text="Fermer">
                <font>
                   <Font name="Calisto MT" size="17.0" />
                </font>

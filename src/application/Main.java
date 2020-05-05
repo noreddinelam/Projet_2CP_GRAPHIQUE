@@ -25,6 +25,7 @@ import noyau.Horloge;
 import noyau.Sauvegarde;
 
 public class Main extends Application {
+	private Stage pStage;
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -64,6 +65,7 @@ public class Main extends Application {
 			primaryStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST,
 					this::closeWindowEvent);
 			primaryStage.setResizable(false);
+			pStage=primaryStage;
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,44 +73,48 @@ public class Main extends Application {
 	}
 
 	private void closeWindowEvent(WindowEvent event) {
-		System.out.println("Window close request ...");
-		Alert alertQ = new Alert(AlertType.CONFIRMATION);
-		alertQ.setContentText("Voullez vous vraimment quitter ! ");
-		alertQ.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-		Optional<ButtonType> resultQ = alertQ.showAndWait();
-		if (resultQ.get() == ButtonType.OK) {
-			if (!Circuit.getCompUtilises().isEmpty()) {
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.setContentText("Voullez vous sauvgarder ce circuit");
-				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == ButtonType.OK) {
-					if (HomeController.fichierCourant == null) {
-						final FileChooser fileChooser = new FileChooser();
-						fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-						fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("SIM", "*.sim"));
-						File f = fileChooser.showSaveDialog(Controller.homeWindow);
-						if (f != null) {
-							Sauvegarde sauvegarde = new Sauvegarde();
-							sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
-							Alert a = new Alert(AlertType.INFORMATION);
-							a.setContentText("le circuit est bien sauvgarde");
-							a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
-							a.showAndWait();
-						}
-					} else {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setContentText("Voullez vous sauvgarder ce circuit avant de quitter ?");
+		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+		alert.getButtonTypes().clear();
+		alert.initOwner(pStage);
+		ButtonType buttonTypeNon = new ButtonType("Non");
+		ButtonType buttonTypeSauvgarder = new ButtonType("Sauvgarder");
+		ButtonType buttonTypeCancel = new ButtonType("Annuler");
+		alert.getButtonTypes().setAll(buttonTypeNon, buttonTypeSauvgarder, buttonTypeCancel);
+		Optional<ButtonType> result = alert.showAndWait();	
+		//Optional<ButtonType> result = alert.showAndWait();
+		if(result.get() != buttonTypeCancel) {
+			if (result.get() == buttonTypeSauvgarder && ! Circuit.getCompUtilises().isEmpty()){
+				if (HomeController.fichierCourant == null) {
+					final FileChooser fileChooser = new FileChooser();
+					fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+					fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("SIM", "*.sim"));
+					File f = fileChooser.showSaveDialog(HomeController.homeWindow);
+					if (f != null) {
 						Sauvegarde sauvegarde = new Sauvegarde();
-						sauvegarde.saveCiruit(HomeController.fichierCourant.getAbsolutePath());
+						sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.showAndWait();
 					}
+				} else {
+					Sauvegarde sauvegarde = new Sauvegarde();
+					sauvegarde.saveCiruit(HomeController.fichierCourant.getAbsolutePath());
+					Alert a = new Alert(AlertType.INFORMATION);
+					a.setContentText("le circuit est bien sauvgarde");
+					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+					a.showAndWait();
 				}
+			}else if(Circuit.getCompUtilises().isEmpty()&&result.get() == buttonTypeSauvgarder) {
+				Alert a = new Alert(AlertType.INFORMATION);
+				a.setContentText("le circuit est vide il y a rien a sauvegarder");
+				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				a.showAndWait();
 			}
-
-			if (Horloge.active && HomeController.horloged && Controller.simul) {
+			
+			if ( HomeController.horloged && Controller.simul) {
 				Horloge horloge = ((Horloge) Circuit.getCompFromImage(HomeController.horlogeDeCercuit));
 
 				try {
@@ -119,7 +125,9 @@ public class Main extends Application {
 					e.printStackTrace();
 				}
 			}
-		} else {
+		
+		}
+		 else {
 			event.consume();
 		}
 	}
