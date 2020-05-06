@@ -167,8 +167,6 @@ public class ClickDroitController extends Controller{
 		img.setFitHeight(image.getHeight());
 		img.setFitWidth(image.getWidth());
 		addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
-		Stage s = (Stage)prop.getScene().getWindow(); 
-		s.close();
 	}
 
 	@FXML
@@ -186,8 +184,6 @@ public class ClickDroitController extends Controller{
 		img.setFitWidth(image.getWidth());
 		addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
 
-		Stage s = (Stage)prop.getScene().getWindow(); 
-		s.close();
 	}
 
 	@FXML
@@ -195,7 +191,8 @@ public class ClickDroitController extends Controller{
 		
 		ImageView imageDeComposant=Circuit.getImageFromComp(cmp);
 		HomeController.elementAsuprimer=imageDeComposant;
-		HomeController.sauveGarderSupression();		
+		HomeController.sauveGarderSupression();
+		HomeController.supprimerDequeFilProbleme(cmp);
 		if(imageDeComposant.getId().equals("clock"))
 		{
 			HomeController.horloged =false;
@@ -228,7 +225,7 @@ public class ClickDroitController extends Controller{
 		else {
 			prop.setCursor(Cursor.HAND);
 		}
-		if ( (!bddPortes.contains(cmp.getClass().getSimpleName()) && !cmp.getClass().getSimpleName().equals("Pin"))  || ! cmp.isDessocier()) {
+		if ( (!bddPortes.contains(cmp.getClass().getSimpleName()) && !cmp.getClass().getSimpleName().equals("Pin") && !cmp.getClass().getSimpleName().equals("Not"))  || ! cmp.isDessocier()) {
 			rotationD.setDisable(true);
 			rotationG.setDisable(true);
 			imgRotationD.setOpacity(0.4);

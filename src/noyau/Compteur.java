@@ -314,6 +314,12 @@ public class Compteur extends Sequentiels{
 	public void setValeurMax(int valeurMax) {
 		this.valeurMax = valeurMax;
 	}
-	
+	@Override
+	public void initSorties() {
+		for(int i=0;i<nombreSortie;i++) { // initialiser les fils de sortie
+			sorties[i]=new Fil(this);
+			sorties[i].setEtatLogiqueFil(EtatLogique.ZERO);
+		}
+	}
 
 }

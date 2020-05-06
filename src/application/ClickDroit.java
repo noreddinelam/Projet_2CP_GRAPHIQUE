@@ -27,9 +27,9 @@ public class ClickDroit extends Stage{
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);
-			this.setX(x);
+			this.setX(x + st.getX());
 			this.initStyle(StageStyle.UNDECORATED);
-			this.setY(y);
+			this.setY(y + st.getY());
 			this.setFullScreen(false);
 			this.toBack();
 			this.initOwner(st);

@@ -100,13 +100,13 @@ class EditableText extends TextField {
         this.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                if (getText().length() > 60) {
-                    String s = getText().substring(0, 60);
+                if (getText().length() > 20) {
+                    String s = getText().substring(0, 20);
                     setText(s);
                 }
             }
         });
-  	  this.setStyle("-fx-background-color:#5a6572;-fx-text-fill: white;");
+  	  this.setStyle("-fx-background-color:#5a6572;-fx-text-fill:  #e0e0d1;");
   	  this.setFont(Font.font("Calisto MT",FontWeight.BOLD,18));
       FontMetrics metrics = new FontMetrics(getFont());
         setPrefWidth(RIGHT_MARGIN);

@@ -147,9 +147,14 @@ public class Donnes {
 	@Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
-		if (((Donnes)obj).getTypeDaction().equals(this.getTypeDaction())) {
-			if(this.composantCommeImage != null && ((Donnes)obj).getComposantCommeImage() != null) {
-				return ((Donnes)obj).getComposantCommeImage().getId().equals(this.composantCommeImage.getId());
+//		if (((Donnes)obj).getTypeDaction().equals(this.getTypeDaction())) {
+//			if(this.composantCommeImage != null && ((Donnes)obj).getComposantCommeImage() != null) {
+//				return ((Donnes)obj).getComposantCommeImage().getId().equals(this.composantCommeImage.getId());
+//			}
+//		}
+		if (((Donnes)obj).getFil() != null && fil != null) {
+			if (((Donnes)obj).getFil().equals(fil)) {
+				return true;
 			}
 		}
 		return false;

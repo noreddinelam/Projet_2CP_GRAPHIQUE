@@ -7,6 +7,7 @@ import java.util.Optional;
 import controllers.Controller;
 import controllers.HomeController;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -59,15 +61,13 @@ public class Main extends Application {
 			// Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.getIcons().add(new Image("/homePage_icones/miniLogo.png"));
-			primaryStage.setTitle("Simul_INI");
-			// primaryStage.initStyle(StageStyle.UNDECORATED);
+			primaryStage.setTitle("SimulINI");
 			primaryStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST,
 					this::closeWindowEvent);
-
+		
 			primaryStage.setResizable(false);
 			pStage=primaryStage;
 			primaryStage.show();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

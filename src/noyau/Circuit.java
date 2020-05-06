@@ -241,12 +241,33 @@ public class Circuit {
 	}
 	public static void initialiser() {// à completer au fur et mesure .
 		for (Pin pin : entreesCircuit) { // initialiser les pins d'entrees pour le commencement de la simulation
-			pin.evaluer();  //a na7i
+			pin.evaluer();  
 		}
 		for (SourceConstante cte : listSouceCte) { // initialiser les pins d'entrees pour le commencement de la simulation
 			cte.evaluer(); 
 		}
-		
+		int j = 0;
+		for (Sequentiels sequentiels : listeEtages) {
+			for (int i = 0; i < sequentiels.getNombreSortie(); i++) {
+				if (sequentiels.getClass().getSuperclass().equals(Bascule.class)) {
+					if (j == 0) {
+						sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ZERO);
+						j++;
+					}
+					else {
+						sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ONE);
+						j=0;
+					}
+				}
+				else {
+					sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ZERO);
+				}
+				sequentiels.getSorties()[i].evaluer();
+			}
+			if (sequentiels.getClass().equals(CircuitIntegreSequentiel.class)) {
+				((CircuitIntegreSequentiel)sequentiels).initSortiesElemenets();
+			}
+		}
 		ArrayList<Integer> etage = new ArrayList<Integer>();
 		ArrayList<Integer> tmp = null ;
 		int max;
