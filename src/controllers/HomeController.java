@@ -721,13 +721,13 @@ public class HomeController extends Controller {
 		tooltipInitialize();
 		initialiseAnimationOfBarDroite();
 
-		fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace, afficheurX, afficheurY,
+		fichierFenetre = new ClickBarDroite(1065, 50, "Fichier.fxml", homeWindow, workSpace, afficheurX, afficheurY,
 				scrollPane);
-		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace, afficheurX, afficheurY,
+		editionFenetre = new ClickBarDroite(1065, 115, "Edition.fxml", homeWindow, workSpace, afficheurX, afficheurY,
 				scrollPane);
-		affichageFenetre = new ClickBarDroite(1055, 255, "Affichage.fxml", homeWindow, workSpace, afficheurX,
+		affichageFenetre = new ClickBarDroite(1065, 255, "Affichage.fxml", homeWindow, workSpace, afficheurX,
 				afficheurY, scrollPane);
-		aideFenetre = new ClickBarDroite(1055, 300, "Aide.fxml", homeWindow, workSpace, afficheurX, afficheurY,
+		aideFenetre = new ClickBarDroite(1065, 300, "Aide.fxml", homeWindow, workSpace, afficheurX, afficheurY,
 				scrollPane);
 
 		ClickBarDroite tableauFenetres[] = { fichierFenetre, editionFenetre, affichageFenetre, aideFenetre };
@@ -744,7 +744,10 @@ public class HomeController extends Controller {
 		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-
+				for(ClickBarDroite click : tableauFenetres) {
+					click.close();
+					tooltipInitialize();
+				}
 				if (!simul ) {
 		         
 					ctrlX = event.getX();
@@ -752,10 +755,7 @@ public class HomeController extends Controller {
 					if(cc && elementSeclecionner != null) {
 						cc = false;
 					}
-					for(ClickBarDroite click : tableauFenetres) {
-						click.close();
-						tooltipInitialize();
-					}
+					
 					if (clickDroitFenetre != null) {
 						Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
 
@@ -1563,8 +1563,8 @@ public class HomeController extends Controller {
 							if( ((Pin)compos).isInput()) {
 								if(!ListTextPin.contains(compos)){
 									Text number = new Text();
-									number.setLayoutX(eleementAdrager.getLayoutX());
-									number.setLayoutY(eleementAdrager.getLayoutY()-2);
+									number.setLayoutX(eleementAdrager.getLayoutX()-9);
+									number.setLayoutY(eleementAdrager.getLayoutY() + 15);
 									String id = Integer.toString(ListTextPin.size()+1);
 									number.setText(id);
 									number.setId(id);
@@ -1578,6 +1578,10 @@ public class HomeController extends Controller {
 									alert.setTitle("Confirmation");
 									alert.setHeaderText("Refaire l'ordre ");
 									alert.setContentText("Cette entré est deja selectionnée, Voulez vous reordonner les entrées ?");
+									alert.initStyle(StageStyle.UTILITY);
+									alert.initOwner(homeWindow);
+									alert.setX(homeWindow.getX()+500);
+									alert.setY(homeWindow.getY()+250);
 									Optional<ButtonType> result = alert.showAndWait();
 									if(result.get() == ButtonType.OK) {
 
@@ -1592,8 +1596,8 @@ public class HomeController extends Controller {
 							else {
 								if(!ListTextPin2.contains(compos)){
 									Text number = new Text();
-									number.setLayoutX(eleementAdrager.getLayoutX());
-									number.setLayoutY(eleementAdrager.getLayoutY()-1);
+									number.setLayoutX(eleementAdrager.getLayoutX() - 9  );
+									number.setLayoutY(eleementAdrager.getLayoutY() +  15 );
 									String id = Integer.toString(ListTextPin2.size()+1);
 									number.setText(id);
 									number.setId(id);
@@ -1607,7 +1611,11 @@ public class HomeController extends Controller {
 									alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 									alert.setTitle("Confirmation");
 									alert.setHeaderText("Refaire l'ordre ");
+									alert.initOwner(homeWindow);
 									alert.setContentText("Cette entré est deja selectionnée, Voulez vous reordonner les entrées ?");
+									alert.initStyle(StageStyle.UTILITY);
+									alert.setX(homeWindow.getX()+500);
+									alert.setY(homeWindow.getY()+250);
 									Optional<ButtonType> result = alert.showAndWait();
 									if(result.get() == ButtonType.OK) {
 
@@ -2053,8 +2061,11 @@ public class HomeController extends Controller {
 		Stage stage = (Stage) supprimerTout.getScene().getWindow(); 	
 		stage.close();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.initOwner(homeWindow);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setX(homeWindow.getX()+500);
+		alert.setY(homeWindow.getY()+250);
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
 		if (! simul) {			
 			if(!(Circuit.getCompUtilises().isEmpty())) {				
 				alert.setContentText("Voullez vous vraimment supprimer toute la zone du circuit ");
@@ -2259,6 +2270,10 @@ public class HomeController extends Controller {
 		alert.setContentText("Voullez vous sauvgarder ce circuit avant de quitter ?");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 		alert.getButtonTypes().clear();
+		alert.initOwner(homeWindow);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setX(homeWindow.getX()+500);
+		alert.setY(homeWindow.getY()+250);
 		ButtonType buttonTypeNon = new ButtonType("Non");
 		ButtonType buttonTypeSauvgarder = new ButtonType("Sauvgarder");
 		ButtonType buttonTypeCancel = new ButtonType("Annuler");
@@ -2278,8 +2293,11 @@ public class HomeController extends Controller {
 						sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
+						alert.initOwner(homeWindow);
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-
+						a.initStyle(StageStyle.UTILITY);
+						a.setX(homeWindow.getX()+500);
+						a.setY(homeWindow.getY()+250);
 						a.showAndWait();
 					}
 				} else {
@@ -2287,13 +2305,21 @@ public class HomeController extends Controller {
 					sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setContentText("le circuit est bien sauvgarde");
+					alert.initOwner(homeWindow);
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+					a.initStyle(StageStyle.UTILITY);
+					a.setX(homeWindow.getX()+500);
+					a.setY(homeWindow.getY()+250);
 					a.showAndWait();
 				}
 			}else if(Circuit.getCompUtilises().isEmpty()&&result.get() == buttonTypeSauvgarder) {
 				Alert a = new Alert(AlertType.INFORMATION);
 				a.setContentText("le circuit est vide il y a rien a sauvegarder");
 				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				a.initStyle(StageStyle.UTILITY);
+				alert.initOwner(homeWindow);
+				a.setX(homeWindow.getX()+500);
+				a.setY(homeWindow.getY()+250);
 				a.showAndWait();
 			}
 			
@@ -2323,6 +2349,10 @@ public class HomeController extends Controller {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setContentText("Voullez vous sauvgarder ce circuit");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+		alert.initStyle(StageStyle.UTILITY);
+		alert.initOwner(homeWindow);
+		alert.setX(homeWindow.getX()+500);
+		alert.setY(homeWindow.getY()+250);
 		ButtonType buttonTypeNon = new ButtonType("Non");
 		ButtonType buttonTypeSauvgarder = new ButtonType("Sauvgarder");
 		alert.getButtonTypes().setAll(buttonTypeNon, buttonTypeSauvgarder);
@@ -2339,6 +2369,10 @@ public class HomeController extends Controller {
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+					a.initStyle(StageStyle.UTILITY);
+					a.setX(homeWindow.getX()+500);
+					a.setY(homeWindow.getY()+250);
+					a.initOwner(homeWindow);
 					a.showAndWait();		
 				}
 			} else {
@@ -2347,6 +2381,10 @@ public class HomeController extends Controller {
 				Alert a = new Alert(AlertType.INFORMATION);
 				a.setContentText("le circuit est bien sauvgarde");
 				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				a.initStyle(StageStyle.UTILITY);
+				a.setX(homeWindow.getX()+500);
+				a.initOwner(homeWindow);
+				a.setY(homeWindow.getY()+250);
 				a.showAndWait();
 			}
 		}
@@ -2366,6 +2404,10 @@ public class HomeController extends Controller {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setContentText("Voullez vous sauvgarder ce circuit");
 			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+			alert.initStyle(StageStyle.UTILITY);
+			alert.setX(homeWindow.getX()+500);
+			alert.setY(homeWindow.getY()+250);
+			alert.initOwner(homeWindow);
 			ButtonType buttonTypeNon = new ButtonType("Non");
 			ButtonType buttonTypeSauvgarder = new ButtonType("Sauvgarder");
 			alert.getButtonTypes().setAll(buttonTypeNon, buttonTypeSauvgarder);
@@ -2386,6 +2428,10 @@ public class HomeController extends Controller {
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.setContentText("le circuit est bien sauvgarde");
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+						a.initStyle(StageStyle.UTILITY);
+						a.setX(homeWindow.getX()+500);
+						a.setY(homeWindow.getY()+250);
+						a.initOwner(homeWindow);
 						a.showAndWait();
 					}
 				} else {
@@ -2394,6 +2440,10 @@ public class HomeController extends Controller {
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+					a.initStyle(StageStyle.UTILITY);
+					a.setX(homeWindow.getX()+500);
+					a.setY(homeWindow.getY()+250);
+					a.initOwner(homeWindow);
 					a.showAndWait();
 
 				}
@@ -2426,6 +2476,10 @@ public class HomeController extends Controller {
 			Alert a = new Alert(AlertType.INFORMATION);
 			a.setContentText("le circuit est vide y a rien a sauvgarder");
 			a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+			a.initStyle(StageStyle.UTILITY);
+			a.setX(homeWindow.getX()+500);
+			a.setY(homeWindow.getY()+250);
+			a.initOwner(homeWindow);
 			a.showAndWait();
 		} else {
 			if (fichierCourant == null) {
@@ -2443,6 +2497,10 @@ public class HomeController extends Controller {
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+					a.initStyle(StageStyle.UTILITY);
+					a.setX(homeWindow.getX()+500);
+					a.setY(homeWindow.getY()+250);
+					a.initOwner(homeWindow);
 					a.showAndWait();
 				}
 			} 
@@ -2452,6 +2510,10 @@ public class HomeController extends Controller {
 				Alert a = new Alert(AlertType.INFORMATION);
 				a.setContentText("le circuit est bien sauvgarde");
 				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				a.initStyle(StageStyle.UTILITY);
+				a.initOwner(homeWindow);
+				a.setX(homeWindow.getX()+500);
+				a.setY(homeWindow.getY()+250);
 				a.showAndWait();
 
 			}
@@ -2553,6 +2615,10 @@ public class HomeController extends Controller {
 		alert.setTitle("Plusieurs éléments horloges");
 		alert.setContentText("Le circuit doit contenire un seule élément horloge ");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setX(homeWindow.getX()+500);
+		alert.initOwner(homeWindow);
+		alert.setY(homeWindow.getY()+250);
 		if (simul) {
 			if(ListTextPin == null && ListTextPin2 == null) {
 				ListTextPin = new ArrayList<Pin>();
@@ -2674,6 +2740,10 @@ public class HomeController extends Controller {
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.setTitle("Circuit Integré");
 					a.setContentText("Entrée ou sortie non selectionnée");
+					a.initOwner(homeWindow);
+					a.initStyle(StageStyle.UTILITY);
+					a.setX(homeWindow.getX()+500);
+					a.setY(homeWindow.getY()+250);
 					a.showAndWait();
 				}
 			}
@@ -2691,7 +2761,7 @@ public class HomeController extends Controller {
 	void chronogramme(ActionEvent event) { /// charger la fenetre du chronogramme
 		Stage s = (Stage) chronogramme.getScene().getWindow();
 		s.close();
-		if (simul &&  horloged) {
+		if (horloged) {
 			try {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/elementDechronogramme.fxml"));
 				Parent root = fxmlLoader.load();
@@ -2700,9 +2770,11 @@ public class HomeController extends Controller {
 				stage.setScene(scene);
 				stage.setResizable(false);
 				stage.initModality(Modality.APPLICATION_MODAL);
-				stage.initStyle(StageStyle.UNDECORATED);
-				scene.setFill(Color.TRANSPARENT);
 				stage.initStyle(StageStyle.TRANSPARENT);
+				scene.setFill(Color.TRANSPARENT);
+				stage.initOwner(homeWindow);
+				stage.setX(homeWindow.getX()+350);
+				stage.setY(homeWindow.getY()+100);
 			    scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 					@Override
@@ -2717,14 +2789,19 @@ public class HomeController extends Controller {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-		}else {
+		}
+		else {
 			Alert a = new Alert(AlertType.ERROR);
 			a.setHeaderText("Chronogramme erreur");
 			a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 			a.setTitle("Chronogramme");
-			a.setContentText(! simul ? "Veulliez Simuler le Circuit D'abord": "Le Plan de travaille ne contient aucune horloge"
+			a.setContentText( "Le Plan de travaille ne contient aucune horloge"
 					+ " ajouter une Horloge au Plan pour visualiser le Chronogramme");
 			transitionDesComposants(clock);
+			a.initOwner(homeWindow);
+			a.initStyle(StageStyle.UTILITY);
+			a.setX(homeWindow.getX()+500);
+			a.setY(homeWindow.getY()+250);
 			a.showAndWait();
 		}
 	}
@@ -2785,8 +2862,11 @@ public class HomeController extends Controller {
 							stage.setScene(scene);
 							stage.setTitle("la table de verité");
 							//stage.setTitle("Remarque");
+							stage.setX(homeWindow.getX()+350);
+							stage.setY(homeWindow.getY()+200);
 							stage.setResizable(false);
 							stage.initModality(Modality.APPLICATION_MODAL);
+							stage.initOwner(homeWindow);
 							stage.show();
 						} catch(Exception e) {
 							e.printStackTrace();
@@ -2802,6 +2882,10 @@ public class HomeController extends Controller {
 						alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						alert.setHeaderText("Pas de selection ");
 						alert.setContentText("Il faut que vous sélectionner au moins une entrée et une sortie pour générer la table de verité !");
+						alert.initStyle(StageStyle.UTILITY);
+						alert.initOwner(homeWindow);
+						alert.setX(homeWindow.getX()+500);
+						alert.setY(homeWindow.getY()+250);
 						alert.showAndWait();
 					}
 				}
@@ -2812,6 +2896,10 @@ public class HomeController extends Controller {
 				alert.setTitle("Entree / sortie manquante");
 				alert.setHeaderText("Pas d'entrées ou de sorties dans le circuit");
 				alert.setContentText("Il faut exister au moins une entrée et une sortie pour générer la table de verité");
+				alert.initStyle(StageStyle.UTILITY);
+				alert.initOwner(homeWindow);
+				alert.setX(homeWindow.getX()+500);
+				alert.setY(homeWindow.getY()+250);
 				alert.showAndWait();
 			}
 		}
@@ -3745,10 +3833,10 @@ public class HomeController extends Controller {
 			if(clickDroitFenetre != null) clickDroitFenetre.close();
 			if(clickDroitFilFenetre != null) clickDroitFilFenetre.close();
 			if(clickSouris2 != null) clickSouris2.close();
-			fichierFenetre.setX(newVal.doubleValue()+1055);
-			editionFenetre.setX(newVal.doubleValue()+1055);
-			affichageFenetre.setX(newVal.doubleValue()+1055);
-			aideFenetre.setX(newVal.doubleValue()+1055);
+			fichierFenetre.setX(newVal.doubleValue()+1065);
+			editionFenetre.setX(newVal.doubleValue()+1065);
+			affichageFenetre.setX(newVal.doubleValue()+1065);
+			aideFenetre.setX(newVal.doubleValue()+1065);
 		});
 		homeWindow.yProperty().addListener((obs, oldVal, newVal) -> {
 			if(clickDroitFenetre != null) clickDroitFenetre.close();
@@ -3756,7 +3844,7 @@ public class HomeController extends Controller {
 			if(clickSouris2 != null) clickSouris2.close();
 			fichierFenetre.setY(newVal.doubleValue()+50);
 			editionFenetre.setY(newVal.doubleValue()+115);
-			affichageFenetre.setY(newVal.doubleValue()+225);
+			affichageFenetre.setY(newVal.doubleValue()+255);
 			aideFenetre.setY(newVal.doubleValue()+300);
 		});
 	}
@@ -3779,7 +3867,7 @@ public class HomeController extends Controller {
 		for (Pin pin : Circuit.getEntreesCircuit()) {
 			imageView = Circuit.getImageFromComp(pin);
 			text = new Text(pin.getNom());
-			if (pin.getDirection() == 1) {
+			if (pin.getDirection() != 3) {
 				text.setLayoutX(imageView.getLayoutX());
 				text.setLayoutY(imageView.getLayoutY()-2);
 			}
