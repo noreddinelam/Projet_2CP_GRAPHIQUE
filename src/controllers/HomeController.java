@@ -102,6 +102,7 @@ import noyau.Decodeur;
 import noyau.DemiAdditionneur;
 import noyau.Demultiplexeur;
 import noyau.Donnes;
+import noyau.EditableDraggableText;
 import noyau.Encodeur;
 import noyau.EtatLogique;
 import noyau.Fil;
@@ -680,7 +681,7 @@ public class HomeController extends Controller {
 			}
 		};
 		//// Ajouter pour chaque Composant les gestes de drag and drop
-
+		
 		ajouterLeGest(hex);
 		ajouterLeGest(pin);
 		ajouterLeGest(clock);
@@ -735,9 +736,9 @@ public class HomeController extends Controller {
 		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-
+				if(clickDroitLabel != null) clickDroitLabel.close();
 				if (!simul ) {
-		         
+			
 					ctrlX = event.getX();
 					ctrlY = event.getY();
 					if(cc && elementSeclecionner != null) {
@@ -1565,6 +1566,8 @@ public class HomeController extends Controller {
 									ListText.add(number);
 								}else {
 									Alert alert = new Alert(AlertType.CONFIRMATION);
+									alert.initOwner(homeWindow);
+									alert.initStyle(StageStyle.UTILITY);
 									alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 									alert.setTitle("Confirmation");
 									alert.setHeaderText("Refaire l'ordre ");
@@ -1595,6 +1598,8 @@ public class HomeController extends Controller {
 									ListText2.add(number);
 								}else {
 									Alert alert = new Alert(AlertType.CONFIRMATION);
+									alert.initOwner(homeWindow);
+									alert.initStyle(StageStyle.UTILITY);
 									alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 									alert.setTitle("Confirmation");
 									alert.setHeaderText("Refaire l'ordre ");
@@ -2044,6 +2049,9 @@ public class HomeController extends Controller {
 		Stage stage = (Stage) supprimerTout.getScene().getWindow(); 	
 		stage.close();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.initOwner(homeWindow);
+		alert.initStyle(StageStyle.UTILITY);
+		
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 
 		if (! simul) {			
@@ -2245,6 +2253,8 @@ public class HomeController extends Controller {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setContentText("Voullez vous sauvgarder ce circuit avant de quitter ?");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+		alert.initOwner(homeWindow);
+		alert.initStyle(StageStyle.UTILITY);
 		alert.getButtonTypes().clear();
 		ButtonType buttonTypeNon = new ButtonType("Non");
 		ButtonType buttonTypeSauvgarder = new ButtonType("Sauvgarder");
@@ -2264,6 +2274,8 @@ public class HomeController extends Controller {
 						Sauvegarde sauvegarde = new Sauvegarde();
 						sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
 						Alert a = new Alert(AlertType.INFORMATION);
+						a.initOwner(homeWindow);
+						a.initStyle(StageStyle.UTILITY);
 						a.setContentText("le circuit est bien sauvgarde");
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 
@@ -2273,12 +2285,16 @@ public class HomeController extends Controller {
 					Sauvegarde sauvegarde = new Sauvegarde();
 					sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
+					a.initOwner(homeWindow);
+					a.initStyle(StageStyle.UTILITY);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.showAndWait();
 				}
 			}else if(Circuit.getCompUtilises().isEmpty()&&result.get() == buttonTypeSauvgarder) {
 				Alert a = new Alert(AlertType.INFORMATION);
+				a.initOwner(homeWindow);
+				a.initStyle(StageStyle.UTILITY);
 				a.setContentText("le circuit est vide il y a rien a sauvegarder");
 				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 				a.showAndWait();
@@ -2308,6 +2324,8 @@ public class HomeController extends Controller {
 		Stage stage = (Stage) nouveau.getScene().getWindow();
 		stage.close();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.initOwner(homeWindow);
+		alert.initStyle(StageStyle.UTILITY);
 		alert.setContentText("Voullez vous sauvgarder ce circuit");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 		ButtonType buttonTypeNon = new ButtonType("Non");
@@ -2324,6 +2342,8 @@ public class HomeController extends Controller {
 					Sauvegarde sauvegarde = new Sauvegarde();
 					sauvegarde.saveCiruit(f.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
+					a.initOwner(homeWindow);
+					a.initStyle(StageStyle.UTILITY);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.showAndWait();		
@@ -2332,6 +2352,8 @@ public class HomeController extends Controller {
 				Sauvegarde sauvegarde = new Sauvegarde();
 				sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
 				Alert a = new Alert(AlertType.INFORMATION);
+				a.initOwner(homeWindow);
+				a.initStyle(StageStyle.UTILITY);
 				a.setContentText("le circuit est bien sauvgarde");
 				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 				a.showAndWait();
@@ -2351,6 +2373,8 @@ public class HomeController extends Controller {
 		stage.close();
 		if (!Circuit.getCompUtilises().isEmpty()) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.initOwner(homeWindow);
+			alert.initStyle(StageStyle.UTILITY);
 			alert.setContentText("Voullez vous sauvgarder ce circuit");
 			alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 			ButtonType buttonTypeNon = new ButtonType("Non");
@@ -2371,6 +2395,8 @@ public class HomeController extends Controller {
 						Sauvegarde sauvegarde = new Sauvegarde();
 						sauvegarde.saveCiruit(f.getAbsolutePath());
 						Alert a = new Alert(AlertType.INFORMATION);
+						alert.initOwner(homeWindow);
+						alert.initStyle(StageStyle.UTILITY);
 						a.setContentText("le circuit est bien sauvgarde");
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.showAndWait();
@@ -2379,6 +2405,8 @@ public class HomeController extends Controller {
 					Sauvegarde sauvegarde = new Sauvegarde();
 					sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
+					a.initOwner(homeWindow);
+					a.initStyle(StageStyle.UTILITY);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.showAndWait();
@@ -2411,6 +2439,8 @@ public class HomeController extends Controller {
 		stage.close();
 		if (Circuit.getCompUtilises().isEmpty()) {
 			Alert a = new Alert(AlertType.INFORMATION);
+			a.initOwner(homeWindow);
+			a.initStyle(StageStyle.UTILITY);
 			a.setContentText("le circuit est vide y a rien a sauvgarder");
 			a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 			a.showAndWait();
@@ -2428,6 +2458,8 @@ public class HomeController extends Controller {
 					Sauvegarde sauvegarde = new Sauvegarde();
 					sauvegarde.saveCiruit(f.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
+					a.initOwner(homeWindow);
+					a.initStyle(StageStyle.UTILITY);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.showAndWait();
@@ -2437,6 +2469,8 @@ public class HomeController extends Controller {
 				Sauvegarde sauvegarde = new Sauvegarde();
 				sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
 				Alert a = new Alert(AlertType.INFORMATION);
+				a.initOwner(homeWindow);
+				a.initStyle(StageStyle.UTILITY);
 				a.setContentText("le circuit est bien sauvgarde");
 				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 				a.showAndWait();
@@ -2535,6 +2569,8 @@ public class HomeController extends Controller {
 		CircuitIntegre ci = null;
 		CircuitIntegreSequentiel ciq = null;
 		Alert alert = new Alert(AlertType.ERROR);
+		alert.initOwner(homeWindow);
+		alert.initStyle(StageStyle.UTILITY);
 		alert.setTitle("Plusieurs éléments horloges");
 		alert.setContentText("Le circuit doit contenire un seule élément horloge ");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
@@ -2653,6 +2689,8 @@ public class HomeController extends Controller {
 					}
 				}else {
 					Alert a = new Alert(AlertType.WARNING);
+					a.initOwner(homeWindow);
+					a.initStyle(StageStyle.UTILITY);
 					a.setHeaderText("Circuit integré erreur");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.setTitle("Circuit Integré");
@@ -2702,6 +2740,8 @@ public class HomeController extends Controller {
 			}
 		}else {
 			Alert a = new Alert(AlertType.ERROR);
+			a.initOwner(homeWindow);
+			a.initStyle(StageStyle.UTILITY);
 			a.setHeaderText("Chronogramme erreur");
 			a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 			a.setTitle("Chronogramme");
@@ -2777,6 +2817,8 @@ public class HomeController extends Controller {
 					}
 					else {
 						Alert alert = new Alert(AlertType.ERROR);
+						alert.initOwner(homeWindow);
+						alert.initStyle(StageStyle.UTILITY);
 						alert.setTitle("Liste d'entrées vide");
 						alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						alert.setHeaderText("Pas de selection ");
@@ -2787,6 +2829,8 @@ public class HomeController extends Controller {
 
 			}else {
 				Alert alert = new Alert(AlertType.ERROR);
+				alert.initOwner(homeWindow);
+				alert.initStyle(StageStyle.UTILITY);
 				alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 				alert.setTitle("Entree / sortie manquante");
 				alert.setHeaderText("Pas d'entrées ou de sorties dans le circuit");
@@ -3539,21 +3583,25 @@ public class HomeController extends Controller {
 						if( dragImageView.getLayoutX() > 0 &&dragImageView.getLayoutY() > 0&& (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) < 1310 && e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)<700 && ! intersictionLabel(dragImageView))
 
 	    	        	{	    	        			    	        	
-	    	        	TextArea text=new TextArea("titre");
-	    	        	AnchorPane container=new AnchorPane();
-	    	        	  container.setPrefHeight(50);
-		    	            container.setPrefWidth(130);
-		    	            container.setStyle("-fx-background-color:#303337;-fx-background-radius:5");
-		    	            container.getChildren().add(text);
-	    	        	 container.setLayoutX(dragImageView.getLayoutX());
-		    	            container.setLayoutY(dragImageView.getLayoutY());
-		    	            text.setPrefHeight(20);
-		    	            text.setPrefWidth(100);
-		    	            text.setWrapText(false);
-		    	        	 text.setLayoutX(15);
-			    	            text.setLayoutY(7.5);
-	    	               workSpace.getChildren().add(container);
-	    	              ajouterLeGestApresCollageLabel(container);
+	    	        	EditableDraggableText text=new EditableDraggableText(dragImageView.getLayoutX(),dragImageView.getLayoutY(),"T");
+	    	               workSpace.getChildren().add(text);
+	    	               text.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+							@Override
+							public void handle(MouseEvent arg0) {
+								if(arg0.getButton().equals(MouseButton.SECONDARY))
+								{
+									if(clickDroitLabel != null) clickDroitLabel.close();
+									if(clickDroitFenetre != null) clickDroitFenetre.close();
+									if(clickSouris2 != null) clickSouris2.close();
+									
+									clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX(),arg0.getScreenY(),workSpace,homeWindow);
+								    arg0.consume();
+								}
+								
+							}
+	    	            	   
+	    	               });
 	    	        	}
 					     dragImageView.setMouseTransparent(false);
 		    	            node.setMouseTransparent(false);
@@ -3567,92 +3615,9 @@ public class HomeController extends Controller {
 	
 
 	}
-	private void ajouterLeGestApresCollageLabel( AnchorPane node) {
-		  
-	    node.setOnMouseEntered(new EventHandler<MouseEvent>() {
-	        public void handle(MouseEvent e) {
-	            node.setCursor(Cursor.HAND);
-	        }
-	    });				
-	    node.setOnMousePressed(new EventHandler<MouseEvent>() {
-	        public void handle(MouseEvent e) {
-	        	 double posXl=node.getLayoutX();
-	         	double posYl=node.getLayoutY();
-	          	if(clickDroitLabel!=null) {
-	          		clickDroitLabel.close();
-	          		clickDroitLabel=null;
-	          	}
-	          	
-				// TODO Auto-generated method stub
-	            if(e.getButton() == MouseButton.SECONDARY) {
-		              
-	             	if(clickDroitLabel!=null) {
-	             		clickDroitLabel.close();
-	             		clickDroitLabel=null;
-	             	}
-	             	clickDroitLabel = new ClickDroitLabel((TextArea)node.getChildren().get(0),e.getSceneX(),e.getSceneY(),workSpace,homeWindow);
-	            
-					}
-	            node.setMouseTransparent(true);
-	            node.setMouseTransparent(true);
-	            node.setCursor(Cursor.CLOSED_HAND);	            
-	            node.setOnDragDetected(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {                   
-	    	            SnapshotParameters snapParams = new SnapshotParameters();
-	    	            snapParams.setFill(Color.TRANSPARENT);
-	    	            node.startFullDrag();
-	    	            e.consume();
-	    	        }
-	    	    });
-	            
-	    	    node.setOnMouseDragged(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	            Point2D localPoint = workSpace.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
-	    	            node.relocate(
-	    	                    (int)(localPoint.getX() - node.getBoundsInLocal().getWidth() / 2),
-	    	                    (int)(localPoint.getY() - node.getBoundsInLocal().getHeight() / 2)
-	    	            );
-	    	        	if(e.getSceneX() > 1275)
-						{
-							scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-							scrollPane.setHvalue(scrollPane.getHvalue()+0.01);
-						}
-						if(e.getSceneX() < 210)
-						{
-							scrollPane.setHvalue(scrollPane.getHvalue()-0.01);
-						}
-						if(e.getSceneY() > 700)
-						{
-							scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-							scrollPane.setVvalue(scrollPane.getVvalue()+0.01);
-						}
-						if(e.getSceneY() < 0)
-						{
-							scrollPane.setVvalue(scrollPane.getVvalue()-0.01);
-						}
-	    	            e.consume();
-	    	        }
-	    	    });
-	    	    
-	    	    node.setOnMouseReleased(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	        	if(node.getLayoutX()<0 || node.getLayoutY()<0 || intersictionLabel(node) )//intersiction nor
-	    	        	{
-	    	        		node.setLayoutX(posXl);
-	    	        		node.setLayoutY(posYl);
-	    	        	}
-	    	        	
-	    	            node.setMouseTransparent(false);
-	    	            node.setMouseTransparent(false);
-	    	            node.setCursor(Cursor.DEFAULT);
-	    	        }
-	    	    });
-	    	    
-	        }
-	    });
 	
 
-	}
+	
 	private boolean intersictionLabel(ImageView imgCmp) {
 		for(ImageView image : Circuit.getCompUtilises().values())
 		{
@@ -3661,14 +3626,7 @@ public class HomeController extends Controller {
 		}
 		return false;
 	}
-	private boolean intersictionLabel(AnchorPane cmp) {
-		for(ImageView image : Circuit.getCompUtilises().values())
-		{
-			if(cmp.getBoundsInParent().intersects(image.getBoundsInParent()))
-				return true;
-		}
-		return false;
-	}
+
 	
 	public void closeRightWindows() {
 		if (fichierFenetre != null) {

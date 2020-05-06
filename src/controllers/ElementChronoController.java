@@ -126,7 +126,7 @@ public class ElementChronoController implements Initializable {
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.setResizable(false);
-			stage.initModality(Modality.NONE);
+			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.initStyle(StageStyle.UNDECORATED);
 			scene.setFill(Color.TRANSPARENT);
 			stage.initStyle(StageStyle.TRANSPARENT);

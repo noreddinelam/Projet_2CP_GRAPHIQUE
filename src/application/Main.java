@@ -16,6 +16,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import noyau.Circuit;
 import noyau.Horloge;
@@ -74,6 +75,7 @@ public class Main extends Application {
 
 	private void closeWindowEvent(WindowEvent event) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.initStyle(StageStyle.UTILITY);
 		alert.setContentText("Voullez vous sauvgarder ce circuit avant de quitter ?");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 		alert.getButtonTypes().clear();
@@ -93,8 +95,9 @@ public class Main extends Application {
 					File f = fileChooser.showSaveDialog(HomeController.homeWindow);
 					if (f != null) {
 						Sauvegarde sauvegarde = new Sauvegarde();
-						sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
+						sauvegarde.saveCiruit(f.getAbsolutePath());
 						Alert a = new Alert(AlertType.INFORMATION);
+						a.initStyle(StageStyle.UTILITY);
 						a.setContentText("le circuit est bien sauvgarde");
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.showAndWait();
@@ -110,6 +113,7 @@ public class Main extends Application {
 			}else if(Circuit.getCompUtilises().isEmpty()&&result.get() == buttonTypeSauvgarder) {
 				Alert a = new Alert(AlertType.INFORMATION);
 				a.setContentText("le circuit est vide il y a rien a sauvegarder");
+				a.initStyle(StageStyle.UTILITY);
 				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 				a.showAndWait();
 			}
