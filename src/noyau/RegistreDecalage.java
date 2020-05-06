@@ -25,7 +25,7 @@ public class RegistreDecalage extends Sequentiels {
 		this.taille = taille ;
 		Arrays.fill(valeur, EtatLogique.ZERO);
 		sorties[0] = new Fil(this);
-		sorties[0].setEtatLogiqueFil(EtatLogique.HAUTE_IMPEDANCE);
+		sorties[0].setEtatLogiqueFil(EtatLogique.ZERO);
 		lesCoordonnees = new LesCoordonnees(nombreEntree, 1, 0);
 		this.icon="/RegistreDecalage/2DroiteFront_Montant.png";
 		this.nom="R_Decalage";

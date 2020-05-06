@@ -200,7 +200,7 @@ public abstract class Controller {
 						i = 0;
 						if (!trouve) {
 							while ((!trouve)) {
-								if (Math.abs(x - list.get(i)) <= 10) {
+								if (Math.abs(x - list.get(i)) <= 4) {
 									trouve = true;
 									x = list.get(i);
 									line2.getPoints().add(i + 2, x);
@@ -208,7 +208,7 @@ public abstract class Controller {
 									line2.getPoints().add(i + 2, x);
 									line2.getPoints().add(i + 3, y);
 
-								} else if (Math.abs(y - list.get(i + 1)) <= 10) {
+								} else if (Math.abs(y - list.get(i + 1)) <= 4) {
 									trouve = true;
 									y = list.get(i + 1);
 									line2.getPoints().add(i + 2, x);
@@ -496,6 +496,7 @@ public abstract class Controller {
 	}	
 	public void sauvgardeCreationFil(Polyline line) {
 		Donnes sauvgarde = new Donnes();
+		sauvgarde.setFil(Circuit.getFilFromPolyline(line));
 		sauvgarde.setParent(line);
 		sauvgarde.setTypeDaction(Actions.CreationFil);
 		HomeController.undoDeque.addFirst(sauvgarde);

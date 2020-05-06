@@ -28,8 +28,7 @@ public class Not extends Portes{
 	public void setCord() {
 		// TODO Auto-generated method stub
 		super.setCord();
-		ImageView img = Circuit.getImageFromComp(this);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0,img.getBoundsInLocal().getHeight()/2), 0) ;
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0,17), 0) ;
 		rotation(direction);
 	}
 

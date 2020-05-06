@@ -142,6 +142,8 @@ public class HomeController extends Controller {
 
 	double posX;
 	double posY;
+	
+	ArrayList<Text> listDesNoms = new ArrayList<Text>();
 
 	public static boolean copyActive, copyMouse, pastButton;
 
@@ -541,6 +543,7 @@ public class HomeController extends Controller {
 					affichage.setDisable(true);
 				}
 				else {
+					remplireNomPinEtAfficher();
 					simulation.setImage(new Image("homePage_icones/SIMULATION_ON.png"));
 					if(! horloged)	Circuit.initialiser();
 					else {
@@ -566,6 +569,7 @@ public class HomeController extends Controller {
 				new FenetreDesErreurs(homeWindow);
 			}
 			else {
+				remplireNomPinEtAfficher();
 				simulation.setImage(new Image("homePage_icones/SIMULATION_ON.png"));
 				if(! horloged)	Circuit.initialiser();
 
@@ -592,6 +596,7 @@ public class HomeController extends Controller {
 			}
 		}
 		else {
+			remouveNomPin();
 			affichage.setOpacity(0.4);
 			affichage.setDisable(true);
 			Controller.getRightBareButtons().get(0).setOpacity(0.4);
@@ -891,6 +896,7 @@ public class HomeController extends Controller {
 						if (elementSeclecionner != null) {
 							Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
 							elementAsuprimer=elementSeclecionner;
+							supprimerDequeFilProbleme(cmp);
 							sauveGarderSupression();		
 							if(elementAsuprimer.getId().equals("clock"))
 							{
@@ -911,7 +917,6 @@ public class HomeController extends Controller {
 							} 
 							workSpace.getChildren().remove(elementAsuprimer);
 							removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(cmp));	
-
 						}
 					}
 				}
@@ -1558,8 +1563,8 @@ public class HomeController extends Controller {
 							if( ((Pin)compos).isInput()) {
 								if(!ListTextPin.contains(compos)){
 									Text number = new Text();
-									number.setLayoutX(eleementAdrager.getLayoutX()+3);
-									number.setLayoutY(eleementAdrager.getLayoutY()+16);
+									number.setLayoutX(eleementAdrager.getLayoutX());
+									number.setLayoutY(eleementAdrager.getLayoutY()-2);
 									String id = Integer.toString(ListTextPin.size()+1);
 									number.setText(id);
 									number.setId(id);
@@ -1587,8 +1592,8 @@ public class HomeController extends Controller {
 							else {
 								if(!ListTextPin2.contains(compos)){
 									Text number = new Text();
-									number.setLayoutX(eleementAdrager.getLayoutX()+4);
-									number.setLayoutY(eleementAdrager.getLayoutY()+28.5);
+									number.setLayoutX(eleementAdrager.getLayoutX());
+									number.setLayoutY(eleementAdrager.getLayoutY()-1);
 									String id = Integer.toString(ListTextPin2.size()+1);
 									number.setText(id);
 									number.setId(id);
@@ -2100,58 +2105,61 @@ public class HomeController extends Controller {
 		if (elementSeclecionner != null) {
 			if(!pastButton) {
 				if (! elementSeclecionner.getId().equals("CircuitIntegreSequentiel") && ((elementSeclecionner.getId().equals("clock") && ( ! horloged)) || (!elementSeclecionner.getId().equals("clock")))) {
-					ImageView dragImageView = new ImageView();
-					dragImageView.setLayoutX(ctrlX);
-					dragImageView.setLayoutY(ctrlY);
-					dragImageView.setId(elementSeclecionner.getId());
-					instanceComposant(dragImageView);		
 					if(!copyActive)
 						composantCopy = Circuit.getCompFromImage(elementSeclecionner);
-					Composant cmp2 = Circuit.getCompFromImage(dragImageView);
-					sauveGardeCopier(dragImageView,cmp2);
-					cmp2.setDirection(composantCopy.getDirection());
-					cmp2.setIcon(composantCopy.getIcon());
-					cmp2.setNom(composantCopy.getNom());
-					cmp2.setNombreEntree(composantCopy.getNombreEntree());
-					cmp2.setNombreSortieAndUpdateFil(composantCopy.getNombreSortie());
-					if(cmp2.getClass().getSimpleName().equals("Multiplexeur")){
-						((Multiplexeur)cmp2).setNbCommande(((Multiplexeur)composantCopy).getNbCommande());
-						cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
-					}
-					else
-						if(cmp2.getClass().getSimpleName().equals("Demultiplexeur")){
-							((Demultiplexeur)cmp2).setNbCommande(((Demultiplexeur)composantCopy).getNbCommande());
+					if(composantCopy != null)
+					{
+						ImageView dragImageView = new ImageView();
+						dragImageView.setLayoutX(ctrlX);
+						dragImageView.setLayoutY(ctrlY);
+						dragImageView.setId(elementSeclecionner.getId());
+						instanceComposant(dragImageView);		
+						Composant cmp2 = Circuit.getCompFromImage(dragImageView);
+						sauveGardeCopier(dragImageView,cmp2);
+						cmp2.setDirection(composantCopy.getDirection());
+						cmp2.setIcon(composantCopy.getIcon());
+						cmp2.setNom(composantCopy.getNom());
+						cmp2.setNombreEntree(composantCopy.getNombreEntree());
+						cmp2.setNombreSortieAndUpdateFil(composantCopy.getNombreSortie());
+						if(cmp2.getClass().getSimpleName().equals("Multiplexeur")){
+							((Multiplexeur)cmp2).setNbCommande(((Multiplexeur)composantCopy).getNbCommande());
 							cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
 						}
-						else if(cmp2.getClass().getSimpleName().equals("Pin")) {
-							boolean input = ((Pin)composantCopy).getInput();
-							((Pin)cmp2).setInput(input);
-							if (! input) {
-								Circuit.getEntreesCircuit().remove((Pin)cmp2);
-								Circuit.getSortiesCircuit().add((Pin)cmp2);
+						else
+							if(cmp2.getClass().getSimpleName().equals("Demultiplexeur")){
+								((Demultiplexeur)cmp2).setNbCommande(((Demultiplexeur)composantCopy).getNbCommande());
+								cmp2.getLesCoordonnees().setNbCordCommandes(composantCopy.getLesCoordonnees().getNbCordCommandes());	
 							}
-						}
-						else if(cmp2.getClass().getSimpleName().equals("CircuitIntegre")) {
-							((CircuitIntegre)cmp2).setTableVerite(((CircuitIntegre)composantCopy).getTableVerite());
-							ArrayList<Circle> reList = ((CircuitIntegre)cmp2).generateCercles(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-							for (Circle circle : reList) {
-								workSpace.getChildren().add(circle);
+							else if(cmp2.getClass().getSimpleName().equals("Pin")) {
+								boolean input = ((Pin)composantCopy).getInput();
+								((Pin)cmp2).setInput(input);
+								if (! input) {
+									Circuit.getEntreesCircuit().remove((Pin)cmp2);
+									Circuit.getSortiesCircuit().add((Pin)cmp2);
+								}
 							}
+							else if(cmp2.getClass().getSimpleName().equals("CircuitIntegre")) {
+								((CircuitIntegre)cmp2).setTableVerite(((CircuitIntegre)composantCopy).getTableVerite());
+								ArrayList<Circle> reList = ((CircuitIntegre)cmp2).generateCercles(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+								for (Circle circle : reList) {
+									workSpace.getChildren().add(circle);
+								}
+							}
+						else if(cmp2.getClass().equals(Horloge.class)) {
+							horloged = true;
+							horlogeDeCercuit = dragImageView;
 						}
-					else if(cmp2.getClass().equals(Horloge.class)) {
-						horloged = true;
-						horlogeDeCercuit = dragImageView;
+						cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
+						cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
+						dragImageView.setImage(elementSeclecionner.getImage());
+						dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
+						dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());		
+						workSpace.getChildren().add(dragImageView);
+						ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
+						addAllPolylinesToWorkSpace(polyline);
+						ajouterLeGestApresCollage(dragImageView);
+						elementSeclecionner = dragImageView;
 					}
-					cmp2.getLesCoordonnees().setNbCordEntree(composantCopy.getNombreEntree());
-					cmp2.getLesCoordonnees().setNbCordSorties(composantCopy.getNombreSortie());
-					dragImageView.setImage(elementSeclecionner.getImage());
-					dragImageView.setFitHeight(elementSeclecionner.getImage().getHeight());
-					dragImageView.setFitWidth(elementSeclecionner.getImage().getWidth());		
-					workSpace.getChildren().add(dragImageView);
-					ArrayList<Polyline> polyline = Circuit.getCompFromImage(dragImageView).generatePolyline(dragImageView.getLayoutX(), dragImageView.getLayoutY());
-					addAllPolylinesToWorkSpace(polyline);
-					ajouterLeGestApresCollage(dragImageView);
-					elementSeclecionner = dragImageView;
 					
 				}
 			}
@@ -2179,6 +2187,7 @@ public class HomeController extends Controller {
 
 		if (elementSeclecionner != null) {
 			cmp = Circuit.getCompFromImage(elementSeclecionner);
+			supprimerDequeFilProbleme(cmp);
 			elementAsuprimer = elementSeclecionner;
 			sauveGarderSupression();
 			if(elementAsuprimer.getId().equals("clock"))
@@ -3721,6 +3730,7 @@ public class HomeController extends Controller {
 	
 	public static void sauveGarderRotation(Composant composant,ImageView imageView,int rotation) {
 		Donnes donnes = new Donnes();
+		HomeController.supprimerDequeFilProbleme(composant);
 		donnes.setTypeDaction(Actions.Rotation);
 		donnes.setComposant(composant);
 		donnes.setRotation(rotation);
@@ -3747,5 +3757,57 @@ public class HomeController extends Controller {
 			affichageFenetre.setY(newVal.doubleValue()+225);
 			aideFenetre.setY(newVal.doubleValue()+300);
 		});
+	}
+	
+	public static void supprimerDequeFilProbleme(Composant composant){
+		Donnes donnes;
+		boolean boucle = true;
+		for (Fil fil : composant.getSorties()) {
+			donnes = new Donnes();
+			donnes.setFil(fil);
+			while(boucle) {
+				boucle = undoDeque.remove(donnes);
+			}
+		}
+	}
+	
+	public void remplireNomPinEtAfficher() {
+		Text text;
+		ImageView imageView;
+		for (Pin pin : Circuit.getEntreesCircuit()) {
+			imageView = Circuit.getImageFromComp(pin);
+			text = new Text(pin.getNom());
+			if (pin.getDirection() == 1) {
+				text.setLayoutX(imageView.getLayoutX());
+				text.setLayoutY(imageView.getLayoutY()-2);
+			}
+			else {
+				text.setLayoutX(imageView.getLayoutX());
+				text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 15);
+			}
+			text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
+			listDesNoms.add(text);
+			workSpace.getChildren().add(text);
+		}
+		for (Pin pin : Circuit.getSortiesCircuit()) {
+			imageView = Circuit.getImageFromComp(pin);
+			text = new Text(pin.getNom());
+			if (pin.getDirection() == 1) {
+				text.setLayoutX(imageView.getLayoutX());
+				text.setLayoutY(imageView.getLayoutY()-2);
+			}
+			else {
+				text.setLayoutX(imageView.getLayoutX());
+				text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 15);
+			}
+			text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
+			listDesNoms.add(text);
+			workSpace.getChildren().add(text);
+		}
+	}
+	
+	public void remouveNomPin() {
+		workSpace.getChildren().removeAll(listDesNoms);
+		listDesNoms.clear();
 	}
 }

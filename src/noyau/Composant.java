@@ -2,7 +2,9 @@ package noyau;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Stack;
 
+import controllers.HomeController;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
@@ -23,7 +25,6 @@ public abstract class Composant implements Serializable{
 	protected boolean sleep = false;
 	protected int direction = 0;
 	protected LesCoordonnees lesCoordonnees ;
-
 		
 	public Composant(int nombreEntree,String nom) {
 		this.nombreEntree = nombreEntree;
@@ -72,19 +73,17 @@ public abstract class Composant implements Serializable{
 		if(valider()) // si le composant est pret 
 		{
 			genererSorties(); //executer sa fonction logique et mettre le resultat sur le fil de sortie 
-			
+
 			for (int i = 0; i < nombreSortie; i++) 
 			{
-				
 				if(sorties[i].getEtatLogiqueFil().getNum() != etatFinal[i].getNum())  //verifier si l'etat precedent du composant a changé ou non 
 				{
 					etatFinal[i]=sorties[i].getEtatLogiqueFil(); //mettre a jour l'etat final du composant 
 					sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
 				}
-			}
+			}		
 		}
 	}
-
 	public abstract void genererSorties();
 	public abstract boolean valider();  // verifier si le composant est pret a executer sa fonction logique 
 	   							        // valider si les entrees et les sorties sont pretes 
