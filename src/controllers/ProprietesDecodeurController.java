@@ -34,9 +34,7 @@ public class ProprietesDecodeurController extends ProprietesController{
 
 	public void initialiser(Composant cmp) {
 		btns.add(imgMoinsNbEntrees);
-		btns.add(imgNextDirection);
 		btns.add(imgPlusNbEntrees);
-		btns.add(imgPreviousDirection);
 		this.cmp = cmp;
 		i=cmp.getNombreEntree();
 		direct = 0;
@@ -51,8 +49,6 @@ public class ProprietesDecodeurController extends ProprietesController{
 			imgPlusNbEntrees.setVisible(false);
 		}
 		if (! cmp.isDessocier()) {
-			nextDirection.setDisable(true);
-			previousDirection.setDisable(false);
 			plusNbEntrees.setDisable(true);
 			moinsNbEntrees.setDisable(true);
 			applyOpaciteForImages(btns);
@@ -143,12 +139,6 @@ public class ProprietesDecodeurController extends ProprietesController{
     	}
     }
 
-    @FXML
-    void nextDirection(ActionEvent event) {
-    	direct ++;
-    	if(direct > 3) direct=0;
-    	direction.setText(bddDirection[direct].toString());
-    }
 
     @FXML
     void plusNbEntrees(ActionEvent event) {
@@ -162,11 +152,6 @@ public class ProprietesDecodeurController extends ProprietesController{
 		}
     }
 
-    @FXML
-    void previousDirection(ActionEvent event) {
-    	direct--;
-    	if(direct < 0) direct = 3;
-    	direction.setText(bddDirection[direct].toString());
-    }
+    
 
 }
