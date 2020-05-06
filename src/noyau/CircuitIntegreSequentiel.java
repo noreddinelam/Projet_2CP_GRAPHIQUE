@@ -34,7 +34,6 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 	@Override
 	public void defaultValue() {
 		// TODO Auto-generated method stub
-		System.out.println("jfdsgqihezgryezilfj;");
 		for (Fil fil : filUtilises) {
 			fil.setEtat(EtatLogique.HAUTE_IMPEDANCE);;
 		}
@@ -46,7 +45,6 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 	@Override
 	public void genererSorties() {
 		// TODO Auto-generated method stub
-		System.out.println("initialiser");
 		initialiser();
 	}
 	@Override

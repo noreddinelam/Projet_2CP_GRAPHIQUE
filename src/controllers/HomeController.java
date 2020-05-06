@@ -2511,7 +2511,6 @@ public class HomeController extends Controller {
 					workSpace.getChildren().addAll(circuitIntegre.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
 				}else {
 					CircuitIntegreSequentiel ciq = (CircuitIntegreSequentiel)cmp;
-					System.out.println("fdhgfhqdsg : "+ciq.getSortiesCircuit());
 					ImageView imageView = new ImageView(new Image(ciq.generatePath()));
 					imageView.setLayoutX(10);
 					imageView.setLayoutY(10);

@@ -197,25 +197,28 @@ public abstract class Controller {
 							i = i - 2;
 						}
 
-						i = 0;
+						i = 2;
 						if (!trouve) {
 							while ((!trouve)) {
-								if (Math.abs(x - list.get(i)) <= 4) {
-									trouve = true;
-									x = list.get(i);
-									line2.getPoints().add(i + 2, x);
-									line2.getPoints().add(i + 3, y);
-									line2.getPoints().add(i + 2, x);
-									line2.getPoints().add(i + 3, y);
-
-								} else if (Math.abs(y - list.get(i + 1)) <= 4) {
-									trouve = true;
-									y = list.get(i + 1);
-									line2.getPoints().add(i + 2, x);
-									line2.getPoints().add(i + 3, y);
-									line2.getPoints().add(i + 2, x);
-									line2.getPoints().add(i + 3, y);
-
+								if (Math.abs(x - list.get(i)) <= 10) {
+									if( (list.get(i-1)<y && y <list.get(i+1)) || (list.get(i+1)<y  && y<list.get(i-1) ))
+									{
+										trouve = true;
+										x = list.get(i);
+										line2.getPoints().add(i , x);
+										line2.getPoints().add(i + 1, y);
+										line2.getPoints().add(i , x);
+										line2.getPoints().add(i + 1, y);
+									}
+								} else if (Math.abs(y - list.get(i + 1)) <= 10) {
+									if( (list.get(i-2)<x && x <list.get(i) ) || (list.get(i)<x && x<list.get(i-2)) ) {
+										trouve = true;
+										y = list.get(i + 1);
+										line2.getPoints().add(i , x);
+										line2.getPoints().add(i + 1, y);
+										line2.getPoints().add(i , x);
+										line2.getPoints().add(i + 1, y);
+									}
 								}
 								i = i + 2;
 							}

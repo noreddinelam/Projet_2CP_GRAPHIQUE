@@ -248,6 +248,7 @@ public class Circuit {
 		}
 		int j = 0;
 		for (Sequentiels sequentiels : listeEtages) {
+			System.out.println("SEQ");
 			for (int i = 0; i < sequentiels.getNombreSortie(); i++) {
 				if (sequentiels.getClass().getSuperclass().equals(Bascule.class)) {
 					if (j == 0) {

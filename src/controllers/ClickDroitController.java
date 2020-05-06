@@ -167,8 +167,6 @@ public class ClickDroitController extends Controller{
 		img.setFitHeight(image.getHeight());
 		img.setFitWidth(image.getWidth());
 		addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
-		Stage s = (Stage)prop.getScene().getWindow(); 
-		s.close();
 	}
 
 	@FXML
@@ -186,8 +184,6 @@ public class ClickDroitController extends Controller{
 		img.setFitWidth(image.getWidth());
 		addAllPolylinesToWorkSpace(cmp.generatePolyline(img.getLayoutX(), img.getLayoutY()));
 
-		Stage s = (Stage)prop.getScene().getWindow(); 
-		s.close();
 	}
 
 	@FXML
