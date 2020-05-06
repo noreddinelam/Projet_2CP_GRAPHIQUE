@@ -35,7 +35,7 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 	public void defaultValue() {
 		// TODO Auto-generated method stub
 		for (Fil fil : filUtilises) {
-			fil.setEtat(EtatLogique.HAUTE_IMPEDANCE);;
+			fil.setEtat(EtatLogique.HAUTE_IMPEDANCE);
 		}
 		for(Composant composant : compUtilises) {
 			composant.defaultValue();
@@ -284,9 +284,30 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 		for (int i=0;i<nombreEntree;i++) {
 			entreesCircuit.get(i).setEtat(entrees[i].getEtatLogiqueFil());
 		}
-		System.out.println("size : "+listSouceCte.size());
 		for (int i=0;i<listSouceCte.size();i++) {
 			listSouceCte.get(i).evaluer();	
+		}
+	}
+	
+	public void initSortiesElemenets() { // faire le meme travail que initialiser du circuit
+		int j = 0;
+		for (Sequentiels sequentiels : listeEtages) {
+			for (int i = 0; i < sequentiels.getNombreSortie(); i++) {
+				if (sequentiels.getClass().getSuperclass().equals(Bascule.class)) {
+					if (j == 0) {
+						sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ZERO);
+						j++;
+					}
+					else {
+						sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ONE);
+						j=0;
+					}
+				}
+				else {
+					sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ZERO);
+				}
+				sequentiels.getSorties()[i].evaluer();
+			}
 		}
 	}
 

@@ -2498,6 +2498,7 @@ public class HomeController extends Controller {
 				cmp = (Composant)oo.readObject();
 				if(cmp.getClass().getSimpleName().equals("CircuitIntegre")) {
 					CircuitIntegre circuitIntegre = (CircuitIntegre)cmp;
+					circuitIntegre.setNom(f.getName().substring(0, f.getName().length() - 4));
 					ImageView imageView = new ImageView(new Image(circuitIntegre.generatePath()));
 					imageView.setLayoutX(10);
 					imageView.setLayoutY(10);
@@ -2512,11 +2513,13 @@ public class HomeController extends Controller {
 				}else {
 					CircuitIntegreSequentiel ciq = (CircuitIntegreSequentiel)cmp;
 					ImageView imageView = new ImageView(new Image(ciq.generatePath()));
+					ciq.setNom(f.getName().substring(0, f.getName().length() - 4));
 					imageView.setLayoutX(10);
 					imageView.setLayoutY(10);
 					imageView.setFitHeight(imageView.getImage().getHeight());
 					imageView.setFitWidth(imageView.getImage().getWidth());
 					imageView.setId("CircuitIntegreSequentiel");
+					ciq.defaultValue();
 					Circuit.ajouterComposant(ciq, imageView);
 					workSpace.getChildren().add(imageView);
 					ajouterLeGestApresCollage(imageView);
