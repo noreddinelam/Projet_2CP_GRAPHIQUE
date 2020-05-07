@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
-public class Pin extends Composant implements Affichage,ElementHorloge,ComposantDeChronogramme{
+public class Pin extends Composant implements ElementHorloge,ComposantDeChronogramme{
 	/**
 	 * 
 	 */
@@ -21,7 +21,7 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 	{
 		return this.input;
 	}
-	public Pin(boolean input,String nom) {
+	public Pin(boolean input,String nom) { /// instancier un pin soit d'entree ou de sortie
 		// TODO Auto-generated constructor stub
 		super(0,nom);
 		this.direction = 1;
@@ -57,9 +57,6 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 			if (horloge == true) { // verifier si le pin sert comme horloge ou pas
 				tictac();
 			}
-		}else // to be continued ...
-		{
-			//signaler les erreurs ..
 		}
 	}
 	
@@ -80,12 +77,6 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 	public boolean valider() {
 		return true;
 	}
-
-	@Override
-	public void afficher() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public void addEtages(ArrayList<Integer> etage) { // sert pour la creation des etages dans la simulation
@@ -96,7 +87,7 @@ public class Pin extends Composant implements Affichage,ElementHorloge,Composant
 	}
 	
 	@Override
-	public String generatePath() {
+	public String generatePath() { /// generer l'image relative au pin
 		// TODO Auto-generated method stub
 		String path;
 		switch (etat) {

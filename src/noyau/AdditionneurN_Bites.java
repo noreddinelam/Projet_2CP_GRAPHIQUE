@@ -34,13 +34,13 @@ public class AdditionneurN_Bites extends Additionneur {
 	}
 		
 	@Override
-	public String generatePath() {
+	public String generatePath() { /// generer les chemins des images de l'additionneur
 		// TODO Auto-generated method stub
 		return this.getClass().getSimpleName() + "/" + String.valueOf((getNombreEntree() -1) / 2)+".png";
 	}
 	
 	@Override
-	public void setCord() {
+	public void setCord() { /// utiliser pour definire les coordonnees 
 		// TODO Auto-generated method stub
 		switch (nombreEntree) {
 		case 3:{

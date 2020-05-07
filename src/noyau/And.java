@@ -24,7 +24,7 @@ public class And extends Portes {
 	}
 	
 	@Override
-	public void setCord() {
+	public void setCord() {// seter les coordonnees de la porte AND
 		// TODO Auto-generated method stub
 		super.setCord();
 		switch (nombreEntree) {
@@ -55,7 +55,7 @@ public class And extends Portes {
 			
 		}break;
 		}
-		rotation(direction);
+		rotation(direction); /// appliquer une rotation dan
 	}
 
 }

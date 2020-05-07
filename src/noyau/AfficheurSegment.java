@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
-public class AfficheurSegment extends Composant implements Affichage{
+public class AfficheurSegment extends Composant{
 	
 	/**
 	 * 
@@ -20,13 +20,13 @@ public class AfficheurSegment extends Composant implements Affichage{
 	}
 	
 	@Override
-	public void evaluer() {
-		if (valider()) {
-			genererSorties();
+	public void evaluer() {/// afficher la valeur de l'afficheur segments
+		if (valider()) { /// si le composant est valider 
+			genererSorties(); /// generer les images
 		}
 	}
 	@Override
-	public void genererSorties() {
+	public void genererSorties() { /// pour generer la valeur a afficher dans l'afficheur segment
 		valeur = Integer.valueOf(concatener(entrees, 4),2);
 		ImageView imageView = Circuit.getImageFromComp(this);
 		imageView.setImage(new Image(generatePath()));
@@ -39,15 +39,9 @@ public class AfficheurSegment extends Composant implements Affichage{
 		}
 		return false;
 	}
-
-	@Override
-	public void afficher() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
-	public void defaultValue() {
+	public void defaultValue() { // retourner le composant à sa valeur par defaut
 		// TODO Auto-generated method stub
 		valeur = 0;
 		ImageView img = Circuit.getImageFromComp(this);
@@ -58,13 +52,13 @@ public class AfficheurSegment extends Composant implements Affichage{
 	}
 	
 	@Override
-	public String generatePath() {
+	public String generatePath() { /// generer le chemin des images relatives à l'afficheur segments
 		// TODO Auto-generated method stub
 		return "AfficheurSegment/"+String.valueOf(valeur)+ ".png";
 	}
 	
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coordonnees des entrees pour l'afficheur segment
 		// TODO Auto-generated method stub
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 19.8), 0);
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 37.5), 1);
@@ -73,7 +67,7 @@ public class AfficheurSegment extends Composant implements Affichage{
 	}
 	
 	@Override
-	public void resetPolyline(Polyline line, double x, double y) {
+	public void resetPolyline(Polyline line, double x, double y) { /// reset les polylines 
 		// TODO Auto-generated method stub
 		
 	}

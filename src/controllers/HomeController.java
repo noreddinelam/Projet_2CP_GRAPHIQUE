@@ -22,9 +22,6 @@ import java.util.Map.Entry;
 import java.util.Optional;
 
 import javax.imageio.ImageIO;
-import javax.swing.text.PlainDocument;
-
-import com.sun.media.jfxmediaimpl.platform.Platform;
 
 import application.ClickBarDroite;
 import application.ClickDroit;
@@ -145,6 +142,7 @@ public class HomeController extends Controller {
 	double posY;
 	
 	ArrayList<Text> listDesNoms = new ArrayList<Text>();
+	public static ArrayList<Button> btnsToHide = new ArrayList<Button>();
 
 	public static boolean copyActive, copyMouse, pastButton;
 
@@ -160,6 +158,7 @@ public class HomeController extends Controller {
 	public static ImageView elementAsuprimer = null;
 
 	private static ImageView elementAmodifier = null;
+	
 	///////////////////////////// Les lignes de Guide
 	private static Line guideX = new Line();
 	private static Line guideXp = new Line();
@@ -508,6 +507,9 @@ public class HomeController extends Controller {
 
 	@FXML void screenShot(MouseEvent event){
 		final FileChooser fileChooser=new FileChooser();
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("PNG", "*.png")
+				);
 		File f=fileChooser.showSaveDialog(homeWindow);
 		if(f!=null){
 			captureEcran(f.getAbsolutePath());
@@ -597,6 +599,7 @@ public class HomeController extends Controller {
 			}
 		}
 		else {
+			showButtonsFile();
 			remouveNomPin();
 			affichage.setOpacity(0.4);
 			affichage.setDisable(true);
@@ -761,10 +764,12 @@ public class HomeController extends Controller {
 					
 					if (clickDroitFenetre != null) {
 						Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
-
-						Double mouseX = event.getScreenX() , mouseY = event.getScreenY();		
+						Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
+						System.out.println("X : "+ x + " Y : "+y);
+						System.out.println("mouseX : "+ mouseX + " mouseY : "+mouseY);
 						if( (mouseX < x - 10)  ||  (mouseX > x+172) || (mouseY < y - 10)  ||  (mouseY > y+174) )
 						{//162     164
+							System.out.println("bjdhfbqdshfgysdquguisdqbhcfdbs");
 							clickDroitFenetre.close();
 							clickDroitFenetre = null;
 						}
@@ -948,7 +953,12 @@ public class HomeController extends Controller {
 						if (cc.isShowing())
 							cc.close();
 						else 
+						{
 							cc.show();
+							if (simul) {
+								hideButtonsFile();
+							}
+						}
 
 					} else
 						click.close();
@@ -3268,7 +3278,7 @@ public class HomeController extends Controller {
 
 	public void captureEcran(String path) {
 		WritableImage image = workSpace.snapshot(new SnapshotParameters(), null);
-		File file = new File(path+".png");
+		File file = new File(path);
 		try {
 			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
 		}catch (IOException e) {
@@ -3790,6 +3800,7 @@ public class HomeController extends Controller {
 			if(clickDroitFenetre != null) clickDroitFenetre.close();
 			if(clickDroitFilFenetre != null) clickDroitFilFenetre.close();
 			if(clickSouris2 != null) clickSouris2.close();
+			if (clickDroitLabel != null) clickDroitLabel.close();
 			fichierFenetre.setX(newVal.doubleValue()+1065);
 			editionFenetre.setX(newVal.doubleValue()+1065);
 			affichageFenetre.setX(newVal.doubleValue()+1065);
@@ -3799,6 +3810,7 @@ public class HomeController extends Controller {
 			if(clickDroitFenetre != null) clickDroitFenetre.close();
 			if(clickDroitFilFenetre != null) clickDroitFilFenetre.close();
 			if(clickSouris2 != null) clickSouris2.close();
+			if (clickDroitLabel != null) clickDroitLabel.close();
 			fichierFenetre.setY(newVal.doubleValue()+50);
 			editionFenetre.setY(newVal.doubleValue()+115);
 			affichageFenetre.setY(newVal.doubleValue()+255);
@@ -3826,11 +3838,11 @@ public class HomeController extends Controller {
 			text = new Text(pin.getNom());
 			if (pin.getDirection() != 3) {
 				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()-2);
+				text.setLayoutY(imageView.getLayoutY()-3);
 			}
 			else {
 				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 15);
+				text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 18);
 			}
 			text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
 		    text.setFill(Color.web("#e0e0d1"));
@@ -3842,11 +3854,11 @@ public class HomeController extends Controller {
 			text = new Text(pin.getNom());
 			if (pin.getDirection() == 1) {
 				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()-2);
+				text.setLayoutY(imageView.getLayoutY()-3);
 			}
 			else {
 				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 15);
+				text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 18);
 			}
 			text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
 		    text.setFill(Color.web("#e0e0d1"));
@@ -3859,4 +3871,69 @@ public class HomeController extends Controller {
 		workSpace.getChildren().removeAll(listDesNoms);
 		listDesNoms.clear();
 	}
+	
+	public void hideButtonsFile() {
+		for (Button button : btnsToHide) {
+			button.setDisable(true);
+			button.setOpacity(0.4);
+		}
+	}
+	
+	public void showButtonsFile() {
+		for (Button button : btnsToHide) {
+			button.setDisable(false);
+			button.setOpacity(1);
+		}
+	}
+
+	public Button getNouveau() {
+		return nouveau;
+	}
+
+	public void setNouveau(Button nouveau) {
+		this.nouveau = nouveau;
+	}
+
+	public Button getOuvrir() {
+		return ouvrir;
+	}
+
+	public void setOuvrir(Button ouvrir) {
+		this.ouvrir = ouvrir;
+	}
+
+	public Button getFermer() {
+		return fermer;
+	}
+
+	public void setFermer(Button fermer) {
+		this.fermer = fermer;
+	}
+
+	public Button getSauvegarder() {
+		return sauvegarder;
+	}
+
+	public void setSauvegarder(Button sauvegarder) {
+		this.sauvegarder = sauvegarder;
+	}
+
+	public Button getImporter() {
+		return importer;
+	}
+
+	public void setImporter(Button importer) {
+		this.importer = importer;
+	}
+
+	public Button getSauvComme() {
+		return sauvComme;
+	}
+
+	public void setSauvComme(Button sauvComme) {
+		this.sauvComme = sauvComme;
+	}
+	
+	
+	
 }

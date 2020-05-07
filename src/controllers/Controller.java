@@ -199,7 +199,7 @@ public abstract class Controller {
 
 						i = 2;
 						if (!trouve) {
-							while ((!trouve)) {
+							while ((!trouve) && (i < list.size())) {
 								if (Math.abs(x - list.get(i)) <= 10) {
 									if( (list.get(i-1)<y && y <list.get(i+1)) || (list.get(i+1)<y  && y<list.get(i-1) ))
 									{
