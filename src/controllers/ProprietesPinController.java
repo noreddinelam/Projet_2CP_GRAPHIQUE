@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.ArrayList;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -44,6 +46,7 @@ public class ProprietesPinController extends ProprietesController{
 		direct = cmp.getDirection();
 		direction.setText(bddDirection[direct]);
 		label.setText(cmp.getNom());
+		addTextLimiter(label, 7);
 		putInt = (((Pin)cmp).getInput() == true) ? 0 : 1 ;
 		put.setText(bddPut[putInt]);
 		direct = cmp.getDirection();
@@ -185,6 +188,18 @@ public class ProprietesPinController extends ProprietesController{
     	putInt--;
     	if(putInt < 0) putInt = 1;
     	put.setText(bddPut[putInt]);
+    }
+    
+    public static void addTextLimiter(final TextField tf, final int maxLength) {
+        tf.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if (tf.getText().length() > maxLength) {
+                    String s = tf.getText().substring(0, maxLength);
+                    tf.setText(s);
+                }
+            }
+        });
     }
 
 }

@@ -4,6 +4,7 @@ import java.io.File;
 
 import java.util.Optional;
 
+
 import controllers.Controller;
 import controllers.HomeController;
 import javafx.application.Application;
@@ -20,8 +21,12 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import noyau.Bascule;
 import noyau.Circuit;
+import noyau.D;
+import noyau.Front;
 import noyau.Horloge;
+import noyau.Not;
 import noyau.Sauvegarde;
 
 public class Main extends Application {
@@ -99,6 +104,7 @@ public class Main extends Application {
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.initStyle(StageStyle.UTILITY);
 						a.setContentText("le circuit est bien sauvgarde");
+						a.initOwner(pStage);
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.showAndWait();
 					}
@@ -108,6 +114,7 @@ public class Main extends Application {
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setContentText("le circuit est bien sauvgarde");
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+					a.initOwner(pStage);
 					a.showAndWait();
 				}
 			}else if(Circuit.getCompUtilises().isEmpty()&&result.get() == buttonTypeSauvgarder) {
@@ -115,6 +122,7 @@ public class Main extends Application {
 				a.setContentText("le circuit est vide il y a rien a sauvegarder");
 				a.initStyle(StageStyle.UTILITY);
 				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				a.initOwner(pStage);
 				a.showAndWait();
 			}
 			
@@ -677,6 +685,7 @@ public class Main extends Application {
 //		Thread thread=new Thread(horloge);
 //		thread.start();
 		// horloge.run();
+		
 	}
 }
 
