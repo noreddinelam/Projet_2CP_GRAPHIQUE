@@ -1,6 +1,6 @@
 package noyau;
 
-public enum Actions {
+public enum Actions { /// represente les actions du ctrl + z
      Mouvement,
      Creation,
      Supression,

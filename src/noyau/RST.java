@@ -14,7 +14,7 @@ public class RST extends Bascule{
 	}
 
 	@Override
-	public void genererSortiesSyncho() {
+	public void genererSortiesSyncho() {  // pour generer la sortie en mode synchrone 
 		this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
        
 		if(etatPrec[0].getNum()==0 && etatPrec[1].getNum()==1 )//R=1 S=0
@@ -40,7 +40,7 @@ public class RST extends Bascule{
 	}
 	
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coordonnees nécessaires
 		// TODO Auto-generated method stub
 		super.setCord();
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 68.6), 1);

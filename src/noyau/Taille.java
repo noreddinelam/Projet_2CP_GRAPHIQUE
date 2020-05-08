@@ -2,7 +2,7 @@ package noyau;
 
 import java.io.Serializable;
 
-public class Taille implements Serializable{
+public class Taille implements Serializable{ /// fonction pour sauvegarder les tailles des images
 	/**
 	 * 
 	 */

@@ -1,6 +1,6 @@
 package noyau;
 
-public abstract class ExceptionProgramme {
+public abstract class ExceptionProgramme { /// la classe d'ou herite les exception utilisées dans la validation d'un circuit
 	protected TypesExceptions typesExceptions;
 	protected Composant composant;
 	public ExceptionProgramme(TypesExceptions typesExceptions,Composant composant) {
@@ -8,6 +8,9 @@ public abstract class ExceptionProgramme {
 		this.typesExceptions = typesExceptions;
 		this.composant = composant;
 	}
+	
+	public abstract String getProblem();
+	public abstract String getSolution();
 	
 	public String getTypeExceptions() {
 		return typesExceptions.getTypeExString();
@@ -21,6 +24,5 @@ public abstract class ExceptionProgramme {
 		this.typesExceptions = typesExceptions;
 	}
 
-	public abstract String getProblem();
-	public abstract String getSolution();
+	
 }

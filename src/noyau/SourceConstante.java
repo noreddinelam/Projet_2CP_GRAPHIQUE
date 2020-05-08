@@ -24,7 +24,7 @@ public class SourceConstante extends Composant{
 	}
 
 	@Override
-	public void genererSorties() {
+	public void genererSorties() { /// generer la sortie de la source constante
 		// TODO Auto-generated method stub
 		sorties[0].setEtat(etatLogique);
 	}
@@ -36,7 +36,7 @@ public class SourceConstante extends Composant{
 	}
 	
 	@Override
-	public String generatePath() {
+	public String generatePath() { /// generer les chemins des images relatives au source constante
 		// TODO Auto-generated method stub
 		if (etatLogique == EtatLogique.ONE) {
 			return "SourceConstante/VCC.png";
@@ -45,7 +45,7 @@ public class SourceConstante extends Composant{
 	}
 	
 	@Override
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) { /// generer les polylines de sorties
 		// TODO Auto-generated method stub
 		setCord();	
 		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
@@ -60,13 +60,13 @@ public class SourceConstante extends Composant{
 	}
 	
 	@Override
-	public void setCord() {
+	public void setCord() { // seter les coordonnées de sortie
 		// TODO Auto-generated method stub
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(Circuit.getImageFromComp(this).getBoundsInLocal().getWidth() / 2, Circuit.getImageFromComp(this).getBoundsInLocal().getHeight()), 0);
 	}
 	
 	@Override
-	public void resetPolyline(Polyline line, double x, double y) {
+	public void resetPolyline(Polyline line, double x, double y) { /// repositionner les polylines de sorties
 		// TODO Auto-generated method stub
 		line.getPoints().clear();
 		line.getPoints().addAll(x,y,x,y+5);

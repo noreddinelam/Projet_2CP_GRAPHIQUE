@@ -25,10 +25,6 @@ public class Compteur extends Sequentiels{
 		this.valeurMax = ( Integer.valueOf(entreeDouble.intValue())) -1 ;
 		initSorties();
 	}
-	
-	public boolean getCompter() {
-		return compter;
-	}
 
 	public void genererSorties() { // sert dans le mode asynchrone (juste la cmd clear) ou bien l'initialisation des entrees dans le mode synchrone
 		if (clear.getEtatLogiqueFil().getNum() == 0) {// si clear est à 0
@@ -138,7 +134,7 @@ public class Compteur extends Sequentiels{
 	}
 	
 	@Override
-	public String generatePath() {
+	public String generatePath() { /// generer le chemin de l'image relative au compteur
 		// TODO Auto-generated method stub
 		String path = "Compteur/"+String.valueOf((int) Math.pow(2, nombreEntree)) + front.toString();
 		path += (compter) ? "Compteur" : "Decompteur";
@@ -146,7 +142,7 @@ public class Compteur extends Sequentiels{
 	}
 	
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coordonnees relative aux entrees et sorties de tout les composants
 		// TODO Auto-generated method stub
 		switch (nombreEntree) {
 		case 2:{
@@ -199,14 +195,14 @@ public class Compteur extends Sequentiels{
 	}
 	
 	@Override
-	public void resetPolyline(Polyline line, double x, double y) {
+	public void resetPolyline(Polyline line, double x, double y) { /// repositionner les polylines de sortie
 		// TODO Auto-generated method stub
 		line.getPoints().clear();
 		line.getPoints().addAll(x,y,x,y+5);
 	}
 	
 	@Override
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) { /// generer les polylines de sorties
 		// TODO Auto-generated method stub
 		setCord();	
 		Polyline polyline = null;
@@ -228,11 +224,11 @@ public class Compteur extends Sequentiels{
 	
 
 	@Override
-	public void derelierComp() {
+	public void derelierComp() { /// utiliser pour derelier un composant de ces connexions
 		// TODO Auto-generated method stub
 		super.derelierComp();
-		if (load.getSource() != null) {
-			if (! load.getSource().equals(this)) {
+		if (load.getSource() != null) { /// si le load est relié
+ 			if (! load.getSource().equals(this)) { // si la source est differente de lui meme
 				load.derelierCompFromDestination(this);
 				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(load);
 				for (InfoPolyline infoPolyline : resList) {
@@ -243,7 +239,7 @@ public class Compteur extends Sequentiels{
 	}
 	
 	@Override
-	public void derelierEntreeFromComp(Fil fil) {
+	public void derelierEntreeFromComp(Fil fil) { /// derelier les connexions ou il y'a le fil passé comme parametre
 		// TODO Auto-generated method stub
 		super.derelierEntreeFromComp(fil);
 		if (load.equals(fil)) {
@@ -253,7 +249,7 @@ public class Compteur extends Sequentiels{
 	}
 	
 	@Override
-	public void relierANouveau() {
+	public void relierANouveau() { /// relier les connexions une autre fois (utiliser dans le ctrl+z)
 		// TODO Auto-generated method stub
 		super.relierANouveau();
 		ImageView imageView = Circuit.getImageFromComp(this);
@@ -268,7 +264,7 @@ public class Compteur extends Sequentiels{
 	}
 	
 	@Override
-	public boolean isDessocier() {
+	public boolean isDessocier() { /// retourne vrai si le composant est dessocié
 		// TODO Auto-generated method stub
 		boolean dessocier = super.isDessocier();
 		if (dessocier) {
@@ -280,17 +276,25 @@ public class Compteur extends Sequentiels{
 	}
 	
 	@Override
-	public void defaultValue() {
+	public void defaultValue() { /// affecter les valeurs par defaut au compteur
 		// TODO Auto-generated method stub
 		super.defaultValue();
 		valeur = 0;
 	}
 	
 	@Override
-	public void validerComposant() {
+	public void validerComposant() { /// retourne vrai si le composant est relié
 		// TODO Auto-generated method stub
 		if (entreeHorloge == null) {
 			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE,this));
+		}
+	}
+	
+	@Override
+	public void initSorties() { /// initialiser les fils de sorties
+		for(int i=0;i<nombreSortie;i++) { // initialiser les fils de sortie
+			sorties[i]=new Fil(this);
+			sorties[i].setEtatLogiqueFil(EtatLogique.ZERO);
 		}
 	}
 	
@@ -314,12 +318,9 @@ public class Compteur extends Sequentiels{
 	public void setValeurMax(int valeurMax) {
 		this.valeurMax = valeurMax;
 	}
-	@Override
-	public void initSorties() {
-		for(int i=0;i<nombreSortie;i++) { // initialiser les fils de sortie
-			sorties[i]=new Fil(this);
-			sorties[i].setEtatLogiqueFil(EtatLogique.ZERO);
-		}
+	
+	public boolean getCompter() {
+		return compter;
 	}
 
 }

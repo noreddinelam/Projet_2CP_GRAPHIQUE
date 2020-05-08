@@ -14,7 +14,7 @@ public class T extends Bascule{
 	}
 
 	@Override
-	public void genererSortiesSyncho() {
+	public void genererSortiesSyncho() { // pour generer la sortie en mode synchrone 
 		this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
 		if (etatPrec[0] == EtatLogique.ONE) {
 			if(sorties[0].getEtatLogiqueFil().getNum()==1)
@@ -33,7 +33,7 @@ public class T extends Bascule{
 	}
 
 	@Override
-	public void initialiser() {
+	public void initialiser() { /// initialiser l'etat precedent
 		// TODO Auto-generated method stub
 		etatPrec[0] = entrees[0].getEtatLogiqueFil();
 	}

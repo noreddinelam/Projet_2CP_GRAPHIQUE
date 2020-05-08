@@ -1,6 +1,6 @@
 package noyau;
 
-public class HorlogeManquante extends ExceptionProgramme{
+public class HorlogeManquante extends ExceptionProgramme{ /// utilisé si une entrée horloge est non reliée
 
 	public HorlogeManquante(TypesExceptions typesExceptions, Composant composant) {
 		super(typesExceptions, composant);

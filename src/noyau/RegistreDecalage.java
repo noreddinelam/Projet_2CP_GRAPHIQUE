@@ -55,8 +55,6 @@ public class RegistreDecalage extends Sequentiels {
 		valeur[0] = bit ; 
 		// decaler le bit d'entree vers le poids faible du registre
 		sorties[0].setEtatLogiqueFil(res);
-//		sorties[0].evaluer();
-//		System.out.println(sorties[0].getEtatLogiqueFil());// mettre la valeur du dernier bit (bit faible) dans le fil .
 	}
 	
 	public void decalageGauche() {
@@ -136,7 +134,7 @@ public class RegistreDecalage extends Sequentiels {
 	}
 
 	@Override
-	public boolean validerSyncho() {
+	public boolean validerSyncho() { /// valider le registre decalage pour qu'il marche en mode synchrone
 		// TODO Auto-generated method stub
 		boolean f = false;
 		if (clear.getEtatLogiqueFil().getNum() == 1) { // valider le compteur soit dans le mode synchrone ou load à 0 et toutes les entrées sont toutes validées
@@ -191,7 +189,7 @@ public class RegistreDecalage extends Sequentiels {
 	
 	
 	@Override
-	public String generatePath() {
+	public String generatePath() { /// generer les chemins des images utilisées
 		// TODO Auto-generated method stub
 		String path = "RegistreDecalage/"+String.valueOf(taille);
 		if (decalageDroite) {
@@ -204,7 +202,7 @@ public class RegistreDecalage extends Sequentiels {
 	}
 
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coordonnées nécessaires au registre pour marcher
 		// TODO Auto-generated method stub
 		ImageView imageView = Circuit.getImageFromComp(this);
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(imageView.getFitWidth(),imageView.getFitHeight() / 2), 0);
@@ -285,7 +283,7 @@ public class RegistreDecalage extends Sequentiels {
 	}
 	
 	@Override
-	public void derelierComp() {
+	public void derelierComp() {/// pour derelier le composants de ces fils
 		// TODO Auto-generated method stub
 		super.derelierComp();
 		if (load.getSource() != null) {
@@ -300,7 +298,7 @@ public class RegistreDecalage extends Sequentiels {
 	}
 	
 	@Override
-	public void derelierEntreeFromComp(Fil fil) {
+	public void derelierEntreeFromComp(Fil fil) { /// derelier les connexions faites avec le fil passé comme parametre
 		// TODO Auto-generated method stub
 		super.derelierEntreeFromComp(fil);
 		if (load.equals(fil)) {
@@ -310,7 +308,7 @@ public class RegistreDecalage extends Sequentiels {
 	}
 	
 	@Override
-	public void relierANouveau() {
+	public void relierANouveau() { /// relier les connexions une autre fois (utilisé dans le ctrl + z)
 		// TODO Auto-generated method stub
 		super.relierANouveau();
 		ImageView imageView = Circuit.getImageFromComp(this);
@@ -325,7 +323,7 @@ public class RegistreDecalage extends Sequentiels {
 	}
 	
 	@Override
-	public boolean isDessocier() {
+	public boolean isDessocier() { /// savoir si le composant est dessocié ou non
 		// TODO Auto-generated method stub
 		boolean dessocier =super.isDessocier();
 		if (dessocier) {
@@ -337,9 +335,9 @@ public class RegistreDecalage extends Sequentiels {
 	}
 	
 	@Override
-	public void validerComposant() {
+	public void validerComposant() { /// valider le composant et declarer les erreurs s'il ya
 		// TODO Auto-generated method stub
-		if (entreeHorloge == null && entrees[0] == null) {
+		if (entreeHorloge == null && entrees[0] == null) { /// si le composant est non relié
 			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE,this));
 		}
 		else if (entreeHorloge == null) {
@@ -354,7 +352,7 @@ public class RegistreDecalage extends Sequentiels {
 	}
 	
 	@Override
-	public void defaultValue() {
+	public void defaultValue() { /// affecter les valeurs par defaut au composant
 		// TODO Auto-generated method stub
 		super.defaultValue();
 		Arrays.fill(valeur, EtatLogique.ZERO);

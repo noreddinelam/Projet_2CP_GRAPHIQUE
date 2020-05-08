@@ -62,18 +62,8 @@ public class Demultiplexeur extends Combinatoires{
 		return EtatLogique.ONE;
 	}
 
-
-	public int getNbCommande() {
-		return nbCommande;
-	}
-
-	public void setNbCommande(int nbCommande) {
-		this.nbCommande = nbCommande;
-	}
-
-	
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coordonnées d'entrees/sorties/commandes
 		// TODO Auto-generated method stub
 		ImageView img = Circuit.getImageFromComp(this);
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, (img.getBoundsInLocal().getHeight() -10) / 2), 0);
@@ -152,7 +142,7 @@ public class Demultiplexeur extends Combinatoires{
 	}
 	
 	@Override
-	public void derelierEntreeFromComp(Fil fil) {
+	public void derelierEntreeFromComp(Fil fil) { /// dererlier le composant des connexions faite avec le fil passé comme parametre
 		// TODO Auto-generated method stub
 		super.derelierEntreeFromComp(fil);
 		for (int i = 0; i < nbCommande; i++) {
@@ -165,7 +155,7 @@ public class Demultiplexeur extends Combinatoires{
 	}
 	
 	@Override
-	public void relierANouveau() {
+	public void relierANouveau() { /// relier le composant une autre fois ( utilisé dans le ctrl + z
 		// TODO Auto-generated method stub
 		super.relierANouveau();
 		for (int i = 0; i < nbCommande; i++) {
@@ -184,7 +174,7 @@ public class Demultiplexeur extends Combinatoires{
 	}
 	
 	@Override
-	public boolean isDessocier() {
+	public boolean isDessocier() { /// savoir si le composant est dessocié
 		// TODO Auto-generated method stub
 		boolean dessocier =  super.isDessocier();
 		if (dessocier) {
@@ -200,20 +190,20 @@ public class Demultiplexeur extends Combinatoires{
 	}
 	
 	@Override
-	public void validerComposant() {
+	public void validerComposant() { /// savoir si le composant est validé
 		// TODO Auto-generated method stub
 		ArrayList<ExceptionProgramme> arrayList = new ArrayList<ExceptionProgramme>();
-		for (int i = 0; i < nombreEntree; i++) {
+		for (int i = 0; i < nombreEntree; i++) { /// validation des entrees 
 			if (entrees[i] == null) {
 				arrayList.add(new EntreeManquante(TypesExceptions.ERREUR, this, i));
 			}
 		}
-		for (int i = 0; i < nbCommande; i++) {
+		for (int i = 0; i < nbCommande; i++) { /// validation des commandes
 			if (commande[i] == null) {
 				arrayList.add(new CommandeManquante(TypesExceptions.ERREUR, this, i));
 			}
 		}
-		if (arrayList.size() == nombreEntree + nbCommande) {
+		if (arrayList.size() == nombreEntree + nbCommande) { 
 			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE, this));
 		}
 		else {
@@ -222,5 +212,13 @@ public class Demultiplexeur extends Combinatoires{
 				Circuit.ajouterCompErrone(this);
 			}
 		}
+	}
+	
+	public int getNbCommande() {
+		return nbCommande;
+	}
+
+	public void setNbCommande(int nbCommande) {
+		this.nbCommande = nbCommande;
 	}
 }

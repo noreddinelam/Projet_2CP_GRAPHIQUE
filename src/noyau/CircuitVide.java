@@ -2,7 +2,7 @@ package noyau;
 
 public class CircuitVide extends ExceptionProgramme{
 
-	public CircuitVide(TypesExceptions typesExceptions) {
+	public CircuitVide(TypesExceptions typesExceptions) { /// exception générée si le circuit ne contient aucun composant
 		super(typesExceptions, null);
 		// TODO Auto-generated constructor stub
 	}

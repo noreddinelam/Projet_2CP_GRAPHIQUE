@@ -31,44 +31,11 @@ public abstract class Composant implements Serializable{
 		if (!nom.isEmpty())this.nom =nom;
 		Arrays.fill(etatFinal, EtatLogique.HAUTE_IMPEDANCE);
 	}
-	/*--------- setters & getters--------------*/
-	public String getNom() {
-		return nom;
-	}
+	public abstract void setCord();
+	public abstract void genererSorties();
+	public abstract boolean valider();  // verifier si le composant est pret a executer sa fonction logique 
+										// valider si les entrees et les sorties sont pretes 
 
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
-
-	public int getDirection() {
-		return direction;
-	}
-	public void setDirection(int direction) {
-		this.direction = direction;
-	}
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	public int getNombreEntree() {
-		return nombreEntree;
-	}
-
-	public void setNombreEntree(int nombreEntree) {
-		this.nombreEntree = nombreEntree;
-	}
-	
-	public int getNombreSortie() {
-		return nombreSortie;
-	}
-	public void setNombreSortie(int nombreSortie) {
-		this.nombreSortie = nombreSortie;
-	}
-	/*--------- Methodes --------------*/
 	public void evaluer() {
 		if(valider()) // si le composant est pret 
 		{
@@ -84,9 +51,6 @@ public abstract class Composant implements Serializable{
 			}		
 		}
 	}
-	public abstract void genererSorties();
-	public abstract boolean valider();  // verifier si le composant est pret a executer sa fonction logique 
-	   							        // valider si les entrees et les sorties sont pretes 
 	
 	public void numToFils(int res) {  // role : transformer la valeur contenue dans "res" vers les fils de sortie 
 		int i = 0;
@@ -162,12 +126,12 @@ public abstract class Composant implements Serializable{
 	
 	public abstract String generatePath();
 	
-	public void resetPolyline(Polyline line , double x,double y) {
+	public void resetPolyline(Polyline line , double x,double y) { /// repositioner les polylines
 		line.getPoints().clear();
 		line.getPoints().addAll(x,y,x+5,y);
 	}
 	
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) { /// generer les polylines de sorties du composant
 		// TODO Auto-generated method stub
 		setCord();	
 		Polyline polyline = null;
@@ -180,7 +144,6 @@ public abstract class Composant implements Serializable{
 			posX = x+ lesCoordonnees.getCordSortieInIndex(i).getX() ;
 			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
 			polyline = new Polyline(posX ,posY,posX+5,posY);
-			//polyline.setViewOrder(2); //l'ordre 
 			polyline.toBack();
 			listPolylines.add(new InfoPolyline(polyline));
 			reslut.add(polyline);
@@ -228,15 +191,6 @@ public abstract class Composant implements Serializable{
 			}
 		}
 	}
-
-	public abstract void setCord();
-	
-	public LesCoordonnees getLesCoordonnees() {
-		return lesCoordonnees;
-	}
-	public void setLesCoordonnees(LesCoordonnees lesCoordonnees) {
-		this.lesCoordonnees = lesCoordonnees;
-	}
 	
 	public Fil getFilSortie(int i) {
 		if(i < sorties.length) {/// ngoul l sari
@@ -245,7 +199,7 @@ public abstract class Composant implements Serializable{
 			return null;
 		}
 	}
-	public int numCmpEntrees(Fil fil) {
+	public int numCmpEntrees(Fil fil) { /// recuperer le numero de l'entree au il y'a le fil passe comme parametre
 		int i = 0;
 		while(i<nombreSortie) {
 			if(fil == sorties[i])
@@ -256,7 +210,7 @@ public abstract class Composant implements Serializable{
 		return -1;
 	}
 	
-	public int numCmpSorties(Fil fil) {
+	public int numCmpSorties(Fil fil) {/// recuperer le numero de la sortie au il y'a le fil passe comme parametre
 		int i = 0;
 		while(i<nombreSortie) {
 			if(fil == sorties[i])
@@ -265,18 +219,18 @@ public abstract class Composant implements Serializable{
 		}
 		return -1;
 	}
-	
-	public boolean isDessocier() {
+	 
+	public boolean isDessocier() { /// retourne vrai si le composant est derelier
 		boolean dessocier = true ;
 		int i = 0;
-		while(( i < nombreEntree) && (dessocier == true)) {
+		while(( i < nombreEntree) && (dessocier == true)) { /// savoir si les entrees de ce composants sont reliées
 			if (entrees[i] != null) {
 				dessocier = false;
 			}
 			else i++;
 		}
 		i = 0;
-		while((i < nombreSortie) && (dessocier == true) )
+		while((i < nombreSortie) && (dessocier == true) ) /// /// savoir si les sorties de ce composants sont reliées
 		{
 			if (sorties[i].getDestination().size() != 0) {
 				dessocier = false ;
@@ -287,15 +241,15 @@ public abstract class Composant implements Serializable{
 		
 	}
 	
-	public void validerComposant() {
+	public void validerComposant() { /// utiliser pour detecter les erreurs relative à un composant donné
 		// TODO Auto-generated method stub
 		ArrayList<ExceptionProgramme> arrayList = new ArrayList<ExceptionProgramme>();
-		for (int i = 0; i < nombreEntree; i++) {
+		for (int i = 0; i < nombreEntree; i++) { /// savoir si une entree est manquante
 			if (entrees[i] == null) {
 				arrayList.add(new EntreeManquante(TypesExceptions.ERREUR, this, i));
 			}
 		}
-		if (arrayList.size() == nombreEntree) {
+		if (arrayList.size() == nombreEntree) { /// si toutes les entrees sont dereliées
 			Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE, this));
 		}
 		else {
@@ -305,7 +259,50 @@ public abstract class Composant implements Serializable{
 			}
 		}
 	}
+
+	public void setNombreSortieAndUpdateFil(int nombreSortie) { /// mettre à jour le nombre de sortie et generer les fils nécessaires
+		this.nombreSortie = nombreSortie;
+		for (int i = 0; i < nombreSortie; i++) {
+			sorties[i] = new Fil(this);
+		}
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public int getNombreEntree() {
+		return nombreEntree;
+	}
+
+	public void setNombreEntree(int nombreEntree) {
+		this.nombreEntree = nombreEntree;
+	}
 	
+	public int getNombreSortie() {
+		return nombreSortie;
+	}
+	public void setNombreSortie(int nombreSortie) {
+		this.nombreSortie = nombreSortie;
+	}
 	public Fil getFilSortieByNum(int i) {
 		return sorties[i];
 	}
@@ -321,12 +318,12 @@ public abstract class Composant implements Serializable{
 	public void setSorties(Fil[] sorties) {
 		this.sorties = sorties;
 	}
-	public void setNombreSortieAndUpdateFil(int nombreSortie) {
-		this.nombreSortie = nombreSortie;
-		for (int i = 0; i < nombreSortie; i++) {
-			sorties[i] = new Fil(this);
-		}
-	}
 	
+	public LesCoordonnees getLesCoordonnees() {
+		return lesCoordonnees;
+	}
+	public void setLesCoordonnees(LesCoordonnees lesCoordonnees) {
+		this.lesCoordonnees = lesCoordonnees;
+	}
 	
 }

@@ -23,7 +23,7 @@ public class Or extends Portes{
 	}
 	
 	@Override
-	public void setCord() {
+	public void setCord() {/// seter les coordonnées nécessaires
 		// TODO Auto-generated method stub
 		super.setCord();
 		switch (nombreEntree) {

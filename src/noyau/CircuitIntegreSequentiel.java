@@ -32,7 +32,7 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 	}
 	
 	@Override
-	public void defaultValue() {
+	public void defaultValue() { /// affecter les valeurs par defaut aux composant et fils du circuit integré
 		// TODO Auto-generated method stub
 		for (Fil fil : filUtilises) {
 			fil.setEtat(EtatLogique.HAUTE_IMPEDANCE);
@@ -43,12 +43,12 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 	}
 
 	@Override
-	public void genererSorties() {
+	public void genererSorties() { /// generer la sortie du circuit sequentiel
 		// TODO Auto-generated method stub
 		initialiser();
 	}
 	@Override
-	public ArrayList<Polyline> generatePolyline(double x, double y) {
+	public ArrayList<Polyline> generatePolyline(double x, double y) { /// generer les polylines de sorties 
 		// TODO Auto-generated method stub
 		setCord();	
 		Polyline polyline = null;
@@ -69,7 +69,7 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 	}
 	
 	@Override
-	public void resetPolyline(Polyline line, double x, double y) {
+	public void resetPolyline(Polyline line, double x, double y) { /// changer la position des polylines de sorties
 		// TODO Auto-generated method stub
 		line.getPoints().clear();
 		line.getPoints().addAll(x,y,x+14,y);
@@ -82,13 +82,13 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 	}
 
 	@Override
-	public String generatePath() {
+	public String generatePath() { /// generer le chemin vers l'image
 		// TODO Auto-generated method stub
 		return "CircuitIntegre/HorlogeFront_Montant.png";
 	}
 
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coorconnes du circuit integre
 		// TODO Auto-generated method stub
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 8.2), 0);
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 23.4), 1);
@@ -115,7 +115,158 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 		lesCoordonnees.setCordHorloge(new Coordonnees(44, 160));
 		
 	}
+	
+	public void refreshSortie() { /// pour mettre à jour les valeurs de sorties 
+		for(int i=0;i<nombreSortie;i++) // initialiser les fils de sortie
+			sorties[i].setEtatLogiqueFil(sortiesCircuit.get(i).entrees[0].getEtat());
+	}
+	public ArrayList<Circle> generateCercles(double x,double y) { /// generer les circles d'entrees et sorties du circuit integré
+		// TODO Auto-generated method stub
+		listeCercles = new ArrayList<Circle>();
+		Circle circle = null;
+		double posX ;
+		double posY ;
+		for (int i = 0; i < nombreSortie; i++) { /// generer les circles de sorties du circuit 
+			posX = x + lesCoordonnees.getCordSortieInIndex(i).getX()+4;
+			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
+			circle = new Circle(5); 
+			circle.setFill(Color.BLACK);
+			circle.setSmooth(true);
+			circle.setLayoutX(posX);
+			circle.setLayoutY(posY);
+			listeCercles.add(circle);
+		}		
+		for (int i = 0; i < nombreEntree; i++) { /// generer les circles d'entrees du circuit
+			posX = x + lesCoordonnees.getCordEntreeInIndex(i).getX();
+			posY = y + lesCoordonnees.getCordEntreeInIndex(i).getY() ;
+			circle = new Circle(5);
+			circle.setFill(Color.BLACK);
+			circle.setSmooth(true);
+			circle.setLayoutX(posX);
+			circle.setLayoutY(posY);
+			listeCercles.add(circle);
+		}		
+		return listeCercles;
+	}
+	
+	public void resetCirclesPosition(double x,double y) { /// repositionner les circles 
+		for (int i = 0; i < nombreSortie; i++) {
+			listeCercles.get(i).setLayoutX( x + lesCoordonnees.getCordSortieInIndex(i).getX()+4);
+			listeCercles.get(i).setLayoutY( y + lesCoordonnees.getCordSortieInIndex(i).getY());
+		}
+		int j = 0;
+		for (int i = nombreSortie; i < nombreEntree+nombreSortie; i++) {
+			listeCercles.get(i).setLayoutX(x + lesCoordonnees.getCordEntreeInIndex(j).getX());
+			listeCercles.get(i).setLayoutY(y + lesCoordonnees.getCordEntreeInIndex(j).getY());
+			j++;
+		}
+	}
+	public void evaluer() {
+		if(valider()) // si le composant est pret 
+		{
+			genererSorties(); //executer sa fonction logique 
+		}
+		for (int i = 0; i < nombreSortie; i++) 
+		{
+			if(sorties[i].getEtatLogiqueFil().getNum() != sortiesCircuit.get(i).getEtat().getNum())  //verifier si l'etat precedent du composant a changé ou non 
+			{
+				sorties[i].setEtatLogiqueFil(sortiesCircuit.get(i).getEtat()); //mettre a jour l'etat final du composant 
+				sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
+			}
+		}	
+	}
+	
+	public void  tictac() { // sert dans l'execution des composants sequentiels qui sont relier avec une horloge
+		int etage = 0 ;
+		while(etage <= nbEtages) { // executer par etages
+			for (Sequentiels b : listeEtages) { // executer tout les composants sequentiels dans un étage donné
+			
+				if (b.getEtages().contains(etage) && b.validerSyncho() && b.sleep == false) { // verifier si l'elt existe dans l'etage à executer 																						  // et verifier si il peut etre executé
+					
+					b.genererSortiesSyncho(); // generer les sorties en mode synchrone
+					b.sleep = true ;
+					
+				}
+			}
+			for (Sequentiels b : listeEtages) { // evaluer tout les composant executé dans l'etage present
+				if (b.getEtages().contains(etage)) {
+				
+					b.evaluer();
+				}
+			}
+			etage ++ ;
+		}
+	}
 
+	@Override
+	public void genererSortiesSyncho() { /// generer la sortie en cas ou on a un front d'horloge 
+		for (int i=0;i<nombreEntree;i++) {
+			entreesCircuit.get(i).evaluer();	
+		}
+
+		if(entreeHorloge.getEtat().getNum() != horloge.getEtat().getNum()) { /// verifier si on a un front de l'horloge
+			horloge.setEtat(entreeHorloge.getEtatLogiqueFil());
+			horloge.evaluer();
+			tictac();
+		}
+	}
+
+	@Override
+	public boolean validerSyncho() { /// retourner le sleep à faux pour executer le composant au prochain front
+		// TODO Auto-generated method stub
+		sleep = false ;
+		return true;
+	}
+
+	@Override
+	public void initialiser() { /// initialiser les entrees du composant et la liste des sources constantes utillisées
+		// TODO Auto-generated method stub
+		for (int i=0;i<nombreEntree;i++) {
+			entreesCircuit.get(i).setEtat(entrees[i].getEtatLogiqueFil());
+		}
+		for (int i=0;i<listSouceCte.size();i++) {
+			listSouceCte.get(i).evaluer();	
+		}
+	}
+	
+	public void initSortiesElemenets() { // faire le meme travail que initialiser du circuit
+		int j = 0;
+		for (Sequentiels sequentiels : listeEtages) {
+			for (int i = 0; i < sequentiels.getNombreSortie(); i++) {
+				if (sequentiels.getClass().getSuperclass().equals(Bascule.class)) {
+					if (j == 0) {
+						sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ZERO);
+						j++;
+					}
+					else {
+						sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ONE);
+						j=0;
+					}
+				}
+				else {
+					sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ZERO);
+				}
+				sequentiels.getSorties()[i].evaluer();
+			}
+		}
+	}
+
+	public Pin getHorloge() {
+		return horloge;
+	}
+
+	public void setHorloge(Pin horloge) {
+		this.horloge = horloge;
+	}
+
+	public ArrayList<Circle> getListeCercles() {
+		return listeCercles;
+	}
+
+	public void setListeCercles(ArrayList<Circle> listeCercles) {
+		this.listeCercles = listeCercles;
+	}
+	
 	public ArrayList<Composant> getCompUtilises() {
 		return compUtilises;
 	}
@@ -173,157 +324,5 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 
 	public void setListSouceCte(ArrayList<SourceConstante> listSouceCte) {
 		this.listSouceCte = listSouceCte;
-	}
-	public void refreshSortie() {
-		for(int i=0;i<nombreSortie;i++) // initialiser les fils de sortie
-			sorties[i].setEtatLogiqueFil(sortiesCircuit.get(i).entrees[0].getEtat());
-	}
-	public ArrayList<Circle> generateCercles(double x,double y) {
-		// TODO Auto-generated method stub
-		listeCercles = new ArrayList<Circle>();
-		Circle circle = null;
-		double posX ;
-		double posY ;
-		for (int i = 0; i < nombreSortie; i++) {
-			posX = x + lesCoordonnees.getCordSortieInIndex(i).getX()+4;
-			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
-			circle = new Circle(5); 
-			circle.setFill(Color.BLACK);
-			circle.setSmooth(true);
-			circle.setLayoutX(posX);
-			circle.setLayoutY(posY);
-			listeCercles.add(circle);
-		}		
-		for (int i = 0; i < nombreEntree; i++) {
-			posX = x + lesCoordonnees.getCordEntreeInIndex(i).getX();
-			posY = y + lesCoordonnees.getCordEntreeInIndex(i).getY() ;
-			circle = new Circle(5);
-			circle.setFill(Color.BLACK);
-			circle.setSmooth(true);
-			circle.setLayoutX(posX);
-			circle.setLayoutY(posY);
-			listeCercles.add(circle);
-		}		
-		return listeCercles;
-	}
-	
-	public void resetCirclesPosition(double x,double y) {
-		for (int i = 0; i < nombreSortie; i++) {
-			listeCercles.get(i).setLayoutX( x + lesCoordonnees.getCordSortieInIndex(i).getX()+4);
-			listeCercles.get(i).setLayoutY( y + lesCoordonnees.getCordSortieInIndex(i).getY());
-		}
-		int j = 0;
-		for (int i = nombreSortie; i < nombreEntree+nombreSortie; i++) {
-			listeCercles.get(i).setLayoutX(x + lesCoordonnees.getCordEntreeInIndex(j).getX());
-			listeCercles.get(i).setLayoutY(y + lesCoordonnees.getCordEntreeInIndex(j).getY());
-			j++;
-		}
-	}
-	public void evaluer() {
-		if(valider()) // si le composant est pret 
-		{
-			genererSorties(); //executer sa fonction logique et mettre le resultat sur le fil de sortie 
-		}
-		for (int i = 0; i < nombreSortie; i++) 
-		{
-			if(sorties[i].getEtatLogiqueFil().getNum() != sortiesCircuit.get(i).getEtat().getNum())  //verifier si l'etat precedent du composant a changé ou non 
-			{
-				sorties[i].setEtatLogiqueFil(sortiesCircuit.get(i).getEtat()); //mettre a jour l'etat final du composant 
-				sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
-			}
-		}	
-	}
-	
-	public void  tictac() { // sert dans l'execution des composants sequentiels qui sont relier avec une horloge
-		int etage = 0 ;
-		while(etage <= nbEtages) { // executer par etages
-			for (Sequentiels b : listeEtages) { // executer tout les composants sequentiels dans un étage donné
-			
-				if (b.getEtages().contains(etage) && b.validerSyncho() && b.sleep == false) { // verifier si l'elt existe dans l'etage à executer 																						  // et verifier si il peut etre executé
-					
-					b.genererSortiesSyncho(); // generer les sorties en mode synchrone
-					b.sleep = true ;
-					
-				}
-			}
-			for (Sequentiels b : listeEtages) { // evaluer tout les composant executé dans l'etage present
-				if (b.getEtages().contains(etage)) {
-				
-					b.evaluer();
-				}
-			}
-			etage ++ ;
-		}
-	}
-
-	@Override
-	public void genererSortiesSyncho() {
-		System.out.println("synchoo");
-		for (int i=0;i<nombreEntree;i++) {
-			entreesCircuit.get(i).evaluer();	
-		}
-
-		if(entreeHorloge.getEtat().getNum() != horloge.getEtat().getNum()) {
-			System.out.println("hooooooooooooooooooooooooooooooorloge");
-			horloge.setEtat(entreeHorloge.getEtatLogiqueFil());
-			horloge.evaluer();
-			tictac();
-		}
-	}
-
-	@Override
-	public boolean validerSyncho() {
-		// TODO Auto-generated method stub
-		sleep = false ;
-		return true;
-	}
-
-	@Override
-	public void initialiser() {
-		// TODO Auto-generated method stub
-		for (int i=0;i<nombreEntree;i++) {
-			entreesCircuit.get(i).setEtat(entrees[i].getEtatLogiqueFil());
-		}
-		for (int i=0;i<listSouceCte.size();i++) {
-			listSouceCte.get(i).evaluer();	
-		}
-	}
-	
-	public void initSortiesElemenets() { // faire le meme travail que initialiser du circuit
-		int j = 0;
-		for (Sequentiels sequentiels : listeEtages) {
-			for (int i = 0; i < sequentiels.getNombreSortie(); i++) {
-				if (sequentiels.getClass().getSuperclass().equals(Bascule.class)) {
-					if (j == 0) {
-						sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ZERO);
-						j++;
-					}
-					else {
-						sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ONE);
-						j=0;
-					}
-				}
-				else {
-					sequentiels.getSorties()[i].setEtatLogiqueFil(EtatLogique.ZERO);
-				}
-				sequentiels.getSorties()[i].evaluer();
-			}
-		}
-	}
-
-	public Pin getHorloge() {
-		return horloge;
-	}
-
-	public void setHorloge(Pin horloge) {
-		this.horloge = horloge;
-	}
-
-	public ArrayList<Circle> getListeCercles() {
-		return listeCercles;
-	}
-
-	public void setListeCercles(ArrayList<Circle> listeCercles) {
-		this.listeCercles = listeCercles;
 	}
 }

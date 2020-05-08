@@ -2,7 +2,7 @@ package noyau;
 
 import java.io.Serializable;
 
-public enum EtatLogique implements Serializable{
+public enum EtatLogique implements Serializable{ /// etat logique que le fil peut prendre
 	ZERO(0),
 	ONE(1),
 	HAUTE_IMPEDANCE(2),

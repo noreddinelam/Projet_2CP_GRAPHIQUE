@@ -1,6 +1,6 @@
 package noyau;
 
-public class ComposantNonRelier extends ExceptionProgramme{
+public class ComposantNonRelier extends ExceptionProgramme{ /// exception utilisé si le composant est non relié
 
 	public ComposantNonRelier(TypesExceptions typesExceptions, Composant composant) {
 		super(typesExceptions, composant);

@@ -18,7 +18,7 @@ public class Fil implements Serializable{
 	private ArrayList<Composant> destination = null;
 	private EtatLogique etat = EtatLogique.HAUTE_IMPEDANCE;
 	
-	private int switching = 0; //utiliser pour la gestion des fils 
+	private int switching = 0; //utiliser pour la gestion des fils dans l'affichage
 
 	public Fil(Composant source) { // constructeur 
 		this.source = source; 
@@ -58,15 +58,7 @@ public class Fil implements Serializable{
 		}
 	}
 
-	public EtatLogique getEtatLogiqueFil() {
-		return this.etat;
-	}
-
-	public void setEtatLogiqueFil(EtatLogique etat) {
-		this.etat = etat;
-	}
-	
-	public void defaultValue() {
+	public void defaultValue() { /// affecter la valeur par defaut au fil
 		etat = EtatLogique.HAUTE_IMPEDANCE;
 		ArrayList<InfoPolyline> line = Circuit.getPolylineFromFil(this);
 
@@ -74,36 +66,19 @@ public class Fil implements Serializable{
 			polyline.getLinePrincipale().setStroke(Color.BLACK);
 		}
 	}
-	///// les methodes de suppression
-	public void derelierCompFromDestination(Composant composant) {
+	
+	public void derelierCompFromDestination(Composant composant) {///// les methodes de suppression
 		destination.remove(composant);
 	}
 	
 	public void derelierCompFromSource() {
 		source = null;
 	}
-	//////////////////////
-
-	public Composant getSource() {
-		return source;
-	}
-
-	public void setSource(Composant source) {
-		this.source = source;
-	}
-
-	public ArrayList<Composant> getDestination() {
-		return destination;
-	}
-
-	public void setDestination(ArrayList<Composant> destination) {
-		this.destination = destination;
-	}
 
 	public void addEtages(ArrayList<Integer> etage) {
 		source.addEtages(etage);
 	}
-	public Polyline polylineParPoint(Coordonnees crdrech) {		
+	public Polyline polylineParPoint(Coordonnees crdrech) {	/// savoir quel est le polyline qui contient le point passé comme parametre
 		Coordonnees crd = new Coordonnees(0, 0);		
 		ArrayList<InfoPolyline> list = Circuit.getPolylineFromFil(this);
 		if (list != null) {
@@ -135,5 +110,30 @@ public class Fil implements Serializable{
 	public void setSwitching(int switching) {
 		this.switching = switching;
 	}
+	
+	public Composant getSource() {
+		return source;
+	}
+
+	public void setSource(Composant source) {
+		this.source = source;
+	}
+
+	public ArrayList<Composant> getDestination() {
+		return destination;
+	}
+
+	public void setDestination(ArrayList<Composant> destination) {
+		this.destination = destination;
+	}
+	
+	public EtatLogique getEtatLogiqueFil() {
+		return this.etat;
+	}
+
+	public void setEtatLogiqueFil(EtatLogique etat) {
+		this.etat = etat;
+	}
+	
 	
 }

@@ -18,7 +18,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import noyau.Affichage;
 import noyau.Circuit;
 import noyau.EtatLogique;
 import noyau.Pin;

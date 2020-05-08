@@ -24,16 +24,15 @@ public abstract class Portes extends Composant {
 	
 	public abstract void genererSorties();
 	
-	
 	public boolean valider() { // valider les entrees 
 		return (super.validerEntrees() == EtatLogique.ONE) ? true: false;	
 	}
 	
-	public void validerComposant() {
+	public void validerComposant() { /// pour valider la porte si toutes les entrees sont relier et declarer les erreurs s'il yz
 		// TODO Auto-generated method stub
 		ArrayList<ExceptionProgramme> arrayList = new ArrayList<ExceptionProgramme>();
 		int j=0,k = 0;
-		for (int i = 0; i < nombreEntree; i++) {
+		for (int i = 0; i < nombreEntree; i++) { 
 			if (entrees[i] == null) {
 				arrayList.add(new EntreeManquante(TypesExceptions.ERREUR, this, i));
 				j++;
@@ -55,18 +54,18 @@ public abstract class Portes extends Composant {
 	}
 	
 	@Override
-	public String generatePath() {
+	public String generatePath() {/// generer l'image relative au pin
 		// TODO Auto-generated method stub
 		System.out.println(this.getClass().getSimpleName() + "/" + (String.valueOf(getNombreEntree()))+Integer.toString(direction)+".png");
 		return this.getClass().getSimpleName() + "/" + (String.valueOf(getNombreEntree()))+Integer.toString(direction)+".png";
 	}
 	
-	public void setCord() {
+	public void setCord() { /// seter les coordonnées nécessaires
 		ImageView img = Circuit.getImageFromComp(this);
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(),img.getBoundsInLocal().getHeight()/2), 0) ;
 	}
 	
-	public void rotation(int direc) {
+	public void rotation(int direc) { /// pour faire une rotation de la porte
 		ImageView imageView = Circuit.getImageFromComp(this);
 		switch (direc) {
 		case 1:
@@ -81,7 +80,7 @@ public abstract class Portes extends Composant {
 			break;
 		}
 	}
-	public void resetPolyline(Polyline line , double x,double y) {
+	public void resetPolyline(Polyline line , double x,double y) { /// repositionner les polylines de sorties selon la direction
 		line.getPoints().clear();
 		switch (direction) {
 		case 0:
@@ -101,7 +100,7 @@ public abstract class Portes extends Composant {
 		}
 	}
 	
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) { /// generer les polylines de sorties selon la direction du composant
 		// TODO Auto-generated method stub
 		setCord();	
 		Polyline polyline = null;
@@ -130,7 +129,6 @@ public abstract class Portes extends Composant {
 					break;
 			}
 			
-			//polyline.setViewOrder(2); //l'ordre 
 			polyline.toBack();
 			listPolylines.add(new InfoPolyline(polyline));
 			reslut.add(polyline);
