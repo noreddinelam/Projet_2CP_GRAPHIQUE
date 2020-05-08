@@ -7,13 +7,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import noyau.Composant;
 
 public class ClickDroitLabel extends Stage {
-	public ClickDroitLabel(TextArea text,Double x,Double y,AnchorPane workSpace, Stage st) {
+	public ClickDroitLabel(TextField text,Double x,Double y,AnchorPane workSpace, Stage st) {
 		try
 		{			
 			FXMLLoader loader = new FXMLLoader();

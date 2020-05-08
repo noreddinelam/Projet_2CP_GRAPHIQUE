@@ -36,6 +36,12 @@ public class ClickBarDroite extends Stage{
 			h.setScrollPane(scrollPane);
 			if(s.equals("Fichier.fxml")) {
 				Controller.getRightBareButtons().add(h.getEncapsuler());
+				HomeController.btnsToHide.add(h.getNouveau());
+				HomeController.btnsToHide.add(h.getFermer());
+				HomeController.btnsToHide.add(h.getOuvrir());
+				HomeController.btnsToHide.add(h.getSauvegarder());
+				HomeController.btnsToHide.add(h.getImporter());
+				HomeController.btnsToHide.add(h.getSauvComme());
 				h.getEncapsuler().setDisable(true);
 				h.getEncapsuler().setOpacity(0.4);
 			}else if (s.equals("Affichage.fxml")) {

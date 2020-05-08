@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /.classpath
 /.project
 /1.wav
@@ -13,6 +14,13 @@
 /Encodeur/
 /Horloge/
 /JK/
+=======
+/Nand/
+/Nor/
+/Or/
+/Pin/
+/RST/
+>>>>>>> fbecb89598e8917ad3840eff715346b5c6f3d6df
 /RegistreDecalage/
 /SourceConstante/
 /T/
@@ -26,3 +34,7 @@
 /pageEntreeIcones/
 /styleFile/
 /tableIcones/
+<<<<<<< HEAD
+=======
+/CircuitIntegre/
+>>>>>>> fbecb89598e8917ad3840eff715346b5c6f3d6df

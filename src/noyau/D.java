@@ -16,9 +16,10 @@ public class D extends Bascule{
 	@Override
 	public void genererSortiesSyncho() { // generer la sortie de la bascule D
 		this.setEtatAvant(this.getSorties()[0].getEtatLogiqueFil());
+		System.out.println(etatPrec[0]);
 		if(etatPrec[0].getNum()==1)
 		{
-	
+			System.out.println("hawhna");
 			sorties[0].setEtatLogiqueFil(EtatLogique.ONE);
 			sorties[1].setEtatLogiqueFil(EtatLogique.ZERO);
 		}
@@ -35,6 +36,7 @@ public class D extends Bascule{
 	public void initialiser() { // initialiser l'etat precedent
 		// TODO Auto-generated method stub
 		etatPrec[0] = entrees[0].getEtatLogiqueFil();
+		System.out.println("dvqjdfj : "+etatPrec[0]);
 	}
 	
 	

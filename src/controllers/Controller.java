@@ -1,5 +1,6 @@
 package controllers;
 
+import java.awt.Container;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,7 +78,7 @@ public abstract class Controller {
 	protected static ArrayList<Button> rightBareButtons = new ArrayList<Button>() ;
 	
 	protected Circle relieCercle ;
-	protected ArrayList<Circle> listCircles = new ArrayList<Circle>();
+
 	@FXML
 	protected AnchorPane workSpace;
 
@@ -204,7 +205,7 @@ public abstract class Controller {
 
 						i = 2;
 						if (!trouve) {
-							while ((!trouve)) {
+							while ((!trouve) && (i < list.size() )) {
 								if (Math.abs(x - list.get(i)) <= 10) {
 									if( (list.get(i-1)<y && y <list.get(i+1)) || (list.get(i+1)<y  && y<list.get(i-1) ))
 									{
@@ -284,7 +285,6 @@ public abstract class Controller {
 					if (arg0.getButton() == MouseButton.PRIMARY) {
 						workSpace.getChildren().remove(guideFilX);
 						workSpace.getChildren().remove(guideFilY);
-						System.out.println("888888888888888" +relieCercle);
 						int der = line.getPoints().size() - 1;
 
 						if (intersectionFilComposants(arg0.getX(), arg0.getY()) != null) {
@@ -338,36 +338,6 @@ public abstract class Controller {
 								infoLine.setDestination(destination);
 								infoLine.setEntre(entree);
 								//souuund
-								//workSpace.getChildren().remove(relieCercle);													
-
-
-//								try {
-//									Thread.sleep(200);
-//								} catch (InterruptedException e) {
-//									// TODO Auto-generated catch block
-//									e.printStackTrace();
-//								}
-//								for (Circle crl : listCircles) {
-//									workSpace.getChildren().remove(crl);
-//								}
-//								listCircles.clear();
-								Platform.runLater(new Runnable() {
-									
-									@Override
-									public void run() {
-										// TODO Auto-generated method stub
-										try {
-											Thread.sleep(2000);
-											for (Circle crl : listCircles) {
-												workSpace.getChildren().remove(crl);
-											}
-											listCircles.clear();
-										} catch (InterruptedException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-									}
-								});
 							}
 						}else {
 							der =  line.getPoints().size()-1;
@@ -448,10 +418,6 @@ public abstract class Controller {
 						return 0;
 					trouve = true;
 					entree = i;
-					if(!workSpace.getChildren().contains(relieCercle)) {
-						relieCercle(crdTab.getX(), crdTab.getY());
-						workSpace.getChildren().add(relieCercle);
-					}
 				}
 				i++;
 			}
@@ -467,10 +433,7 @@ public abstract class Controller {
 							return 0;
 						trouve = true;
 						entree = -i - 1;
-						if(!workSpace.getChildren().contains(relieCercle)) {
-							relieCercle(crdTab.getX(), crdTab.getY());
-							workSpace.getChildren().add(relieCercle);
-						}
+
 					}
 					i++;
 				}
@@ -484,10 +447,6 @@ public abstract class Controller {
 
 						trouve = true;
 						entree = -5;
-						if(!workSpace.getChildren().contains(relieCercle)) {
-							relieCercle(crdTab.getX(), crdTab.getY());
-							workSpace.getChildren().add(relieCercle);
-						}
 					}
 				}
 				if (cmp.getLesCoordonnees().getCordClear() != null && !trouve) {
@@ -498,10 +457,7 @@ public abstract class Controller {
 							return 0;
 						trouve = true;
 						entree = -6;
-						if(!workSpace.getChildren().contains(relieCercle)) {
-							relieCercle(crdTab.getX(), crdTab.getY());
-							workSpace.getChildren().add(relieCercle);
-						}
+
 					}
 				}
 				if (cmp.getLesCoordonnees().getCordPreset() != null && !trouve) {
@@ -512,10 +468,6 @@ public abstract class Controller {
 							return 0;
 						trouve = true;
 						entree = -7;
-						if(!workSpace.getChildren().contains(relieCercle)) {
-							relieCercle(crdTab.getX(), crdTab.getY());
-							workSpace.getChildren().add(relieCercle);
-						}
 					}
 				}
 				if (cmp.getLesCoordonnees().getCordLoad() != null && !trouve) {
@@ -526,10 +478,6 @@ public abstract class Controller {
 							return 0;
 						trouve = true;
 						entree = -8;
-						if(!workSpace.getChildren().contains(relieCercle)) {
-							relieCercle(crdTab.getX(), crdTab.getY());
-							workSpace.getChildren().add(relieCercle);
-						}
 					}
 				}
 			}
@@ -558,6 +506,7 @@ public abstract class Controller {
 		Donnes sauvgarde = new Donnes();
 		sauvgarde.setFil(Circuit.getFilFromPolyline(line));
 		sauvgarde.setParent(line);
+		sauvgarde.setInfoPolyline(Circuit.getInfoPolylineFromPolyline(line));
 		sauvgarde.setTypeDaction(Actions.CreationFil);
 		HomeController.undoDeque.addFirst(sauvgarde);
 
@@ -586,9 +535,7 @@ public abstract class Controller {
 		Controller.rightBareButtons = rightBareButtons;
 	}
 	public void relieCercle(double x, double y) {
-		System.out.println("nouuuuuuuuuuuuuuuuuuuuuuuuuuur");
 		relieCercle = new Circle();
-		listCircles.add(relieCercle);
 		relieCercle.setRadius(6);
 		relieCercle.setFill(Color.TRANSPARENT);
 		relieCercle.setStroke(Color.YELLOW);

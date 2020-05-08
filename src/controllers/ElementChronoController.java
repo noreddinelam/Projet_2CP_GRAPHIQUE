@@ -28,9 +28,11 @@ import javafx.stage.WindowEvent;
 import noyau.Circuit;
 import noyau.Composant;
 import noyau.ComposantDeChronogramme;
+import noyau.Compteur;
 import noyau.Fil;
 import noyau.Horloge;
 import noyau.InfoPolyline;
+import noyau.Sequentiels;
 
 public class ElementChronoController implements Initializable {
 
@@ -231,7 +233,10 @@ public class ElementChronoController implements Initializable {
 		composantDeListAgauche = FXCollections.observableArrayList();
 		composantDeListAdroite=  FXCollections.observableArrayList();
 		composantDeListAdroite.add((Horloge)Circuit.getCompFromImage(HomeController.horlogeDeCercuit));
-	if(! Circuit.getListeEtages().isEmpty())	composantDeListAgauche.addAll(Circuit.getListeEtages());
+		for (Sequentiels sequentiels : Circuit.getListeEtages()) {
+			if(! sequentiels.getClass().equals(Compteur.class))
+				composantDeListAgauche.add(sequentiels);
+		}
 	if(! Circuit.getSortiesCircuit().isEmpty())     composantDeListAgauche.addAll(Circuit.getSortiesCircuit());
 	if(!composantDeListAgauche.isEmpty())	    listeCircuit.setItems(composantDeListAgauche);
 	if(!composantDeListAdroite.isEmpty())	    listeChrono.setItems(composantDeListAdroite);

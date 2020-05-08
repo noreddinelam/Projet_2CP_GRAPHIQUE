@@ -24,6 +24,7 @@ public class Donnes {
 	private ArrayList<InfoPolyline> arrayList = new ArrayList<InfoPolyline>();
 	private ArrayList<Polyline> listPolyParent = new ArrayList<Polyline>();
 	private int rotation;
+	private boolean supprime = false; 
 	public int getRotation() {
 		return rotation;
 	}
@@ -159,4 +160,11 @@ public class Donnes {
 		}
 		return false;
 	}//equals fonctionne par raport au type d'action 	
+	public boolean isSupprime() {
+		return supprime;
+	}
+	public void setSupprime(boolean supprime) {
+		this.supprime = supprime;
+	}
+	
 }
