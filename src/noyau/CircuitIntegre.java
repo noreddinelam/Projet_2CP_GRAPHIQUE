@@ -103,26 +103,6 @@ public class CircuitIntegre extends Composant implements Serializable{
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(80, 146.4), 9);
 		
 	}
-
-
-	public EtatLogique[][] getTableVerite() {
-		return tableVerite;
-	}
-
-
-	public void setTableVerite(EtatLogique[][] tableVerite) {
-		this.tableVerite = tableVerite;
-	}
-
-
-	public ArrayList<Circle> getListeCercles() {
-		return listeCercles;
-	}
-
-
-	public void setListeCercles(ArrayList<Circle> listeCercles) {
-		this.listeCercles = listeCercles;
-	}
 	
 	public ArrayList<Circle> generateCercles(double x,double y) { /// generer les circles 
 		// TODO Auto-generated method stub
@@ -164,5 +144,24 @@ public class CircuitIntegre extends Composant implements Serializable{
 			listeCercles.get(i).setLayoutY(y + lesCoordonnees.getCordEntreeInIndex(j).getY());
 			j++;
 		}
+	}
+	
+	public EtatLogique[][] getTableVerite() {
+		return tableVerite;
+	}
+
+
+	public void setTableVerite(EtatLogique[][] tableVerite) {
+		this.tableVerite = tableVerite;
+	}
+
+
+	public ArrayList<Circle> getListeCercles() {
+		return listeCercles;
+	}
+
+
+	public void setListeCercles(ArrayList<Circle> listeCercles) {
+		this.listeCercles = listeCercles;
 	}
 }

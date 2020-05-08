@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Horloge extends Composant implements ElementHorloge,Runnable,ComposantDeChronogramme{
-	
+
 	/**
 	 * 
 	 */
@@ -20,10 +20,10 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 	transient private ImageView image;
 	static double startX=1;
 	static double startY=76;
-    protected EtatLogique sortieAafficher;
+	protected EtatLogique sortieAafficher;
 	protected EtatLogique sortieBar;
 
-	
+
 	public Horloge(String nom,long tempsDeHorloge) {
 		super(0,nom);
 		nombreSortie = 1;
@@ -48,12 +48,12 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 		sortieAafficher=etat;
 		sortieBar=etat.getNum()==1 ? EtatLogique.ZERO: EtatLogique.ONE;
 	}
-	
+
 	@Override
 	public boolean valider() { // à voir apres si elle est nécessaire
 		return false;
 	}
-	
+
 	@Override
 	public void addEtages(ArrayList<Integer> etage) { // sert pour la creation des etages dans la simulation
 		if (! etage.contains(0)) {
@@ -63,45 +63,45 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 
 	@Override
 	public void run() { /// la fonction qui execute le thread de l'horloge
-        active=true;	
+		active=true;	
 		Circuit.initialiser();
 		while(active)// tant que l'horloge est active
 		{
-			  if(ChronogrammeController.resimul && HomeController.chrono) { /// verifier si on vient de lancer le chrono ou bien le relancer
-       		   Circuit.defaultValuePin(); /// affecter la valeur par defaut aux pin 
-       		   Circuit.defaultValueSeq(); /// affecter la valeur par defaut aux elts sequentiels			            		
-       		   ChronogrammeController.resimul=false;
-       	
-       	   }
-		    this.evaluer(); /// evaluer l'horloge
+			if(ChronogrammeController.resimul && HomeController.chrono) { /// verifier si on vient de lancer le chrono ou bien le relancer
+				Circuit.defaultValuePin(); /// affecter la valeur par defaut aux pin 
+				Circuit.defaultValueSeq(); /// affecter la valeur par defaut aux elts sequentiels			            		
+				ChronogrammeController.resimul=false;
+
+			}
+			this.evaluer(); /// evaluer l'horloge
 			image.setImage(new Image(generatePath()) ); /// changer l'image de l'horloge selon son etat
-			    if(HomeController.chrono) 
-			    	{		
-			    	   Platform.runLater(new Runnable() { /// utiliser dans le tracage du chronogramme
-			               @Override public void run() {
-			             	   ChronogrammeController.tracerFront(etat);
-			                   ChronogrammeController.refrecher();
-			                   ChronogrammeController.valeurSuivi();			                   
-			               if(etat.getNum()==1)    ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#90EE90;-fx-background-radius:15");
-			               else ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#303337;-fx-background-radius:15"); 	    
-			               }
-			           });
-			    	}
-				try {
+			if(HomeController.chrono) 
+			{		
+				Platform.runLater(new Runnable() { /// utiliser dans le tracage du chronogramme
+					@Override public void run() {
+						ChronogrammeController.tracerFront(etat);
+						ChronogrammeController.refrecher();
+						ChronogrammeController.valeurSuivi();			                   
+						if(etat.getNum()==1)    ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#90EE90;-fx-background-radius:15");
+						else ChronogrammeController.lightBoxH.setStyle("-fx-background-color:#303337;-fx-background-radius:15"); 	    
+					}
+				});
+			}
+			try {
 				Thread.sleep(temps);;		
 			} catch (InterruptedException e) {// exception traité par la clasee thread
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	@Override
 	public void defaultValue() { /// afecter les valeur par defaut à l'horloge
 		// TODO Auto-generated method stub
 		super.defaultValue();
 		etat = EtatLogique.ZERO;
 	}
-	
+
 	@Override
 	public String generatePath() { /// generer les images relatives à l'horloge
 		// TODO Auto-generated method stub
@@ -110,7 +110,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 		}
 		return "Horloge/0.png";
 	}
-	
+
 	@Override
 	public void setCord() { /// seter les coordonnées de sorties de l'horloge
 		// TODO Auto-generated method stub
@@ -118,6 +118,9 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(), img.getBoundsInLocal().getHeight() / 2), 0);
 	}
 
+	public void stop() {
+		active=false;
+	}
 	@Override
 	public void validerComposant() {
 		// TODO Auto-generated method stub
@@ -131,65 +134,60 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 		this.image = image;
 	}
 
-  public void stop() {
-	  active=false;
-  }
+	public EtatLogique getEtat() {
+		return etat;
+	}
 
 
-  public EtatLogique getEtat() {
-	  return etat;
-  }
+	public void setEtat(EtatLogique etat) {
+		this.etat = etat;
+	}
 
 
-  public void setEtat(EtatLogique etat) {
-	  this.etat = etat;
-  }
+	public static  double getStartX() {
+		return startX;
+	}
 
 
-  public static  double getStartX() {
-	  return startX;
-  }
+	public static void setStartX(double startXh) {
+		startX = startXh;
+	}
 
 
-  public static void setStartX(double startXh) {
-	  startX = startXh;
-  }
+	public static double getStartY() {
+		return startY;
+	}
 
 
-  public static double getStartY() {
-	  return startY;
-  }
+	public static void setStartY(double startYh) {
+		startY = startYh;
+	}
 
 
-  public static void setStartY(double startYh) {
-	  startY = startYh;
-  }
+	@Override
+	public EtatLogique getSortieAafficher() {
+		return sortieAafficher;
+	}
 
 
-  @Override
-  public EtatLogique getSortieAafficher() {
-	  return sortieAafficher;
-  }
+	public void setSortieAafficher(EtatLogique sortieAafficher) {
+		this.sortieAafficher = sortieAafficher;
+	}
 
 
-  public void setSortieAafficher(EtatLogique sortieAafficher) {
-	  this.sortieAafficher = sortieAafficher;
-  }
+	@Override
+	public EtatLogique getSortieBar() {
+		return sortieBar;
+	}
 
 
-  @Override
-  public EtatLogique getSortieBar() {
-	  return sortieBar;
-  }
-
-
-  public void setSortieBar(EtatLogique sortieBar) {
-	  this.sortieBar = sortieBar;
-  }
+	public void setSortieBar(EtatLogique sortieBar) {
+		this.sortieBar = sortieBar;
+	}
 
 
 
 
 
-	
+
 }

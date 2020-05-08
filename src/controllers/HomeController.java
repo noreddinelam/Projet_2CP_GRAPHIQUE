@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 
 import application.ClickBarDroite;
 import application.ClickDroit;
+import application.ClickDroitFil;
 import application.ClickDroitLabel;
 import application.ClickSouris2;
 import application.FenetreDesErreurs;
@@ -851,13 +852,13 @@ public class HomeController extends Controller {
 		tooltipInitialize();
 		initialiseAnimationOfBarDroite();
 
-		fichierFenetre = new ClickBarDroite(1065, 50, "Fichier.fxml", homeWindow, workSpace, afficheurX, afficheurY,
+		fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace, afficheurX, afficheurY,
 				scrollPane);
-		editionFenetre = new ClickBarDroite(1065, 115, "Edition.fxml", homeWindow, workSpace, afficheurX, afficheurY,
+		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace, afficheurX, afficheurY,
 				scrollPane);
-		affichageFenetre = new ClickBarDroite(1065, 255, "Affichage.fxml", homeWindow, workSpace, afficheurX,
+		affichageFenetre = new ClickBarDroite(1055, 255, "Affichage.fxml", homeWindow, workSpace, afficheurX,
 				afficheurY, scrollPane);
-		aideFenetre = new ClickBarDroite(1065, 300, "Aide.fxml", homeWindow, workSpace, afficheurX, afficheurY,
+		aideFenetre = new ClickBarDroite(1055, 300, "Aide.fxml", homeWindow, workSpace, afficheurX, afficheurY,
 				scrollPane);
 
 		ClickBarDroite tableauFenetres[] = { fichierFenetre, editionFenetre, affichageFenetre, aideFenetre };
@@ -915,7 +916,7 @@ public class HomeController extends Controller {
 					}
 					if(event.getButton()==MouseButton.SECONDARY  && (clickDroitFenetre == null  ) && (clickDroitFilFenetre == null )) {
 						if (! simul) {
-							if (event.getScreenX() > 1135) {
+							if (event.getScreenX() > 1145) {
 								if (event.getScreenY() > 640) {
 									clickSouris2 = new ClickSouris2(event.getScreenX()-160, event.getScreenY()-55, workSpace, homeWindow);
 								}
@@ -1510,8 +1511,8 @@ public class HomeController extends Controller {
 
 						if (clickDroitFenetre != null)
 							clickDroitFenetre.close();
-						if (clicDroitX > 1100) {
-							if (clicDroitY > 500) {
+						if (clicDroitX > 1140) {
+							if (clicDroitY > 550) {
 								clickDroitFenetre = new ClickDroit(composant,clicDroitX-150,clicDroitY-150,workSpace, homeWindow);
 							}
 							else {
@@ -1519,7 +1520,7 @@ public class HomeController extends Controller {
 							}
 						}
 						else {
-							if (clicDroitY > 500) {
+							if (clicDroitY > 550) {
 								clickDroitFenetre = new ClickDroit(composant,clicDroitX,clicDroitY-150,workSpace, homeWindow);
 							}
 							else {
@@ -3869,13 +3870,29 @@ public class HomeController extends Controller {
 
 							@Override
 							public void handle(MouseEvent arg0) {
+								if(clickDroitLabel != null) clickDroitLabel.close();
+								if(clickDroitFenetre != null) clickDroitFenetre.close();
+								if(clickSouris2 != null) clickSouris2.close();
 								if(arg0.getButton().equals(MouseButton.SECONDARY))
 								{
-									if(clickDroitLabel != null) clickDroitLabel.close();
-									if(clickDroitFenetre != null) clickDroitFenetre.close();
-									if(clickSouris2 != null) clickSouris2.close();
-									
-									clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX(),arg0.getScreenY(),workSpace,homeWindow);
+																
+									if (arg0.getScreenX() > 1145) {
+										if (arg0.getScreenY() > 700) {
+											clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX()-150,arg0.getScreenY()-50,workSpace,homeWindow);
+										}
+										else {
+											clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX()-150,arg0.getScreenY(),workSpace,homeWindow);
+										}
+									}
+									else {
+										if (arg0.getScreenY() > 700) {
+											clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX(),arg0.getScreenY()-50,workSpace,homeWindow);
+										}
+										else {
+											clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX(),arg0.getScreenY(),workSpace,homeWindow);
+										}
+									}
+									//clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX(),arg0.getScreenY(),workSpace,homeWindow);
 								    arg0.consume();
 								}
 								
@@ -3963,10 +3980,10 @@ public class HomeController extends Controller {
 			if(clickDroitFilFenetre != null) clickDroitFilFenetre.close();
 			if(clickSouris2 != null) clickSouris2.close();
 			if (clickDroitLabel != null) clickDroitLabel.close();
-			fichierFenetre.setX(newVal.doubleValue()+1065);
-			editionFenetre.setX(newVal.doubleValue()+1065);
-			affichageFenetre.setX(newVal.doubleValue()+1065);
-			aideFenetre.setX(newVal.doubleValue()+1065);
+			fichierFenetre.setX(newVal.doubleValue()+1055);
+			editionFenetre.setX(newVal.doubleValue()+1055);
+			affichageFenetre.setX(newVal.doubleValue()+1055);
+			aideFenetre.setX(newVal.doubleValue()+1055);
 		});
 		homeWindow.yProperty().addListener((obs, oldVal, newVal) -> {
 			if(clickDroitFenetre != null) clickDroitFenetre.close();

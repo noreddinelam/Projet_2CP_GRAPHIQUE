@@ -253,8 +253,8 @@ public abstract class Controller {
 						if (clickDroitFilFenetre != null) {
 							clickDroitFilFenetre.close();
 						}
-						if (clicDroitX > 1100) {
-							if (clicDroitY > 500) {
+						if (clicDroitX > 1145) {
+							if (clicDroitY > 640) {
 								clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX-150,clicDroitY-50, homeWindow);
 							}
 							else {
@@ -262,7 +262,7 @@ public abstract class Controller {
 							}
 						}
 						else {
-							if (clicDroitY > 500) {
+							if (clicDroitY > 640) {
 								clickDroitFilFenetre = new ClickDroitFil(line,workSpace,clicDroitX,clicDroitY-50, homeWindow);
 							}
 							else {
