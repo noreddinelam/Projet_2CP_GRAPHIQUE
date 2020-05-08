@@ -1,19 +1,15 @@
 package controllers;
 
-import java.awt.Container;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-
 import application.ClickDroitFil;
 import application.ClickSouris2;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -43,41 +39,42 @@ import noyau.Pin;
 import noyau.Sequentiels;
 
 public abstract class Controller {
+/*		La classe controller est la classe la plus generale dans le package controllers , 
+ * tous les controlleurs Herite de cette classe, utilisée pour regroupée des attributs et des methodes.
+ */
 	protected int sauv;
 
-	protected  Composant cmp;
-	protected static ClickDroitFil clickDroitFilFenetre;
-	protected static Polyline lineDroit;
+	protected  Composant cmp; //utilisé si un composant est selectionné 
+	protected static ClickDroitFil clickDroitFilFenetre; 
+	protected static Polyline lineDroit;  //utilisé si un fil (Polyline)  est selectionné
 	public static Stage homeWindow;
 	public static Scene homeScene;
-	protected static ClickSouris2 clickSouris2;
-
-	// protected AnchorPane workSpace;
+	protected static ClickSouris2 clickSouris2; //
 
 	protected double x, y;
-	protected int switching = 0;
+	protected int switching = 0; //La position du polyline en cas de mouvements 
 
-	protected static Line guideFilX = new Line();
-	protected static Line guideFilY = new Line();
+	protected static Line guideFilX = new Line(); //Les guides du fil (du traçage) 
+	protected static Line guideFilY = new Line(); 
 
-	protected Composant source;
+	protected Composant source; //La relation entre les composants
 
-	public static boolean simul = false;
-	protected static ArrayList<Pin> ListTextPin = null;
-	protected static ArrayList<Text> ListText = null;
+	public static boolean simul = false;  // true si :mode de creation , faux sinon 
+	protected static ArrayList<Pin> ListTextPin = null; //la liste des pins quand l'utilisateur selectionne l'ordre des entrées (table de verite ou circuit personnaliséé)
+	protected static ArrayList<Text> ListText = null;   //la liste des numeros quand l'utilisateur selectionne l'ordre des entrées (table de verite ou circuit personnaliséé)
 	
-	//pour les sorties 
+	//pour les pins et les numeros de sorties 
 	protected static ArrayList<Pin> ListTextPin2 = null;
 	protected static ArrayList<Text> ListText2 = null;
 
-	protected Composant destination;
-	protected int entree;
-	protected int sortie;
+	protected Composant destination; //La relation entre les composants
+	protected int entree; // le numero de l'entrée
+	protected int sortie; // le numero de la sortie
 	protected int rel;
 
-	protected static ArrayList<Button> rightBareButtons = new ArrayList<Button>() ;
+	protected static ArrayList<Button> rightBareButtons = new ArrayList<Button>() ; //pour les desactivés en mode de creation
 	
-	protected Circle relieCercle ;
+	protected Circle relieCercle ; //quand un fil est relié , un cercle est generé au niveau du l'entrée
 
 	@FXML
 	protected AnchorPane workSpace;
@@ -118,12 +115,18 @@ public abstract class Controller {
 	boolean draggLine = true;
 
 	public void ajouterGeste(Polyline line) {
+	//la fonction responsable de la gestion des fils : 
 		EventHandler<MouseEvent> event1 = new javafx.event.EventHandler<MouseEvent>() {
+		/* "On Dragg" d'un fil (Polyline) :
+		 * Fonctionnement : a chaque fois on fait bouger un fil, on supprime les 2 premier noeuds , et on insers 2 autre qui depant 
+		 * de la position de la souris avec un certain traitement spécefique . 
+		 */
+		
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				// les guides :
-				if (!simul) {
+				if (!simul) { 
 					if (event.getButton() == MouseButton.PRIMARY) {
 						guideFilX.setLayoutX(event.getX());
 						guideFilY.setLayoutY(event.getY());
@@ -154,7 +157,10 @@ public abstract class Controller {
 		};
 
 		EventHandler<MouseEvent> event = new javafx.event.EventHandler<MouseEvent>() {
-
+		/*"on press"  d'un fil (Polyline) :
+		 * quand on clic sur un polyline ,un autre polyline est creé,ajouté au workspace et ajouté
+		 * comme fils au polyline premier avec un certain traitement specifique ".  
+		 */
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
@@ -172,10 +178,10 @@ public abstract class Controller {
 
 						//////////////////// relier///////////////////////
 						Fil filSorties = Circuit.getFilFromPolyline(line);
-						System.out.println(line + "linnnne" + filSorties);
 						source = filSorties.getSource();
 						sortie = source.numCmpSorties(filSorties);
 						/////////////////////////////////////////////////
+						
 						x = event.getX();
 						y = event.getY();
 						Polyline line2 = initialser(x, y);
@@ -190,6 +196,7 @@ public abstract class Controller {
 
 						boolean trouve = false;
 
+						//Pour trouver le noeud ou l'utilisateur a click
 						while ((!trouve) && i > 0) {
 							if ((Math.abs(x - list.get(i)) <= 10) && (Math.abs(y - list.get(i + 1)) <= 10)) {
 								trouve = true;
@@ -276,7 +283,11 @@ public abstract class Controller {
 		line.setOnMousePressed(event);
 		line.setOnMouseDragged(event1);
 		line.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
+		/*Fonctionnement :"La relation " entre composants ,Si le polyline est relaché dans un autre composant
+		 * alors: 
+		 * 		Si relaché dans une entré ,une relation se fait entre le composant source du polyline ,et ce dernier .
+		 * 		Sinon : le polyline est supprimé .
+		 */
 			@Override
 			public void handle(MouseEvent arg0) {
 				// TODO Auto-generated method stub
@@ -286,10 +297,11 @@ public abstract class Controller {
 						workSpace.getChildren().remove(guideFilX);
 						workSpace.getChildren().remove(guideFilY);
 						int der = line.getPoints().size() - 1;
-
+						/*rel : si 0 n'est pas relié a une entrée ( polyline à supprimé ) ,
+						*		si 1 
+						*/
 						if (intersectionFilComposants(arg0.getX(), arg0.getY()) != null) {
-							// if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der)))
-							// {
+						//Polyline n'est pas relaché dans un composant .
 							if (rel == 0) {
 								// suppression du fil
 								InfoPolyline infoline = Circuit.getInfoPolylineFromPolyline(line);
@@ -300,44 +312,41 @@ public abstract class Controller {
 								infoline.setNbFils(infoline.getNbFils() - 1);
 								line.getPoints().clear();
 							} else if (rel == 1) {
-
 								///////////////////////////// relier/////////////////////////////////////
 								destination = intersectionFilComposants(arg0.getX(), arg0.getY());
+								/////////////////////////////////////////////////////////////////////////
 								/*
-								 * entree >= 0 :entres -4 < entree < 0 :commandes entree = -4 :horloge entree =
-								 * -5 :clear entree = -6 :preset entree = -7 :load
+								 * entree >= 0 :entres 
+								 * -4 < entree < 0 :commandes 
+								 * entree = -4 :horloge 
+								 * entree = -5 :clear 
+								 * entree = -6 :preset
+								 *  entree = -7 :load
 								 */
 								if (entree >= 0) {
 									Circuit.relier(source, destination, sortie, entree);
-									System.out.println("trabtooo entre");
 									playSound();
 								} else if (-5 < entree) {
 									Circuit.relierCommand(source, ((Combinatoires) destination), sortie,
 											Math.abs(entree) - 1);
-									System.out.println("trabtooo commande");
 									playSound();
 								} else if (entree == -5) {
 									Circuit.relierHorloge(((Sequentiels) destination), source, sortie);
-									System.out.println("trabtooo horloge");
 									playSound();
 								} else if (entree == -6) {
 									Circuit.relierClear(((Sequentiels) destination), source, sortie);
-									System.out.println("trabtooo clear");
 									playSound();
 								} else if (entree == -7) {
 									Circuit.relierPreset(((Bascule) destination), source, sortie);
-									System.out.println("trabtooo preset");
 									playSound();
 								} else if (entree == -8) {
 									Circuit.relierLoad(((Sequentiels) destination), source, sortie);
-									System.out.println("trabtooo load");
 									playSound();
 								}
 								InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
 								infoLine.setRelier(true);
 								infoLine.setDestination(destination);
 								infoLine.setEntre(entree);
-								//souuund
 							}
 						}else {
 							der =  line.getPoints().size()-1;
@@ -354,8 +363,8 @@ public abstract class Controller {
 								}
 							}
 						}
-						//sauvgaaarder la creation du fil
-						if(line.getPoints().size()!=0) 
+						//sauvgarder la creation du fil (CTRL Z)
+ 						if(line.getPoints().size()!=0) 
 							sauvgardeCreationFil(line);
 						
 					}
@@ -365,6 +374,7 @@ public abstract class Controller {
 		});
 	}
 	public void playSound() {
+	//le son quand un fil est relié
 		try {
 			AudioInputStream audioInputStream = AudioSystem
 					.getAudioInputStream(new File("src/1.wav").getAbsoluteFile());
@@ -372,18 +382,18 @@ public abstract class Controller {
 			clip.open(audioInputStream);
 			clip.start();
 		} catch (Exception ex) {
-			System.out.println("Error with playing sound.");
 			ex.printStackTrace();
 		}
 	}
 
 	private Composant intersectionFilComposants(Double x, Double y) {
+	/*Role : Pour avoir si un fil est relaché dans l'un des composants du Workspace 
+	 */
 		Composant cmp = null;
 		boolean trouv = false;
 		Collection<ImageView> list = Circuit.getCompUtilises().values();
 		Iterator<ImageView> iterator = list.iterator();
 		ImageView img;
-		System.out.println("X : " + x + " Y : " + y);
 		while (iterator.hasNext() && !trouv) {
 			img = iterator.next();
 			if (intersectionFilComposant(img, x, y) != -1) {
@@ -396,9 +406,16 @@ public abstract class Controller {
 	}
 
 	public int intersectionFilComposant(ImageView imgCmp, double Xfil, double Yfil) {
+		/*Role : Pour avoir si un fil est relaché dans l'espace d'un composant ou pas 
+		 */
+		
 		/*
-		 * entree >= 0 :entres -4 =< entree < 0 :commandes entree = -5 :horloge entree =
-		 * -6 :clear entree = -7 :preset entree = -8 :load
+		 * entree >= 0 :entres -4 =< 
+		 * entree < 0 :commandes 
+		 * entree = -5 :horloge 
+		 * entree = -6 :clear 
+		 * entree = -7 :preset 
+		 * entree = -8 :load
 		 */
 		Double XImg = imgCmp.getLayoutX();
 		Double Yimg = imgCmp.getLayoutY();
@@ -444,7 +461,6 @@ public abstract class Controller {
 					if (crdTab.equals(crd)) {
 						if (((Sequentiels) cmp).getEntreeHorloge() != null)
 							return 0;
-
 						trouve = true;
 						entree = -5;
 					}
@@ -487,12 +503,11 @@ public abstract class Controller {
 				return 0;
 		} else
 			return -1;
-
 	}
 
 	public Polyline initialser(double x, double y) {
+		//Creer un polyline .
 		Polyline a = new Polyline(x, y, x, y, x, y);
-		// a.setViewOrder(1); //l'ordre
 		a.toBack();
 		a.setStrokeWidth(3);
 		a.setSmooth(true);
@@ -500,19 +515,19 @@ public abstract class Controller {
 		a.setCursor(Cursor.HAND);
 		ajouterGeste(a);
 		return a;
-
 	}	
+	
 	public void sauvgardeCreationFil(Polyline line) {
+		/* Role : sauvgarder une creation d'un polyline dans la pile UndoChanges */
 		Donnes sauvgarde = new Donnes();
 		sauvgarde.setFil(Circuit.getFilFromPolyline(line));
 		sauvgarde.setParent(line);
 		sauvgarde.setInfoPolyline(Circuit.getInfoPolylineFromPolyline(line));
 		sauvgarde.setTypeDaction(Actions.CreationFil);
 		HomeController.undoDeque.addFirst(sauvgarde);
-
 	}
 	public void lessOpacite() {
-	//parcourir les composants et les fils et les mettre transparents
+	/* Role :parcourir les composants et les fils et les mettre transparents*/
 		for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
 			Composant cmp = entry.getKey();
 			if (! cmp.getClass().getSimpleName().equals("Pin") ) {
@@ -534,7 +549,9 @@ public abstract class Controller {
 	public static void setRightBareButtons(ArrayList<Button> rightBareButtons) {
 		Controller.rightBareButtons = rightBareButtons;
 	}
+	
 	public void relieCercle(double x, double y) {
+	/*Role : creer une cercle quand un fil est relié */
 		relieCercle = new Circle();
 		relieCercle.setRadius(6);
 		relieCercle.setFill(Color.TRANSPARENT);
@@ -546,6 +563,4 @@ public abstract class Controller {
 		relieCercle.setCenterX(x);
 		relieCercle.setCenterY(y);
 	}
-	
-	
 }
