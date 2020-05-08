@@ -33,11 +33,21 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	
 	}
 	
+	public abstract void genererSortiesSyncho();
+
+	public abstract boolean validerSyncho();
+
+	public abstract void initialiser();
+
+	public abstract void genererSorties();
+	
+	public abstract boolean valider();
+	
 	@Override
-	public void derelierComp() {
+	public void derelierComp() { // pour derelier le composant de ces fils de commandes  (le composant à supprimer)
 		// TODO Auto-generated method stub
 		super.derelierComp();
-		if (entreeHorloge != null) {
+		if (entreeHorloge != null) { // derelier l'horloge
 			if (! entreeHorloge.getSource().equals(this)) {
 				entreeHorloge.derelierCompFromDestination(this);
 				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(entreeHorloge);
@@ -46,7 +56,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 				}
 			}
 		}
-		if (clear.getSource() != null) {
+		if (clear.getSource() != null) { // derelier le clear
 			if (! clear.getSource().equals(this)) {
 				clear.derelierCompFromDestination(this);
 				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(clear);
@@ -59,7 +69,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	}
 	
 	@Override
-	public void derelierEntreeFromComp(Fil fil) {
+	public void derelierEntreeFromComp(Fil fil) { /// enlever toute les connexions faites avec le fil passé comme parametre
 		// TODO Auto-generated method stub
 		super.derelierEntreeFromComp(fil);
 		if (entreeHorloge != null) {
@@ -73,7 +83,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	}
 	
 	@Override
-	public void relierANouveau() {
+	public void relierANouveau() { /// relier les connexions une autre fois (utilisé dans le ctrl + z)
 		// TODO Auto-generated method stub
 		super.relierANouveau();
 		ImageView imageView = Circuit.getImageFromComp(this);
@@ -99,7 +109,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	}
 	
 	@Override
-	public boolean isDessocier() {
+	public boolean isDessocier() { /// savoir si le composant est dessocié ou non
 		// TODO Auto-generated method stub
 		boolean dessocier = super.isDessocier();
 		if (dessocier) {
@@ -109,26 +119,6 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 		}
 		return dessocier;
 	}
-	
-	public Front getFront() {
-		return front;
-	}
-
-
-	public void setFront(Front front) {
-		this.front = front;
-	}
-
-
-	public abstract void genererSortiesSyncho();
-	
-	public abstract boolean validerSyncho();
-	
-	public abstract void initialiser();
-	
-	/*--------- Methodes --------------*/
-	public abstract void genererSorties();
-	public abstract boolean valider();
 	
 	@Override
 	public void addEtages(ArrayList<Integer> etage) { // ajouter l'elt sequentiel à la liste des etages selon son étage ou il se trouve
@@ -140,7 +130,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	}
 	
 	@Override
-	public void validerComposant() {
+	public void validerComposant() { /// valider le composant et declarer les erreurs s'il ya
 		// TODO Auto-generated method stub
 		ArrayList<ExceptionProgramme> arrayList = new ArrayList<ExceptionProgramme>();
 		for (int i = 0; i < nombreEntree; i++) {
@@ -266,7 +256,12 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 		this.etatPrecHorloge = etatPrecHorloge;
 	}
 	
-	
+	public Front getFront() {
+		return front;
+	}
+
+	public void setFront(Front front) {
+		this.front = front;
+	}
    
-	
 }

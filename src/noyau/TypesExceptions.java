@@ -1,6 +1,6 @@
 package noyau;
 
-public enum TypesExceptions {
+public enum TypesExceptions { /// pour declarer les types des exceptions
 	ALERTE("WARNING"),
 	ERREUR("ERREUR");
 	

@@ -18,13 +18,13 @@ public class Sauvegarde implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 2097504601089191547L;
-	private  HashMap<Composant,Coordonnees> compUtilises = new HashMap<Composant, Coordonnees>();
-	private  HashMap<Composant,Taille> lesTailles = new HashMap<Composant, Taille>();
-	private HashMap<Composant, String> lesID = new HashMap<Composant, String>();
-	private  HashMap<Fil,ArrayList<InfoPolyline>> filUtilises = new HashMap<Fil, ArrayList<InfoPolyline>>();
-	private  ArrayList<Pin> entreesCircuit = new ArrayList<Pin>();
-	private  ArrayList<Pin> sortiesCircuit = new ArrayList<Pin>();
-	private ArrayList<SourceConstante> sourceConstantes = new ArrayList<SourceConstante>();
+	private  HashMap<Composant,Coordonnees> compUtilises = new HashMap<Composant, Coordonnees>(); /// composant utilisés
+	private  HashMap<Composant,Taille> lesTailles = new HashMap<Composant, Taille>(); /// les tailles des images
+	private HashMap<Composant, String> lesID = new HashMap<Composant, String>(); /// les ids des images
+	private  HashMap<Fil,ArrayList<InfoPolyline>> filUtilises = new HashMap<Fil, ArrayList<InfoPolyline>>(); /// les fils utilsés
+	private  ArrayList<Pin> entreesCircuit = new ArrayList<Pin>(); /// la liste de entrees
+	private  ArrayList<Pin> sortiesCircuit = new ArrayList<Pin>(); /// la liste de sorties
+	private ArrayList<SourceConstante> sourceConstantes = new ArrayList<SourceConstante>(); /// la liste des source constante
 	private EtatLogique tableVerite[][];
 	private  ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>();
 	private  int nbEtages = 0;
@@ -32,7 +32,7 @@ public class Sauvegarde implements Serializable {
 	public  void saveCiruit(String nomFichier) {//la sauvgarde d'un objet de type circuit dans un fihcier par la methode de la serialization
 		FileOutputStream fichier ;
 		ObjectOutputStream oo = null;
-		for(Entry<Composant, ImageView> liste : Circuit.getCompUtilises().entrySet()){
+		for(Entry<Composant, ImageView> liste : Circuit.getCompUtilises().entrySet()){/// avoir les infos nécessaires pour la sauvegarde des images
 			compUtilises.put(liste.getKey(), new Coordonnees(liste.getValue().getLayoutX(), liste.getValue().getLayoutY()));
 			lesTailles.put(liste.getKey(),new Taille(liste.getValue().getFitHeight(), liste.getValue().getFitWidth()));
 			lesID.put(liste.getKey(), liste.getValue().getId());
@@ -68,10 +68,6 @@ public class Sauvegarde implements Serializable {
 
 	}
 
-	public ArrayList<SourceConstante> getSourceConstantes() {
-		return sourceConstantes;
-	}
-
 	public void setSourceConstantes(ArrayList<SourceConstante> sourceConstantes) {
 		this.sourceConstantes = sourceConstantes;
 	}
@@ -84,7 +80,7 @@ public class Sauvegarde implements Serializable {
 			oo = new ObjectInputStream(fichier);
 			circuitSauv= (Sauvegarde) oo.readObject();
 			HashMap<Composant, ImageView> compMap = new HashMap<Composant, ImageView>();
-			for (Entry<Composant,Coordonnees> entry : circuitSauv.compUtilises.entrySet()) {
+			for (Entry<Composant,Coordonnees> entry : circuitSauv.compUtilises.entrySet()) { /// avoir les infos nécessaires des images utilisées
 				ImageView imageView = new ImageView();
 				imageView.setImage(new Image(entry.getKey().generatePath()));
 				imageView.setLayoutX(entry.getValue().getX());
@@ -116,7 +112,10 @@ public class Sauvegarde implements Serializable {
 
 		}
 	}
-
+	
+	public ArrayList<SourceConstante> getSourceConstantes() {
+		return sourceConstantes;
+	}
 	
 	public  HashMap<Composant, Coordonnees> getCompUtilises() {
 		return compUtilises;

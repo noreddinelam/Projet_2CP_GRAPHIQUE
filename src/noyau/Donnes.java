@@ -6,25 +6,37 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
-public class Donnes {
-	private Actions typeDaction;
-	private ImageView composantCommeImage;
-	private Composant composant;
-	private Image image=null;
-	private int nombreDesEntrees=0;
-	private int nombreDesSorties=0;
-	private int nombreDeCommandes=0;
-	private double posX=0;
-	private double posY=0;
-	private Boolean typePin;
-	private String label="";
-	private Front front=null ;
-	private Polyline parent = null;
-	private Fil fil = null;
-	private ArrayList<InfoPolyline> arrayList = new ArrayList<InfoPolyline>();
-	private ArrayList<Polyline> listPolyParent = new ArrayList<Polyline>();
-	private int rotation;
-	private boolean supprime = false; 
+public class Donnes { /// cette classe est utilisé dans l'operation du ctrl + z
+	private Actions typeDaction; /// le type de l'action faite
+	private ImageView composantCommeImage; /// image du composant
+	private Composant composant; /// composant
+	private Image image=null; 
+	private int nombreDesEntrees=0; //
+	private int nombreDesSorties=0; // le nombre de connexions d'un composants
+	private int nombreDeCommandes=0;//
+	private double posX=0; //
+	private double posY=0; // la position du composant
+	private Boolean typePin; // type du pin
+	private String label=""; // le nom du composant
+	private Front front=null ; // le front
+	private Polyline parent = null; // le parent du polyline
+	private Fil fil = null; // le fil à sauvegarder
+	private ArrayList<InfoPolyline> arrayList = new ArrayList<InfoPolyline>(); // la liste des infoPolylines relative à un fil donné
+	private ArrayList<Polyline> listPolyParent = new ArrayList<Polyline>(); // la liste des polylines parent
+	private int rotation; // pour la rotation 
+	private boolean supprime = false; // boolean utilisé dans la suppression
+	
+	@Override
+	public boolean equals(Object obj) { /// redifinre la methode equals pour savoir si deux données sont égales
+		// TODO Auto-generated method stub
+		if (((Donnes)obj).getFil() != null && fil != null) {
+			if (((Donnes)obj).getFil().equals(fil)) {
+				return true;
+			}
+		}
+		return false;
+	}//equals fonctionne par raport au type d'action 
+	
 	public int getRotation() {
 		return rotation;
 	}
@@ -144,22 +156,7 @@ public class Donnes {
 	}
 	public void setListPolylines(ArrayList<InfoPolyline> listPolylines) {
 		this.listPolylines = listPolylines;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-//		if (((Donnes)obj).getTypeDaction().equals(this.getTypeDaction())) {
-//			if(this.composantCommeImage != null && ((Donnes)obj).getComposantCommeImage() != null) {
-//				return ((Donnes)obj).getComposantCommeImage().getId().equals(this.composantCommeImage.getId());
-//			}
-//		}
-		if (((Donnes)obj).getFil() != null && fil != null) {
-			if (((Donnes)obj).getFil().equals(fil)) {
-				return true;
-			}
-		}
-		return false;
-	}//equals fonctionne par raport au type d'action 	
+	}	
 	public boolean isSupprime() {
 		return supprime;
 	}

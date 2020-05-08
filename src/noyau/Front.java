@@ -1,6 +1,6 @@
 package noyau;
 
-public enum Front {
+public enum Front { /// les front d'un element sequentiel
 	Front_Montant(1),
 	Front_Descendant(0);
     int num;

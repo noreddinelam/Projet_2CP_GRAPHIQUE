@@ -91,7 +91,7 @@ public abstract class Bascule extends Sequentiels{
 	}
 	
 	@Override
-	public void defaultValue() {
+	public void defaultValue() { /// affecter les valeurs par defaut à ce composant sequentiel
 		// TODO Auto-generated method stub
 		sortieAafficher = EtatLogique.ZERO;
 		etatAvant = EtatLogique.ZERO;
@@ -103,12 +103,12 @@ public abstract class Bascule extends Sequentiels{
 	}
 	
 	@Override
-	public String generatePath() {
+	public String generatePath() { /// generer le chemin de l'image des bascules
 		// TODO Auto-generated method stub
 		return this.getClass().getSimpleName() + "/" + front.toString() + ".png";
 	}
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coordonnées de sorties/clear/preset
 		// TODO Auto-generated method stub
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 32.1), 0);
 		lesCoordonnees.setCordClear(new Coordonnees(37.8, 0));
@@ -119,12 +119,12 @@ public abstract class Bascule extends Sequentiels{
 	}
 	
 	@Override
-	public void derelierComp() {
+	public void derelierComp() { /// pour derelier le composant des fils entrees
 		// TODO Auto-generated method stub
 		super.derelierComp();
-		if (preset.getSource() != null) {
-			if (! preset.getSource().equals(this)) {
-				preset.derelierCompFromDestination(this);
+		if (preset.getSource() != null) { /// si le preset est relié
+			if (! preset.getSource().equals(this)) { /// si la source est differente de lui meme
+				preset.derelierCompFromDestination(this); /// derelier le preset de cette bascule
 				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(preset);
 				for (InfoPolyline infoPolyline : resList) {
 					infoPolyline.setRelier(false);
@@ -133,7 +133,7 @@ public abstract class Bascule extends Sequentiels{
 		}
 	}
 	@Override
-	public void derelierEntreeFromComp(Fil fil) {
+	public void derelierEntreeFromComp(Fil fil) { /// pour derelier toutes les connexions avec le fil passé en parametre
 		// TODO Auto-generated method stub
 		super.derelierEntreeFromComp(fil);
 		if (preset.equals(fil)) {
@@ -142,13 +142,12 @@ public abstract class Bascule extends Sequentiels{
 		}
 	}
 	@Override
-	public void relierANouveau() {
+	public void relierANouveau() { /// relier des connexions qui sont supprimer (cette fonction est utilisé dans la fonction de ctrl + z)
 		// TODO Auto-generated method stub
 		super.relierANouveau();
 		ImageView imageView = Circuit.getImageFromComp(this);
 		Polyline polyline = preset.polylineParPoint(lesCoordonnees.coordReelesPreset(imageView));
 		if (polyline == null) {
-			System.out.println("dgfisdqgiu");
 			preset = new Fil(null);
 		}
 		else {
@@ -158,7 +157,7 @@ public abstract class Bascule extends Sequentiels{
 	}
 	
 	@Override
-	public boolean isDessocier() {
+	public boolean isDessocier() { /// retourne vrai si le composant est relié
 		// TODO Auto-generated method stub
 		boolean dessocier =super.isDessocier();
 		if (dessocier) {

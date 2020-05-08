@@ -7,28 +7,28 @@ import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
-public class InfoPolyline implements Serializable{
+public class InfoPolyline implements Serializable{ /// classe qui contient des informations utiles pour les fils utilisés
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6025031598304739348L;
-	private  transient Polyline linePrincipale;
-	private ArrayList<Double> noeudLinePrincipale = new ArrayList<Double>();
-	private  transient Polyline lineParent = null;
-	private ArrayList<Double> noeudLineParent = new ArrayList<Double>();
-	private int switching = 0;
-	private int nbFils = 0;
-	private boolean relier = false;
-	private Composant destination;
-	private int entre;
-	public InfoPolyline(Polyline linePrincipale) {
+	private  transient Polyline linePrincipale; /// ligne principale
+	private ArrayList<Double> noeudLinePrincipale = new ArrayList<Double>(); /// les noeuds de la ligne principale utilisé dans la sauvegarde
+	private  transient Polyline lineParent = null; /// le pere du polyline
+	private ArrayList<Double> noeudLineParent = new ArrayList<Double>(); /// les noeuds de la ligne parent utilisé dans la sauvegarde
+	private int switching = 0; /// entier qui track les courbature du polyline
+	private int nbFils = 0; /// nombre de fils 
+	private boolean relier = false; /// pour savoir si le polyline est relié ou non
+	private Composant destination; /// savoir la destination du fil
+	private int entre; // l'entre ou le fil est relié
+	public InfoPolyline(Polyline linePrincipale) { 
 		this.linePrincipale = linePrincipale;
 		if (linePrincipale != null) {
 			this.noeudLinePrincipale.addAll(linePrincipale.getPoints());
 		}
 	}
 	
-	public InfoPolyline(Polyline linePrincipale, Polyline lineParent, int switching, int nbFils) {
+	public InfoPolyline(Polyline linePrincipale, Polyline lineParent, int switching, int nbFils) { /// creaion du polyline avec son parent
 		super();
 		this.linePrincipale = linePrincipale;
 		this.lineParent = lineParent;
@@ -43,36 +43,11 @@ public class InfoPolyline implements Serializable{
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj) { /// savoir si deux polylines sont egaux ou pas
 		// TODO Auto-generated method stub
 		InfoPolyline infoPolyline = (InfoPolyline)obj;
 		return (infoPolyline.getLinePrincipale() == linePrincipale);
 	}
-	public Polyline getLinePrincipale() {
-		return linePrincipale;
-	}
-	public void setLinePrincipale(Polyline linePrincipale) {
-		this.linePrincipale = linePrincipale;
-	}
-	public Polyline getLineParent() {
-		return lineParent;
-	}
-	public void setLineParent(Polyline lineParent) {
-		this.lineParent = lineParent;
-	}
-	public int getSwitching() {
-		return switching;
-	}
-	public void setSwitching(int switching) {
-		this.switching = switching;
-	}
-	public int getNbFils() {
-		return nbFils;
-	}
-	public void setNbFils(int nbFils) {
-		this.nbFils = nbFils;
-	}
-	
 
 	public void supprimerPremierNoeuds() {
 		Coordonnees crdPere = new Coordonnees(0,0),crdDebt = new Coordonnees(linePrincipale.getPoints().get(0),linePrincipale.getPoints().get(1)),
@@ -117,6 +92,38 @@ public class InfoPolyline implements Serializable{
 			i = i + 2;	
 		}
 	}
+	
+	public void copierRelierInfo(InfoPolyline infoOrig) {
+		this.relier =infoOrig.isRelier();
+		this.destination =infoOrig.getDestination();
+		this.entre = infoOrig.getEntre();
+	}
+	
+	public void refrechPoints() {
+		if (linePrincipale != null) {
+			noeudLinePrincipale = new ArrayList<Double>(linePrincipale.getPoints());
+		}
+		if (lineParent != null) {
+			noeudLineParent = new ArrayList<Double>(lineParent.getPoints());
+		}
+	}
+	
+	public ArrayList<Double> getNoeudLinePrincipale() {
+		return noeudLinePrincipale;
+	}
+
+	public void setNoeudLinePrincipale(ArrayList<Double> noeudLinePrincipale) {
+		this.noeudLinePrincipale = noeudLinePrincipale;
+	}
+
+	public ArrayList<Double> getNoeudLineParent() {
+		return noeudLineParent;
+	}
+
+	public void setNoeudLineParent(ArrayList<Double> noeudLineParent) {
+		this.noeudLineParent = noeudLineParent;
+	}
+	
 	public boolean isRelier() {
 		return relier;
 	}
@@ -140,33 +147,29 @@ public class InfoPolyline implements Serializable{
 	public void setDestination(Composant destination) {
 		this.destination = destination;
 	}
-	public void copierRelierInfo(InfoPolyline infoOrig) {
-		this.relier =infoOrig.isRelier();
-		this.destination =infoOrig.getDestination();
-		this.entre = infoOrig.getEntre();
-	}
-	public ArrayList<Double> getNoeudLinePrincipale() {
-		return noeudLinePrincipale;
-	}
-
-	public void setNoeudLinePrincipale(ArrayList<Double> noeudLinePrincipale) {
-		this.noeudLinePrincipale = noeudLinePrincipale;
-	}
-
-	public ArrayList<Double> getNoeudLineParent() {
-		return noeudLineParent;
-	}
-
-	public void setNoeudLineParent(ArrayList<Double> noeudLineParent) {
-		this.noeudLineParent = noeudLineParent;
-	}
 	
-	public void refrechPoints() {
-		if (linePrincipale != null) {
-			noeudLinePrincipale = new ArrayList<Double>(linePrincipale.getPoints());
-		}
-		if (lineParent != null) {
-			noeudLineParent = new ArrayList<Double>(lineParent.getPoints());
-		}
+	public Polyline getLinePrincipale() {
+		return linePrincipale;
+	}
+	public void setLinePrincipale(Polyline linePrincipale) {
+		this.linePrincipale = linePrincipale;
+	}
+	public Polyline getLineParent() {
+		return lineParent;
+	}
+	public void setLineParent(Polyline lineParent) {
+		this.lineParent = lineParent;
+	}
+	public int getSwitching() {
+		return switching;
+	}
+	public void setSwitching(int switching) {
+		this.switching = switching;
+	}
+	public int getNbFils() {
+		return nbFils;
+	}
+	public void setNbFils(int nbFils) {
+		this.nbFils = nbFils;
 	}
 }

@@ -57,20 +57,8 @@ public class Multiplexeur extends Combinatoires {
 		return EtatLogique.ONE;
 	}
 
-
-
-	public int getNbCommande() {
-		return nbCommande;
-	}
-
-
-
-	public void setNbCommande(int nbCommande) {
-		this.nbCommande = nbCommande;
-	}
-	
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coordonnées d'entrees/sorties/commandes
 		// TODO Auto-generated method stub
 		
 		switch (nbCommande) {
@@ -156,7 +144,7 @@ public class Multiplexeur extends Combinatoires {
 	}
 	
 	@Override
-	public void derelierEntreeFromComp(Fil fil) {
+	public void derelierEntreeFromComp(Fil fil) { /// enlever toute les connexions faites avec le fil passé comme parametre
 		// TODO Auto-generated method stub
 		super.derelierEntreeFromComp(fil);
 		for (int i = 0; i < nbCommande; i++) {
@@ -169,7 +157,7 @@ public class Multiplexeur extends Combinatoires {
 	}
 	
 	@Override
-	public void relierANouveau() {
+	public void relierANouveau() { /// relier les connexions une autre fois (utilisé dans le ctrl + z)
 		// TODO Auto-generated method stub
 		super.relierANouveau();
 		for (int i = 0; i < nbCommande; i++) {
@@ -188,7 +176,7 @@ public class Multiplexeur extends Combinatoires {
 	}
 	
 	@Override
-	public boolean isDessocier() {
+	public boolean isDessocier() { /// savoir si le composant est dessocié ou non
 		// TODO Auto-generated method stub
 		boolean dessocier =  super.isDessocier();
 		if (dessocier) {
@@ -204,15 +192,15 @@ public class Multiplexeur extends Combinatoires {
 	}
 	
 	@Override
-	public void validerComposant() {
+	public void validerComposant() { /// valider le composant et declarer les erreurs s'il ya
 		// TODO Auto-generated method stub
 		ArrayList<ExceptionProgramme> arrayList = new ArrayList<ExceptionProgramme>();
-		for (int i = 0; i < nombreEntree; i++) {
+		for (int i = 0; i < nombreEntree; i++) { /// validation des entrees 
 			if (entrees[i] == null) {
 				arrayList.add(new EntreeManquante(TypesExceptions.ERREUR, this, i));
 			}
 		}
-		for (int i = 0; i < nbCommande; i++) {
+		for (int i = 0; i < nbCommande; i++) { /// validation des sorties
 			if (commande[i] == null) {
 				arrayList.add(new CommandeManquante(TypesExceptions.ERREUR, this, i));
 			}
@@ -228,5 +216,12 @@ public class Multiplexeur extends Combinatoires {
 		}
 	}
 	
+	public int getNbCommande() {
+		return nbCommande;
+	}
+
+	public void setNbCommande(int nbCommande) {
+		this.nbCommande = nbCommande;
+	}
 
 }

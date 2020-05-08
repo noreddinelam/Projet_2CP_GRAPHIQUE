@@ -110,7 +110,7 @@ public class Pin extends Composant implements ElementHorloge,ComposantDeChronogr
 	}
 	
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coordonnées nécessaires
 		// TODO Auto-generated method stub
 		ImageView img = Circuit.getImageFromComp(this);
 		if (input) {
@@ -119,11 +119,11 @@ public class Pin extends Composant implements ElementHorloge,ComposantDeChronogr
 		else {
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(img.getBoundsInLocal().getWidth() / 2, img.getBoundsInLocal().getHeight()), 0);
 		}
-		rotation(direction);
+		rotation(direction); /// avoir une rotation
 	}
 	
 	@Override
-	public ArrayList<Polyline> generatePolyline(double x,double y) {
+	public ArrayList<Polyline> generatePolyline(double x,double y) { /// generer les polylines de sorties
 		// TODO Auto-generated method stub
 		setCord();
 		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
@@ -131,7 +131,7 @@ public class Pin extends Composant implements ElementHorloge,ComposantDeChronogr
 			double posX = x+lesCoordonnees.getCordSortieInIndex(0).getX();
 			double posY = y+lesCoordonnees.getCordSortieInIndex(0).getY();
 			Polyline polyline = null;
-			switch (direction) {
+			switch (direction) { /// pour savoir à quel direction il faut avoir les polylines
 			case 0:
 				polyline = new Polyline(posX ,posY,posX+5,posY);
 				break;
@@ -157,7 +157,7 @@ public class Pin extends Composant implements ElementHorloge,ComposantDeChronogr
 	}
 
 	@Override
-	public void defaultValue() {
+	public void defaultValue() { /// affecter la valeur par defaut au pin
 		// TODO Auto-generated method stub
 		if (input) {
 			super.defaultValue();
@@ -171,7 +171,7 @@ public class Pin extends Composant implements ElementHorloge,ComposantDeChronogr
 		}
 		
 	}
-	public void resetPolyline(Polyline line , double x,double y) {
+	public void resetPolyline(Polyline line , double x,double y) { /// repositionner les polylines de sorties
 		line.getPoints().clear();
 		switch (direction) {
 		case 0:
@@ -191,12 +191,30 @@ public class Pin extends Composant implements ElementHorloge,ComposantDeChronogr
 		}
 	}
 	@Override
-	public void validerComposant() {
+	public void validerComposant() { /// valider le composant ou declarer les erreurs
 		// TODO Auto-generated method stub
 		if (!input) {
 			if (entrees[0] == null) {
 				Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE, this));
 			}
+		}
+	}
+	
+	public void rotation(int direc) { /// faire une rotation du composant
+		ImageView imageView = Circuit.getImageFromComp(this);
+		switch (direc) {
+		case 0: /// est
+			lesCoordonnees.rotationYYPin();
+			lesCoordonnees.rotationXYPin(imageView);
+			break;
+		case 2: /// west
+			lesCoordonnees.rotationYYPin();
+			lesCoordonnees.rotationXYPin(imageView);
+			lesCoordonnees.rotationXXPin();
+			break;
+		case 3: /// nord
+			lesCoordonnees.rotationYYPin();
+			break;
 		}
 	}
 	public boolean isInput() {
@@ -229,23 +247,6 @@ public class Pin extends Composant implements ElementHorloge,ComposantDeChronogr
 	public EtatLogique getSortieBar() {
 		// TODO Auto-generated method stub
 		return this.etat.getNum()==0? EtatLogique.ONE : EtatLogique.ZERO;
-	}
-	public void rotation(int direc) {
-		ImageView imageView = Circuit.getImageFromComp(this);
-		switch (direc) {
-		case 0:
-			lesCoordonnees.rotationYYPin();
-			lesCoordonnees.rotationXYPin(imageView);
-			break;
-		case 2:
-			lesCoordonnees.rotationYYPin();
-			lesCoordonnees.rotationXYPin(imageView);
-			lesCoordonnees.rotationXXPin();
-			break;
-		case 3:
-			lesCoordonnees.rotationYYPin();
-			break;
-		}
 	}
 	public double getStartChronoX() {
 		return startX;

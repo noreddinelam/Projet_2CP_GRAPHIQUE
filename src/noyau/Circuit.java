@@ -24,29 +24,23 @@ public class Circuit {
 	private static ArrayList<Composant> composantsErronee = new ArrayList<Composant>();
 
 	
-	public static void ajouterCompErrone(Composant composant) {
+	public static void ajouterCompErrone(Composant composant) { /// pour ajouter des composant erronnes
 		composantsErronee.add(composant);
 	}
 	
-	public static void AjouterListeException(ArrayList<ExceptionProgramme> exceptionProgramme) {
+	public static void AjouterListeException(ArrayList<ExceptionProgramme> exceptionProgramme) { /// ajouter une liste d'exception à la liste des exceptions du circuit
 		circuitException.addAll(exceptionProgramme);
 	}
 	
-	public static void AjouterUneException(ExceptionProgramme exceptionProgramme) {
+	public static void AjouterUneException(ExceptionProgramme exceptionProgramme) {/// ajouter une exception a la liste des exceptions
 		circuitException.add(exceptionProgramme);
 	}
 	
-	public static void clearException() {
+	public static void clearException() { /// vider la liste des exceptions
 		circuitException.clear();
 	}
 	
-	public static void printExceptions() {
-		for (ExceptionProgramme exceptionProgramme : circuitException) {
-			System.out.println(((EntreeManquante)exceptionProgramme).getEntreeManquante());
-		}
-	}
-	
-	public static boolean isThereAnyError() {
+	public static boolean isThereAnyError() { /// rend vrai s'il ya des erreurs dans le circuit
 		for (ExceptionProgramme exceptionProgramme : circuitException) {
 			if (exceptionProgramme.getTypesExceptions()==TypesExceptions.ERREUR) {
 				return true;
@@ -55,7 +49,7 @@ public class Circuit {
 		return false;
 	}
 	
-	public static boolean isThereAnyException() {
+	public static boolean isThereAnyException() { /// voir si la liste des exceptions est vide ou non
 		return ((circuitException.size() != 0) ? true : false);
 	}
 	
@@ -63,13 +57,13 @@ public class Circuit {
 		return circuitException;
 	}
 	
-	public static void validerCircuits() {
+	public static void validerCircuits() { /// elle est utilisée pour vous dire es que un circuit est validé ou non
 		composantsErronee.clear();
-		if (compUtilises.isEmpty()) {
+		if (compUtilises.isEmpty()) { /// erreur si le circuit est vide
 			circuitException.add(new CircuitVide(TypesExceptions.ERREUR));
 		}
 		else {
-			if (entreesCircuit.size() == 0) {
+			if (entreesCircuit.size() == 0) { /// alerte si le circuit ne contient aucun element qui se change
 				boolean stop = false;
 				for (Composant composant : compUtilises.keySet()) {
 					if (composant.getClass().getSimpleName().equals("Horloge")) {
@@ -81,11 +75,11 @@ public class Circuit {
 					circuitException.add(new AucuneEntree(TypesExceptions.ALERTE));
 				}
 			}
-			for (Composant composant : compUtilises.keySet()) {
+			for (Composant composant : compUtilises.keySet()) { /// une boucle pour detecter les erreurs dans chaque composant
 				composant.validerComposant();
 			}
 			ArrayList<Polyline> result;
-			for (Composant composant : composantsErronee) {
+			for (Composant composant : composantsErronee) { /// colorer en rouge les fils ou il y'a les erreurs
 				for (int i = 0; i < composant.getNombreSortie(); i++) {
 					result = getListePolylineFromFil(composant.getFilSortieByNum(i));
 					for (Polyline polyline : result) {
@@ -96,7 +90,7 @@ public class Circuit {
 		}
 	}
 	
-	public static void defaultColorFil() {
+	public static void defaultColorFil() { /// re-affecter les couleurs par defaut aux fils
 		ArrayList<Polyline> result;
 		for (Composant composant : composantsErronee) {
 			for (int i = 0; i < composant.getNombreSortie(); i++) {
@@ -108,20 +102,12 @@ public class Circuit {
 		}
 	}
 	
-	public static void defaultValueSeq() {
+	public static void defaultValueSeq() { /// affecter les valeurs par defaut aux elements sequentiels
 		for (Sequentiels sequentiels : listeEtages) {
 			sequentiels.defaultValue();
 		}
 	}
 	
-//	public static boolean areAllWarnings() {
-//		for (ExceptionProgramme exceptionProgramme : circuitException) {
-//			if (exceptionProgramme.getTypesExceptions() == TypesExceptions.ERREUR) {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
 	
 	public static void ajouterComposant(Composant comp,ImageView img) { // ajouter un composant à la liste des composants utilisés
 		compUtilises.put(comp, img);
@@ -247,7 +233,7 @@ public class Circuit {
 			cte.evaluer(); 
 		}
 		int j = 0;
-		for (Sequentiels sequentiels : listeEtages) {
+		for (Sequentiels sequentiels : listeEtages) { // initialiser les sorties des elements sequentiels
 			for (int i = 0; i < sequentiels.getNombreSortie(); i++) {
 				if (sequentiels.getClass().getSuperclass().equals(Bascule.class)) {
 					if (j == 0) {
@@ -312,7 +298,7 @@ public class Circuit {
 		}
 		return fil;
 	}
-	public static void defaultCompValue() {
+	public static void defaultCompValue() {/// affecter les valeurs par defaut à tout les composants
 		for (Fil fil : filUtilises.keySet()) {
 			fil.defaultValue();
 		}
@@ -329,7 +315,7 @@ public class Circuit {
 		}
 		return new ArrayList<InfoPolyline>();
 	}
-	public static InfoPolyline getInfoPolylineFromPolyline(Polyline ligne) { 
+	public static InfoPolyline getInfoPolylineFromPolyline(Polyline ligne) { // recuperer la classe infoPolyline qui contient des infos necessaire pour les fils
 		for (Entry<Fil, ArrayList<InfoPolyline>> entry : filUtilises.entrySet()) {
 			if (entry.getValue().contains(new InfoPolyline(ligne))) {
 				for (InfoPolyline info : entry.getValue()) {
@@ -341,18 +327,18 @@ public class Circuit {
 		}
 		return null;
 	}
-	public static void removeImageFromComp(Composant comp) {
+	public static void removeImageFromComp(Composant comp) { /// supprimer le couple image composant en utilisant le composant
 		compUtilises.remove(comp);
 	}
 	public static void removeCompFromImage(ImageView img) { // recuperer le composant associé à une image .
 		compUtilises.remove(getCompFromImage(img));
 	}
 	
-	public static ArrayList<Polyline> supprimerComp(Composant composant) {
+	public static ArrayList<Polyline> supprimerComp(Composant composant) { /// utiliser dans la suppression des composants
 		
-		composant.derelierComp();
-		compUtilises.remove(composant);
-		if (composant.getClass().getSimpleName().equals("Pin")) {
+		composant.derelierComp(); /// derelier le composant de toutes ces connexions
+		compUtilises.remove(composant); /// supprimer le composant
+		if (composant.getClass().getSimpleName().equals("Pin")) { /// verifier si c'est un pin et le supprimer soit de la liste des entrees ou de sorties
 			Pin pin = (Pin)composant;
 			if (pin.isInput()) {
 				entreesCircuit.remove(pin);
@@ -362,16 +348,16 @@ public class Circuit {
 			}
 		}
 		else { 
-			if (composant.getClass().getSimpleName().equals("SourceConstante")) 
+			if (composant.getClass().getSimpleName().equals("SourceConstante")) /// enlever le composant de la liste des source constante
 				listSouceCte.remove(composant);
 		}
 		if ((composant.getClass().getSuperclass().equals(Bascule.class)) || (composant.getClass().getSuperclass().equals(Sequentiels.class))) {
-			listeEtages.remove(composant);
+			listeEtages.remove(composant); /// enlever le composant de la liste des composant sequentiels
 		}
 		Fil sortieFil;
 		ArrayList<Composant> arrayList ;
 		ArrayList<Polyline> listPolylines = new ArrayList<Polyline>();
-		for (int i = 0; i < composant.getNombreSortie(); i++) {
+		for (int i = 0; i < composant.getNombreSortie(); i++) { /// derelier les composants qui sont au tour du composant à supprimer
 			sortieFil = composant.getFilSortieByNum(i);
 			listPolylines.addAll(getListePolylineFromFil(sortieFil));
 			filUtilises.remove(sortieFil);
@@ -395,13 +381,66 @@ public class Circuit {
 		return result;
 	}
 	
-	public static ArrayList<Polyline> supprimerAllPolylinesForCompounent(Composant composant) {
+	public static ArrayList<Polyline> supprimerAllPolylinesForCompounent(Composant composant) { /// supprimer tout les fils de sorties du composant du Hashmap de fils
 		ArrayList<Polyline> result = new ArrayList<Polyline>();
 		for (int i = 0; i < composant.getNombreSortie(); i++) {
 			result.addAll(getListePolylineFromFil(composant.getFilSortieByNum(i)));
 			filUtilises.remove(composant.getFilSortieByNum(i));
 		}
 		return result;
+	}
+	
+	public static void remplacerPere(Polyline line1, Polyline line2) { /// remplacer le pere d'un fil par un autre fil
+		for (Entry<Fil, ArrayList<InfoPolyline>> entry : filUtilises.entrySet()) {
+				for (InfoPolyline info : entry.getValue()) {
+					if(info.getLineParent() == line1) {
+						info.setLineParent(line2);
+					}
+				}
+		}
+	}
+	
+	public static void clearCircuit() { /// vider tout le contenu du circuit
+		compUtilises.clear();
+		entreesCircuit.clear();
+		sortiesCircuit.clear();
+		listeEtages.clear();
+		nbEtages =0 ;
+		listSouceCte.clear();
+		composantsErronee.clear();
+		circuitException.clear();
+		filUtilises.clear();
+	}
+
+	public static void defaultValuePin() { /// affecter les valeurs par defaut aux pins
+		for(Pin pin : sortiesCircuit)
+			pin.defaultValue();
+	}
+	
+	
+	public static int occurencePinHorlogee() { /// calculer le nombre de pin qui servent comme horloge dans le circuit
+		int i = 0;
+		for (Pin pin : entreesCircuit) {
+			if(pin.isHorloge()) 
+				i++;
+		}
+		return i ;
+	}
+	
+	public static HashMap<Fil, ArrayList<InfoPolyline>> getfilUtilises() {
+		return filUtilises;
+	}
+	public static void creerCircuitIntegrer(String nom) {
+		CircuitIntegre ci = new CircuitIntegre(entreesCircuit.size(),sortiesCircuit.size(), nom);
+		ci.setTableVerite(tableVerite);
+	}
+
+	public static ArrayList<SourceConstante> getListSouceCte() {
+		return listSouceCte;
+	}
+
+	public static void setListSouceCte(ArrayList<SourceConstante> listSouceCte) {
+		Circuit.listSouceCte = listSouceCte;
 	}
 	
 	public static HashMap<Fil, ArrayList<InfoPolyline>> getFilUtilises() {
@@ -447,57 +486,5 @@ public class Circuit {
 	public static void setTableVerite(EtatLogique[][] tableVerite) {
 		Circuit.tableVerite = tableVerite;
 	}
-	public static void remplacerPere(Polyline line1, Polyline line2) {
-		for (Entry<Fil, ArrayList<InfoPolyline>> entry : filUtilises.entrySet()) {
-				for (InfoPolyline info : entry.getValue()) {
-					if(info.getLineParent() == line1) {
-						info.setLineParent(line2);
-					}
-				}
-		}
-	}
-	public static HashMap<Fil, ArrayList<InfoPolyline>> getfilUtilises() {
-		return filUtilises;
-	}
-	public static void creerCircuitIntegrer(String nom) {
-		CircuitIntegre ci = new CircuitIntegre(entreesCircuit.size(),sortiesCircuit.size(), nom);
-		ci.setTableVerite(tableVerite);
-	}
-
-	public static ArrayList<SourceConstante> getListSouceCte() {
-		return listSouceCte;
-	}
-
-	public static void setListSouceCte(ArrayList<SourceConstante> listSouceCte) {
-		Circuit.listSouceCte = listSouceCte;
-	}
-	
-	public static void clearCircuit() {
-		compUtilises.clear();
-		entreesCircuit.clear();
-		sortiesCircuit.clear();
-		listeEtages.clear();
-		nbEtages =0 ;
-		listSouceCte.clear();
-		composantsErronee.clear();
-		circuitException.clear();
-		filUtilises.clear();
-	}
-
-	public static void defaultValuePin() {
-		for(Pin pin : sortiesCircuit)
-			pin.defaultValue();
-	}
-	
-	
-	public static int occurencePinHorlogee() {
-		int i = 0;
-		for (Pin pin : entreesCircuit) {
-			if(pin.isHorloge()) 
-				i++;
-		}
-		return i ;
-	}
-	
 	
 }

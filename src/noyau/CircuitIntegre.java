@@ -14,8 +14,8 @@ public class CircuitIntegre extends Composant implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -1334102629412553408L;
-	private  EtatLogique tableVerite[][]; // la table de verite du circuit
-	private transient ArrayList<Circle> listeCercles = new ArrayList<Circle>();
+	private  EtatLogique tableVerite[][]; // la table de verite du circuit integre 
+	private transient ArrayList<Circle> listeCercles = new ArrayList<Circle>(); /// la liste des circles utilisées dans les entrees
 	public CircuitIntegre(int nombreEntree,int nombreSortie, String nom) {
 		super(nombreEntree, nom);
 		this.nombreSortie = nombreSortie;
@@ -35,15 +35,15 @@ public class CircuitIntegre extends Composant implements Serializable{
 	}
 	
 	@Override
-	public ArrayList<Polyline> generatePolyline(double x, double y) {
+	public ArrayList<Polyline> generatePolyline(double x, double y) { /// generer les polylines de sorties 
 		// TODO Auto-generated method stub
-		setCord();	
+		setCord();	/// seter les coordonnees d'entrees et de sorties
 		Polyline polyline = null;
 		double posX ;
 		double posY ;
 		ArrayList<Polyline> reslut = new ArrayList<Polyline>();
 		ArrayList<InfoPolyline> listPolylines ;
-		for (int i = 0; i < nombreSortie; i++) {
+		for (int i = 0; i < nombreSortie; i++) { /// creer les polylines
 			listPolylines = new ArrayList<InfoPolyline>();
 			posX = x+ lesCoordonnees.getCordSortieInIndex(i).getX() ;
 			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
@@ -56,7 +56,7 @@ public class CircuitIntegre extends Composant implements Serializable{
 	}
 	
 	@Override
-	public void resetPolyline(Polyline line, double x, double y) {
+	public void resetPolyline(Polyline line, double x, double y) { /// utiliser dans le mouvement des composants
 		// TODO Auto-generated method stub
 		line.getPoints().clear();
 		line.getPoints().addAll(x,y,x+14,y);
@@ -64,21 +64,21 @@ public class CircuitIntegre extends Composant implements Serializable{
 
 
 	@Override
-	public boolean valider() {
+	public boolean valider() { /// valider le composant si toutes ses entrees sont reliées
 		// TODO Auto-generated method stub
 		return (super.validerEntrees().getNum() == EtatLogique.ONE.getNum()) ? true: false;	
 	}
 
 
 	@Override
-	public String generatePath() {
+	public String generatePath() { /// generer l'image du circuit integré
 		// TODO Auto-generated method stub
 		return "CircuitIntegre/Simple.png";
 	}
 
 
 	@Override
-	public void setCord() {
+	public void setCord() {/// seter les coordonnees des entrees est sorties du composant
 		// TODO Auto-generated method stub
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 8.2), 0);
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 23.4), 1);
@@ -124,13 +124,13 @@ public class CircuitIntegre extends Composant implements Serializable{
 		this.listeCercles = listeCercles;
 	}
 	
-	public ArrayList<Circle> generateCercles(double x,double y) {
+	public ArrayList<Circle> generateCercles(double x,double y) { /// generer les circles 
 		// TODO Auto-generated method stub
 		listeCercles = new ArrayList<Circle>();
 		Circle circle = null;
 		double posX ;
 		double posY ;
-		for (int i = 0; i < nombreSortie; i++) {
+		for (int i = 0; i < nombreSortie; i++) { /// les circles d'entrees
 			posX = x + lesCoordonnees.getCordSortieInIndex(i).getX()+4;
 			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
 			circle = new Circle(5); 
@@ -140,7 +140,7 @@ public class CircuitIntegre extends Composant implements Serializable{
 			circle.setLayoutY(posY);
 			listeCercles.add(circle);
 		}		
-		for (int i = 0; i < nombreEntree; i++) {
+		for (int i = 0; i < nombreEntree; i++) { /// les circles de sorties
 			posX = x + lesCoordonnees.getCordEntreeInIndex(i).getX();
 			posY = y + lesCoordonnees.getCordEntreeInIndex(i).getY() ;
 			circle = new Circle(5);
@@ -153,8 +153,7 @@ public class CircuitIntegre extends Composant implements Serializable{
 		return listeCercles;
 	}
 	
-	public void resetCirclesPosition(double x,double y) {
-		System.out.println("nnnnnn : "+nombreSortie);
+	public void resetCirclesPosition(double x,double y) { /// utilser dans le changement de position des circles
 		for (int i = 0; i < nombreSortie; i++) {
 			listeCercles.get(i).setLayoutX( x + lesCoordonnees.getCordSortieInIndex(i).getX()+4);
 			listeCercles.get(i).setLayoutY( y + lesCoordonnees.getCordSortieInIndex(i).getY());

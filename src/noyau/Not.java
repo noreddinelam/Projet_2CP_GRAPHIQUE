@@ -19,13 +19,13 @@ public class Not extends Portes{
 	}
 	
 	@Override
-	public String generatePath() {
+	public String generatePath() { /// generer les images relatives aux composant
 		// TODO Auto-generated method stub
 		return "Not/Not"+Integer.toString(direction)+".png";
 	}
 	
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coordonnées nécessaires
 		// TODO Auto-generated method stub
 		super.setCord();
 		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0,17), 0) ;

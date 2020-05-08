@@ -1,6 +1,6 @@
 package noyau;
 
-public class SortieReinjecter extends ExceptionProgramme{
+public class SortieReinjecter extends ExceptionProgramme{ /// exception utilisé pour declarer si une sortie et reinjecter en entree
 	
 	private int entree;
 	private int sortie;

@@ -22,7 +22,7 @@ public class Xor extends Portes {
 	}
 	
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coordonnées nécessaires 
 		// TODO Auto-generated method stub
 		super.setCord();
 		switch (nombreEntree) {
@@ -49,7 +49,7 @@ public class Xor extends Portes {
 			lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 73.1), 4);
 		}break;
 		}
-		rotation(direction);
+		rotation(direction); /// faire une rotation pour la porte s'il est nécessaire
 	}
 	
 }

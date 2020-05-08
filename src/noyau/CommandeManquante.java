@@ -1,10 +1,10 @@
 package noyau;
 
-public class CommandeManquante extends ExceptionProgramme{
+public class CommandeManquante extends ExceptionProgramme{ /// exception si une des commandes est non reliée
 	
 	private int nbCommande;
 
-	public CommandeManquante(TypesExceptions typesExceptions, Composant composant,int nbCommande) {
+	public CommandeManquante(TypesExceptions typesExceptions, Composant composant,int nbCommande) { 
 		super(typesExceptions, composant);
 		// TODO Auto-generated constructor stub
 		this.nbCommande = nbCommande;

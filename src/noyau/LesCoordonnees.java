@@ -15,15 +15,118 @@ public class LesCoordonnees implements Serializable{
 	private int nbCordSorties=0 ;
 	private Coordonnees cordCommandes[] = new Coordonnees[32]; // coordonees des cmd
 	private int nbCordCommandes=0;
-	private Coordonnees cordLoad = null;
-	private Coordonnees cordClear = null;
-	private Coordonnees cordPreset = null;
-	private Coordonnees cordHorloge = null;
+	private Coordonnees cordLoad = null; /// coordonnees du load
+	private Coordonnees cordClear = null; /// coordonnees du clear
+	private Coordonnees cordPreset = null; /// coordonnees du preset
+	private Coordonnees cordHorloge = null; /// cordonnees de l'horloge
 	public LesCoordonnees(int nbCordEntree, int nbCordSorties, int nbCordCommandes) {
 		this.nbCordEntree = nbCordEntree;
 		this.nbCordSorties = nbCordSorties;
 		this.nbCordCommandes = nbCordCommandes;
 
+	}
+	
+	public int indexCoord(Coordonnees crd) { /// savoir le numero d'entree qui contient les coordonnées passé comme parametre
+		int i = 0;
+		while(i < nbCordEntree) {
+			if(cordEntree[i].equals(crd)) {
+				return i;}
+		i++;
+		}
+		return -1;
+	}
+
+	public Coordonnees coordReelesSorties(ImageView image,int sortie) { /// avoir les coordonnees reelles des sorties
+		if(sortie < nbCordSorties) 
+			return new Coordonnees(cordSorties[sortie].getX() + image.getLayoutX(), cordSorties[sortie].getY() + image.getLayoutY());
+		else return null;
+	}
+	
+	public Coordonnees coordReelesEntrees(ImageView image,int entre) {/// avoir les coordonnees reelles des entrees
+		if(entre < nbCordEntree)
+			return new Coordonnees(cordEntree[entre].getX() + image.getLayoutX(), cordEntree[entre].getY() + image.getLayoutY());
+		else return null;
+	}
+	public Coordonnees coordReelesCommande(ImageView image,int entre) { /// avoir les coordonnees reelles des commandes
+		if(entre < nbCordCommandes)
+			return new Coordonnees(cordCommandes[entre].getX() + image.getLayoutX(), cordCommandes[entre].getY() + image.getLayoutY());
+		else return null;
+	}
+	public Coordonnees coordReelesHorloge(ImageView image) { /// avoir les coordonnees reelles de l'horloge
+		if(cordHorloge != null)
+			return new Coordonnees(cordHorloge.getX() + image.getLayoutX(), cordHorloge.getY() + image.getLayoutY());
+		else return null;
+	}	
+	public Coordonnees coordReelesClear(ImageView image) { /// avoir les coordonnees reelles du clear
+		if(cordClear != null)
+			return new Coordonnees(cordClear.getX() + image.getLayoutX(), cordClear.getY() + image.getLayoutY());
+		else return null;
+	}	
+	public Coordonnees coordReelesPreset(ImageView image) { /// avoir les coordonnees reelles du preset
+		if(cordPreset != null)
+			return new Coordonnees(cordPreset.getX() + image.getLayoutX(), cordPreset.getY() + image.getLayoutY());
+		else return null;
+	}	
+	public Coordonnees coordReelesLoad(ImageView image) { /// avoir les coordonnees reelles du load
+		if(cordLoad != null)
+			return new Coordonnees(cordLoad.getX() + image.getLayoutX(), cordLoad.getY() + image.getLayoutY());
+		else return null;
+	}	
+	public void rotationXY(ImageView imageView) { /// faire une rotation du composant
+		double perm ;
+		for(int i=0;i<nbCordEntree;i++) { /// inverser les coordonnées x et y des entrees
+			perm = cordEntree[i].getX();
+			cordEntree[i].setX(cordEntree[i].getY());
+			cordEntree[i].setY(perm);
+		}
+		cordSorties[0].setX(imageView.getFitWidth()/2);
+		cordSorties[0].setY(imageView.getFitHeight());	
+	}
+	
+	public void rotationXX() { /// faire une rotation mirroir selon axe Y
+		double x = cordSorties[0].getX();
+		cordSorties[0].setX(cordEntree[0].getX());
+		for(int i=0;i<nbCordEntree;i++) {
+			cordEntree[i].setX(x);
+		}
+		
+	}
+	
+	public void rotationYY() {/// faire une rotation mirroir selon axe X
+		double y = cordSorties[0].getY();
+		cordSorties[0].setY(cordEntree[0].getY());
+		for(int i=0;i<nbCordEntree;i++) {
+			cordEntree[i].setY(y);
+		}
+	}
+	
+	public void rotationXYPin(ImageView imageView) { /// rotation du pin
+		if (nbCordEntree == 0) {
+			cordSorties[0].setX(imageView.getFitWidth() );
+			cordSorties[0].setY(imageView.getFitHeight() /2 );	
+		}
+		else {
+			cordEntree[0].setX(imageView.getFitWidth() );
+			cordEntree[0].setY(imageView.getFitHeight() /2);
+		}
+	}
+	
+	public void rotationXXPin() { /// rotation mirroir du pin selon axe Y
+		if (nbCordEntree != 0) {
+			cordEntree[0].setX(0);
+		}
+		else {
+			cordSorties[0].setX(0);
+		}
+	}
+	
+	public void rotationYYPin() { /// rotation mirroir du pin selon axe X
+		if (nbCordEntree != 0) {
+			cordEntree[0].setY(0);
+		}
+		else {
+			cordSorties[0].setY(0);
+		}
 	}
 	
 	public void setCordEntreeInIndex(Coordonnees coordonnees,int entree) {
@@ -95,16 +198,6 @@ public class LesCoordonnees implements Serializable{
 		return nbCordCommandes;
 	}
 	
-	public int indexCoord(Coordonnees crd) {
-		int i = 0;
-		while(i < nbCordEntree) {
-			if(cordEntree[i].equals(crd)) {
-				return i;}
-		i++;
-		}
-		return -1;
-	}
-
 	public void setCordEntree(Coordonnees[] cordEntree) {
 		this.cordEntree = cordEntree;
 	}
@@ -127,100 +220,5 @@ public class LesCoordonnees implements Serializable{
 
 	public void setNbCordCommandes(int nbCordCommandes) {
 		this.nbCordCommandes = nbCordCommandes;
-	}
-	public Coordonnees coordReelesSorties(ImageView image,int sortie) {
-		if(sortie < nbCordSorties) 
-			return new Coordonnees(cordSorties[sortie].getX() + image.getLayoutX(), cordSorties[sortie].getY() + image.getLayoutY());
-		else return null;
-	}
-	
-	public Coordonnees coordReelesEntrees(ImageView image,int entre) {
-		if(entre < nbCordEntree)
-			return new Coordonnees(cordEntree[entre].getX() + image.getLayoutX(), cordEntree[entre].getY() + image.getLayoutY());
-		else return null;
-	}
-	public Coordonnees coordReelesCommande(ImageView image,int entre) {
-		if(entre < nbCordCommandes)
-			return new Coordonnees(cordCommandes[entre].getX() + image.getLayoutX(), cordCommandes[entre].getY() + image.getLayoutY());
-		else return null;
-	}
-	public Coordonnees coordReelesHorloge(ImageView image) {
-		if(cordHorloge != null)
-			return new Coordonnees(cordHorloge.getX() + image.getLayoutX(), cordHorloge.getY() + image.getLayoutY());
-		else return null;
-	}	
-	public Coordonnees coordReelesClear(ImageView image) {
-		if(cordClear != null)
-			return new Coordonnees(cordClear.getX() + image.getLayoutX(), cordClear.getY() + image.getLayoutY());
-		else return null;
-	}	
-	public Coordonnees coordReelesPreset(ImageView image) {
-		if(cordPreset != null)
-			return new Coordonnees(cordPreset.getX() + image.getLayoutX(), cordPreset.getY() + image.getLayoutY());
-		else return null;
-	}	
-	public Coordonnees coordReelesLoad(ImageView image) {
-		if(cordLoad != null)
-			return new Coordonnees(cordLoad.getX() + image.getLayoutX(), cordLoad.getY() + image.getLayoutY());
-		else return null;
-	}	
-	public void rotationXY(ImageView imageView) {
-		double perm ;
-		for(int i=0;i<nbCordEntree;i++) {
-			System.out.println("fhdufiuqdgfiusdgu");
-			perm = cordEntree[i].getX();
-			cordEntree[i].setX(cordEntree[i].getY());
-			System.out.println("X CORD : "+cordEntree[i].getX());
-			cordEntree[i].setY(perm);
-			System.out.println("Y CORD : "+cordEntree[i].getY());
-		}
-		cordSorties[0].setX(imageView.getFitWidth()/2);
-		cordSorties[0].setY(imageView.getFitHeight());	
-	}
-	
-	public void rotationXX() {
-		double x = cordSorties[0].getX();
-		cordSorties[0].setX(cordEntree[0].getX());
-		for(int i=0;i<nbCordEntree;i++) {
-			cordEntree[i].setX(x);
-		}
-		
-	}
-	
-	public void rotationYY() {
-		double y = cordSorties[0].getY();
-		cordSorties[0].setY(cordEntree[0].getY());
-		for(int i=0;i<nbCordEntree;i++) {
-			cordEntree[i].setY(y);
-		}
-	}
-	
-	public void rotationXYPin(ImageView imageView) {
-		if (nbCordEntree == 0) {
-			cordSorties[0].setX(imageView.getFitWidth() );
-			cordSorties[0].setY(imageView.getFitHeight() /2 );	
-		}
-		else {
-			cordEntree[0].setX(imageView.getFitWidth() );
-			cordEntree[0].setY(imageView.getFitHeight() /2);
-		}
-	}
-	
-	public void rotationXXPin() {
-		if (nbCordEntree != 0) {
-			cordEntree[0].setX(0);
-		}
-		else {
-			cordSorties[0].setX(0);
-		}
-	}
-	
-	public void rotationYYPin() {
-		if (nbCordEntree != 0) {
-			cordEntree[0].setY(0);
-		}
-		else {
-			cordSorties[0].setY(0);
-		}
 	}
 }

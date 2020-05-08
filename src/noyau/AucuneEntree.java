@@ -1,6 +1,6 @@
 package noyau;
 
-public class AucuneEntree extends ExceptionProgramme{
+public class AucuneEntree extends ExceptionProgramme{ /// exception generer si le composant est non relié
 
 	public AucuneEntree(TypesExceptions typesExceptions) {
 		super(typesExceptions, null);

@@ -2,7 +2,7 @@ package noyau;
 
 import javafx.scene.layout.BackgroundRepeat;
 
-public interface ElementHorloge {
+public interface ElementHorloge { /// interface utiliser pour l'execution des composants sequentiels avec l'idee des etages
 	default void  tictac() { // sert dans l'execution des composants sequentiels qui sont relier avec une horloge
 		int etage = 0 ;
 		while(etage <= Circuit.getNbEtages()) { // executer par etages

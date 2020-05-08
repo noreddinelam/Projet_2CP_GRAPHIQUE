@@ -41,7 +41,7 @@ public class Decodeur extends Combinatoires{
 	}
 
 	@Override
-	public void setCord() {
+	public void setCord() { /// seter les coordonnées d'entrees/sorties
 		// TODO Auto-generated method stub
 		switch (nombreEntree) {
 		case 1:{
