@@ -4,6 +4,7 @@ import java.io.File;
 
 import java.util.Optional;
 
+
 import controllers.Controller;
 import controllers.HomeController;
 import javafx.application.Application;
@@ -22,8 +23,12 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import noyau.Bascule;
 import noyau.Circuit;
+import noyau.D;
+import noyau.Front;
 import noyau.Horloge;
+import noyau.Not;
 import noyau.Sauvegarde;
 
 public class Main extends Application {
@@ -133,6 +138,7 @@ public class Main extends Application {
 					a.setY(pStage.getY()+250);
 					a.showAndWait();
 				}
+
 			}
 			
 			if ( HomeController.horloged && Controller.simul) {
@@ -694,6 +700,7 @@ public class Main extends Application {
 //		Thread thread=new Thread(horloge);
 //		thread.start();
 		// horloge.run();
+		
 	}
 }
 

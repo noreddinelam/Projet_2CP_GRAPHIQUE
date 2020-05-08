@@ -1,5 +1,6 @@
 package controllers;
 
+import java.awt.Container;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +13,7 @@ import javax.sound.sampled.Clip;
 
 import application.ClickDroitFil;
 import application.ClickSouris2;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -22,6 +24,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
@@ -73,6 +76,9 @@ public abstract class Controller {
 	protected int rel;
 
 	protected static ArrayList<Button> rightBareButtons = new ArrayList<Button>() ;
+	
+	protected Circle relieCercle ;
+
 	@FXML
 	protected AnchorPane workSpace;
 
@@ -199,7 +205,7 @@ public abstract class Controller {
 
 						i = 2;
 						if (!trouve) {
-							while ((!trouve)) {
+							while ((!trouve) && (i < list.size() )) {
 								if (Math.abs(x - list.get(i)) <= 10) {
 									if( (list.get(i-1)<y && y <list.get(i+1)) || (list.get(i+1)<y  && y<list.get(i-1) ))
 									{
@@ -293,7 +299,6 @@ public abstract class Controller {
 								infoline = Circuit.getInfoPolylineFromPolyline(infoline.getLineParent());
 								infoline.setNbFils(infoline.getNbFils() - 1);
 								line.getPoints().clear();
-								// line.getPoints().remove(der);line.getPoints().remove(der-1);line.getPoints().remove(der-2);line.getPoints().remove(der-3);
 							} else if (rel == 1) {
 
 								///////////////////////////// relier/////////////////////////////////////
@@ -333,7 +338,6 @@ public abstract class Controller {
 								infoLine.setDestination(destination);
 								infoLine.setEntre(entree);
 								//souuund
-
 							}
 						}else {
 							der =  line.getPoints().size()-1;
@@ -353,13 +357,13 @@ public abstract class Controller {
 						//sauvgaaarder la creation du fil
 						if(line.getPoints().size()!=0) 
 							sauvgardeCreationFil(line);
+						
 					}
 				}
 			}
 
 		});
 	}
-
 	public void playSound() {
 		try {
 			AudioInputStream audioInputStream = AudioSystem
@@ -407,7 +411,6 @@ public abstract class Controller {
 			boolean trouve = false;
 			int i = 0;
 			while (i < nbCord && trouve == false) {
-				System.out.println("dgfiqhgdifh : "+tabCoord[i]);
 				Coordonnees crdTab = new Coordonnees(tabCoord[i].getX() + imgCmp.getLayoutX(),
 						tabCoord[i].getY() + imgCmp.getLayoutY());
 				if (crdTab.equals(crd)) {
@@ -430,6 +433,7 @@ public abstract class Controller {
 							return 0;
 						trouve = true;
 						entree = -i - 1;
+
 					}
 					i++;
 				}
@@ -453,6 +457,7 @@ public abstract class Controller {
 							return 0;
 						trouve = true;
 						entree = -6;
+
 					}
 				}
 				if (cmp.getLesCoordonnees().getCordPreset() != null && !trouve) {
@@ -501,6 +506,7 @@ public abstract class Controller {
 		Donnes sauvgarde = new Donnes();
 		sauvgarde.setFil(Circuit.getFilFromPolyline(line));
 		sauvgarde.setParent(line);
+		sauvgarde.setInfoPolyline(Circuit.getInfoPolylineFromPolyline(line));
 		sauvgarde.setTypeDaction(Actions.CreationFil);
 		HomeController.undoDeque.addFirst(sauvgarde);
 
@@ -528,7 +534,18 @@ public abstract class Controller {
 	public static void setRightBareButtons(ArrayList<Button> rightBareButtons) {
 		Controller.rightBareButtons = rightBareButtons;
 	}
-
+	public void relieCercle(double x, double y) {
+		relieCercle = new Circle();
+		relieCercle.setRadius(6);
+		relieCercle.setFill(Color.TRANSPARENT);
+		relieCercle.setStroke(Color.YELLOW);
+		relieCercle.setStrokeWidth(2);
+		relieCercle.setSmooth(true);
+		relieCercle.setLayoutX(0);
+		relieCercle.setLayoutY(0);
+		relieCercle.setCenterX(x);
+		relieCercle.setCenterY(y);
+	}
 	
 	
 }
