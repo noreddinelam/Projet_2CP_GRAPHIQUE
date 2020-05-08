@@ -1198,6 +1198,7 @@ public class HomeController extends Controller {
 					// derniere du polyline actuel
 					if ((Math.abs(line.getPoints().get(0) - x2) < 6) && (Math.abs(line.getPoints().get(1) - y2) < 6)) {
 						// Suppression
+						SupprimerPereUndoChanges(line);
 						line.getPoints().clear();
 						line2.getPoints().remove(line2.getPoints().size() - 1);
 						line2.getPoints().remove(line2.getPoints().size() - 1);
@@ -1224,12 +1225,23 @@ public class HomeController extends Controller {
 			if (Math.abs(y2 - y) < 10)
 				switching = 0;
 		}
-
+		
 		if (switching == 0)
 			line.getPoints().addAll(x2, y, x2, y2);
 		else
 			line.getPoints().addAll(x, y2, x2, y2);
 		return line;
+	}
+	
+	public void SupprimerPereUndoChanges(Polyline line1) {
+		for (Donnes donnes : undoDeque) {
+			if(donnes.getInfoPolyline() != null && !donnes.isSupprime() ) {
+				if(donnes.getInfoPolyline().getLineParent() == line1) {
+					donnes.setSupprime(true);
+					SupprimerPereUndoChanges(donnes.getInfoPolyline().getLinePrincipale());
+				}
+			}
+		}
 	}
 	boolean ctrlz = false;
 	public Polyline tracerSortieApresCollage(Polyline line, Coordonnees crdDebut, boolean relocate) {// Trecer les
@@ -1261,7 +1273,7 @@ public class HomeController extends Controller {
 						if((Math.abs(line.getPoints().get(0)-x2)<5) && (Math.abs(line.getPoints().get(1)-y2)<5)) {
 							//Suppression
 							workSpace.getChildren().remove(line);
-
+							SupprimerPereUndoChanges(line);
 							line.getPoints().clear();
 							Circuit.getListFromPolyline(line).remove(0);
 							listSorties.add(listSorties.indexOf(line), line2);
@@ -3106,120 +3118,126 @@ public class HomeController extends Controller {
 		{
 			Donnes sauveGarde;
 			sauveGarde= undoDeque.removeFirst();
-			switch(sauveGarde.getTypeDaction())
-			{
-			case Mouvement :
-			{
-				ctrlz = true;
-				refrechLists(sauveGarde.getComposantCommeImage());
-				SupprimerPoint();
-				//removePoints();
-				// addPoints();
-				ImageView imageView = sauveGarde.getComposantCommeImage();
-				imageView.setLayoutX(sauveGarde.getPosX());
-				imageView.setLayoutY(sauveGarde.getPosY());
-				updatePolyline(imageView);
-				Composant composant = Circuit.getCompFromImage(imageView);
-				if (composant.getClass().equals(CircuitIntegre.class)) {
-					((CircuitIntegre)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
-				}
-				else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
-					((CircuitIntegreSequentiel)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
-				}
-			}break;
-			case Creation :
-			{
-				workSpace.getChildren().remove(sauveGarde.getComposantCommeImage());
-				ArrayList<Polyline> lineListe= Circuit.supprimerComp(sauveGarde.getComposant());
-				for(Polyline line : lineListe)
-					workSpace.getChildren().remove(line);
+			while(sauveGarde.isSupprime() && !undoDeque.isEmpty() ) {
+				sauveGarde= undoDeque.removeFirst();
+			}
 
-				if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge")) {
-					horloged = false;
-					horlogeDeCercuit = null;
-				}
-			}break;
-			case Modification :
+			if(!sauveGarde.isSupprime())
 			{
-				ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
-				Composant composant= Circuit.getCompFromImage( imageDeComposant);
-				imageDeComposant.setImage(sauveGarde.getImage());
-				imageDeComposant.setFitHeight(sauveGarde.getImage().getHeight());
-				imageDeComposant.setFitWidth(imageDeComposant.getImage().getWidth());
-				removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(composant));
-				composant.setNombreEntree(sauveGarde.getNombreDesEntrees());
-				composant.setNombreSortie(sauveGarde.getNombreDesSorties());
-				composant.getLesCoordonnees().setNbCordEntree(sauveGarde.getNombreDesEntrees());
-				composant.getLesCoordonnees().setNbCordSorties(sauveGarde.getNombreDesSorties());
-				if (composant.getClass().equals("Multiplexeur")) {
-					((Multiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
-					composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
-				}
-				else if(composant.getClass().equals("Demultiplexeur")){
-					((Demultiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
-					composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
-				}
-				if(imageDeComposant.getId().equals("pin")) ((Pin)composant).setInput(sauveGarde.getTypePin());
-				if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
-				addAllPolylinesToWorkSpace(composant.generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY()));
-			}break;
-			case Supression:
-			{
-				
-				ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
-				workSpace.getChildren().add(imageDeComposant);
-				imageDeComposant.setLayoutX(sauveGarde.getPosX());
-				imageDeComposant.setLayoutY(sauveGarde.getPosY());
-				Circuit.ajouterComposant(sauveGarde.getComposant(), imageDeComposant);
-				ArrayList<Polyline> polyline = Circuit.getCompFromImage(imageDeComposant).generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY());
-				addAllPolylinesToWorkSpace(polyline);
-				sauveGarde.getComposant().relierANouveau();
-				if (sauveGarde.getComposant().getClass().equals(CircuitIntegre.class)) {
-					ArrayList<Circle> resCircles = ((CircuitIntegre)sauveGarde.getComposant()).generateCercles(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY());
-					for (Circle circle : resCircles) {
-						workSpace.getChildren().add(circle);
-					}
-				}
-				else if (sauveGarde.getComposant().getClass().equals(CircuitIntegreSequentiel.class)) {
-					ArrayList<Circle> resCircles = ((CircuitIntegreSequentiel)sauveGarde.getComposant()).generateCercles(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY());
-					for (Circle circle : resCircles) {
-						workSpace.getChildren().add(circle);
-					}
-				}else if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge")) {
-					horloged = true;
-					horlogeDeCercuit = sauveGarde.getComposantCommeImage();
-				}
-				if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge"))
+				switch(sauveGarde.getTypeDaction())
 				{
-					horloged=true;
-					horlogeDeCercuit= sauveGarde.getComposantCommeImage();
-				}
-			}break;
-			case SuppressionFil :{
-				InfoPolyline infoPolyline = sauveGarde.getInfoPolyline();
-				Fil filSortieFil =  sauveGarde.getFil();
-				supprimerSauvegarde(infoPolyline, sauveGarde.getParent(), filSortieFil);
+				case Mouvement :
+				{
+					ctrlz = true;
+					refrechLists(sauveGarde.getComposantCommeImage());
+					SupprimerPoint();
+					//removePoints();
+					// addPoints();
+					ImageView imageView = sauveGarde.getComposantCommeImage();
+					imageView.setLayoutX(sauveGarde.getPosX());
+					imageView.setLayoutY(sauveGarde.getPosY());
+					updatePolyline(imageView);
+					Composant composant = Circuit.getCompFromImage(imageView);
+					if (composant.getClass().equals(CircuitIntegre.class)) {
+						((CircuitIntegre)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
+					}
+					else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
+						((CircuitIntegreSequentiel)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
+					}
+				}break;
+				case Creation :
+				{
+					workSpace.getChildren().remove(sauveGarde.getComposantCommeImage());
+					ArrayList<Polyline> lineListe= Circuit.supprimerComp(sauveGarde.getComposant());
+					for(Polyline line : lineListe)
+						workSpace.getChildren().remove(line);
 
-			}break;
-			case CreationFil:
-			{
-				ClickDroitFilController.setPane(workSpace);
-				InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(sauveGarde.getParent());
-				ClickDroitFilController.supprimer(infoLine);
-			}break;
-			case SuppressionToutFil :{
-				ArrayList<InfoPolyline> arrayList = sauveGarde.getArrayListInfoPoly();
-				ArrayList<Polyline> arrayParent= sauveGarde.getListPolyParent();
-				Fil filSortieFil =  sauveGarde.getFil();
-				int size =  arrayParent.size();
-				for (int i = 0; i < size; i++) {
-					supprimerSauvegarde(arrayList.get(i+1), arrayParent.get(i), filSortieFil);
-				}
-			}break;
-			case Copier :{
-				 removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(sauveGarde.getComposant()));
-				 workSpace.getChildren().remove(sauveGarde.getComposantCommeImage());
-				 if(sauveGarde.getComposantCommeImage().getId().equals("clock"))
+					if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge")) {
+						horloged = false;
+						horlogeDeCercuit = null;
+					}
+				}break;
+				case Modification :
+				{
+					ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
+					Composant composant= Circuit.getCompFromImage( imageDeComposant);
+					imageDeComposant.setImage(sauveGarde.getImage());
+					imageDeComposant.setFitHeight(sauveGarde.getImage().getHeight());
+					imageDeComposant.setFitWidth(imageDeComposant.getImage().getWidth());
+					removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(composant));
+					composant.setNombreEntree(sauveGarde.getNombreDesEntrees());
+					composant.setNombreSortie(sauveGarde.getNombreDesSorties());
+					composant.getLesCoordonnees().setNbCordEntree(sauveGarde.getNombreDesEntrees());
+					composant.getLesCoordonnees().setNbCordSorties(sauveGarde.getNombreDesSorties());
+					if (composant.getClass().equals("Multiplexeur")) {
+						((Multiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
+						composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
+					}
+					else if(composant.getClass().equals("Demultiplexeur")){
+						((Demultiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
+						composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
+					}
+					if(imageDeComposant.getId().equals("pin")) ((Pin)composant).setInput(sauveGarde.getTypePin());
+					if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
+					addAllPolylinesToWorkSpace(composant.generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY()));
+				}break;
+				case Supression:
+				{
+
+					ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
+					workSpace.getChildren().add(imageDeComposant);
+					imageDeComposant.setLayoutX(sauveGarde.getPosX());
+					imageDeComposant.setLayoutY(sauveGarde.getPosY());
+					Circuit.ajouterComposant(sauveGarde.getComposant(), imageDeComposant);
+					ArrayList<Polyline> polyline = Circuit.getCompFromImage(imageDeComposant).generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY());
+					addAllPolylinesToWorkSpace(polyline);
+					sauveGarde.getComposant().relierANouveau();
+					if (sauveGarde.getComposant().getClass().equals(CircuitIntegre.class)) {
+						ArrayList<Circle> resCircles = ((CircuitIntegre)sauveGarde.getComposant()).generateCercles(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY());
+						for (Circle circle : resCircles) {
+							workSpace.getChildren().add(circle);
+						}
+					}
+					else if (sauveGarde.getComposant().getClass().equals(CircuitIntegreSequentiel.class)) {
+						ArrayList<Circle> resCircles = ((CircuitIntegreSequentiel)sauveGarde.getComposant()).generateCercles(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY());
+						for (Circle circle : resCircles) {
+							workSpace.getChildren().add(circle);
+						}
+					}else if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge")) {
+						horloged = true;
+						horlogeDeCercuit = sauveGarde.getComposantCommeImage();
+					}
+					if(sauveGarde.getComposant().getClass().getSimpleName().equals("Horloge"))
+					{
+						horloged=true;
+						horlogeDeCercuit= sauveGarde.getComposantCommeImage();
+					}
+				}break;
+				case SuppressionFil :{
+					InfoPolyline infoPolyline = sauveGarde.getInfoPolyline();
+					Fil filSortieFil =  sauveGarde.getFil();
+					supprimerSauvegarde(infoPolyline, sauveGarde.getParent(), filSortieFil);
+
+				}break;
+				case CreationFil:
+				{
+					ClickDroitFilController.setPane(workSpace);
+					InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(sauveGarde.getParent());
+					ClickDroitFilController.supprimer(infoLine);
+				}break;
+				case SuppressionToutFil :{
+					ArrayList<InfoPolyline> arrayList = sauveGarde.getArrayListInfoPoly();
+					ArrayList<Polyline> arrayParent= sauveGarde.getListPolyParent();
+					Fil filSortieFil =  sauveGarde.getFil();
+					int size =  arrayParent.size();
+					for (int i = 0; i < size; i++) {
+						supprimerSauvegarde(arrayList.get(i+1), arrayParent.get(i), filSortieFil);
+					}
+				}break;
+				case Copier :{
+					removeAllPolylinesFromWorkSpace(Circuit.supprimerComp(sauveGarde.getComposant()));
+					workSpace.getChildren().remove(sauveGarde.getComposantCommeImage());
+					if(sauveGarde.getComposantCommeImage().getId().equals("clock"))
 					{
 						HomeController.horloged =false;
 						HomeController.horlogeDeCercuit =null; 
@@ -3236,21 +3254,22 @@ public class HomeController extends Controller {
 							workSpace.getChildren().remove(circle);
 						}
 					}
-			}break;
-			case Rotation :{
-				ImageView img = sauveGarde.getComposantCommeImage();
-				Composant composant = sauveGarde.getComposant(); 
-				composant.setDirection(sauveGarde.getRotation());
-				removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(composant.getSorties()[0]));
-				Image image = new Image(composant.generatePath());
-    			img.setImage(image);
-    			img.setFitHeight(image.getHeight());
-    			img.setFitWidth(image.getWidth());
-    			addAllPolylinesToWorkSpace(composant.generatePolyline(img.getLayoutX(), img.getLayoutY()));
-			}
-			default:
-				break;
+				}break;
+				case Rotation :{
+					ImageView img = sauveGarde.getComposantCommeImage();
+					Composant composant = sauveGarde.getComposant(); 
+					composant.setDirection(sauveGarde.getRotation());
+					removeAllPolylinesFromWorkSpace(Circuit.getListePolylineFromFil(composant.getSorties()[0]));
+					Image image = new Image(composant.generatePath());
+					img.setImage(image);
+					img.setFitHeight(image.getHeight());
+					img.setFitWidth(image.getWidth());
+					addAllPolylinesToWorkSpace(composant.generatePolyline(img.getLayoutX(), img.getLayoutY()));
+				}
+				default:
+					break;
 
+				}
 			}
 		}
 	}
