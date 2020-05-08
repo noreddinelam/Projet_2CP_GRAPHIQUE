@@ -9,6 +9,7 @@ import controllers.Controller;
 import controllers.HomeController;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -69,7 +71,7 @@ public class Main extends Application {
 			primaryStage.setTitle("SimulINI");
 			primaryStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST,
 					this::closeWindowEvent);
-		
+		    primaryStage.initStyle(StageStyle.UNDECORATED);
 			primaryStage.setResizable(false);
 			pStage=primaryStage;
 			primaryStage.show();
@@ -80,50 +82,63 @@ public class Main extends Application {
 
 	private void closeWindowEvent(WindowEvent event) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.initStyle(StageStyle.UTILITY);
-		alert.setContentText("Voullez vous sauvgarder ce circuit avant de quitter ?");
+		alert.setContentText(Circuit.getCompUtilises().isEmpty() ? "Voulez vous vraiment quitter" :"Voullez vous sauvgarder ce circuit avant de quitter ?");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+		alert.initOwner(pStage);
+		alert.initStyle(StageStyle.UTILITY);
 		alert.getButtonTypes().clear();
 		alert.initOwner(pStage);
-		ButtonType buttonTypeNon = new ButtonType("Non");
-		ButtonType buttonTypeSauvgarder = new ButtonType("Sauvgarder");
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setX(pStage.getX()+500);
+		alert.setY(pStage.getY()+250);
+		ButtonType buttonTypeNon = new ButtonType( Circuit.getCompUtilises().isEmpty() ? "Oui":"Non");
+		ButtonType buttonTypeSauvgarder = null;
 		ButtonType buttonTypeCancel = new ButtonType("Annuler");
-		alert.getButtonTypes().setAll(buttonTypeNon, buttonTypeSauvgarder, buttonTypeCancel);
+		alert.getButtonTypes().setAll(buttonTypeNon, buttonTypeCancel);
+		if(! Circuit.getCompUtilises().isEmpty())
+		{
+			buttonTypeSauvgarder = new ButtonType("Sauvgarder");
+			alert.getButtonTypes().add(buttonTypeSauvgarder);
+		}
 		Optional<ButtonType> result = alert.showAndWait();	
 		//Optional<ButtonType> result = alert.showAndWait();
 		if(result.get() != buttonTypeCancel) {
-			if (result.get() == buttonTypeSauvgarder && ! Circuit.getCompUtilises().isEmpty()){
+			if (result.get() == buttonTypeSauvgarder){
 				if (HomeController.fichierCourant == null) {
 					final FileChooser fileChooser = new FileChooser();
 					fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 					fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("SIM", "*.sim"));
-					File f = fileChooser.showSaveDialog(HomeController.homeWindow);
+					File f = fileChooser.showSaveDialog(pStage);
 					if (f != null) {
+
 						Sauvegarde sauvegarde = new Sauvegarde();
-						sauvegarde.saveCiruit(f.getAbsolutePath());
+						sauvegarde.saveCiruit(f.getAbsolutePath() + ".sim");
 						Alert a = new Alert(AlertType.INFORMATION);
+						a.initOwner(pStage);
 						a.initStyle(StageStyle.UTILITY);
 						a.setContentText("le circuit est bien sauvgarde");
 						a.initOwner(pStage);
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+						a.initStyle(StageStyle.UTILITY);
+						a.setX(pStage.getX()+500);
+						a.setY(pStage.getY()+250);
 						a.showAndWait();
 					}
 				} else {
 					Sauvegarde sauvegarde = new Sauvegarde();
 					sauvegarde.saveCiruit(HomeController.fichierCourant.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
-					a.setContentText("le circuit est bien sauvgarde");
-					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.initOwner(pStage);
+					a.initStyle(StageStyle.UTILITY);
+					a.setContentText("le circuit est bien sauvgarde");
+					a.initOwner(pStage);
+					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+					a.initStyle(StageStyle.UTILITY);
+					a.setX(pStage.getX()+500);
+					a.setY(pStage.getY()+250);
 					a.showAndWait();
 				}
-			}else if(Circuit.getCompUtilises().isEmpty()&&result.get() == buttonTypeSauvgarder) {
-				Alert a = new Alert(AlertType.INFORMATION);
-				a.setContentText("le circuit est vide il y a rien a sauvegarder");
-				a.initStyle(StageStyle.UTILITY);
-				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-				a.initOwner(pStage);
-				a.showAndWait();
+
 			}
 			
 			if ( HomeController.horloged && Controller.simul) {
@@ -137,9 +152,9 @@ public class Main extends Application {
 					e.printStackTrace();
 				}
 			}
-		
+	
 		}
-		 else {
+		else {
 			event.consume();
 		}
 	}
