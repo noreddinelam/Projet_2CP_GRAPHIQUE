@@ -22,25 +22,25 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 
-public class EditableDraggableText extends StackPane {
+public class EditableDraggableText extends StackPane {//Clasee pour traiter les fonctionalités de label
     private final double PADDING = 5;
     private EditableText text = new EditableText(PADDING, PADDING);
 
-   EditableDraggableText(double x, double y) {
+   EditableDraggableText(double x, double y) {//Constructeur interne
 
         relocate(x - PADDING, y - PADDING);
         getChildren().add(text);
-        text.focusedProperty().addListener((observable, hadFocus, hasFocus) -> {
+        text.focusedProperty().addListener((observable, hadFocus, hasFocus) -> {//on supprime le label si il est vide
             if (!hasFocus && getParent() != null && getParent() instanceof AnchorPane &&
                 (text.getText() == null || text.getText().trim().isEmpty())) {
                 ((AnchorPane) getParent()).getChildren().remove(this);
             }
         });
 
-        enableDrag(text);
+        enableDrag(text);//Ajouter le drag and drop pour le label
     }
 
-    public EditableDraggableText(double x, double y, String text) {
+    public EditableDraggableText(double x, double y, String text) {//constructeur externe
       
 
         this(x, y);   
@@ -50,7 +50,7 @@ public class EditableDraggableText extends StackPane {
      
     }
 
-    private void enableDrag(EditableText t) {
+    private void enableDrag(EditableText t) {//Traitement de drag and drop de label
         final Delta dragDelta = new Delta();
        t.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -74,10 +74,10 @@ public class EditableDraggableText extends StackPane {
             t.setCursor(Cursor.HAND);
       
             double newX = getLayoutX() + mouseEvent.getX() ;
-            if(newX > 0 && newX< 3340 )
+            if(newX > 0 && newX< 3340 )//verifiation des coordoonés X
                 setLayoutX(newX);
             double newY = getLayoutY() + mouseEvent.getY() ;
-            if(newY > 0 && newY< 2080 )
+            if(newY > 0 && newY< 2080 )// verfication des coordoonés Y
                 setLayoutY(newY);
                 mouseEvent.consume();
         	  
@@ -86,15 +86,15 @@ public class EditableDraggableText extends StackPane {
     }
 
    
-    private class Delta {
+    private class Delta {//Classe pour traitement des coordonnés de label
         double x, y;
     }
 }
-class EditableText extends TextField {
+class EditableText extends TextField {//Text filed de label
 
     private final double RIGHT_MARGIN = 5;
 
-    EditableText(double x, double y) {
+    EditableText(double x, double y) {//Constructeur interne
         relocate(x, y);
         this.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         this.textProperty().addListener(new ChangeListener<String>() {

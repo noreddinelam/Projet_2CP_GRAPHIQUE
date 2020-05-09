@@ -36,18 +36,18 @@ import noyau.Sequentiels;
 public class ChronogrammeController implements Initializable {
 
 
-	private static ImageView detectionBar=new ImageView();
+	private static ImageView detectionBar=new ImageView();//l'outil de suivie
 	public static ArrayList<Sequentiels> composantDechrono = new ArrayList<Sequentiels>();
 	public static ArrayList<Pin> pinDeSorties=new ArrayList<Pin>();
 
 	@FXML
-	private AnchorPane chronogrameField;
+	private AnchorPane chronogrameField;//espace de tracage de chronogramme
 	private static Horloge horlogeDecHRONO;
 	public static HashMap< Line, Integer[]> valeursDesuivis = new HashMap<Line, Integer[]>();
 	@FXML
 	private  TableView<ComposantDeChronogramme> tableView;
 
-	public static TableView<ComposantDeChronogramme> extTableView;
+	public static TableView<ComposantDeChronogramme> extTableView;//reference static pour la table des composant 
 	@FXML
 	private  TableColumn<ComposantDeChronogramme, String> elementsColumn;
 
@@ -63,7 +63,7 @@ public class ChronogrammeController implements Initializable {
 	@FXML
 	private AnchorPane lightBox;
 	public static AnchorPane lightBoxH;
-
+  ///////////////////////////////::///////////////// Labels pour afficher les valeurs suivie par l'outil
 	@FXML
 	private Label label1;
 
@@ -93,9 +93,10 @@ public class ChronogrammeController implements Initializable {
 
 	@FXML
 	private Label label10;
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	@FXML
 	private ImageView playButton;
-	private static ArrayList<Line> frontList= new ArrayList<Line>();
+	private static ArrayList<Line> frontList= new ArrayList<Line>();// pour sauveGarder les lignes tracer
 	static int i=1;
 
 
@@ -114,7 +115,7 @@ public class ChronogrammeController implements Initializable {
 	@FXML
 	private Line line;
 
-
+   ////////////////////////// Des reference pour initialiser le point de depart de chronogramme pour chaque composant
 	@FXML
 	private PointLight p1;
 
@@ -144,16 +145,16 @@ public class ChronogrammeController implements Initializable {
 
 	@FXML
 	private PointLight p10;
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////::
 	
-	private static Label[] labels;
+	private static Label[] labels;// tableau de manipulation des points de deppart
 	public static boolean resimul=false;
 	double origineDeChronogramme; 
 	double translationDeSouris;
 	public static ArrayList<PointLight> pointsDeDepart=new ArrayList<PointLight>();
 
 	@FXML
-	void arreter(MouseEvent event) {
+	void arreter(MouseEvent event) {//pour arreter le chronogramme et demarrer du début
 
 		playButton.setImage(new Image("/chronoIcones/CHRONO_START_OFF.png"));
 		pauseBotton.setImage(new Image("/chronoIcones/PAUSE.png"));
@@ -161,17 +162,17 @@ public class ChronogrammeController implements Initializable {
 		chronogrameField.getChildren().removeAll(frontList);
 		frontList.clear();
 		valeursDesuivis.clear();
-		for(int i=0 ; i<composantDechrono.size();i++)
+		for(int i=0 ; i<composantDechrono.size();i++)//initialisation des coordoonés de debut pour les composant sequentielle
 		{
 			composantDechrono.get(i).setStartChronoX(1);
 			composantDechrono.get(i).setStartChronoY(pointsDeDepart.get(i).getLayoutY());
 		}
-		for(int j=0;j<pinDeSorties.size();j++)
+		for(int j=0;j<pinDeSorties.size();j++)//initialisation des coordoonés de debut pour les Pin de sorites
 		{
 			pinDeSorties.get(j).setStartChronoX(1);
 			pinDeSorties.get(j).setStartChronoY(pointsDeDepart.get(composantDechrono.size()+j).getLayoutY());
 		}
-
+		//initialisation les coordoonés de debut pour l'horloge
 		Horloge.setStartX(1);
 		Horloge.setStartY(76);
 		first=true;
@@ -193,7 +194,7 @@ public class ChronogrammeController implements Initializable {
 		pauseBotton.setCursor(Cursor.HAND);
 	}
 	@FXML
-	void clickHome(MouseEvent event) {
+	void clickHome(MouseEvent event) {//button de retour au Page Principale
 		Stage s = (Stage) homebutton.getScene().getWindow();
 		s.close();	
 		composantDechrono.clear();
@@ -210,7 +211,7 @@ public class ChronogrammeController implements Initializable {
 	}
 
 	@FXML
-	void homeEnter(MouseEvent event) {
+	void homeEnter(MouseEvent event) {//Hover de button Home
 		homebutton.setCursor(Cursor.HAND);
 		homebutton.setStyle("-fx-background-color:#E0E0D1");
 	}
@@ -225,19 +226,19 @@ public class ChronogrammeController implements Initializable {
 	}
 
 	@FXML
-	void stoper(MouseEvent event) {	    			  
+	void stoper(MouseEvent event) {	//Pour mettre en pause le chronogramme    			  
 		if( HomeController.chrono==true)
 		{
 			lightBoxH.setStyle("-fx-background-color:#303337");
 			pauseBotton.setImage(new Image("/chronoIcones/CHRONO_STOP_OFF.png"));
 			playButton.setImage(new Image("/chronoIcones/START.png"));
 			HomeController.chrono=false;  
-			for(int i=0 ; i<composantDechrono.size();i++)
+			for(int i=0 ; i<composantDechrono.size();i++)//initialisation des coordoonés de debut pour les composant sequentielle
 			{
 				composantDechrono.get(i).setStartChronoX(1);
 				composantDechrono.get(i).setStartChronoY(pointsDeDepart.get(i).getLayoutY());
 			}
-			for(int j=0;j<pinDeSorties.size();j++)
+			for(int j=0;j<pinDeSorties.size();j++)//initialisation des coordoonés de debut pour les pins
 			{
 				pinDeSorties.get(j).setStartChronoX(1);
 				pinDeSorties.get(j).setStartChronoY(pointsDeDepart.get(composantDechrono.size()+j).getLayoutY());
@@ -252,7 +253,7 @@ public class ChronogrammeController implements Initializable {
 	}
 
 	@FXML
-	void play(MouseEvent event) {
+	void play(MouseEvent event) {//Pour demarrer le chronogramme
 		if(HomeController.chrono ==false)
 		{
 
@@ -270,9 +271,9 @@ public class ChronogrammeController implements Initializable {
 	}
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize(URL arg0, ResourceBundle arg1) {//initilaisation des element de chrongramme
 	
-		tracerGrilleChrono();	
+		tracerGrilleChrono();	//La grille de chronogramme
 		lightBoxH=lightBox;
 		pauseBotton.setImage(new Image("/chronoIcones/CHRONO_STOP_OFF.png"));
 		labels=new Label[] {label0,label1,label2,label3,label4,label5,label6,label7,label8,label9,label10};
@@ -282,17 +283,20 @@ public class ChronogrammeController implements Initializable {
 		extTableView=tableView;
 		extTableView.getItems().add(horlogeDecHRONO);
 		field= chronogrameField;
+		//////définintion des valeur affichés par chaque colonne de table
 		elementsColumn.setCellValueFactory(dat-> new SimpleStringProperty(dat.getValue().getNom()));
 		valeurQ.setCellValueFactory(dat-> new SimpleStringProperty(String.valueOf(dat.getValue().getSortieAafficher().getNum())));
 		valeurQbar.setCellValueFactory(dat-> new SimpleStringProperty(String.valueOf(dat.getValue().getSortieBar().getNum())));
-
-		for(int i=0;i<composantDechrono.size();i++)
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+		for(int i=0;i<composantDechrono.size();i++)//initialisation des coordoonés de debut pour les composant sequentielle
 		{
+		
 			tableView.getItems().add(composantDechrono.get(i));
 			composantDechrono.get(i).setStartChronoX(1);
 			composantDechrono.get(i).setStartChronoY(pointsDeDepart.get(i).getLayoutY());
 		}
-		for(int j=0;j<pinDeSorties.size();j++)
+		for(int j=0;j<pinDeSorties.size();j++)//initialisation des coordoonés de debut pour les Pin de sorties
+		
 		{
 			tableView.getItems().add(pinDeSorties.get(j));
 			pinDeSorties.get(j).setStartChronoX(1);
@@ -304,7 +308,7 @@ public class ChronogrammeController implements Initializable {
 		ajouterDragX(detectionBar);
 	}
 
-	public static void refrecher() {
+	public static void refrecher() {//pour refrecher la table des valeurs
 
 		extTableView.refresh();
 
@@ -312,13 +316,13 @@ public class ChronogrammeController implements Initializable {
 	}
 
 
-	public static void tracerFront(EtatLogique etatDeHorloge) {
+	public static void tracerFront(EtatLogique etatDeHorloge) {//role : tracer le chronorgamme pour chaque composant
 
 		Line horHline=new Line();
 		Line verHline=new Line();
 
 
-
+////////////Tracer les fronts de l'horloge///////////////////////////////////////////////////////////////////////////////////////////////
 		if(etatDeHorloge.getNum() == 0)
 		{
 
@@ -347,8 +351,10 @@ public class ChronogrammeController implements Initializable {
 					);
 			Horloge.setStartX(Horloge.getStartX()+25);
 		}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if(! composantDechrono.isEmpty())
         {
+/////////Tracer les front des cpmosants sequentielles//////////////////////////////////////////////////////////////////////////////////////////////
 		for(int i=0;i<composantDechrono.size();i++)
 		{
 			EtatLogique etat= composantDechrono.get(i).getSortieAafficher();
@@ -424,7 +430,9 @@ public class ChronogrammeController implements Initializable {
 			valeursDesuivis.put(horline, new Integer[] {i+1,etat.getNum()});
 		}
 	}
-		if(!pinDeSorties.isEmpty())
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////Tracer les fronts des Pins///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if(!pinDeSorties.isEmpty())
 		{
 			for(int j=0;j<pinDeSorties.size();j++)
 			{
@@ -486,7 +494,9 @@ public class ChronogrammeController implements Initializable {
 			}
 
 		}
-		if(Horloge.getStartX()>470*i) 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////Traitement de Scroll/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if(Horloge.getStartX()>470*i) 
 		{
 			scrolDeChrono.setHvalue(scrolDeChrono.getHvalue()+0.1);
 			i++;
@@ -513,7 +523,9 @@ public class ChronogrammeController implements Initializable {
 			scrolDeChrono.setHvalue(0);
 			i=1;
 			detectionBar.setLayoutX(0);
+			
 		}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		horHline.setStyle("-fx-stroke-width: 2px;");
 		verHline.setStyle("-fx-stroke-width: 2px;");
 		horHline.setStroke(Color.web("90EE90"));
@@ -533,7 +545,7 @@ public class ChronogrammeController implements Initializable {
 	public static void setHorlogeDecHRONO(Horloge horlogeDecHRONO) {
 		ChronogrammeController.horlogeDecHRONO = horlogeDecHRONO;
 	}
-	public void tracerGrilleChrono() {
+	public void tracerGrilleChrono() {//tracer la grille de chrono
 		for (int i = 0; i <= chronogrameField.getPrefWidth(); i += 25 ) {
 			Line l1 = new Line();
 			l1.toBack();
@@ -551,7 +563,7 @@ public class ChronogrammeController implements Initializable {
 		}
 	}
 
-	private void ajouterDragX(final ImageView node) {
+	private void ajouterDragX(final ImageView node) {// fonctionalités de drag and drop pour la bar de suivie
 		node.setOnDragDetected(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -599,7 +611,7 @@ public class ChronogrammeController implements Initializable {
 			}
 		});
 	}
-	public static void valeurSuivi() {
+	public static void valeurSuivi() {// role : afficher la valeur qui est en intersiction avec la bar de suivie
 		for(Line line : valeursDesuivis.keySet())
 		{
 			if (line.getStartX() <= detectionBar.getLayoutX()+4 && detectionBar.getLayoutX()+4 <= line.getEndX())

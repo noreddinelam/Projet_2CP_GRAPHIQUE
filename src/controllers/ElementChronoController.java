@@ -62,12 +62,14 @@ public class ElementChronoController implements Initializable {
     private HBox header;
    
     Stage stage ;
+    /////Variables de Drage and drop 
     private static double xOffset = 0;
     private static double yOffset = 0;
     private static double xOffsete = 0;
     private static double yOffsete = 0;
+    ///////////////////////////////////
     @FXML
-    void onAfficher(MouseEvent event) {
+    void onAfficher(MouseEvent event) {///Button d'affichge d'un composant dans le circuit
        if(listeCircuit.getSelectionModel().getSelectedItem() != null ||listeChrono.getSelectionModel().getSelectedItem() != null)
        {
     	   
@@ -81,7 +83,7 @@ public class ElementChronoController implements Initializable {
     }
 
     @FXML
-    void mouseClickAjouter(MouseEvent event) {
+    void mouseClickAjouter(MouseEvent event) {//Traintement d'ajout d'un composant au chronogramme
     	if(listeCircuit.getSelectionModel().getSelectedItem() != null && i<10) 
     	{
     		composantDeListAdroite.add(listeCircuit.getSelectionModel().getSelectedItem());
@@ -104,17 +106,17 @@ public class ElementChronoController implements Initializable {
     }
 
     @FXML
-    void mouseClickChrono(MouseEvent event) {
+    void mouseClickChrono(MouseEvent event) {//Button d'affichafge de chronogramme
     	
 		ChronogrammeController.setHorlogeDecHRONO((Horloge) Circuit.getCompFromImage(HomeController.horlogeDeCercuit));
 		int i = 0;
-		while (i < 10 && i < Circuit.getListeEtages().size()) {
+		while (i < 10 && i < Circuit.getListeEtages().size()) {//Ajout des composant Sequentielle
 			if (!Circuit.getListeEtages().get(i).getClass().getSimpleName().equals("Compteur")&&composantDeListAdroite.contains(Circuit.getListeEtages().get(i)))
 				ChronogrammeController.composantDechrono.add(Circuit.getListeEtages().get(i));
 			i++;
 		}
 		i=0;
-		while(i<10 && i<Circuit.getSortiesCircuit().size())
+		while(i<10 && i<Circuit.getSortiesCircuit().size())//Ajout des Pin de sorties
 		{
 			if(composantDeListAdroite.contains(Circuit.getSortiesCircuit().get(i))) ChronogrammeController.pinDeSorties.add( Circuit.getSortiesCircuit().get(i));
 			i++;
@@ -160,14 +162,14 @@ public class ElementChronoController implements Initializable {
     }
 
     @FXML
-    void mouseClickFermer(MouseEvent event) {
+    void mouseClickFermer(MouseEvent event) {//Traitement de button fermer 
     	Stage s= (Stage) fermerBtn.getScene().getWindow();
     	annulerOpacity();
         s.close();
     }
 
     @FXML
-    void mouseClickRetirer(MouseEvent event) {
+    void mouseClickRetirer(MouseEvent event) {//Traitement de retirer un composant de chronogramme
       	if(listeChrono.getSelectionModel().getSelectedItem() != null &&! listeChrono.getSelectionModel().getSelectedItem().getClass().getSimpleName().equals("Horloge") ) 
     	{
     		composantDeListAgauche.add(listeChrono.getSelectionModel().getSelectedItem());
@@ -228,7 +230,7 @@ public class ElementChronoController implements Initializable {
     }
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize(URL arg0, ResourceBundle arg1) {//Initialisation de la fentere
 
 		composantDeListAgauche = FXCollections.observableArrayList();
 		composantDeListAdroite=  FXCollections.observableArrayList();
@@ -242,6 +244,7 @@ public class ElementChronoController implements Initializable {
 	if(!composantDeListAdroite.isEmpty())	    listeChrono.setItems(composantDeListAdroite);
 		 listeCircuit.setCellFactory(composantDeListAgauche -> new ListCellController());
 		 listeChrono.setCellFactory(composantDeListAdroite -> new ListCellController());
+/////////Traitement de drage and Drop de la fentre/////////////////////////////////////////////////////////////////////////////////
 		 header.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -265,8 +268,10 @@ public class ElementChronoController implements Initializable {
 	            	header.getScene().getWindow().setY(event.getScreenY() + yOffsete);
 	            }
 	        });
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
-	private void closeWindowEvent(WindowEvent event) {
+	
+	private void closeWindowEvent(WindowEvent event) {////Traitement de Exit
 		ChronogrammeController.composantDechrono.clear();
 		ChronogrammeController.valeursDesuivis.clear();
 		ChronogrammeController.pinDeSorties.clear();
@@ -280,7 +285,7 @@ public class ElementChronoController implements Initializable {
 
 	}
 	
-	public void showComposant(Composant composant)
+	public void showComposant(Composant composant)//role : afficher le composant dans le circuit
 	{
 		for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
 			Composant cmp = entry.getKey();
@@ -297,7 +302,7 @@ public class ElementChronoController implements Initializable {
 		}
 		
 	}
-	public void annulerOpacity() {
+	public void annulerOpacity() {// annuler l'affichege d'un seule  composant
 		for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
 			Composant cmp = entry.getKey();
 		     entry.getValue().setOpacity(1);

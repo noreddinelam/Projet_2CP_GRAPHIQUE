@@ -4,7 +4,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class FontMetrics
+public class FontMetrics//Clasee contient des variables et une methode util pour traitement des labels  
 {
 	final private Text internal;
 	public float ascent, descent, lineHeight;
