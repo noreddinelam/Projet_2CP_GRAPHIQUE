@@ -17,10 +17,6 @@ public class Pin extends Composant implements ElementHorloge,ComposantDeChronogr
 	private double startX;
 	private double startY;
 	boolean changed=false;
-	public boolean getInput()
-	{
-		return this.input;
-	}
 	public Pin(boolean input,String nom) { /// instancier un pin soit d'entree ou de sortie
 		// TODO Auto-generated constructor stub
 		super(0,nom);
@@ -267,7 +263,9 @@ public class Pin extends Composant implements ElementHorloge,ComposantDeChronogr
 		this.changed = changed;
 	}
 
-	
-	
+	public boolean getInput()
+	{
+		return this.input;
+	}
 	
 }

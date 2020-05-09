@@ -25,6 +25,8 @@ public class Donnes { /// cette classe est utilisé dans l'operation du ctrl + z
 	private ArrayList<Polyline> listPolyParent = new ArrayList<Polyline>(); // la liste des polylines parent
 	private int rotation; // pour la rotation 
 	private boolean supprime = false; // boolean utilisé dans la suppression
+	private InfoPolyline infoPolyline = null;
+	private ArrayList<InfoPolyline> listPolylines = null;
 	
 	@Override
 	public boolean equals(Object obj) { /// redifinre la methode equals pour savoir si deux données sont égales
@@ -79,8 +81,6 @@ public class Donnes { /// cette classe est utilisé dans l'operation du ctrl + z
 	public void setParent(Polyline parent) {
 		this.parent = parent;
 	}
-	InfoPolyline infoPolyline = null;
-	ArrayList<InfoPolyline> listPolylines = null;
 	
 	public Actions getTypeDaction() {
 		return typeDaction;

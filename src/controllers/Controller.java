@@ -13,6 +13,7 @@ import javax.sound.sampled.Clip;
 
 import application.ClickDroitFil;
 import application.ClickSouris2;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -30,6 +31,7 @@ import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import noyau.Actions;
 import noyau.Bascule;
 import noyau.Circuit;
@@ -78,6 +80,8 @@ public abstract class Controller {
 	protected static ArrayList<Button> rightBareButtons = new ArrayList<Button>() ;
 	
 	protected Circle relieCercle ;
+	
+	protected FadeTransition fadeTransition = new FadeTransition(Duration.millis(500));
 
 	@FXML
 	protected AnchorPane workSpace;
@@ -165,6 +169,10 @@ public abstract class Controller {
 						}
 						if (! workSpace.getChildren().contains(guideFilY)) {
 							workSpace.getChildren().add(guideFilY);
+						}
+						if (relieCercle != null) {
+						    workSpace.getChildren().remove(relieCercle);
+							relieCercle = null;
 						}
 						guideFilX.setLayoutX(event.getX());
 						guideFilY.setLayoutY(event.getY());
@@ -287,7 +295,7 @@ public abstract class Controller {
 						workSpace.getChildren().remove(guideFilY);
 						int der = line.getPoints().size() - 1;
 
-						if (intersectionFilComposants(arg0.getX(), arg0.getY()) != null) {
+						if (( destination = intersectionFilComposants(arg0.getX(), arg0.getY())) != null) {
 							// if(intersectionFilComposants(line.getPoints().get(der-1),line.getPoints().get(der)))
 							// {
 							if (rel == 0) {
@@ -302,7 +310,6 @@ public abstract class Controller {
 							} else if (rel == 1) {
 
 								///////////////////////////// relier/////////////////////////////////////
-								destination = intersectionFilComposants(arg0.getX(), arg0.getY());
 								/*
 								 * entree >= 0 :entres -4 < entree < 0 :commandes entree = -4 :horloge entree =
 								 * -5 :clear entree = -6 :preset entree = -7 :load
@@ -338,6 +345,11 @@ public abstract class Controller {
 								infoLine.setDestination(destination);
 								infoLine.setEntre(entree);
 								//souuund
+								fadeTransition.setNode(relieCercle);
+								fadeTransition.setFromValue(1);
+								fadeTransition.setToValue(0);
+								fadeTransition.play();
+								
 							}
 						}else {
 							der =  line.getPoints().size()-1;
@@ -386,10 +398,9 @@ public abstract class Controller {
 		System.out.println("X : " + x + " Y : " + y);
 		while (iterator.hasNext() && !trouv) {
 			img = iterator.next();
-			if (intersectionFilComposant(img, x, y) != -1) {
+			if ((rel = intersectionFilComposant(img, x, y)) != -1) {
 				trouv = true;
 				cmp = Circuit.getCompFromImage(img);
-				rel = intersectionFilComposant(img, x, y);
 			}
 		}
 		return cmp;
@@ -418,6 +429,8 @@ public abstract class Controller {
 						return 0;
 					trouve = true;
 					entree = i;
+					relieCercle(crdTab.getX(), crd.getY());
+					workSpace.getChildren().add(relieCercle);
 				}
 				i++;
 			}
@@ -536,7 +549,7 @@ public abstract class Controller {
 	}
 	public void relieCercle(double x, double y) {
 		relieCercle = new Circle();
-		relieCercle.setRadius(6);
+		relieCercle.setRadius(5);
 		relieCercle.setFill(Color.TRANSPARENT);
 		relieCercle.setStroke(Color.YELLOW);
 		relieCercle.setStrokeWidth(2);
@@ -546,6 +559,4 @@ public abstract class Controller {
 		relieCercle.setCenterX(x);
 		relieCercle.setCenterY(y);
 	}
-	
-	
 }

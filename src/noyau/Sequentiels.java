@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
 public abstract class Sequentiels extends Composant implements ComposantDeChronogramme {
-	
+
 	/**
 	 * 
 	 */
@@ -19,9 +19,9 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	protected Fil load = null;
 	protected Front front;
 	protected ArrayList<Integer> etages = new ArrayList<Integer>();
-    protected EtatLogique sortieAafficher=EtatLogique.ZERO;
-    protected EtatLogique sortieBar=EtatLogique.ONE;
-	 protected EtatLogique etatAvant=EtatLogique.ZERO;;
+	protected EtatLogique sortieAafficher=EtatLogique.ZERO;
+	protected EtatLogique sortieBar=EtatLogique.ONE;
+	protected EtatLogique etatAvant=EtatLogique.ZERO;;
 	double startChronoX=1;
 	double startChronoY=127;
 	protected EtatLogique etatPrec[] = new EtatLogique[10];
@@ -30,9 +30,9 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 		this.front = front ;
 		clear = new Fil(null);
 		clear.setEtatLogiqueFil(EtatLogique.ONE);
-	
+
 	}
-	
+
 	public abstract void genererSortiesSyncho();
 
 	public abstract boolean validerSyncho();
@@ -40,9 +40,9 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	public abstract void initialiser();
 
 	public abstract void genererSorties();
-	
+
 	public abstract boolean valider();
-	
+
 	@Override
 	public void derelierComp() { // pour derelier le composant de ces fils de commandes  (le composant à supprimer)
 		// TODO Auto-generated method stub
@@ -65,9 +65,9 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 				}
 			}
 		}
-		
+
 	}
-	
+
 	@Override
 	public void derelierEntreeFromComp(Fil fil) { /// enlever toute les connexions faites avec le fil passé comme parametre
 		// TODO Auto-generated method stub
@@ -81,7 +81,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 			clear.setEtat(EtatLogique.ONE);
 		}
 	}
-	
+
 	@Override
 	public void relierANouveau() { /// relier les connexions une autre fois (utilisé dans le ctrl + z)
 		// TODO Auto-generated method stub
@@ -105,9 +105,9 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 			Circuit.getInfoPolylineFromPolyline(polyline).setRelier(true);
 			clear.addDestination(this);
 		}
-		
+
 	}
-	
+
 	@Override
 	public boolean isDessocier() { /// savoir si le composant est dessocié ou non
 		// TODO Auto-generated method stub
@@ -119,7 +119,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 		}
 		return dessocier;
 	}
-	
+
 	@Override
 	public void addEtages(ArrayList<Integer> etage) { // ajouter l'elt sequentiel à la liste des etages selon son étage ou il se trouve
 		for (Integer i : etages) {
@@ -128,7 +128,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 			}
 		}
 	}
-	
+
 	@Override
 	public void validerComposant() { /// valider le composant et declarer les erreurs s'il ya
 		// TODO Auto-generated method stub
@@ -146,7 +146,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 			else {
 				Circuit.AjouterUneException(new ComposantNonRelier(TypesExceptions.ALERTE, this));
 			}
-			
+
 		}
 		else {
 			if (entreeHorloge == null) {
@@ -159,7 +159,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 			Circuit.AjouterListeException(arrayList);	
 		}
 	}
-	
+
 	public ArrayList<Integer> getEtages() {
 		return etages;
 	}
@@ -198,7 +198,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 		this.load = load;
 	}
 
-	
+
 
 	public EtatLogique getSortieAafficher() {
 		return sortieAafficher;
@@ -255,7 +255,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	public void setEtatPrecHorloge(EtatLogique etatPrecHorloge) {
 		this.etatPrecHorloge = etatPrecHorloge;
 	}
-	
+
 	public Front getFront() {
 		return front;
 	}
@@ -263,5 +263,5 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	public void setFront(Front front) {
 		this.front = front;
 	}
-   
+
 }

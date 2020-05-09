@@ -891,11 +891,8 @@ public class HomeController extends Controller {
 					if (clickDroitFenetre != null) {
 						Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
 						Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-						System.out.println("X : "+ x + " Y : "+y);
-						System.out.println("mouseX : "+ mouseX + " mouseY : "+mouseY);
 						if( (mouseX < x - 10)  ||  (mouseX > x+172) || (mouseY < y - 10)  ||  (mouseY > y+174) )
 						{//162     164
-							System.out.println("bjdhfbqdshfgysdquguisdqbhcfdbs");
 							clickDroitFenetre.close();
 							clickDroitFenetre = null;
 						}
@@ -983,7 +980,6 @@ public class HomeController extends Controller {
 						undoChanges(workSpace);
 					}
 					if (event.isControlDown() && (event.getCode() == KeyCode.X)) {
-						System.out.println("the cut operation ");
 						copierActive = true;
 						copyActive = true;
 						ImageView sauv = elementSeclecionner;
@@ -1063,7 +1059,6 @@ public class HomeController extends Controller {
 				copyMouse = false;
 				ctrlX = event.getX();
 				ctrlY = event.getY();
-				System.out.println("workSpace.MOUSE_ENTERED");
 				CopyUses();
 			}
 		});
@@ -1245,7 +1240,6 @@ public class HomeController extends Controller {
 								dragImageView.setImage(img);
 								dragImageView.setFitHeight(img.getHeight());
 								dragImageView.setFitWidth(img.getWidth());
-								System.out.println((e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2)+ "----------------------");
 								if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView)||( dragImageView.getId().equals("clock") && ( horloged)))
 								{
 									workSpace.getChildren().remove(dragImageView);
@@ -1546,7 +1540,6 @@ public class HomeController extends Controller {
 									//ajout des points
 									addPoints();/// ajouter les points
 									Composant ci=Circuit.getCompFromImage(eleementAdrager);
-									System.out.println("la direction : "+ci.getDirection());
 									if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
 										CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
 										circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());																		
@@ -1814,7 +1807,6 @@ public class HomeController extends Controller {
 		transition3.play();
 	}
 	void tracerLesregles(AnchorPane w) {// Methode de tracage des Regles
-		System.out.println(w.getPrefHeight());
 		boolean v = true;
 		for (int i = 0; i <= workSpace.getPrefWidth(); i += 25) {
 
@@ -2336,7 +2328,6 @@ public class HomeController extends Controller {
 
 	@FXML
 	void annuler(ActionEvent event) {
-		//System.out.println("le boutton annuler est clique");
 		((Stage)annuler.getScene().getWindow()).close();
 		undoChanges(workSpace);
 
@@ -2729,7 +2720,6 @@ public class HomeController extends Controller {
 				);
 		File f = fileChooser.showSaveDialog(homeWindow);
 		if (f != null) {
-			System.out.println("the name of the file is : " + f.getAbsolutePath());
 			Sauvegarde sauvegarde = new Sauvegarde();
 			sauvegarde.saveCiruit(f.getAbsolutePath());
 			fichierCourant = f;
@@ -2847,7 +2837,6 @@ public class HomeController extends Controller {
 				encapsuler.setText("  Encapsuler");
 				encapsuler.setAlignment(Pos.BASELINE_LEFT);
 			}else {
-				System.out.println("fhvqdg : "+ListTextPin2);
 				if(ListTextPin.size() == Circuit.getEntreesCircuit().size() && ListTextPin2.size() == Circuit.getSortiesCircuit().size()) {
 
 					if(Circuit.getListeEtages().size()==0 && !horloged) {
@@ -2889,7 +2878,6 @@ public class HomeController extends Controller {
 										break;
 									}
 								}
-								System.out.println("fhvqdg : "+ListTextPin2);
 								ciq.setHorloge(pinHorloge);
 								ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
 								ciq.setEntreesCircuit(entreCircuit);
@@ -3048,7 +3036,6 @@ public class HomeController extends Controller {
 					tableVerite.setAlignment(Pos.BASELINE_LEFT);
 				}else { //Generer la table et aller vers l'etat normal
 					//Generer La table de verité
-					System.out.println(ListTextPin2);
 					if(ListTextPin.size() != 0 && ListTextPin2.size()!=0) {
 						Circuit.tableVerite(ListTextPin,ListTextPin2);
 						Circuit.defaultCompValue(); //Tous noir
@@ -3148,7 +3135,6 @@ public class HomeController extends Controller {
 	@FXML
 	void aboutSimulIni(ActionEvent event) {
 		try {
-
 			Stage s = (Stage) about.getScene().getWindow();
 			s.close();
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/About.fxml"));
@@ -3160,11 +3146,8 @@ public class HomeController extends Controller {
 			stage.setTitle("About SimulINI");
 			stage.initOwner(s.getOwner());
 			stage.setResizable(false);
-
 			stage.initModality(Modality.APPLICATION_MODAL);
-
 			stage.show();
-
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -3675,7 +3658,6 @@ public class HomeController extends Controller {
 			if(cmp.getEntrees()[i] != null) {
 				crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
 				line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
-				System.out.println("dkhal"+line);
 				listEntrees.add(line);
 			}
 		}
