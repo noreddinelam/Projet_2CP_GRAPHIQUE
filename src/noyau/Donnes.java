@@ -24,6 +24,7 @@ public class Donnes { /// cette classe est utilisé dans l'operation du ctrl + z
 	private ArrayList<InfoPolyline> arrayList = new ArrayList<InfoPolyline>(); // la liste des infoPolylines relative à un fil donné
 	private ArrayList<Polyline> listPolyParent = new ArrayList<Polyline>(); // la liste des polylines parent
 	private int rotation; // pour la rotation 
+	private int switching = 0;
 	private boolean supprime = false; // boolean utilisé dans la suppression
 	
 	@Override
@@ -162,6 +163,14 @@ public class Donnes { /// cette classe est utilisé dans l'operation du ctrl + z
 	}
 	public void setSupprime(boolean supprime) {
 		this.supprime = supprime;
+	}
+
+	public int getSwitching() {
+		return switching;
+	}
+
+	public void setSwitching(int switching) {
+		this.switching = switching;
 	}
 	
 }

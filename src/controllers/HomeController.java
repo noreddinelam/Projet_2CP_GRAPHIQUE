@@ -1422,11 +1422,15 @@ public class HomeController extends Controller {
 			}
 		}
 		if(!relocate) {
-			if(Math.abs(x2-x)<10) {
-				if(Math.abs(y2-y)<10) switching = 0;
-				else switching = 1;
+			if(!ctrlz) {
+				if(Math.abs(x2-x)<10) {
+					if(Math.abs(y2-y)<10) switching = 0;
+					else switching = 1;
+				}else {
+					if(Math.abs(y2-y)<10) switching = 0;
+				}
 			}else {
-				if(Math.abs(y2-y)<10) switching = 0;
+				switching = switchingZ;
 			}
 			if(switching == 0) {
 				line.getPoints().add(0, x2);
@@ -1649,6 +1653,8 @@ public class HomeController extends Controller {
 										Donnes sauveGarde=new Donnes();
 										sauveGarde.setTypeDaction(Actions.Mouvement);
 										sauveGarde.setComposantCommeImage(eleementAdrager);
+										sauveGarde.setSwitching(switchingZ);											
+										
 										//undoDeque.remove(sauveGarde);
 										sauveGarde.setPosX(posX);
 										sauveGarde.setPosY(posY);
@@ -3260,10 +3266,9 @@ public class HomeController extends Controller {
 				case Mouvement :
 				{
 					ctrlz = true;
+					switchingZ = sauveGarde.getSwitching();;
 					refrechLists(sauveGarde.getComposantCommeImage());
 					SupprimerPoint();
-					//removePoints();
-					// addPoints();
 					ImageView imageView = sauveGarde.getComposantCommeImage();
 					imageView.setLayoutX(sauveGarde.getPosX());
 					imageView.setLayoutY(sauveGarde.getPosY());
@@ -3275,6 +3280,7 @@ public class HomeController extends Controller {
 					else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
 						((CircuitIntegreSequentiel)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
 					}
+					ctrlz = false;
 				}break;
 				case Creation :
 				{
@@ -3630,6 +3636,7 @@ public class HomeController extends Controller {
 		}
 		return true;
 	}
+	int switchingZ = 0;
 	public void addPoints() {
 		Polyline line;
 		int i = 0,size = 0;
@@ -3639,6 +3646,9 @@ public class HomeController extends Controller {
 				if(Circuit.getListFromPolyline(line).size()>1 || Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
 					line.getPoints().add(2,line.getPoints().get(3));
 					line.getPoints().add(2,line.getPoints().get(3));
+					if(i == 0) {
+						switchingZ = Circuit.getInfoPolylineFromPolyline(line).getSwitching();
+					}
 				}
 			}
 			for(i = 0;i < listEntrees.size();i++) {
@@ -3741,9 +3751,16 @@ public class HomeController extends Controller {
 				if(donnes.getInfoPolyline().getLineParent() == line1) {
 					donnes.getInfoPolyline().setLineParent(line2);
 				}
+			}else if (donnes.getTypeDaction().equals(Actions.SuppressionToutFil)) {
+				for (InfoPolyline info : donnes.getArrayListInfoPoly()) {
+					if(info.getLineParent() == line1) {
+						info.setLineParent(line2);
+					}
+				}
 			}
 		}
 	}
+	
 	public void supprimerSauvegarde(InfoPolyline infoPolyline,Polyline paren,Fil filSortieFil) {
 		if (infoPolyline.getLineParent() != null) {
 			InfoPolyline parent = Circuit.getInfoPolylineFromPolyline(infoPolyline.getLineParent());
@@ -3931,9 +3948,8 @@ public class HomeController extends Controller {
 		int i = 0,size = 0;
 		for( i = 0; i < listSorties.size();i++){
 			line = listSorties.get(i);
-			if(Circuit.getListFromPolyline(line).size()>1) { //|| Circuit.getInfoPolylineFromPolyline(line).isRelier()
+			if(Circuit.getListFromPolyline(line).size()>1) { 
 				Coordonnees crd = new Coordonnees(line.getPoints().get(4),line.getPoints().get(5));
-				//if(line.getPoints().size()>10) {
 				if(nbOccPoint(line, crd.getX(), crd.getY())==1) {
 					line.getPoints().remove(0);
 					line.getPoints().remove(0);
