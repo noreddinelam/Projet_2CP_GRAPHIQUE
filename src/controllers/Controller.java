@@ -10,6 +10,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import application.ClickDroitFil;
 import application.ClickSouris2;
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -26,6 +28,7 @@ import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import noyau.Actions;
 import noyau.Bascule;
 import noyau.Circuit;
@@ -75,6 +78,8 @@ public abstract class Controller {
 	protected static ArrayList<Button> rightBareButtons = new ArrayList<Button>() ; //pour les desactivés en mode de creation
 	
 	protected Circle relieCercle ; //quand un fil est relié , un cercle est generé au niveau du l'entrée
+	
+	protected FadeTransition fadeTransition = new FadeTransition(Duration.millis(500));
 
 	@FXML
 	protected AnchorPane workSpace;
@@ -171,6 +176,10 @@ public abstract class Controller {
 						}
 						if (! workSpace.getChildren().contains(guideFilY)) {
 							workSpace.getChildren().add(guideFilY);
+						}
+						if (relieCercle != null) {
+						    workSpace.getChildren().remove(relieCercle);
+							relieCercle = null;
 						}
 						guideFilX.setLayoutX(event.getX());
 						guideFilY.setLayoutY(event.getY());
@@ -297,11 +306,12 @@ public abstract class Controller {
 						workSpace.getChildren().remove(guideFilX);
 						workSpace.getChildren().remove(guideFilY);
 						int der = line.getPoints().size() - 1;
-						/*rel : si 0 n'est pas relié a une entrée ( polyline à supprimé ) ,
-						*		si 1 
-						*/
-						if (intersectionFilComposants(arg0.getX(), arg0.getY()) != null) {
-						//Polyline n'est pas relaché dans un composant .
+						if (( destination = intersectionFilComposants(arg0.getX(), arg0.getY())) != null) {
+							/*rel : si 0 n'est pas relié a une entrée ( polyline à supprimé ) ,
+							*		si 1 
+							*/
+
+							//Polyline n'est pas relaché dans un composant .
 							if (rel == 0) {
 								// suppression du fil
 								InfoPolyline infoline = Circuit.getInfoPolylineFromPolyline(line);
@@ -313,8 +323,6 @@ public abstract class Controller {
 								line.getPoints().clear();
 							} else if (rel == 1) {
 								///////////////////////////// relier/////////////////////////////////////
-								destination = intersectionFilComposants(arg0.getX(), arg0.getY());
-								/////////////////////////////////////////////////////////////////////////
 								/*
 								 * entree >= 0 :entres 
 								 * -4 < entree < 0 :commandes 
@@ -347,6 +355,12 @@ public abstract class Controller {
 								infoLine.setRelier(true);
 								infoLine.setDestination(destination);
 								infoLine.setEntre(entree);
+
+								fadeTransition.setNode(relieCercle);
+								fadeTransition.setFromValue(1);
+								fadeTransition.setToValue(0);
+								fadeTransition.play();
+								
 							}
 						}else {
 							der =  line.getPoints().size()-1;
@@ -396,10 +410,9 @@ public abstract class Controller {
 		ImageView img;
 		while (iterator.hasNext() && !trouv) {
 			img = iterator.next();
-			if (intersectionFilComposant(img, x, y) != -1) {
+			if ((rel = intersectionFilComposant(img, x, y)) != -1) {
 				trouv = true;
 				cmp = Circuit.getCompFromImage(img);
-				rel = intersectionFilComposant(img, x, y);
 			}
 		}
 		return cmp;
@@ -435,6 +448,8 @@ public abstract class Controller {
 						return 0;
 					trouve = true;
 					entree = i;
+					relieCercle(crdTab.getX(), crd.getY());
+					workSpace.getChildren().add(relieCercle);
 				}
 				i++;
 			}
@@ -553,7 +568,7 @@ public abstract class Controller {
 	public void relieCercle(double x, double y) {
 	/*Role : creer une cercle quand un fil est relié */
 		relieCercle = new Circle();
-		relieCercle.setRadius(6);
+		relieCercle.setRadius(5);
 		relieCercle.setFill(Color.TRANSPARENT);
 		relieCercle.setStroke(Color.YELLOW);
 		relieCercle.setStrokeWidth(2);

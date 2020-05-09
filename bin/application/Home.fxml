@@ -831,14 +831,14 @@
                   <Insets left="5.0" />
                </HBox.margin>
                <children>
-                  <ImageView fitHeight="28.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="4.0">
+                  <ImageView fitHeight="22.0" fitWidth="26.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="3.0">
                      <image>
                         <Image url="@../homePage_icones/miniLogo.png" />
                      </image>
                   </ImageView>
                </children>
             </AnchorPane>
-            <Label prefHeight="16.0" prefWidth="70.0" text="Simul INI" textFill="WHITE">
+            <Label prefHeight="16.0" prefWidth="70.0" text="SimulINI" textFill="WHITE">
                <font>
                   <Font name="Calisto MT" size="14.0" />
                </font>
@@ -856,7 +856,7 @@
             </Label>
             <AnchorPane fx:id="hideBtn" onMouseClicked="#clickHide" onMouseEntered="#enterHide" onMouseExited="#exitHide" prefHeight="30.0" prefWidth="30.0">
                <HBox.margin>
-                  <Insets left="482.0" />
+                  <Insets left="490.0" />
                </HBox.margin>
                <children>
                   <ImageView fitHeight="4.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="14.0">
@@ -868,10 +868,10 @@
             </AnchorPane>
             <AnchorPane fx:id="ExitBtn" onMouseClicked="#ClickExit" onMouseEntered="#enterExit" onMouseExited="#exitExit" prefHeight="30.0" prefWidth="30.0">
                <HBox.margin>
-                  <Insets left="10.0" />
+                  <Insets left="2.0" />
                </HBox.margin>
                <children>
-                  <ImageView fx:id="exitIcon" fitHeight="19.0" fitWidth="15.0" layoutX="-1.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="-1.0" AnchorPane.topAnchor="7.0">
+                  <ImageView fx:id="exitIcon" fitHeight="19.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="7.0" AnchorPane.topAnchor="7.0">
                      <image>
                         <Image url="@../homePage_icones/Exit.png" />
                      </image>

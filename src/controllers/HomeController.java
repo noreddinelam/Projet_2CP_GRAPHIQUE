@@ -3141,7 +3141,6 @@ public class HomeController extends Controller {
 	@FXML
 	void aboutSimulIni(ActionEvent event) {
 		try {
-
 			Stage s = (Stage) about.getScene().getWindow();
 			s.close();
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/About.fxml"));
@@ -3153,11 +3152,8 @@ public class HomeController extends Controller {
 			stage.setTitle("About SimulINI");
 			stage.initOwner(s.getOwner());
 			stage.setResizable(false);
-
 			stage.initModality(Modality.APPLICATION_MODAL);
-
 			stage.show();
-
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
