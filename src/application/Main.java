@@ -53,7 +53,7 @@ public class Main extends Application {
 			fade.setAutoReverse(true);
 			fade.setNode(root);
 			fade.play();
-			primaryStage.getIcons().add(new Image("/homePage_icones/logoBas.png"));
+			primaryStage.getIcons().add(new Image("/homePage_icones/miniLogo.png"));
 			primaryStage.setScene(scene);
 		    primaryStage.initStyle(StageStyle.UNDECORATED);
      		primaryStage.setResizable(false);
