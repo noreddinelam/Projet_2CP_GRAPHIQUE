@@ -570,7 +570,7 @@ public abstract class Controller {
 		relieCercle = new Circle();
 		relieCercle.setRadius(5);
 		relieCercle.setFill(Color.TRANSPARENT);
-		relieCercle.setStroke(Color.YELLOW);
+		relieCercle.setStroke(Color.CYAN);
 		relieCercle.setStrokeWidth(2);
 		relieCercle.setSmooth(true);
 		relieCercle.setLayoutX(0);

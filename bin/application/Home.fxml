@@ -833,7 +833,7 @@
                <children>
                   <ImageView fitHeight="22.0" fitWidth="26.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="3.0">
                      <image>
-                        <Image url="@../homePage_icones/miniLogo.png" />
+                        <Image url="@../homePage_icones/miniLogoHaut.png" />
                      </image>
                   </ImageView>
                </children>
