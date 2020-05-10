@@ -21,9 +21,9 @@ import noyau.Pin;
 public class ProprietesPinController extends ProprietesController{
 
 	private String bddDirection[] = {"Est","Sud","West","Nord"}; //base de données de directions
-	int direct;
-	String bddPut[] = {"Entrée","Sortie"};
-	int putInt;
+	int direct;  //indice qui gére la bddDirection
+	String bddPut[] = {"Entrée","Sortie"};//soit un pin d'entrée ou de sortie
+	int putInt;      //l'entier qui gére la DddPut
 	
 	
     @Override
@@ -38,6 +38,7 @@ public class ProprietesPinController extends ProprietesController{
 	
 	@Override
 	public void initialiser(Composant cmp){
+	//initialiser les textes de la fenetre
 		btns.add(imgNextput);
 		btns.add(imgNextput1);
 		btns.add(imgPreviousput);
@@ -112,7 +113,7 @@ public class ProprietesPinController extends ProprietesController{
     	if (cmp.isDessocier()) {
         	Pin pin =((Pin)cmp);
         	ImageView imageView = Circuit.getImageFromComp(cmp);
-        	if(putInt == 0){
+        	if(putInt == 0){ //Entrée 
         		if (! pin.getInput()) {
         			pin.setInput(true);
         			Circuit.getSortiesCircuit().remove(pin);
@@ -123,7 +124,7 @@ public class ProprietesPinController extends ProprietesController{
             		cmp.getLesCoordonnees().setNbCordEntree(0);
             		cmp.getLesCoordonnees().setNbCordSorties(1);
 				}
-        	}else if( pin.getInput()){
+        	}else if( pin.getInput()){ // Sortie
         		pin.setInput(false);
     			Circuit.getEntreesCircuit().remove(pin);
     			Circuit.getSortiesCircuit().add(pin);
@@ -135,11 +136,7 @@ public class ProprietesPinController extends ProprietesController{
         		cmp.getLesCoordonnees().setNbCordEntree(1);
         		cmp.getLesCoordonnees().setNbCordSorties(0);
         	}
-//        	cmp.setCord();
-//        	Image image = new Image(cmp.generatePath());
-//        	imageView.setImage(image);
-//        	imageView.setFitHeight(image.getHeight());
-//        	imageView.setFitWidth(image.getWidth());
+        	//Direction
         	if(cmp.getDirection() != direct) {
     			HomeController.sauveGarderRotation(cmp, imageView, cmp.getDirection());
     			cmp.setDirection(direct);
@@ -191,6 +188,7 @@ public class ProprietesPinController extends ProprietesController{
     }
     
     public static void addTextLimiter(final TextField tf, final int maxLength) {
+    //Pour limiter le nombre de characteres du nom
         tf.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {

@@ -101,6 +101,7 @@ public class ClickDroitController extends Controller{
 
 	@FXML
 	void couper(ActionEvent event) {
+		workSpace.getChildren().remove(HomeController.selectionne);
 		Stage s = (Stage)prop.getScene().getWindow(); 
 		s.close();
 		HomeController.pastButton = false;
@@ -138,6 +139,8 @@ public class ClickDroitController extends Controller{
 
 	@FXML
 	void prop(ActionEvent event) {
+		//remouver la selection 
+		workSpace.getChildren().remove(HomeController.selectionne);
 		Stage s = (Stage)prop.getScene().getWindow(); 
 		HomeController.sauveGarderModification();
     	s.close();
@@ -155,9 +158,9 @@ public class ClickDroitController extends Controller{
 
 	@FXML
 	void rotationD(ActionEvent event) {
+		workSpace.getChildren().remove(HomeController.selectionne);
 		direct ++;
 		if(direct > 3) direct=0;
-
 		ImageView img= Circuit.getImageFromComp(cmp);
 		HomeController.sauveGarderRotation(cmp, img, cmp.getDirection());
 		cmp.setDirection(direct);
@@ -171,9 +174,9 @@ public class ClickDroitController extends Controller{
 
 	@FXML
 	void rotationG(ActionEvent event) {
+		workSpace.getChildren().remove(HomeController.selectionne);
 		direct--;
 		if(direct < 0) direct = 3;
-		
 		ImageView img= Circuit.getImageFromComp(cmp);
 		HomeController.sauveGarderRotation(cmp, img, cmp.getDirection());
 		cmp.setDirection(direct);
@@ -188,7 +191,7 @@ public class ClickDroitController extends Controller{
 
 	@FXML
 	void supprimer(ActionEvent event) {
-		
+		workSpace.getChildren().remove(HomeController.selectionne);
 		ImageView imageDeComposant=Circuit.getImageFromComp(cmp);
 		HomeController.elementAsuprimer=imageDeComposant;
 		HomeController.sauveGarderSupression();

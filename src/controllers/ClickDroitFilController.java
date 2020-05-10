@@ -85,7 +85,7 @@ public class ClickDroitFilController {
     			if(infoLine.getEntre() >= 0) {
     				infoLine.getDestination().getEntrees()[infoLine.getEntre()] = null;
 				}else if(-5 < infoLine.getEntre()) {
-					infoLine.getDestination().getEntrees()[Math.abs(infoLine.getEntre())-1] = null;
+					((Combinatoires)infoLine.getDestination()).getCommande()[Math.abs(infoLine.getEntre())-1] = null;
 				}else if(infoLine.getEntre() == -5) {
 					((Sequentiels)infoLine.getDestination()).setEntreeHorloge(null);
 				}else if(infoLine.getEntre() == -6) {
@@ -97,7 +97,6 @@ public class ClickDroitFilController {
 				}
     			
     			Circuit.getFilFromPolyline(line).getDestination().remove(infoLine.getDestination());
-//    			infoLine.setRelier(false);
     		}
     		
     		if(infoLine.getLineParent() != null ) {//n'est pas la racine
@@ -106,7 +105,6 @@ public class ClickDroitFilController {
     			Circuit.getListFromPolyline(line).remove(new InfoPolyline(line));
     			infoLine = Circuit.getInfoPolylineFromPolyline(infoLine.getLineParent());
     			infoLine.setNbFils(infoLine.getNbFils() - 1);
-//    			line.getPoints().clear();
     		}else {//la racine
     			infoLine.setNbFils(0);
     			infoLine.setRelier(false);
@@ -115,12 +113,8 @@ public class ClickDroitFilController {
     			double posX = Circuit.getImageFromComp(cmpSource).getLayoutX()+cmpSource.getLesCoordonnees().getCordSortieInIndex(cmpSource.numCmpSorties(filDeline)).getX() ;
     			double posY = Circuit.getImageFromComp(cmpSource).getLayoutY()+cmpSource.getLesCoordonnees().getCordSortieInIndex(cmpSource.numCmpSorties(filDeline)).getY() ;
     			cmpSource.resetPolyline(line, posX, posY);
-//        		line.setStroke(Color.BLACK);
     		}
     	}
-//    	else {
-//    		line.setStroke(Color.BLACK);
-//    	} 	
     	line.setStroke(Color.BLACK);
     	}
     }

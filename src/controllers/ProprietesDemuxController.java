@@ -1,33 +1,31 @@
 package controllers;
 
 import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import noyau.Circuit;
 import noyau.Composant;
 import noyau.Demultiplexeur;
-import noyau.Direction;
 
 public class ProprietesDemuxController extends ProprietesController{
 	
 	String bddNbEntrees[] = {"1X2","1X4","1X8","1X16"};
 	int i;
-	private Direction bddDirection[] = {Direction.Nord,Direction.Est,Direction.West,Direction.Sud};
-	int direct;
     
 	public void initialiser(Composant cmp) {
+		/*
+		 * l'initialisations des textes fr la fenetre .
+		 */
 		btns.add(imgMoinsNbEntrees);
 		btns.add(imgPlusNbEntrees);
 		this.cmp = cmp;
 		i=((Demultiplexeur)cmp).getNbCommande();
-		direct = 0;
 		label.setText(cmp.getNom());
 		nbEntres.setText(bddNbEntrees[i-1]);
 		if(i==1) {
@@ -92,6 +90,7 @@ public class ProprietesDemuxController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
+    	//Sauvgarder les changements 
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
     		removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
@@ -113,6 +112,7 @@ public class ProprietesDemuxController extends ProprietesController{
 
     @FXML
     void moinsNbEntrees(ActionEvent event) {
+    	//decrementer le nombre d'entrées
     	i--;
     	nbEntres.setText(bddNbEntrees[i-1]);
     	plusNbEntrees.setVisible(true);
@@ -127,6 +127,7 @@ public class ProprietesDemuxController extends ProprietesController{
 
     @FXML
     void plusNbEntrees(ActionEvent event) {
+    	//incrementer le nombre d'entrées
     	i++;
     	nbEntres.setText(bddNbEntrees[i-1]);
     	moinsNbEntrees.setVisible(true);
