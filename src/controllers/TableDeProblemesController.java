@@ -61,6 +61,9 @@ public class TableDeProblemesController {
     	type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTypeExceptions())); ///
     	probleme.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProblem()));    /// remplire les colonnes
      	solution.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSolution()));   ///
+     	type.setReorderable(false);
+     	probleme.setReorderable(false);
+     	solution.setReorderable(false);
     	type.setCellFactory(new Callback<TableColumn<ExceptionProgramme,String>, TableCell<ExceptionProgramme,String>>() {
 
 			@Override
