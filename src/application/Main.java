@@ -1,38 +1,15 @@
 package application;
 
-import java.io.File;
-
-import java.util.Optional;
-
-
-import controllers.Controller;
-import controllers.HomeController;
 import controllers.PremierePageController;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 import javafx.util.Duration;
-import noyau.Bascule;
-import noyau.Circuit;
-import noyau.D;
-import noyau.Front;
-import noyau.Horloge;
-import noyau.Not;
-import noyau.Sauvegarde;
 
 public class Main extends Application {
 	@Override
