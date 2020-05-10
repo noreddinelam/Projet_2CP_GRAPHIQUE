@@ -85,7 +85,7 @@ public class ClickDroitFilController {
     			if(infoLine.getEntre() >= 0) {
     				infoLine.getDestination().getEntrees()[infoLine.getEntre()] = null;
 				}else if(-5 < infoLine.getEntre()) {
-					infoLine.getDestination().getEntrees()[Math.abs(infoLine.getEntre())-1] = null;
+					((Combinatoires)infoLine.getDestination()).getCommande()[Math.abs(infoLine.getEntre())-1] = null;
 				}else if(infoLine.getEntre() == -5) {
 					((Sequentiels)infoLine.getDestination()).setEntreeHorloge(null);
 				}else if(infoLine.getEntre() == -6) {
