@@ -12,52 +12,45 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class ProprietesAfficheurSegmentController extends ProprietesController{
+	/*
+	 * Controlleur de la fenetre Proprietes Afficheur Hex
+	 */
 
-	int direct;
-	
-    public Composant getNot() {
+	public Composant getNot() {
 		return cmp;
 	}
 
 	public void setNot(Composant cmp) {
 		this.cmp = cmp;
 	}
-	
+
 	public void initialiser(Composant cmp) {
-		this.cmp = cmp;
-		direct = 0;
-		composant.setText("Afficheur 7 segments");
-//		label.setText(cmp.getNom());
+		this.cmp = cmp;          
+		composant.setText("Afficheur HEX"); //le nom de la fenetre
 	}
 
+	@FXML
+	private TextField label;
 
 	@FXML
-    private TextField label;
+	private Button mdf;
 
-    @FXML
-    private Button mdf;
+	@FXML
+	private Button annuler;
 
-    @FXML
-    private Button annuler;
-    
-    @FXML
-    private Label composant;
+	@FXML
+	private Label composant;
+	
+	@FXML
+	void annuler(ActionEvent event) {
+		Stage s = (Stage)annuler.getScene().getWindow(); 
+		s.close();
+	}
 
-    
-
-    @FXML
-    void annuler(ActionEvent event) {
-    	Stage s = (Stage)annuler.getScene().getWindow(); 
-    	s.close();
-    }
-
-    @FXML
-    void modifier(ActionEvent event) {
-    	cmp.setNom(label.getText());
-    	Stage s = (Stage)annuler.getScene().getWindow(); 
-    	s.close();
-    }
-
-    
-
+	@FXML
+	void modifier(ActionEvent event) {
+		cmp.setNom(label.getText()); //Modifier les changements
+		Stage s = (Stage)annuler.getScene().getWindow(); 
+		s.close();
+	}
 }

@@ -1,9 +1,6 @@
 package controllers;
 
-
-
 import noyau.*;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -20,8 +17,6 @@ public class ProprietesDecodeurController extends ProprietesController{
 
 	private String bddNbEntrees[] = {"1X2","2X4","3X8","4X16"};
 	private int i;
-	private Direction bddDirection[] = {Direction.Nord,Direction.Est,Direction.West,Direction.Sud};
-	private int direct;
 	
 	
     public Composant getCmp() {
@@ -33,11 +28,13 @@ public class ProprietesDecodeurController extends ProprietesController{
 	}
 
 	public void initialiser(Composant cmp) {
+	/*
+	 * l'initialisations des textes fr la fenetre .
+	 */
 		btns.add(imgMoinsNbEntrees);
 		btns.add(imgPlusNbEntrees);
 		this.cmp = cmp;
 		i=cmp.getNombreEntree();
-		direct = 0;
 		label.setText(cmp.getNom());
 		nbEntres.setText(bddNbEntrees[i-1]);
 		if(i==1) {
@@ -108,6 +105,7 @@ public class ProprietesDecodeurController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
+    //Sauvgarder les changements 
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
     		removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
@@ -129,6 +127,7 @@ public class ProprietesDecodeurController extends ProprietesController{
 
     @FXML
     void moinsNbEntrees(ActionEvent event) {
+    //decrementer le nombre d'entrées
     	i--;
     	nbEntres.setText(bddNbEntrees[i-1]);
     	plusNbEntrees.setVisible(true);
@@ -142,6 +141,7 @@ public class ProprietesDecodeurController extends ProprietesController{
 
     @FXML
     void plusNbEntrees(ActionEvent event) {
+    	//incrementer le nombre d'entrées
     	i++;
     	nbEntres.setText(bddNbEntrees[i-1]);
     	moinsNbEntrees.setVisible(true);
@@ -151,7 +151,5 @@ public class ProprietesDecodeurController extends ProprietesController{
 			imgPlusNbEntrees.setVisible(false);
 		}
     }
-
-    
 
 }

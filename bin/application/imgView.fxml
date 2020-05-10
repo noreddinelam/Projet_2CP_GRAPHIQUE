@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
@@ -10,19 +13,24 @@
    <children>
       <ImageView fx:id="img" fitHeight="84.0" fitWidth="80.0" layoutX="139.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../and/2.png" />
+            <Image url="@../And/20.png" />
          </image>
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Shadow color="#f80505" />
+               </bumpInput>
+               <light>
+                  <Light.Distant color="RED" />
+               </light>
+            </Lighting>
+         </effect>
       </ImageView>
       <Polyline fx:id="line" fill="#ffffff00" layoutX="344.0" layoutY="270.0" onMouseDragged="#dragg" onMousePressed="#press" points="-127.0, -147.0, -122.0, -147.0, 0.0, 60.0, -122.0, 18.0" strokeWidth="3.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Polyline>
-      <ImageView fx:id="img1" fitHeight="84.0" fitWidth="80.0" layoutX="340.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../and/2.png" />
-         </image>
-      </ImageView>
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />

@@ -1,32 +1,21 @@
 package controllers;
 
-import javafx.application.Platform;
-
-import java.util.ArrayList;
-
-import application.*;
 import javafx.event.ActionEvent;
 import noyau.*;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class ProprietesAdditionneurController extends ProprietesController{
-
+	/*
+	 * Controlleur de la fenetre Proprietes Additionneur
+	 */
 	private int i; //Nombre de bits
-	private int nbEntree;
-	private int direct; //indice 
-	
     public Composant getcmp() {
 		return cmp;
 	}
@@ -40,8 +29,7 @@ public class ProprietesAdditionneurController extends ProprietesController{
 		btns.add(imgMoinsNbEntrees);
 		this.cmp = cmp;
 		sauv = cmp.getNombreEntree();
-		i=cmp.getNombreEntree();
-		direct = 0;
+		i=cmp.getNombreEntree();  
 		composant.setText(cmp.getClass().getSimpleName().toString());
 		label.setText(cmp.getNom());
 		if(cmp.getClass().getSimpleName().equals("DemiAdditionneur"))
@@ -123,6 +111,7 @@ public class ProprietesAdditionneurController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
+    //Sauvgarder les changements 
     	cmp.setNom(label.getText());
     		if (cmp.isDessocier()) {
     			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
@@ -151,6 +140,7 @@ public class ProprietesAdditionneurController extends ProprietesController{
 
     @FXML
     void moinsNbEntrees(ActionEvent event) {
+    //Decrementer le nombre de bits
     	i --;
     	nbEntres.setText(Integer.toString(i));
     	plusNbEntrees.setVisible(true);
@@ -161,10 +151,9 @@ public class ProprietesAdditionneurController extends ProprietesController{
 		}
     }
 
-   
-
     @FXML
     void plusNbEntrees(ActionEvent event) {
+    //incrementer le nombre de bits
     	i++;
     	nbEntres.setText(Integer.toString(i));
     	moinsNbEntrees.setVisible(true);
