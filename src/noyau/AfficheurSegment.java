@@ -1,8 +1,11 @@
 package noyau;
 
+import com.sun.org.apache.bcel.internal.generic.IfInstruction;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
 public class AfficheurSegment extends Composant{
 	
@@ -29,7 +32,9 @@ public class AfficheurSegment extends Composant{
 	public void genererSorties() { /// pour generer la valeur a afficher dans l'afficheur segment
 		valeur = Integer.valueOf(concatener(entrees, 4),2);
 		ImageView imageView = Circuit.getImageFromComp(this);
-		imageView.setImage(new Image(generatePath()));
+		if (imageView != null) {
+			imageView.setImage(new Image(generatePath()));
+		}
 	}
 	
 	@Override
@@ -46,9 +51,11 @@ public class AfficheurSegment extends Composant{
 		valeur = 0;
 		ImageView img = Circuit.getImageFromComp(this);
 		Image image = new Image("AfficheurSegment/0.png");
-		img.setImage(image);
-		img.setFitHeight(image.getHeight());
-		img.setFitWidth(image.getWidth());
+		if (img != null) {
+			img.setImage(image);
+			img.setFitHeight(image.getHeight());
+			img.setFitWidth(image.getWidth());
+		}
 	}
 	
 	@Override
