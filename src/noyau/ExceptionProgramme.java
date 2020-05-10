@@ -9,6 +9,9 @@ public abstract class ExceptionProgramme { /// la classe d'ou herite les excepti
 		this.composant = composant;
 	}
 	
+	public abstract String getProblem();
+	public abstract String getSolution();
+	
 	public String getTypeExceptions() {
 		return typesExceptions.getTypeExString();
 	}
@@ -21,6 +24,5 @@ public abstract class ExceptionProgramme { /// la classe d'ou herite les excepti
 		this.typesExceptions = typesExceptions;
 	}
 
-	public abstract String getProblem();
-	public abstract String getSolution();
+	
 }

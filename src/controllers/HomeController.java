@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 
 import application.ClickBarDroite;
 import application.ClickDroit;
+import application.ClickDroitFil;
 import application.ClickDroitLabel;
 import application.ClickSouris2;
 import application.FenetreDesErreurs;
@@ -851,13 +852,13 @@ public class HomeController extends Controller {
 		tooltipInitialize();
 		initialiseAnimationOfBarDroite();
 
-		fichierFenetre = new ClickBarDroite(1065, 50, "Fichier.fxml", homeWindow, workSpace, afficheurX, afficheurY,
+		fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace, afficheurX, afficheurY,
 				scrollPane);
-		editionFenetre = new ClickBarDroite(1065, 115, "Edition.fxml", homeWindow, workSpace, afficheurX, afficheurY,
+		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace, afficheurX, afficheurY,
 				scrollPane);
-		affichageFenetre = new ClickBarDroite(1065, 255, "Affichage.fxml", homeWindow, workSpace, afficheurX,
+		affichageFenetre = new ClickBarDroite(1055, 255, "Affichage.fxml", homeWindow, workSpace, afficheurX,
 				afficheurY, scrollPane);
-		aideFenetre = new ClickBarDroite(1065, 300, "Aide.fxml", homeWindow, workSpace, afficheurX, afficheurY,
+		aideFenetre = new ClickBarDroite(1055, 300, "Aide.fxml", homeWindow, workSpace, afficheurX, afficheurY,
 				scrollPane);
 
 		ClickBarDroite tableauFenetres[] = { fichierFenetre, editionFenetre, affichageFenetre, aideFenetre };
@@ -890,11 +891,8 @@ public class HomeController extends Controller {
 					if (clickDroitFenetre != null) {
 						Double x = clickDroitFenetre.getX(), y = clickDroitFenetre.getY(); 
 						Double mouseX = event.getScreenX() , mouseY = event.getScreenY();
-						System.out.println("X : "+ x + " Y : "+y);
-						System.out.println("mouseX : "+ mouseX + " mouseY : "+mouseY);
 						if( (mouseX < x - 10)  ||  (mouseX > x+172) || (mouseY < y - 10)  ||  (mouseY > y+174) )
 						{//162     164
-							System.out.println("bjdhfbqdshfgysdquguisdqbhcfdbs");
 							clickDroitFenetre.close();
 							clickDroitFenetre = null;
 						}
@@ -915,7 +913,7 @@ public class HomeController extends Controller {
 					}
 					if(event.getButton()==MouseButton.SECONDARY  && (clickDroitFenetre == null  ) && (clickDroitFilFenetre == null )) {
 						if (! simul) {
-							if (event.getScreenX() > 1135) {
+							if (event.getScreenX() > 1145) {
 								if (event.getScreenY() > 640) {
 									clickSouris2 = new ClickSouris2(event.getScreenX()-160, event.getScreenY()-55, workSpace, homeWindow);
 								}
@@ -982,7 +980,6 @@ public class HomeController extends Controller {
 						undoChanges(workSpace);
 					}
 					if (event.isControlDown() && (event.getCode() == KeyCode.X)) {
-						System.out.println("the cut operation ");
 						copierActive = true;
 						copyActive = true;
 						ImageView sauv = elementSeclecionner;
@@ -1062,7 +1059,6 @@ public class HomeController extends Controller {
 				copyMouse = false;
 				ctrlX = event.getX();
 				ctrlY = event.getY();
-				System.out.println("workSpace.MOUSE_ENTERED");
 				CopyUses();
 			}
 		});
@@ -1244,8 +1240,7 @@ public class HomeController extends Controller {
 								dragImageView.setImage(img);
 								dragImageView.setFitHeight(img.getHeight());
 								dragImageView.setFitWidth(img.getWidth());
-								System.out.println((e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2)+ "----------------------");
-								if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView)||( dragImageView.getId().equals("clock") && ( horloged)))
+								if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>2 || intersectionComposant(dragImageView)||( dragImageView.getId().equals("clock") && ( horloged)))
 								{
 									workSpace.getChildren().remove(dragImageView);
 									Circuit.supprimerComp(Circuit.getCompFromImage(dragImageView));
@@ -1427,11 +1422,15 @@ public class HomeController extends Controller {
 			}
 		}
 		if(!relocate) {
-			if(Math.abs(x2-x)<10) {
-				if(Math.abs(y2-y)<10) switching = 0;
-				else switching = 1;
+			if(!ctrlz) {
+				if(Math.abs(x2-x)<10) {
+					if(Math.abs(y2-y)<10) switching = 0;
+					else switching = 1;
+				}else {
+					if(Math.abs(y2-y)<10) switching = 0;
+				}
 			}else {
-				if(Math.abs(y2-y)<10) switching = 0;
+				switching = switchingZ;
 			}
 			if(switching == 0) {
 				line.getPoints().add(0, x2);
@@ -1510,8 +1509,8 @@ public class HomeController extends Controller {
 
 						if (clickDroitFenetre != null)
 							clickDroitFenetre.close();
-						if (clicDroitX > 1100) {
-							if (clicDroitY > 500) {
+						if (clicDroitX > 1140) {
+							if (clicDroitY > 550) {
 								clickDroitFenetre = new ClickDroit(composant,clicDroitX-150,clicDroitY-150,workSpace, homeWindow);
 							}
 							else {
@@ -1519,7 +1518,7 @@ public class HomeController extends Controller {
 							}
 						}
 						else {
-							if (clicDroitY > 500) {
+							if (clicDroitY > 550) {
 								clickDroitFenetre = new ClickDroit(composant,clicDroitX,clicDroitY-150,workSpace, homeWindow);
 							}
 							else {
@@ -1545,7 +1544,6 @@ public class HomeController extends Controller {
 									//ajout des points
 									addPoints();/// ajouter les points
 									Composant ci=Circuit.getCompFromImage(eleementAdrager);
-									System.out.println("la direction : "+ci.getDirection());
 									if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
 										CircuitIntegre circuitIntegre = ((CircuitIntegre)ci);
 										circuitIntegre.resetCirclesPosition(eleementAdrager.getLayoutX(), eleementAdrager.getLayoutY());																		
@@ -1634,7 +1632,7 @@ public class HomeController extends Controller {
 									scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 									scrollPane.setVvalue(scrollPane.getVvalue()+0.01);
 								}
-								if(e.getSceneY() < 0)
+								if(e.getSceneY() < 55)
 								{
 									scrollPane.setVvalue(scrollPane.getVvalue()-0.01);
 								}
@@ -1655,6 +1653,8 @@ public class HomeController extends Controller {
 										Donnes sauveGarde=new Donnes();
 										sauveGarde.setTypeDaction(Actions.Mouvement);
 										sauveGarde.setComposantCommeImage(eleementAdrager);
+										sauveGarde.setSwitching(switchingZ);											
+										
 										//undoDeque.remove(sauveGarde);
 										sauveGarde.setPosX(posX);
 										sauveGarde.setPosY(posY);
@@ -1662,7 +1662,7 @@ public class HomeController extends Controller {
 									}
 									eleementAdrager.setMouseTransparent(false);
 									eleementAdrager.setCursor(Cursor.DEFAULT);
-									if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(eleementAdrager))
+									if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>720 || intersectionComposant(eleementAdrager))
 									{
 										eleementAdrager.setLayoutX(posX);
 										eleementAdrager.setLayoutY(posY);
@@ -1813,7 +1813,6 @@ public class HomeController extends Controller {
 		transition3.play();
 	}
 	void tracerLesregles(AnchorPane w) {// Methode de tracage des Regles
-		System.out.println(w.getPrefHeight());
 		boolean v = true;
 		for (int i = 0; i <= workSpace.getPrefWidth(); i += 25) {
 
@@ -2335,7 +2334,6 @@ public class HomeController extends Controller {
 
 	@FXML
 	void annuler(ActionEvent event) {
-		//System.out.println("le boutton annuler est clique");
 		((Stage)annuler.getScene().getWindow()).close();
 		undoChanges(workSpace);
 
@@ -2728,7 +2726,6 @@ public class HomeController extends Controller {
 				);
 		File f = fileChooser.showSaveDialog(homeWindow);
 		if (f != null) {
-			System.out.println("the name of the file is : " + f.getAbsolutePath());
 			Sauvegarde sauvegarde = new Sauvegarde();
 			sauvegarde.saveCiruit(f.getAbsolutePath());
 			fichierCourant = f;
@@ -2846,7 +2843,6 @@ public class HomeController extends Controller {
 				encapsuler.setText("  Encapsuler");
 				encapsuler.setAlignment(Pos.BASELINE_LEFT);
 			}else {
-				System.out.println("fhvqdg : "+ListTextPin2);
 				if(ListTextPin.size() == Circuit.getEntreesCircuit().size() && ListTextPin2.size() == Circuit.getSortiesCircuit().size()) {
 
 					if(Circuit.getListeEtages().size()==0 && !horloged) {
@@ -2888,7 +2884,6 @@ public class HomeController extends Controller {
 										break;
 									}
 								}
-								System.out.println("fhvqdg : "+ListTextPin2);
 								ciq.setHorloge(pinHorloge);
 								ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
 								ciq.setEntreesCircuit(entreCircuit);
@@ -3047,7 +3042,6 @@ public class HomeController extends Controller {
 					tableVerite.setAlignment(Pos.BASELINE_LEFT);
 				}else { //Generer la table et aller vers l'etat normal
 					//Generer La table de verité
-					System.out.println(ListTextPin2);
 					if(ListTextPin.size() != 0 && ListTextPin2.size()!=0) {
 						Circuit.tableVerite(ListTextPin,ListTextPin2);
 						Circuit.defaultCompValue(); //Tous noir
@@ -3147,7 +3141,6 @@ public class HomeController extends Controller {
 	@FXML
 	void aboutSimulIni(ActionEvent event) {
 		try {
-
 			Stage s = (Stage) about.getScene().getWindow();
 			s.close();
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/About.fxml"));
@@ -3159,11 +3152,8 @@ public class HomeController extends Controller {
 			stage.setTitle("About SimulINI");
 			stage.initOwner(s.getOwner());
 			stage.setResizable(false);
-
 			stage.initModality(Modality.APPLICATION_MODAL);
-
 			stage.show();
-
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -3272,10 +3262,9 @@ public class HomeController extends Controller {
 				case Mouvement :
 				{
 					ctrlz = true;
+					switchingZ = sauveGarde.getSwitching();;
 					refrechLists(sauveGarde.getComposantCommeImage());
 					SupprimerPoint();
-					//removePoints();
-					// addPoints();
 					ImageView imageView = sauveGarde.getComposantCommeImage();
 					imageView.setLayoutX(sauveGarde.getPosX());
 					imageView.setLayoutY(sauveGarde.getPosY());
@@ -3287,6 +3276,7 @@ public class HomeController extends Controller {
 					else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
 						((CircuitIntegreSequentiel)composant).resetCirclesPosition(imageView.getLayoutX(), imageView.getLayoutY());
 					}
+					ctrlz = false;
 				}break;
 				case Creation :
 				{
@@ -3642,6 +3632,7 @@ public class HomeController extends Controller {
 		}
 		return true;
 	}
+	int switchingZ = 0;
 	public void addPoints() {
 		Polyline line;
 		int i = 0,size = 0;
@@ -3651,6 +3642,9 @@ public class HomeController extends Controller {
 				if(Circuit.getListFromPolyline(line).size()>1 || Circuit.getInfoPolylineFromPolyline(line).isRelier()) {
 					line.getPoints().add(2,line.getPoints().get(3));
 					line.getPoints().add(2,line.getPoints().get(3));
+					if(i == 0) {
+						switchingZ = Circuit.getInfoPolylineFromPolyline(line).getSwitching();
+					}
 				}
 			}
 			for(i = 0;i < listEntrees.size();i++) {
@@ -3674,7 +3668,6 @@ public class HomeController extends Controller {
 			if(cmp.getEntrees()[i] != null) {
 				crdDebut = cmp.getLesCoordonnees().coordReelesEntrees(eleementAdrager, i);
 				line = cmp.getEntrees()[i].polylineParPoint(crdDebut);
-				System.out.println("dkhal"+line);
 				listEntrees.add(line);
 			}
 		}
@@ -3754,9 +3747,16 @@ public class HomeController extends Controller {
 				if(donnes.getInfoPolyline().getLineParent() == line1) {
 					donnes.getInfoPolyline().setLineParent(line2);
 				}
+			}else if (donnes.getTypeDaction().equals(Actions.SuppressionToutFil)) {
+				for (InfoPolyline info : donnes.getArrayListInfoPoly()) {
+					if(info.getLineParent() == line1) {
+						info.setLineParent(line2);
+					}
+				}
 			}
 		}
 	}
+	
 	public void supprimerSauvegarde(InfoPolyline infoPolyline,Polyline paren,Fil filSortieFil) {
 		if (infoPolyline.getLineParent() != null) {
 			InfoPolyline parent = Circuit.getInfoPolylineFromPolyline(infoPolyline.getLineParent());
@@ -3869,13 +3869,29 @@ public class HomeController extends Controller {
 
 							@Override
 							public void handle(MouseEvent arg0) {
+								if(clickDroitLabel != null) clickDroitLabel.close();
+								if(clickDroitFenetre != null) clickDroitFenetre.close();
+								if(clickSouris2 != null) clickSouris2.close();
 								if(arg0.getButton().equals(MouseButton.SECONDARY))
 								{
-									if(clickDroitLabel != null) clickDroitLabel.close();
-									if(clickDroitFenetre != null) clickDroitFenetre.close();
-									if(clickSouris2 != null) clickSouris2.close();
-									
-									clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX(),arg0.getScreenY(),workSpace,homeWindow);
+																
+									if (arg0.getScreenX() > 1145) {
+										if (arg0.getScreenY() > 700) {
+											clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX()-150,arg0.getScreenY()-50,workSpace,homeWindow);
+										}
+										else {
+											clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX()-150,arg0.getScreenY(),workSpace,homeWindow);
+										}
+									}
+									else {
+										if (arg0.getScreenY() > 700) {
+											clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX(),arg0.getScreenY()-50,workSpace,homeWindow);
+										}
+										else {
+											clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX(),arg0.getScreenY(),workSpace,homeWindow);
+										}
+									}
+									//clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX(),arg0.getScreenY(),workSpace,homeWindow);
 								    arg0.consume();
 								}
 								
@@ -3928,9 +3944,8 @@ public class HomeController extends Controller {
 		int i = 0,size = 0;
 		for( i = 0; i < listSorties.size();i++){
 			line = listSorties.get(i);
-			if(Circuit.getListFromPolyline(line).size()>1) { //|| Circuit.getInfoPolylineFromPolyline(line).isRelier()
+			if(Circuit.getListFromPolyline(line).size()>1) { 
 				Coordonnees crd = new Coordonnees(line.getPoints().get(4),line.getPoints().get(5));
-				//if(line.getPoints().size()>10) {
 				if(nbOccPoint(line, crd.getX(), crd.getY())==1) {
 					line.getPoints().remove(0);
 					line.getPoints().remove(0);
@@ -3963,10 +3978,10 @@ public class HomeController extends Controller {
 			if(clickDroitFilFenetre != null) clickDroitFilFenetre.close();
 			if(clickSouris2 != null) clickSouris2.close();
 			if (clickDroitLabel != null) clickDroitLabel.close();
-			fichierFenetre.setX(newVal.doubleValue()+1065);
-			editionFenetre.setX(newVal.doubleValue()+1065);
-			affichageFenetre.setX(newVal.doubleValue()+1065);
-			aideFenetre.setX(newVal.doubleValue()+1065);
+			fichierFenetre.setX(newVal.doubleValue()+1055);
+			editionFenetre.setX(newVal.doubleValue()+1055);
+			affichageFenetre.setX(newVal.doubleValue()+1055);
+			aideFenetre.setX(newVal.doubleValue()+1055);
 		});
 		homeWindow.yProperty().addListener((obs, oldVal, newVal) -> {
 			if(clickDroitFenetre != null) clickDroitFenetre.close();

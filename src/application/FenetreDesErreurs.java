@@ -28,7 +28,7 @@ public class FenetreDesErreurs extends Stage {
 			this.setFullScreen(false);
 			this.setResizable(false);
 			this.initStyle(StageStyle.UNDECORATED);
-			this.setX(194+stage.getX());
+			this.setX(186+stage.getX());
 			this.setY(505+stage.getY());
 			this.initModality(Modality.APPLICATION_MODAL);
 			this.initOwner(stage);

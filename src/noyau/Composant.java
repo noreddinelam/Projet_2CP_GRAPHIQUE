@@ -34,10 +34,8 @@ public abstract class Composant implements Serializable{
 	public abstract void setCord();
 	public abstract void genererSorties();
 	public abstract boolean valider();  // verifier si le composant est pret a executer sa fonction logique 
-       // valider si les entrees et les sorties sont pretes 
-	/*--------- setters & getters--------------*/
-	
-	/*--------- Methodes --------------*/
+										// valider si les entrees et les sorties sont pretes 
+
 	public void evaluer() {
 		if(valider()) // si le composant est pret 
 		{
