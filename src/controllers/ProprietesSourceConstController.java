@@ -1,31 +1,20 @@
 package controllers;
 
-import javafx.application.Platform;
-import application.*;
+
 import javafx.event.ActionEvent;
 import noyau.*;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class ProprietesSourceConstController extends ProprietesController {
-
-	private Direction bddDirection[] = { Direction.Nord, Direction.Est, Direction.West, Direction.Sud }; // base de
-																											// données
-																											// de
-																											// directions
-	private int direct; // indice
-
+public class ProprietesSourceConstController extends ProprietesController {																										// direction
+	
+	
 	public Composant getcmp() {
 		return cmp;
 	}
@@ -43,8 +32,6 @@ public class ProprietesSourceConstController extends ProprietesController {
 			composant.setText("VCC");
 		}
 
-		direct = 0;
-//		composant.setText(cmp.getClass().getSimpleName().toString());
 		label.setText(cmp.getNom());
 		if (! cmp.isDessocier()) {
 			applyOpaciteForImages(btns);

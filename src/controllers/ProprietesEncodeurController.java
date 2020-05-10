@@ -19,11 +19,9 @@ public class ProprietesEncodeurController extends ProprietesController{
 
 	String bddNbEntrees[] = {"2X1","4X2","8X3","16X4","32X5"};
 	int i;
-	private Direction bddDirection[] = {Direction.Nord,Direction.Est,Direction.West,Direction.Sud};
-	int direct;
-	
-	
-    public Composant getCmp() {
+
+
+	public Composant getCmp() {
 		return cmp;
 	}
 
@@ -36,7 +34,6 @@ public class ProprietesEncodeurController extends ProprietesController{
 		btns.add(imgPlusNbEntrees);
 		this.cmp = cmp;
 		i=cmp.getNombreSortie();
-		direct = 0;
 		label.setText(cmp.getNom());
 		nbEntres.setText(bddNbEntrees[i-1]);
 		if(i==1) {
@@ -53,104 +50,104 @@ public class ProprietesEncodeurController extends ProprietesController{
 			applyOpaciteForImages(btns);
 		}
 	}
-	
+
 	@FXML
-    private Pane pane_proprietes;
+	private Pane pane_proprietes;
 
-    @FXML
-    private TextField label;
+	@FXML
+	private TextField label;
 
-    @FXML
-    private Label nbEntres;
+	@FXML
+	private Label nbEntres;
 
-    @FXML
-    private Button nextDirection;
+	@FXML
+	private Button nextDirection;
 
-    @FXML
-    private Button previousDirection;
+	@FXML
+	private Button previousDirection;
 
-    @FXML
-    private Button plusNbEntrees;
+	@FXML
+	private Button plusNbEntrees;
 
-    @FXML
-    private Button moinsNbEntrees;
+	@FXML
+	private Button moinsNbEntrees;
 
-    @FXML
-    private ImageView imgMoinsNbEntrees;
+	@FXML
+	private ImageView imgMoinsNbEntrees;
 
-    @FXML
-    private Button mdf;
+	@FXML
+	private Button mdf;
 
-    @FXML
-    private Button annuler;
+	@FXML
+	private Button annuler;
 
-    @FXML
-    private Label direction;
+	@FXML
+	private Label direction;
 
-    @FXML
-    private ImageView imgPlusNbEntrees;
+	@FXML
+	private ImageView imgPlusNbEntrees;
 
-    @FXML
-    private ImageView imgNextDirection;
+	@FXML
+	private ImageView imgNextDirection;
 
-    @FXML
-    private ImageView imgPreviousDirection;
+	@FXML
+	private ImageView imgPreviousDirection;
 
-    @FXML
-    private Label composant;
+	@FXML
+	private Label composant;
 
-    @FXML
-    void annuler(ActionEvent event) {
-    	Stage s = (Stage)annuler.getScene().getWindow(); 
-    	s.close();
-    }
+	@FXML
+	void annuler(ActionEvent event) {
+		Stage s = (Stage)annuler.getScene().getWindow(); 
+		s.close();
+	}
 
-    @FXML
-    void modifier(ActionEvent event) {
-    	cmp.setNom(label.getText());
+	@FXML
+	void modifier(ActionEvent event) {
+		cmp.setNom(label.getText());
 
-    	if (cmp.isDessocier()) {
-    		removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
-    		cmp.setNombreSortieAndUpdateFil(i);
-    		int nbEntree = (int)Math.pow(2, i);
-    		cmp.setNombreEntree(nbEntree);    	
-    		cmp.getLesCoordonnees().setNbCordEntree(nbEntree);
-    		cmp.getLesCoordonnees().setNbCordSorties(i);
-    		ImageView imageView = Circuit.getImageFromComp(cmp);
-    		Image img = new Image(cmp.generatePath());
-    		imageView.setImage(img);
-    		imageView.setFitHeight(img.getHeight());
-    		imageView.setFitWidth(img.getWidth());
-    		addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
-    	}
+		if (cmp.isDessocier()) {
+			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
+			cmp.setNombreSortieAndUpdateFil(i);
+			int nbEntree = (int)Math.pow(2, i);
+			cmp.setNombreEntree(nbEntree);    	
+			cmp.getLesCoordonnees().setNbCordEntree(nbEntree);
+			cmp.getLesCoordonnees().setNbCordSorties(i);
+			ImageView imageView = Circuit.getImageFromComp(cmp);
+			Image img = new Image(cmp.generatePath());
+			imageView.setImage(img);
+			imageView.setFitHeight(img.getHeight());
+			imageView.setFitWidth(img.getWidth());
+			addAllPolylinesToWorkSpace(cmp.generatePolyline(imageView.getLayoutX(),imageView.getLayoutY() ));
+		}
 
-    	Stage s = (Stage)mdf.getScene().getWindow(); 
-    	s.close();
-    }
+		Stage s = (Stage)mdf.getScene().getWindow(); 
+		s.close();
+	}
 
-    @FXML
-    void moinsNbEntrees(ActionEvent event) {
-    	i--;
-    	nbEntres.setText(bddNbEntrees[i-1]);
-    	plusNbEntrees.setVisible(true);
+	@FXML
+	void moinsNbEntrees(ActionEvent event) {
+		i--;
+		nbEntres.setText(bddNbEntrees[i-1]);
+		plusNbEntrees.setVisible(true);
 		imgPlusNbEntrees.setVisible(true);
-    	if(i==1) {
+		if(i==1) {
 			moinsNbEntrees.setVisible(false);
 			imgMoinsNbEntrees.setVisible(false);
-    	}
-    }
+		}
+	}
 
-   
-    @FXML
-    void plusNbEntrees(ActionEvent event) {
-    	i++;
-    	nbEntres.setText(bddNbEntrees[i-1]);
-    	moinsNbEntrees.setVisible(true);
+
+	@FXML
+	void plusNbEntrees(ActionEvent event) {
+		i++;
+		nbEntres.setText(bddNbEntrees[i-1]);
+		moinsNbEntrees.setVisible(true);
 		imgMoinsNbEntrees.setVisible(true);
 		if(i==4){
 			plusNbEntrees.setVisible(false);
 			imgPlusNbEntrees.setVisible(false);
 		}
-    }
+	}
 
 }

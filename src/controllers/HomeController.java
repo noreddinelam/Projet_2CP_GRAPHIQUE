@@ -25,16 +25,12 @@ import javax.imageio.ImageIO;
 
 import application.ClickBarDroite;
 import application.ClickDroit;
-import application.ClickDroitFil;
 import application.ClickDroitLabel;
 import application.ClickSouris2;
 import application.FenetreDesErreurs;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -60,6 +56,10 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -76,6 +76,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -140,7 +141,8 @@ public class HomeController extends Controller {
 	public static Thread t1;
 	Horloge horloge = null;
 
-
+	public static Polyline selectionne = new Polyline();
+	private boolean select = false;
 	// utilisé dans la sauvegarde des coordonnées
 
 	double posX;
@@ -641,9 +643,10 @@ public class HomeController extends Controller {
 	void onSimuler(MouseEvent event) { /// pour lancer la simulation ou l'arreter
 		Circuit.clearException();
 		simul = (!simul);
-		//opacityBouttons(simul);
-		closeRightWindows();
+		workSpace.getChildren().remove(selectionne);
 		if (simul) {
+			closeRightWindows();
+
 			edition.setDisable(true);
 			edition.setOpacity(0.4);
 			affichage.setOpacity(1);
@@ -872,6 +875,9 @@ public class HomeController extends Controller {
 		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				if(!select)
+					workSpace.getChildren().remove(selectionne);
+				
 				if(clickDroitLabel != null) clickDroitLabel.close();
 				for(ClickBarDroite click : tableauFenetres) {
 					click.close();
@@ -961,9 +967,6 @@ public class HomeController extends Controller {
 				workSpace.getChildren().remove(guideXp);
 				workSpace.getChildren().remove(guideY);
 				workSpace.getChildren().remove(guideYp);
-				// sari
-				// workSpace.getChildren().remove(guideFilX);
-				// workSpace.getChildren().remove(guideFilY);
 
 				e.consume();
 			}
@@ -977,6 +980,7 @@ public class HomeController extends Controller {
 						undoChanges(workSpace);
 					}
 					if (event.isControlDown() && (event.getCode() == KeyCode.X)) {
+						workSpace.getChildren().remove(selectionne);
 						copierActive = true;
 						copyActive = true;
 						ImageView sauv = elementSeclecionner;
@@ -1019,6 +1023,7 @@ public class HomeController extends Controller {
 						CopyUses();
 					}
 					if (event.getCode() == KeyCode.DELETE) {
+						workSpace.getChildren().remove(selectionne);
 						if (elementSeclecionner != null) {
 							Composant cmp = Circuit.getCompFromImage(elementSeclecionner);
 							elementAsuprimer=elementSeclecionner;
@@ -1362,6 +1367,14 @@ public class HomeController extends Controller {
 					SupprimerPereUndoChanges(donnes.getInfoPolyline().getLinePrincipale());
 				}
 			}
+			if(donnes.getTypeDaction().equals(Actions.SuppressionToutFil)) {
+				for (InfoPolyline info : donnes.getArrayListInfoPoly()) {
+					if(info.getLineParent() == line1) {
+						donnes.setSupprime(true);
+						SupprimerPereUndoChanges(info.getLinePrincipale());
+					}
+				}
+			}
 		}
 	}
 	boolean ctrlz = false;
@@ -1457,7 +1470,7 @@ public class HomeController extends Controller {
 			@Override
 			public void handle(MouseEvent e) {
 				eleementAdrager.setCursor(Cursor.HAND);
-
+				select = true;
 
 			}
 		});
@@ -1468,6 +1481,7 @@ public class HomeController extends Controller {
 			public void handle(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 				eleementAdrager.setCursor(Cursor.DEFAULT);
+				select = false;
 			}
 		});
 
@@ -1479,6 +1493,7 @@ public class HomeController extends Controller {
 				if (! simul) {
 					posX = eleementAdrager.getLayoutX();
 					posY = eleementAdrager.getLayoutY();
+					selectionne(eleementAdrager);
 					if (e.getButton() != MouseButton.SECONDARY) {
 						if(clickDroitFenetre != null) clickDroitFenetre.close();
 						if(clickDroitLabel!=null) {
@@ -1541,7 +1556,8 @@ public class HomeController extends Controller {
 					eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() { /// si le composant est dragé .
 						@Override
 						public void handle(MouseEvent e) {
-							if (!simul) {
+							if (!simul) {	
+								workSpace.getChildren().remove(selectionne);
 								if (e.getButton() == MouseButton.PRIMARY) {
 									//ajout des points
 									addPoints();/// ajouter les points
@@ -2211,7 +2227,8 @@ public class HomeController extends Controller {
 
 
 	@FXML
-	void supprimerTout(ActionEvent event) {   	
+	void supprimerTout(ActionEvent event) {
+		workSpace.getChildren().remove(selectionne);
 		Stage stage = (Stage) supprimerTout.getScene().getWindow(); 	
 		stage.close();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -2348,7 +2365,7 @@ public class HomeController extends Controller {
 	@FXML
 	void supprimer(ActionEvent event) { /// pour appliquer une suppression sur
 		((Stage)supprimer.getScene().getWindow()).close();
-
+		workSpace.getChildren().remove(selectionne);
 		if (elementSeclecionner != null) {
 			cmp = Circuit.getCompFromImage(elementSeclecionner);
 			supprimerDequeFilProbleme(cmp);
@@ -2381,6 +2398,7 @@ public class HomeController extends Controller {
 
 	@FXML
 	void couper(ActionEvent event) {
+		workSpace.getChildren().remove(selectionne);
 		copierActive = true;
 		copyActive = true;
 		ImageView sauv = elementSeclecionner;
@@ -2419,6 +2437,7 @@ public class HomeController extends Controller {
 	/*----------------------fichier------------------------------------*/
 	@FXML
 	void fermer(ActionEvent event) {
+		workSpace.getChildren().remove(selectionne);
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setContentText(Circuit.getCompUtilises().isEmpty() ? "Voulez vous vraiment quitter ?" :"Voullez vous sauvgarder ce circuit avant de quitter ?");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
@@ -2499,6 +2518,7 @@ public class HomeController extends Controller {
 
 	@FXML
 	void nouveau(ActionEvent event) {
+		workSpace.getChildren().remove(selectionne);
 		Stage stage = (Stage) nouveau.getScene().getWindow();
 		stage.close();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -2569,6 +2589,7 @@ public class HomeController extends Controller {
 
 	@FXML
 	void ouvrir(ActionEvent event) {
+		workSpace.getChildren().remove(selectionne);
 		Stage stage = (Stage) ouvrir.getScene().getWindow();
 		stage.close();
 			Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -2631,7 +2652,6 @@ public class HomeController extends Controller {
 					a.setY(homeWindow.getY()+250);
 					a.initOwner(homeWindow);
 					a.showAndWait();
-
 				}
 			
 			}
@@ -2659,6 +2679,7 @@ public class HomeController extends Controller {
 
 	@FXML
 	void save(ActionEvent event) {
+		workSpace.getChildren().remove(selectionne);
 		Stage stage = (Stage) sauvegarder.getScene().getWindow();
 		stage.close();
 		if (Circuit.getCompUtilises().isEmpty()) {
@@ -2719,6 +2740,7 @@ public class HomeController extends Controller {
 
 	@FXML
 	void saveAs(ActionEvent event) { /// la fonctionnalité de sauvegarder as
+		workSpace.getChildren().remove(selectionne);
 		final FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(
 				new File(System.getProperty("user.home"))
@@ -2738,6 +2760,7 @@ public class HomeController extends Controller {
 
 	@FXML
 	void importer(ActionEvent event) { /// la fonctionalité importer circuit integré
+		workSpace.getChildren().remove(selectionne);
 		final FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(
 				new File(System.getProperty("user.home"))
@@ -2804,6 +2827,7 @@ public class HomeController extends Controller {
 
 	@FXML
 	void encapsulerEtSauvgarder(ActionEvent event) {
+		workSpace.getChildren().remove(selectionne);
 		FileOutputStream fichier ;
 		ObjectOutputStream oo = null;
 		CircuitIntegre ci = null;
@@ -3117,8 +3141,6 @@ public class HomeController extends Controller {
 			workSpace.getChildren().remove(num);
 		}
 
-		//simul = false;		//Mode normal
-		//mode normal (opacité 1)
 		for (Entry<Composant, ImageView> entry : Circuit.getCompUtilises().entrySet()) {
 			entry.getValue().setOpacity(1);
 		}
@@ -3142,6 +3164,7 @@ public class HomeController extends Controller {
 
 	@FXML
 	void aboutSimulIni(ActionEvent event) {
+		workSpace.getChildren().remove(selectionne);
 		try {
 			Stage s = (Stage) about.getScene().getWindow();
 			s.close();
@@ -3251,6 +3274,7 @@ public class HomeController extends Controller {
 	{
 		if(! undoDeque.isEmpty())
 		{
+			workSpace.getChildren().remove(selectionne);
 			Donnes sauveGarde;
 			sauveGarde= undoDeque.removeFirst();
 			while(sauveGarde.isSupprime() && !undoDeque.isEmpty() ) {
@@ -4113,6 +4137,30 @@ public class HomeController extends Controller {
 		this.sauvComme = sauvComme;
 	}
 	
+	public void tekhlat() {
+		
+		/*ColorAdjust color = new ColorAdjust();
+		color.setBrightness(-0.75);
+		color.setContrast(-0.29);
+		color.setHue(1.0);
+		color.setSaturation(-1);
+		workSpace.setStyle("-fx-background-color : #e4e4e4");*/
+		for (Composant cmp : Circuit.getCompUtilises().keySet()) {
+			selectionne(Circuit.getImageFromComp(cmp));
+		}
 	
+	}
+	public void selectionne(ImageView image) {
+		selectionne.setStroke(Color.DARKGRAY);
+		selectionne.setStrokeWidth(2);
+		selectionne.getPoints().clear();
+		selectionne.getPoints().addAll(image.getLayoutX()-10,image.getLayoutY()-10);
+		selectionne.getPoints().addAll(image.getLayoutX()+image.getFitWidth()+10,image.getLayoutY()-10);
+		selectionne.getPoints().addAll(image.getLayoutX()+image.getFitWidth()+10,image.getLayoutY()+image.getFitHeight()+10);
+		selectionne.getPoints().addAll(image.getLayoutX()-10,image.getLayoutY()+image.getFitHeight()+10);
+		selectionne.getPoints().addAll(image.getLayoutX()-10,image.getLayoutY()-10);
+		if(!workSpace.getChildren().contains(selectionne))
+			workSpace.getChildren().add(selectionne);
+	}
 	
 }

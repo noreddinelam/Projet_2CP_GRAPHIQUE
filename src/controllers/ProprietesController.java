@@ -1,14 +1,13 @@
 package controllers;
 
 import java.util.ArrayList;
-
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import noyau.Composant;
 
 public abstract class ProprietesController extends Controller{
-	
+	/*
+	 * Controlleur general de tous proprietes 
+	 */
 	protected static ArrayList<ImageView> btns = new ArrayList<ImageView>();
 
 	public abstract void initialiser(Composant cmp);

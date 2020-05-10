@@ -28,7 +28,7 @@ public class ProprietesPortesController extends ProprietesController{
 
 	private int i; //Nombre d'entrees
 	private String bddDirection[] = {"Est","Sud","West","Nord"}; //base de données de directions
-	private int direct; //indice 
+	private int direct; //indice qui gere la direction
 	
     public Composant getcmp() {
 		return cmp;
@@ -39,6 +39,7 @@ public class ProprietesPortesController extends ProprietesController{
 	}
 
 	public void initialiser(Composant cmp) {
+		//initialiser les textes de la fenetre
 		btns.add(imgMoinsNbEntrees);
 		btns.add(imgNextDirection);
 		btns.add(imgPlusNbEntrees);
@@ -119,11 +120,13 @@ public class ProprietesPortesController extends ProprietesController{
 
     @FXML
     void modifier(ActionEvent event) {
+    //Sauvgarder les changements 
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
     		ImageView img= Circuit.getImageFromComp(cmp);
     		cmp.setNombreEntree(i);
     		cmp.getLesCoordonnees().setNbCordEntree(i);  		
+    		//Direction
     		if(cmp.getDirection() != direct) {
     			HomeController.sauveGarderRotation(cmp, img, cmp.getDirection());
     			cmp.setDirection(direct);
