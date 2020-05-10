@@ -8,7 +8,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import noyau.Composant;
 
 public class ClickDroitFil extends Stage{
 	public ClickDroitFil(Polyline line,AnchorPane workSpace,Double x,Double y, Stage s) {
@@ -20,7 +19,7 @@ public class ClickDroitFil extends Stage{
 			System.out.println(root);
 			ClickDroitFilController c=loader.getController();
 			c.setLine(line);
-			c.setPane(workSpace);
+			ClickDroitFilController.setPane(workSpace);
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);

@@ -30,7 +30,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="supprimer" layoutX="3.0" layoutY="189.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="42.0" prefWidth="236.0" text="Supprimer                           SUPPR              ">
+      <Button fx:id="supprimer" layoutX="3.0" layoutY="189.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="42.0" prefWidth="236.0" text=" Supprimer                           SUPPR              ">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>

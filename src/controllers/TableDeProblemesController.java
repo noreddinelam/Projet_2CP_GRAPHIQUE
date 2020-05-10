@@ -1,14 +1,6 @@
 package controllers;
 
-import java.util.Observable;
-
-
-
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,18 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
@@ -38,50 +25,45 @@ import noyau.TypesExceptions;
 public class TableDeProblemesController {
 
     @FXML
-    private TableView<ExceptionProgramme> tableDeProblemes;
+    private TableView<ExceptionProgramme> tableDeProblemes; /// tables ou s'affiche les problemes à resoudre dans le circuit
 
     @FXML
-    private TableColumn<ExceptionProgramme,String > type;
+    private TableColumn<ExceptionProgramme,String > type; /// la colonne du type de l'erreur
     
     @FXML
-    private TableColumn<ExceptionProgramme,String> probleme;
+    private TableColumn<ExceptionProgramme,String> probleme; /// la colonne du probleme
 
     @FXML
-    private TableColumn<ExceptionProgramme,String> solution;
+    private TableColumn<ExceptionProgramme,String> solution; /// la colonne de la solution
 
-    @FXML
-    private Button documentation;
+    private Stage stage; /// sert pour l'affichage
     
-    private Stage stage;
-
-    public Stage getStage() {
-		return stage;
-	}
-
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
+    @FXML
+    private Button documentation; /// le bouton qui rammenne vers l'aide en ligne
+    
+    @FXML
+	private Button fermer; /// pour fermer la fenetre des erreurs
 
 	@FXML
-    void onDocumente(ActionEvent event) {
-
+    void onDocumente(ActionEvent event) { /// elle vous derige vers la documentation en ligne
+		HomeController.enligne("https://simulini.netlify.app/page-7/");
     }
-	
-	@FXML
-	private Button fermer;
 
 	@FXML
-	void fermerTableDesErreurs(ActionEvent event) {
-		if (Circuit.isThereAnyError()) {
-			Circuit.defaultColorFil();
+	void fermerTableDesErreurs(ActionEvent event) { /// fermer la fenetre des erreurs et retourner vers le mode de creation de circuit
+		if (Circuit.isThereAnyError()) { /// voir s'il y'avait des problemes dans le circuit
+ 			Circuit.defaultColorFil(); /// affecter la valeurs par defaut au fils
 		}
 		stage.close();
 	}
     
-    public void initialiser() {
-    	type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTypeExceptions()));
-    	probleme.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProblem()));
-    	solution.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSolution()));
+    public void initialiser() { /// sert pour le remplissage de la table des erreurs
+    	type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTypeExceptions())); ///
+    	probleme.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProblem()));    /// remplire les colonnes
+     	solution.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSolution()));   ///
+     	type.setReorderable(false);
+     	probleme.setReorderable(false);
+     	solution.setReorderable(false);
     	type.setCellFactory(new Callback<TableColumn<ExceptionProgramme,String>, TableCell<ExceptionProgramme,String>>() {
 
 			@Override
@@ -105,7 +87,7 @@ public class TableDeProblemesController {
                 };
 			}
 		});
-    	tableDeProblemes.getItems().addAll(Circuit.getListeExceptionProgrammes());
+    	tableDeProblemes.getItems().addAll(Circuit.getListeExceptionProgrammes()); /// ajout des exceptions détecté dans le circuit
     	Platform.setImplicitExit(false);
     	stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
     	    @Override
@@ -115,5 +97,13 @@ public class TableDeProblemesController {
     	});
     	
     }
+    
+    public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
 
 }

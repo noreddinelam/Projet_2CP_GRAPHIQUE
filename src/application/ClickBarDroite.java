@@ -3,19 +3,14 @@ package application;
 
 import controllers.Controller;
 import controllers.HomeController;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.Window;
-import noyau.Composant;
 
 
 public class ClickBarDroite extends Stage{

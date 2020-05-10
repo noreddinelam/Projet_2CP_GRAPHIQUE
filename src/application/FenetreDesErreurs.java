@@ -1,13 +1,9 @@
 package application;
 
 import controllers.TableDeProblemesController;
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -19,7 +15,7 @@ public class FenetreDesErreurs extends Stage {
 		{			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("ProblemeEtSolution.fxml"));
-			Parent root =(Parent) loader.load();
+			Parent root = loader.load();
 			TableDeProblemesController c=loader.getController();
 			c.setStage(this);
 			c.initialiser();
