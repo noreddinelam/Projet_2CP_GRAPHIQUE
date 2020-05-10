@@ -251,9 +251,6 @@ public class HomeController extends Controller {
 	private Button aideOnline;
 
 	@FXML
-	private Button guideUser;
-
-	@FXML
 	private Button about;
 
 	// -------------------------------------------------------------------
@@ -645,8 +642,8 @@ public class HomeController extends Controller {
 		Circuit.clearException();
 		simul = (!simul);
 		//opacityBouttons(simul);
+		closeRightWindows();
 		if (simul) {
-			closeRightWindows();
 			edition.setDisable(true);
 			edition.setOpacity(0.4);
 			affichage.setOpacity(1);
@@ -731,7 +728,7 @@ public class HomeController extends Controller {
 			Controller.getRightBareButtons().get(0).setDisable(true);
 			edition.setDisable(false);
 			edition.setOpacity(1);
-			simulation.setImage(new Image("homePage_icones/SIMULATION.png"));
+			simulation.setImage(new Image("/homePage_icones/simulation.png"));
 			Circuit.defaultCompValue();
 			if(ListTextPin != null ) {
 				opacityElements4();
@@ -1095,42 +1092,45 @@ public class HomeController extends Controller {
 		// sur les elements
 
 		Tooltip fich = new Tooltip("fichier");
-
-		fich.setShowDelay(Duration.millis(0));
+	//	fich.setShowDelay(Duration.millis(0));
 		Tooltip.install(fichier, fich);
 
 
 		Tooltip edi = new Tooltip("edition");
-		edi.setShowDelay(Duration.millis(0));
+//		edi.setShowDelay(Duration.millis(0));
 		Tooltip.install(edition, edi);
 
 		Tooltip sim = new Tooltip("simulation");
-		sim.setShowDelay(Duration.millis(0));
+	//	sim.setShowDelay(Duration.millis(0));
 		Tooltip.install(simulation, sim);
 
 		Tooltip aff = new Tooltip("affichage");
-		aff.setShowDelay(Duration.millis(0));
+//		aff.setShowDelay(Duration.millis(0));
 		Tooltip.install(affichage, aff);
 
 		Tooltip aid = new Tooltip("aide");
-		aid.setShowDelay(Duration.millis(0));
+//		aid.setShowDelay(Duration.millis(0));
 		Tooltip.install(aide, aid);
+		
+		Tooltip capture = new Tooltip("camera");
+//		capture.setShowDelay(Duration.millis(0));
+		Tooltip.install(camera, capture);
 		/*-------------------------------------*/
 
 		Tooltip com = new Tooltip("Combinatoires");
-		com.setShowDelay(Duration.millis(0));
+//		com.setShowDelay(Duration.millis(0));
 		comb.setTooltip(com);
 
 		Tooltip se = new Tooltip("Sequentiels");
-		se.setShowDelay(Duration.millis(0));
+//		se.setShowDelay(Duration.millis(0));
 		seq.setTooltip(se);
 
 		Tooltip out = new Tooltip("Outils");
-		out.setShowDelay(Duration.millis(0));
+//		out.setShowDelay(Duration.millis(0));
 		outils.setTooltip(out);
 
 		Tooltip por = new Tooltip("Portes");
-		por.setShowDelay(Duration.millis(0));
+//		por.setShowDelay(Duration.millis(0));
 		portes.setTooltip(por);
 
 		/*------------------------------*/
@@ -1240,7 +1240,7 @@ public class HomeController extends Controller {
 								dragImageView.setImage(img);
 								dragImageView.setFitHeight(img.getHeight());
 								dragImageView.setFitWidth(img.getWidth());
-								if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1310 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(dragImageView)||( dragImageView.getId().equals("clock") && ( horloged)))
+								if( dragImageView.getLayoutX() <= 0 ||dragImageView.getLayoutY() <= 0|| (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)>720 || intersectionComposant(dragImageView)||( dragImageView.getId().equals("clock") && ( horloged)))
 								{
 									workSpace.getChildren().remove(dragImageView);
 									Circuit.supprimerComp(Circuit.getCompFromImage(dragImageView));
@@ -1632,7 +1632,7 @@ public class HomeController extends Controller {
 									scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 									scrollPane.setVvalue(scrollPane.getVvalue()+0.01);
 								}
-								if(e.getSceneY() < 0)
+								if(e.getSceneY() < 55)
 								{
 									scrollPane.setVvalue(scrollPane.getVvalue()-0.01);
 								}
@@ -1662,7 +1662,7 @@ public class HomeController extends Controller {
 									}
 									eleementAdrager.setMouseTransparent(false);
 									eleementAdrager.setCursor(Cursor.DEFAULT);
-									if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>700 || intersectionComposant(eleementAdrager))
+									if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>720 || intersectionComposant(eleementAdrager))
 									{
 										eleementAdrager.setLayoutX(posX);
 										eleementAdrager.setLayoutY(posY);
@@ -3163,7 +3163,7 @@ public class HomeController extends Controller {
 
 
 
-	public void enligne(String l) {//une methode utilise pour ouvrir un lien dans le navigateur par defaut
+	public static void enligne(String l) {//une methode utilise pour ouvrir un lien dans le navigateur par defaut
 		try {
 			Desktop.getDesktop().browse(new URL(l).toURI());
 		} catch (MalformedURLException e) {
@@ -3770,6 +3770,7 @@ public class HomeController extends Controller {
 		if (infoPolyline.isRelier()) {
 			Composant source = filSortieFil.getSource();
 			int sortie = source.numCmpSorties(filSortieFil);
+			entree = infoPolyline.getEntre();
 			if(entree >= 0) {
 				Circuit.relier(source, infoPolyline.getDestination(), sortie, infoPolyline.getEntre());
 			}else if(-5 < infoPolyline.getEntre()) {
@@ -3863,9 +3864,9 @@ public class HomeController extends Controller {
 						if( dragImageView.getLayoutX() > 0 &&dragImageView.getLayoutY() > 0&& (e.getSceneX() +( dragImageView.getBoundsInLocal().getWidth()) / 2) < 1310 && e.getSceneY() + (dragImageView.getBoundsInLocal().getHeight() / 2)<700 && ! intersictionLabel(dragImageView))
 
 	    	        	{	    	        			    	        	
-	    	        	EditableDraggableText text=new EditableDraggableText(dragImageView.getLayoutX(),dragImageView.getLayoutY(),"T");
-	    	               workSpace.getChildren().add(text);
-	    	               text.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+							EditableDraggableText text=new EditableDraggableText(dragImageView.getLayoutX(),dragImageView.getLayoutY(),"T");
+							workSpace.getChildren().add(text);
+							text.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 							@Override
 							public void handle(MouseEvent arg0) {
@@ -3891,7 +3892,6 @@ public class HomeController extends Controller {
 											clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX(),arg0.getScreenY(),workSpace,homeWindow);
 										}
 									}
-									//clickDroitLabel = new ClickDroitLabel((TextField)text.getChildren().get(0),arg0.getScreenX(),arg0.getScreenY(),workSpace,homeWindow);
 								    arg0.consume();
 								}
 								

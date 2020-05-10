@@ -1,21 +1,17 @@
 package controllers;
 
-import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.ResourceBundle;
 
 import application.Proprietes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
@@ -150,7 +146,7 @@ public class ClickDroitController extends Controller{
 		
 			key = nom;
 		}
-		Proprietes f = new Proprietes(BddFenetre.get(key), cmp,workSpace, HomeController.homeWindow);
+	    new Proprietes(BddFenetre.get(key), cmp,workSpace, HomeController.homeWindow);
 	}
 
 	@FXML

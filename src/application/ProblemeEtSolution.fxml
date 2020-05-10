@@ -12,9 +12,9 @@
    <center>
       <TableView fx:id="tableDeProblemes" prefHeight="205.0" prefWidth="1120.0" stylesheets="@../styleFile/fenetreDesErreurs.css">
         <columns>
-          <TableColumn fx:id="type" prefWidth="130.0" reorderable="false" text="TYPE" />
-          <TableColumn fx:id="probleme" prefWidth="495.0" reorderable="false" text="PROBLEME" />
-            <TableColumn fx:id="solution" prefWidth="495.0" reorderable="false" text="SOLUTION" />
+          <TableColumn fx:id="type" prefWidth="130.0" text="TYPE" />
+          <TableColumn fx:id="probleme" prefWidth="495.0" text="PROBLEME" />
+            <TableColumn fx:id="solution" prefWidth="495.0" text="SOLUTION" />
         </columns>
          <opaqueInsets>
             <Insets />

@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -83,6 +84,8 @@ public abstract class Controller {
 
 	@FXML
 	protected AnchorPane workSpace;
+	
+	URL url;
 
 	public Composant getCmp() {
 		return cmp;
@@ -390,8 +393,9 @@ public abstract class Controller {
 	public void playSound() {
 	//le son quand un fil est relié
 		try {
+			url =getClass().getResource("sound.wav");
 			AudioInputStream audioInputStream = AudioSystem
-					.getAudioInputStream(new File("src/1.wav").getAbsoluteFile());
+					.getAudioInputStream(url);
 			Clip clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
 			clip.start();
@@ -465,7 +469,8 @@ public abstract class Controller {
 							return 0;
 						trouve = true;
 						entree = -i - 1;
-
+						relieCercle(crdTab.getX(), crd.getY());
+						workSpace.getChildren().add(relieCercle);
 					}
 					i++;
 				}
@@ -478,6 +483,8 @@ public abstract class Controller {
 							return 0;
 						trouve = true;
 						entree = -5;
+						relieCercle(crdTab.getX(), crd.getY());
+						workSpace.getChildren().add(relieCercle);
 					}
 				}
 				if (cmp.getLesCoordonnees().getCordClear() != null && !trouve) {
@@ -488,7 +495,8 @@ public abstract class Controller {
 							return 0;
 						trouve = true;
 						entree = -6;
-
+						relieCercle(crdTab.getX(), crd.getY());
+						workSpace.getChildren().add(relieCercle);
 					}
 				}
 				if (cmp.getLesCoordonnees().getCordPreset() != null && !trouve) {
@@ -499,6 +507,8 @@ public abstract class Controller {
 							return 0;
 						trouve = true;
 						entree = -7;
+						relieCercle(crdTab.getX(), crd.getY());
+						workSpace.getChildren().add(relieCercle);
 					}
 				}
 				if (cmp.getLesCoordonnees().getCordLoad() != null && !trouve) {
@@ -509,6 +519,8 @@ public abstract class Controller {
 							return 0;
 						trouve = true;
 						entree = -8;
+						relieCercle(crdTab.getX(), crd.getY());
+						workSpace.getChildren().add(relieCercle);
 					}
 				}
 			}
