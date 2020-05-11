@@ -54,7 +54,7 @@ public class ClickDroitFilController {
     @FXML
     void supprimer(ActionEvent event) { /// supprimer le fil d'un composant
     	InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
-    	if (infoLine.getLineParent() != null) {
+    	if (infoLine.getLineParent() != null && infoLine.getNbFils() == 0) {
     		sauveGarderSuppressionFil(infoLine);
 		}
     	supprimer(infoLine);

@@ -185,9 +185,11 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 		this.sortieBar = sortieBar;
 	}
 
+	public static long getTemps() {
+		return temps;
+	}
 
-
-
-
-
+	public static void setTemps(long temps) {
+		Horloge.temps = temps;
+	}
 }

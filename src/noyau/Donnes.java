@@ -28,6 +28,7 @@ public class Donnes { /// cette classe est utilisé dans l'operation du ctrl + z
 	private boolean supprime = false; // boolean utilisé dans la suppression
 	private InfoPolyline infoPolyline = null;
 	private ArrayList<InfoPolyline> listPolylines = null;
+	private long frequence ;
 	
 	@Override
 	public boolean equals(Object obj) { /// redifinre la methode equals pour savoir si deux données sont égales
@@ -171,6 +172,14 @@ public class Donnes { /// cette classe est utilisé dans l'operation du ctrl + z
 
 	public void setSwitching(int switching) {
 		this.switching = switching;
+	}
+
+	public long getFrequence() {
+		return frequence;
+	}
+
+	public void setFrequence(long frequence) {
+		this.frequence = frequence;
 	}
 	
 }

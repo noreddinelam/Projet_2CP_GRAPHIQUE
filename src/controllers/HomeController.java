@@ -3300,6 +3300,7 @@ public class HomeController extends Controller {
 					}
 					else if(composant.getClass().equals(Pin.class)) ((Pin)composant).setInput(sauveGarde.getTypePin());
 					else if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
+					else if(composant.getClass().equals(Horloge.class)) ((Horloge)horloge).setTemps(sauveGarde.getFrequence());
 					addAllPolylinesToWorkSpace(composant.generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY()));
 				}break;
 				case Supression:
@@ -3410,8 +3411,9 @@ public class HomeController extends Controller {
 		else if(composant.getClass().getSimpleName().equals("Demultiplexeur")){
 			sauveGarde.setNombreDeCommandes(((Demultiplexeur)composant).getNbCommande()); 
 		}
-		if(elementAmodifier.getId().equals("pin")) sauveGarde.setTypePin(((Pin)composant).isInput());
-		if(composant.getClass().isAssignableFrom(Sequentiels.class)) sauveGarde.setFront(((Sequentiels)composant).getFront());
+		else if(composant.getClass().equals(Pin.class)) sauveGarde.setTypePin(((Pin)composant).isInput());
+		else if(composant.getClass().isAssignableFrom(Sequentiels.class)) sauveGarde.setFront(((Sequentiels)composant).getFront());
+		else if(composant.getClass().equals(Horloge.class)) sauveGarde.setFrequence(((Horloge)composant).getTemps());
 		undoDeque.addFirst(sauveGarde);
 		elementAmodifier=null;
 	}
