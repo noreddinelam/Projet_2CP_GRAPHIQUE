@@ -15,49 +15,7 @@ public class ProprietesAdditionneurController extends ProprietesController{
 	/*
 	 * Controlleur de la fenetre Proprietes Additionneur
 	 */
-	private int i; //Nombre de bits
-    public Composant getcmp() {
-		return cmp;
-	}
 
-	public void setcmp(Composant cmp) {
-		this.cmp = cmp;
-	}
-
-	public void initialiser(Composant cmp) {
-		btns.add(imgPlusNbEntrees);
-		btns.add(imgMoinsNbEntrees);
-		this.cmp = cmp;
-		sauv = cmp.getNombreEntree();
-		i=cmp.getNombreEntree();  
-		composant.setText(cmp.getClass().getSimpleName().toString());
-		label.setText(cmp.getNom());
-		if(cmp.getClass().getSimpleName().equals("DemiAdditionneur"))
-		{
-			i=i/2;
-			nbEntres.setText(Integer.toString(i));
-			composant.setText("Demi Additionneur");
-		}
-		else {
-			i=(i-1)/2;
-			nbEntres.setText(Integer.toString(i));
-			composant.setText("Additionneur Complet");
-		}
-		if(i==1) {
-			moinsNbEntrees.setVisible(false);
-			imgMoinsNbEntrees.setVisible(false);
-		}
-		if(i==5){
-			plusNbEntrees.setVisible(false);
-			imgPlusNbEntrees.setVisible(false);
-		}
-		if (! cmp.isDessocier()) {
-			plusNbEntrees.setDisable(true);
-			moinsNbEntrees.setDisable(true);
-			applyOpaciteForImages(btns);
-		}
-	}
-    
 	@FXML
 	private Pane pane_proprietes;
 	
@@ -102,6 +60,49 @@ public class ProprietesAdditionneurController extends ProprietesController{
 	
 	@FXML
 	private ImageView imgPreviousDirection;
+	
+	private int i; //Nombre de bits
+    public Composant getcmp() {
+		return cmp;
+	}
+
+	public void setcmp(Composant cmp) {
+		this.cmp = cmp;
+	}
+
+	public void initialiser(Composant cmp) {
+		btns.add(imgPlusNbEntrees);
+		btns.add(imgMoinsNbEntrees);
+		this.cmp = cmp;
+		sauv = cmp.getNombreEntree();
+		i=cmp.getNombreEntree();  
+		composant.setText(cmp.getClass().getSimpleName().toString());
+		label.setText(cmp.getNom());
+		if(cmp.getClass().getSimpleName().equals("DemiAdditionneur"))
+		{
+			i=i/2;
+			nbEntres.setText(Integer.toString(i));
+			composant.setText("Demi Additionneur");
+		}
+		else {
+			i=(i-1)/2;
+			nbEntres.setText(Integer.toString(i));
+			composant.setText("Additionneur Complet");
+		}
+		if(i==1) {
+			moinsNbEntrees.setVisible(false);
+			imgMoinsNbEntrees.setVisible(false);
+		}
+		if(i==5){
+			plusNbEntrees.setVisible(false);
+			imgPlusNbEntrees.setVisible(false);
+		}
+		if (! cmp.isDessocier()) {
+			plusNbEntrees.setDisable(true);
+			moinsNbEntrees.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
+	}
 	
     @FXML
     void annuler(ActionEvent event) {

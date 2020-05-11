@@ -142,7 +142,7 @@ public class HomeController extends Controller {
 	Horloge horloge = null;
 
 	public static Polyline selectionne = new Polyline();
-	private boolean select = false;
+	private static boolean select = false;
 	// utilisé dans la sauvegarde des coordonnées
 
 	double posX;
@@ -1016,7 +1016,7 @@ public class HomeController extends Controller {
 					if (event.isControlDown() && (event.getCode() == KeyCode.C)) {
 						if (elementSeclecionner != null) {
 							setCopierActive(true);
-							copyActive = false ;
+							copyActive = false;
 						}
 					}
 					if (event.isControlDown() && (event.getCode() == KeyCode.V)) {
@@ -1471,7 +1471,7 @@ public class HomeController extends Controller {
 			public void handle(MouseEvent e) {
 				eleementAdrager.setCursor(Cursor.HAND);
 				select = true;
-
+				System.out.println("djfhqimdseudksg +++++++");
 			}
 		});
 
@@ -1508,14 +1508,12 @@ public class HomeController extends Controller {
 						eleementAdrager.setOnDragDetected(new EventHandler<MouseEvent>() {
 							@Override
 							public void handle(MouseEvent e) {
-
 								SnapshotParameters snapParams = new SnapshotParameters();
 								snapParams.setFill(Color.TRANSPARENT);
 								//eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
 								eleementAdrager.startFullDrag();
 								e.consume();
 							}
-
 						});
 					}else{
 
@@ -3328,16 +3326,16 @@ public class HomeController extends Controller {
 					composant.setNombreSortie(sauveGarde.getNombreDesSorties());
 					composant.getLesCoordonnees().setNbCordEntree(sauveGarde.getNombreDesEntrees());
 					composant.getLesCoordonnees().setNbCordSorties(sauveGarde.getNombreDesSorties());
-					if (composant.getClass().equals("Multiplexeur")) {
+					if (composant.getClass().equals(Multiplexeur.class)) {
 						((Multiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
 						composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
 					}
-					else if(composant.getClass().equals("Demultiplexeur")){
+					else if(composant.getClass().equals(Demultiplexeur.class)){
 						((Demultiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
 						composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
 					}
-					if(imageDeComposant.getId().equals("pin")) ((Pin)composant).setInput(sauveGarde.getTypePin());
-					if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
+					else if(composant.getClass().equals(Pin.class)) ((Pin)composant).setInput(sauveGarde.getTypePin());
+					else if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
 					addAllPolylinesToWorkSpace(composant.generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY()));
 				}break;
 				case Supression:
@@ -3436,7 +3434,7 @@ public class HomeController extends Controller {
 	{
 		Composant composant=Circuit.getCompFromImage(elementAmodifier);
 		Donnes sauveGarde= new Donnes();
-
+		
 		sauveGarde.setTypeDaction(Actions.Modification);
 		sauveGarde.setComposantCommeImage(elementAmodifier);
 		sauveGarde.setImage(elementAmodifier.getImage());
@@ -4159,8 +4157,9 @@ public class HomeController extends Controller {
 		selectionne.getPoints().addAll(image.getLayoutX()+image.getFitWidth()+10,image.getLayoutY()+image.getFitHeight()+10);
 		selectionne.getPoints().addAll(image.getLayoutX()-10,image.getLayoutY()+image.getFitHeight()+10);
 		selectionne.getPoints().addAll(image.getLayoutX()-10,image.getLayoutY()-10);
-		if(!workSpace.getChildren().contains(selectionne))
+		if(!workSpace.getChildren().contains(selectionne)) {
 			workSpace.getChildren().add(selectionne);
+		}
 	}
 	
 }

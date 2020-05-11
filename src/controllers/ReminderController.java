@@ -1,20 +1,10 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.Map.Entry;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import noyau.Circuit;
-import noyau.Composant;
-import noyau.Fil;
-import noyau.InfoPolyline;
-import noyau.Pin;
 
 public class ReminderController extends Controller{
 
