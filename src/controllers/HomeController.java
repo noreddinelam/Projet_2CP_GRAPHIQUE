@@ -57,6 +57,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
@@ -140,6 +141,7 @@ public class HomeController extends Controller {
 	public static File fichierCourant;
 	public static Thread t1;
 	Horloge horloge = null;
+	boolean ctrlz = false;
 
 	public static Polyline selectionne = new Polyline();
 	private static boolean select = false;
@@ -487,11 +489,11 @@ public class HomeController extends Controller {
     private AnchorPane hideBtn;
     
     @FXML
-    void clickHide(MouseEvent event) {
+    void clickHide(MouseEvent event) { /// si on click sur le bouton hide/show de la fenetreS
 	homeWindow.setIconified(true);;
     }
     @FXML
-    void enterHide(MouseEvent event) {
+    void enterHide(MouseEvent event) { /// ajout d'un effet au bouton hide/show
     	hideBtn.setStyle("-fx-background-color:grey");
         
 
@@ -501,7 +503,7 @@ public class HomeController extends Controller {
        	hideBtn.setStyle("-fx-background-color:transparent");
     }
     @FXML
-    void ClickExit(MouseEvent event) {
+    void ClickExit(MouseEvent event) { /// clicker sur le bouton fermer de la fenetre
     	Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setContentText(Circuit.getCompUtilises().isEmpty() ? "Voulez vous vraiment quitter" :"Voullez vous sauvgarder ce circuit avant de quitter ?");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
@@ -522,7 +524,6 @@ public class HomeController extends Controller {
 			alert.getButtonTypes().add(buttonTypeSauvgarder);
 		}
 		Optional<ButtonType> result = alert.showAndWait();	
-		//Optional<ButtonType> result = alert.showAndWait();
 		if(result.get() != buttonTypeCancel) {
 			if (result.get() == buttonTypeSauvgarder){
 				if (fichierCourant == null) {
@@ -573,17 +574,13 @@ public class HomeController extends Controller {
 				}
 			}
 			javafx.application.Platform.exit();
-			//Stage s = (Stage) stage.getOwner();
-			//s.close();
 		}
       
     }
 
 	@FXML
-	void enterExit(MouseEvent event) {
-	//	exitIcon.setImage(new Image("/homePage_icones/ExitHover.png"));
+	void enterExit(MouseEvent event) { /// ajouter un effet sur le bouton de fermeture de la fenetre
 		ExitBtn.setStyle("-fx-background-color:B53737");
-           
 	}
 
 	@FXML
@@ -592,7 +589,7 @@ public class HomeController extends Controller {
 		ExitBtn.setStyle("-fx-background-color:transparent");
 	}
 
-	void ajouterAnimationBarDroite(ImageView imageView) {
+	void ajouterAnimationBarDroite(ImageView imageView) { /// ajouter l'operation hover sur les boutons de la bar droite
 		imageView.setOnMouseEntered(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent arg0){
 			// TODO Auto-generated method stub
 			if(!imageView.getId().equals("simulation")||imageView.getId().equals("simulation")&&!simul){
@@ -611,7 +608,7 @@ public class HomeController extends Controller {
 				);
 	}
 
-	void initialiseAnimationOfBarDroite(){
+	void initialiseAnimationOfBarDroite(){ /// pour appliquer l'effet des icones de la bar droite sur tout les boutons
 		ajouterAnimationBarDroite(fichier);
 		ajouterAnimationBarDroite(edition);
 		ajouterAnimationBarDroite(simulation);
@@ -622,13 +619,11 @@ public class HomeController extends Controller {
 
 	}
 
-
-
 	@FXML void mouseEnterLogo(MouseEvent event){ // ajouter une rotation pour le logo
 		rotationDelogo(logo,1,500,true);
 	}
 
-	@FXML void screenShot(MouseEvent event){
+	@FXML void screenShot(MouseEvent event){ /// faire une capture du circuit
 		final FileChooser fileChooser=new FileChooser();
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("PNG", "*.png")
@@ -644,9 +639,8 @@ public class HomeController extends Controller {
 		Circuit.clearException();
 		simul = (!simul);
 		workSpace.getChildren().remove(selectionne);
-		if (simul) {
-			closeRightWindows();
-
+		closeRightWindows();
+		if (simul) { /// verifier si on a passé au mode simulation
 			edition.setDisable(true);
 			edition.setOpacity(0.4);
 			affichage.setOpacity(1);
@@ -659,9 +653,9 @@ public class HomeController extends Controller {
 				clickSouris2.close();
 			if (clickDroitLabel != null)
 				clickDroitLabel.close();
-			Circuit.validerCircuits();
-			if ( Circuit.isThereAnyException()) {
-				if (Circuit.isThereAnyError()) {
+			Circuit.validerCircuits(); /// valider le circuit et detecter les erreurs qu'il y'a
+			if ( Circuit.isThereAnyException()) { /// verifier s'il ya des erreurs
+				if (Circuit.isThereAnyError()) {/// s'il ya des erreurs
 					simul = false;
 					simulation.setImage(new Image("homePage_icones/simulation.png"));
 					edition.setDisable(false);
@@ -669,8 +663,8 @@ public class HomeController extends Controller {
 					affichage.setOpacity(0.4);
 					affichage.setDisable(true);
 				}
-				else {
-					remplireNomPinEtAfficher();
+				else { /// si aucun probleme 
+					remplireNomPinEtAfficher(); /// affichage des labels des pins
 					simulation.setImage(new Image("homePage_icones/SIMULATION_ON.png"));
 					if(! horloged)	Circuit.initialiser();
 					else {
@@ -679,7 +673,7 @@ public class HomeController extends Controller {
 						t1=new Thread(horloge);
 						t1.start();
 					}
-					rotationDelogo(logo,1,1000,false);
+					rotationDelogo(logo,1,1000,false); /// faire une rotation du logo
 					if(Circuit.getListeEtages().size()==0 && !horloged) {
 						rightBareButtons.get(1).setDisable(false);
 						rightBareButtons.get(1).setOpacity(1);
@@ -693,7 +687,7 @@ public class HomeController extends Controller {
 						rightBareButtons.get(2).setOpacity(1);
 					}
 				}
-				new FenetreDesErreurs(homeWindow);
+				new FenetreDesErreurs(homeWindow); /// affichage de la fenetre des problemes
 			}
 			else {
 				remplireNomPinEtAfficher();
@@ -750,29 +744,6 @@ public class HomeController extends Controller {
 			}
 		}
 	}
-
-
-	public void setHomeControllerStage(Stage w) {
-		homeWindow = w;
-	}
-
-
-	public void setHomeControllerScene(Scene scene) {
-		homeScene = scene;
-	}
-
-	public Stage getHomeStage() {
-		return homeWindow;
-	}
-
-	public static void setCopierActive(boolean c) {
-		copierActive = c;
-	}
-
-	public static boolean getCopierActive() {
-		return copierActive;
-	}
-
 
 	public void inisialiser() { /// pour l'initialisation des effets de la fenetre principale (affichage des guides ajout de
 		/// l'operation du drag and drop pour tout les composants			
@@ -872,7 +843,7 @@ public class HomeController extends Controller {
 		rightbar(affichage, affichageFenetre, tableauFenetres);
 		rightbar(aide, aideFenetre, tableauFenetres);
 		ajouterLeGestWindow();
-		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() {
+		workSpace.setOnMousePressed(new EventHandler<MouseEvent>() { /// si l'user clique sur le workspace
 			@Override
 			public void handle(MouseEvent event) {
 				if(!select)
@@ -883,7 +854,7 @@ public class HomeController extends Controller {
 					click.close();
 					tooltipInitialize();
 				}
-				if (!simul ) {
+				if (!simul ) { /// verifier si on est dans le mode de simulation ou non
 			
 					ctrlX = event.getX();
 					ctrlY = event.getY();
@@ -1066,7 +1037,7 @@ public class HomeController extends Controller {
 		});
 	}
 
-	public void rightbar(ImageView icon, ClickBarDroite cc, ClickBarDroite tableauDeFenetres[]) {
+	public void rightbar(ImageView icon, ClickBarDroite cc, ClickBarDroite tableauDeFenetres[]) { /// responsable de l'affichage et fermeture des fenetres de la bar droite
 		icon.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -1164,7 +1135,7 @@ public class HomeController extends Controller {
 			}
 		});
 
-		elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() {
+		elementAdrager.setOnMousePressed(new EventHandler<MouseEvent>() { /// clicker sur un composant
 			@Override
 			public void handle(MouseEvent e) {
 				if (! simul) {
@@ -1231,7 +1202,7 @@ public class HomeController extends Controller {
 						}
 					});
 
-					elementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
+					elementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() { /// deposer un composant dans le workspace
 						@Override
 						public void handle(MouseEvent e) {
 							if (!simul) {
@@ -1289,11 +1260,7 @@ public class HomeController extends Controller {
 
 	}
 
-	public Polyline tracerEntrerApresCollage(Polyline line, Coordonnees crdDebut, boolean relocate) { /// Trecer les
-		/// lignes
-		/// d'entrées
-		/// apres le
-		/// collage
+	public Polyline tracerEntrerApresCollage(Polyline line, Coordonnees crdDebut, boolean relocate) { /// Trecer les fils  d'entrees
 		int i = 0;
 		double x2 = crdDebut.getX();
 		double y2 = crdDebut.getY();
@@ -1314,8 +1281,6 @@ public class HomeController extends Controller {
 		} else {
 			int sizeArray = Circuit.getListFromPolyline(line).size();
 			if (Circuit.getListFromPolyline(line).size() > 1) { // pour ne pas supprimer le premier polyline
-				// Polyline line2 =
-				// Circuit.getListFromPolyline(line).get(sizeArray-2).getLinePrincipale();
 				Polyline line2 = Circuit.getInfoPolylineFromPolyline(line).getLineParent();
 				if ((Math.abs(line.getPoints().get(0) - line2.getPoints().get(line2.getPoints().size() - 2)) < 6)
 						&& (Math.abs(
@@ -1359,8 +1324,8 @@ public class HomeController extends Controller {
 		return line;
 	}
 	
-	public void SupprimerPereUndoChanges(Polyline line1) {
-		for (Donnes donnes : undoDeque) {
+	public void SupprimerPereUndoChanges(Polyline line1) { /// utilisé pour regler les problèmes dans l'operation du ctrl + z
+		for (Donnes donnes : undoDeque) { 
 			if(donnes.getInfoPolyline() != null && !donnes.isSupprime() ) {
 				if(donnes.getInfoPolyline().getLineParent() == line1) {
 					donnes.setSupprime(true);
@@ -1377,7 +1342,7 @@ public class HomeController extends Controller {
 			}
 		}
 	}
-	boolean ctrlz = false;
+	
 	public Polyline tracerSortieApresCollage(Polyline line, Coordonnees crdDebut, boolean relocate) {// Trecer les
 		// lignes de
 		// sorties apres
@@ -1509,7 +1474,6 @@ public class HomeController extends Controller {
 							public void handle(MouseEvent e) {
 								SnapshotParameters snapParams = new SnapshotParameters();
 								snapParams.setFill(Color.TRANSPARENT);
-								//eleementAdrager.setImage(eleementAdrager.snapshot(snapParams, null));
 								eleementAdrager.startFullDrag();
 								e.consume();
 							}
@@ -1548,8 +1512,7 @@ public class HomeController extends Controller {
 						elementSeclecionner = eleementAdrager;
 					}
 
-					refrechLists(eleementAdrager); /// kayna lteht
-					//hna tekmeel
+					refrechLists(eleementAdrager); /// refrecher la liste des points dans le polylines
 					eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() { /// si le composant est dragé .
 						@Override
 						public void handle(MouseEvent e) {
@@ -1658,7 +1621,7 @@ public class HomeController extends Controller {
 							}
 						}
 						});
-						eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() {
+						eleementAdrager.setOnMouseReleased(new EventHandler<MouseEvent>() { /// deposer un composant dans le workspace
 							@Override
 							public void handle(MouseEvent e) {
 								if (! simul) {
@@ -4158,9 +4121,34 @@ public class HomeController extends Controller {
 		selectionne.getPoints().addAll(image.getLayoutX()+image.getFitWidth()+10,image.getLayoutY()+image.getFitHeight()+10);
 		selectionne.getPoints().addAll(image.getLayoutX()-10,image.getLayoutY()+image.getFitHeight()+10);
 		selectionne.getPoints().addAll(image.getLayoutX()-10,image.getLayoutY()-10);
+		DropShadow sh = new DropShadow();
+		sh.setOffsetX(0);
+		sh.setOffsetY(3);
+		selectionne.setEffect(sh);
 		if(!workSpace.getChildren().contains(selectionne)) {
 			workSpace.getChildren().add(selectionne);
 		}
+	}
+	
+	public void setHomeControllerStage(Stage w) {
+		homeWindow = w;
+	}
+
+
+	public void setHomeControllerScene(Scene scene) {
+		homeScene = scene;
+	}
+
+	public Stage getHomeStage() {
+		return homeWindow;
+	}
+
+	public static void setCopierActive(boolean c) {
+		copierActive = c;
+	}
+
+	public static boolean getCopierActive() {
+		return copierActive;
 	}
 	
 }
