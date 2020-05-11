@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import noyau.Composant;
 
-public class ClickDroit extends Stage{
+public class ClickDroit extends Stage{ /// 
 
 
 	public ClickDroit(Composant cmp,Double x,Double y,AnchorPane workSpace, Stage st) { /// afficher

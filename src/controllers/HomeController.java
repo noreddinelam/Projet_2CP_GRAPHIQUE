@@ -3222,6 +3222,8 @@ public class HomeController extends Controller {
 
 	@FXML
 	void annulerParSouris(ActionEvent event) {
+		Stage stage = (Stage)undoParSouris.getScene().getWindow();
+		stage.close();
 		undoChanges(workSpace);
 	}
 

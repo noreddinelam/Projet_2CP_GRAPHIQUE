@@ -8,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class ClickSouris2 extends Stage{
+public class ClickSouris2 extends Stage{ /// click droit sur le workspace
 	public ClickSouris2(double x,double y,AnchorPane workSpace, Stage st) {
 
 	try
@@ -32,12 +32,4 @@ public class ClickSouris2 extends Stage{
 		}
 	
 	}
-	
-//	public void  setx(double x, double y) {
-//		this.setX(x);
-//		this.setY(y);
-//	}
-	
-	
-
 }

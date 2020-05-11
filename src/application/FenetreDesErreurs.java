@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class FenetreDesErreurs extends Stage {
+public class FenetreDesErreurs extends Stage { /// pour afficher la fenetre des erreurs
 	 public FenetreDesErreurs(Stage stage){
 		try
 		{			

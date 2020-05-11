@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class ClickDroitLabel extends Stage {
+public class ClickDroitLabel extends Stage { /// fenetre pour le click droit du label
 	public ClickDroitLabel(TextField text,Double x,Double y,AnchorPane workSpace, Stage st) {
 		try
 		{			

@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 
-public class ClickBarDroite extends Stage{
+public class ClickBarDroite extends Stage{ /// fenetre pour afficher les petites fenetres de la bar droite
 	
     private static AnchorPane workSpace;
 	
@@ -44,14 +44,11 @@ public class ClickBarDroite extends Stage{
 				Controller.getRightBareButtons().add(h.getChronogramme());
 			}
 			Scene scene = new Scene(root);
-			//scene.getStylesheets().add(getClass().getResource("/styleFile/propriete.css").toExternalForm());
 			this.setScene(scene);
 			this.setX(x);
 			this.initStyle(StageStyle.UNDECORATED);
 			this.setY(y);
 			workSpace = w;
-			//
-			//this.initModality(Modality.WINDOW_MODAL);
 			this.initOwner(st);
 			this.show();
 		} catch(Exception e) {

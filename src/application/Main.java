@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class Main extends Application {
+public class Main extends Application { /// charger la fenetre principale et lancer l'application
 	@Override
 	public void start(Stage primaryStage) {
 		try {

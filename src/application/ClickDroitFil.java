@@ -9,7 +9,7 @@ import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class ClickDroitFil extends Stage{
+public class ClickDroitFil extends Stage{ /// pour afficher la fenetre click droit du fil
 	public ClickDroitFil(Polyline line,AnchorPane workSpace,Double x,Double y, Stage s) {
 		try
 		{

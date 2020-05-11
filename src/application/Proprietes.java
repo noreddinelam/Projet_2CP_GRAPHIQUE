@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import noyau.Composant;
 
-public class Proprietes extends Stage{
+public class Proprietes extends Stage{ /// afficher la fenetre des propriétées de chaque composant
 
 	public Proprietes(String Fenete,Composant cmp,AnchorPane workSpace, Stage st) {
 		try
