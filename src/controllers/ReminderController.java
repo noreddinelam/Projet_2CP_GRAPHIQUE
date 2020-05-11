@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class ReminderController extends Controller{
+public class ReminderController extends Controller{ /// il sert comme une alerte pour definire des taches que l'user doit appliquer
 
 	@FXML
 	private Text titreAlerte;
@@ -24,9 +24,9 @@ public class ReminderController extends Controller{
 	private Text messageAlerte11;
 
 	@FXML
-	void ok(ActionEvent event) {
+	void ok(ActionEvent event) { /// voir si user à clicker sur le bouton OK de la fenetre du reminder
 		
-		lessOpacite();
+		lessOpacite(); /// deminuer l'opacité des composants
 		
 		Stage s = (Stage)okButton.getScene().getWindow(); 
 		s.close();

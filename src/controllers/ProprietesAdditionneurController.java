@@ -70,7 +70,7 @@ public class ProprietesAdditionneurController extends ProprietesController{
 		this.cmp = cmp;
 	}
 
-	public void initialiser(Composant cmp) {
+	public void initialiser(Composant cmp) { /// initialiser les champs nécessaires pour la fenetre
 		btns.add(imgPlusNbEntrees);
 		btns.add(imgMoinsNbEntrees);
 		this.cmp = cmp;
@@ -105,7 +105,7 @@ public class ProprietesAdditionneurController extends ProprietesController{
 	}
 	
     @FXML
-    void annuler(ActionEvent event) {
+    void annuler(ActionEvent event) { /// annuler la modification
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

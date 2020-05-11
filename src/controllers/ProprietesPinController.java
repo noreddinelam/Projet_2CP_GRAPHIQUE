@@ -25,43 +25,6 @@ public class ProprietesPinController extends ProprietesController{
 	String bddPut[] = {"Entrée","Sortie"};//soit un pin d'entrée ou de sortie
 	int putInt;      //l'entier qui gére la DddPut
 	
-	
-    @Override
-	public Composant getCmp() {
-		return cmp;
-	}
-
-	@Override
-	public void setCmp(Composant cmp) {
-		this.cmp = cmp;
-	}
-	
-	@Override
-	public void initialiser(Composant cmp){
-	//initialiser les textes de la fenetre
-		btns.add(imgNextput);
-		btns.add(imgNextput1);
-		btns.add(imgPreviousput);
-		btns.add(imgPreviousput1);
-		this.cmp = cmp;
-		direct = cmp.getDirection();
-		direction.setText(bddDirection[direct]);
-		label.setText(cmp.getNom());
-		addTextLimiter(label, 7);
-		putInt = (((Pin)cmp).getInput() == true) ? 0 : 1 ;
-		put.setText(bddPut[putInt]);
-		direct = cmp.getDirection();
-		direction.setText(bddDirection[direct]);
-		if (! cmp.isDessocier()) {
-			nextDirection.setDisable(true);
-			previousDirection.setDisable(true);
-			nextput.setDisable(true);
-			previousput.setDisable(true);
-			applyOpaciteForImages(btns);
-		}
-		
-	}
-
 	@FXML
     private TextField label;
 
@@ -100,15 +63,52 @@ public class ProprietesPinController extends ProprietesController{
 
     @FXML
     private Label direction;
+	
+	
+    @Override
+	public Composant getCmp() {
+		return cmp;
+	}
+
+	@Override
+	public void setCmp(Composant cmp) {
+		this.cmp = cmp;
+	}
+	
+	@Override
+	public void initialiser(Composant cmp){
+	//initialiser les textes de la fenetre
+		btns.add(imgNextput);
+		btns.add(imgNextput1);
+		btns.add(imgPreviousput);
+		btns.add(imgPreviousput1);
+		this.cmp = cmp;
+		direct = cmp.getDirection();
+		direction.setText(bddDirection[direct]);
+		label.setText(cmp.getNom());
+		addTextLimiter(label, 7);
+		putInt = (((Pin)cmp).getInput() == true) ? 0 : 1 ;
+		put.setText(bddPut[putInt]);
+		direct = cmp.getDirection();
+		direction.setText(bddDirection[direct]);
+		if (! cmp.isDessocier()) {
+			nextDirection.setDisable(true);
+			previousDirection.setDisable(true);
+			nextput.setDisable(true);
+			previousput.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
+		
+	}
 
     @FXML
-    void annuler(ActionEvent event) {
+    void annuler(ActionEvent event) { /// annuler les modifications faites
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }
 
     @FXML
-    void modifier(ActionEvent event) {
+    void modifier(ActionEvent event) { /// appliquer les modifications faites
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
         	Pin pin =((Pin)cmp);
@@ -160,34 +160,34 @@ public class ProprietesPinController extends ProprietesController{
     }
 
     @FXML
-    void nextDirection(ActionEvent event) {
+    void nextDirection(ActionEvent event) { /// changer de direction
     	direct ++;
     	if(direct > 3) direct=0;
     	direction.setText(bddDirection[direct]);
     }
 
     @FXML
-    void nextput(ActionEvent event) {
+    void nextput(ActionEvent event) { /// changer dans le type du pin
     	putInt++;
     	if(putInt > 1) putInt = 0;
     	put.setText(bddPut[putInt]);
     }
 
     @FXML
-    void previousDirection(ActionEvent event) {
+    void previousDirection(ActionEvent event) { /// changer la direction
     	direct--;
     	if(direct < 0) direct = 3;
     	direction.setText(bddDirection[direct]);
     }
 
     @FXML
-    void previousput(ActionEvent event) {
+    void previousput(ActionEvent event) {/// changer dans le type du pin
     	putInt--;
     	if(putInt < 0) putInt = 1;
     	put.setText(bddPut[putInt]);
     }
     
-    public static void addTextLimiter(final TextField tf, final int maxLength) {
+    public static void addTextLimiter(final TextField tf, final int maxLength) { /// limiter le nombre de caractere dans l'affichage
     //Pour limiter le nombre de characteres du nom
         tf.textProperty().addListener(new ChangeListener<String>() {
             @Override

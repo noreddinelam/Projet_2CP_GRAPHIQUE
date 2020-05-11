@@ -27,9 +27,9 @@ import noyau.Circuit;
 import noyau.Horloge;
 import noyau.Sauvegarde;
 
-public class PremierePageController implements Initializable{
+public class PremierePageController implements Initializable{ /// c'est le responsable de l'affichage de la 1iere page de l'application
 	@FXML
-	private ProgressBar crossBare;
+	private ProgressBar crossBare; /// pour la bar de chargement
 
 	@FXML
 	private Pane pane;
@@ -40,7 +40,7 @@ public class PremierePageController implements Initializable{
 		this.window = window;
 	}
 
-	class bg_thread implements Runnable
+	class bg_thread implements Runnable /// le thread responsable pour marcher la bar de chargement
 	{
 		@Override
 		public void run() {
@@ -58,13 +58,13 @@ public class PremierePageController implements Initializable{
 		}
 	}
 	@Override
-	public void initialize(URL url, ResourceBundle rb) {
+	public void initialize(URL url, ResourceBundle rb) { /// initialiser les attributs nécessaires pour que l'application marche
 		// TODO Auto-generated method stub
 		Thread th = new Thread(new bg_thread());
 		th.start();
 		new firstScreen().start();
 	}
-	class  firstScreen extends Thread{
+	class  firstScreen extends Thread{ /// le thread responsable de charger la fenetre suivante
 		public void run() {
 			try {
 				Thread.sleep(5000);/// changer le temps  

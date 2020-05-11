@@ -19,49 +19,7 @@ public class ProprietesRegistreController extends ProprietesController{
 	int frnt;
 	String bddDecalage[] = {"Gauche","Droite"};
 	int dcl;
-
-	public Composant getCmp() {
-		return cmp;
-	}
-
-	public void setCmp(Composant cmp) {
-		this.cmp = cmp;
-	}
-
-	public void initialiser(Composant cmp){
-		btns.add(imgNextDecalage);
-		btns.add(imgNextFront);
-		btns.add(imgPreviousDecalage);
-		btns.add(imgPreviousFront);
-		btns.add(imgMoinsNbBits);
-		btns.add(imgPlusNbBits);
-		this.cmp = cmp;
-		label.setText(cmp.getNom());
-		i=((RegistreDecalage)cmp).getTaille();
-		nbBits.setText(Integer.toString(i));
-		frnt=((RegistreDecalage)cmp).getFront().ordinal();
-		front.setText(bddFront[frnt]);
-		dcl = (((RegistreDecalage)cmp).isDecalageDroite() == true) ? 1 : 0 ;
-		Decalage.setText(bddDecalage[dcl]);
-
-		if(i==2) {
-			moinsNbBits.setVisible(false);
-			imgMoinsNbBits.setVisible(false);
-		}
-		if(i==8){
-			plusNbBits.setVisible(false);
-			imgPlusNbBits.setVisible(false);
-		}
-		if (! cmp.isDessocier()) {
-			moinsNbBits.setDisable(true);
-			nextDecalage.setDisable(true);
-			nextFront.setDisable(true);
-			plusNbBits.setDisable(true);
-			previousDecalage.setDisable(true);
-			previousFront.setDisable(true);
-			applyOpaciteForImages(btns);
-		}
-	}
+	
 	@FXML
 	private TextField label;
 
@@ -116,14 +74,57 @@ public class ProprietesRegistreController extends ProprietesController{
 	@FXML
 	private ImageView imgNextDecalage;
 
+	public Composant getCmp() {
+		return cmp;
+	}
+
+	public void setCmp(Composant cmp) {
+		this.cmp = cmp;
+	}
+
+	public void initialiser(Composant cmp){ /// initialiser le nécessaire pour la fenetre
+		btns.add(imgNextDecalage);
+		btns.add(imgNextFront);
+		btns.add(imgPreviousDecalage);
+		btns.add(imgPreviousFront);
+		btns.add(imgMoinsNbBits);
+		btns.add(imgPlusNbBits);
+		this.cmp = cmp;
+		label.setText(cmp.getNom());
+		i=((RegistreDecalage)cmp).getTaille();
+		nbBits.setText(Integer.toString(i));
+		frnt=((RegistreDecalage)cmp).getFront().ordinal();
+		front.setText(bddFront[frnt]);
+		dcl = (((RegistreDecalage)cmp).isDecalageDroite() == true) ? 1 : 0 ;
+		Decalage.setText(bddDecalage[dcl]);
+
+		if(i==2) {
+			moinsNbBits.setVisible(false);
+			imgMoinsNbBits.setVisible(false);
+		}
+		if(i==8){
+			plusNbBits.setVisible(false);
+			imgPlusNbBits.setVisible(false);
+		}
+		if (! cmp.isDessocier()) {
+			moinsNbBits.setDisable(true);
+			nextDecalage.setDisable(true);
+			nextFront.setDisable(true);
+			plusNbBits.setDisable(true);
+			previousDecalage.setDisable(true);
+			previousFront.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
+	}
+
 	@FXML
-	void annuler(ActionEvent event) {
+	void annuler(ActionEvent event) { /// annuler les modifications faites
 		Stage s = (Stage)annuler.getScene().getWindow(); 
 		s.close();
 	}
 
 	@FXML
-	void modifier(ActionEvent event) {
+	void modifier(ActionEvent event) {/// appliquer les modifications faites
 		cmp.setNom(label.getText());
 		if (cmp.isDessocier()) {
 			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
@@ -152,7 +153,7 @@ public class ProprietesRegistreController extends ProprietesController{
 	}
 
 	@FXML
-	void moinsNbBits(ActionEvent event) {
+	void moinsNbBits(ActionEvent event) { /// changer le nombre de bits
 		i--;
 		nbBits.setText(Integer.toString(i));
 		plusNbBits.setVisible(true);
@@ -164,21 +165,21 @@ public class ProprietesRegistreController extends ProprietesController{
 	}
 
 	@FXML
-	void nextDecalage(ActionEvent event) {
+	void nextDecalage(ActionEvent event) { /// changer le type de decalage ( droite ou gauche)
 		dcl++;
 		if(dcl > 1 ) dcl=0;
 		Decalage.setText(bddDecalage[dcl]);
 	}
 
 	@FXML
-	void nextFront(ActionEvent event) {
+	void nextFront(ActionEvent event) { /// changer le front 
 		frnt++;
 		if(frnt > 1) frnt=0;
 		front.setText(bddFront[frnt]);
 	}
 
 	@FXML
-	void plusNbBits(ActionEvent event) {
+	void plusNbBits(ActionEvent event) { /// changer le nombre de bits
 		i++;
 		nbBits.setText(Integer.toString(i));
 		moinsNbBits.setVisible(true);
@@ -190,14 +191,14 @@ public class ProprietesRegistreController extends ProprietesController{
 	}
 
 	@FXML
-	void previousDecalage(ActionEvent event) {
+	void previousDecalage(ActionEvent event) { /// changer le type de decalage
 		dcl--;
 		if(dcl < 0 ) dcl=1;
 		Decalage.setText(bddDecalage[dcl]);
 	}
 
 	@FXML
-	void previousFront(ActionEvent event) {
+	void previousFront(ActionEvent event) { /// changer le front
 		frnt--;
 		if(frnt < 0 ) frnt=1;
 		front.setText(bddFront[frnt]);

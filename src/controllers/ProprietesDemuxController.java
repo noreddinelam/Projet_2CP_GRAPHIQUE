@@ -17,31 +17,7 @@ public class ProprietesDemuxController extends ProprietesController{
 	
 	String bddNbEntrees[] = {"1X2","1X4","1X8","1X16"};
 	int i;
-    
-	public void initialiser(Composant cmp) {
-		/*
-		 * l'initialisations des textes fr la fenetre .
-		 */
-		btns.add(imgMoinsNbEntrees);
-		btns.add(imgPlusNbEntrees);
-		this.cmp = cmp;
-		i=((Demultiplexeur)cmp).getNbCommande();
-		label.setText(cmp.getNom());
-		nbEntres.setText(bddNbEntrees[i-1]);
-		if(i==1) {
-			moinsNbEntrees.setVisible(false);
-			imgMoinsNbEntrees.setVisible(false);
-		}
-		if(i==4){
-			plusNbEntrees.setVisible(false);
-			imgPlusNbEntrees.setVisible(false);
-		}
-		if (! cmp.isDessocier()) {
-			plusNbEntrees.setDisable(true);
-			moinsNbEntrees.setDisable(true);
-			applyOpaciteForImages(btns);
-		}
-	}	
+	
 	@FXML
     private TextField label;
 
@@ -80,9 +56,34 @@ public class ProprietesDemuxController extends ProprietesController{
 
     @FXML
     private ImageView imgPreviousDirection;
+    
+	public void initialiser(Composant cmp) {
+		/*
+		 * l'initialisations des textes fr la fenetre .
+		 */
+		btns.add(imgMoinsNbEntrees);
+		btns.add(imgPlusNbEntrees);
+		this.cmp = cmp;
+		i=((Demultiplexeur)cmp).getNbCommande();
+		label.setText(cmp.getNom());
+		nbEntres.setText(bddNbEntrees[i-1]);
+		if(i==1) {
+			moinsNbEntrees.setVisible(false);
+			imgMoinsNbEntrees.setVisible(false);
+		}
+		if(i==4){
+			plusNbEntrees.setVisible(false);
+			imgPlusNbEntrees.setVisible(false);
+		}
+		if (! cmp.isDessocier()) {
+			plusNbEntrees.setDisable(true);
+			moinsNbEntrees.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
+	}	
 
     @FXML
-    void annuler(ActionEvent event) {
+    void annuler(ActionEvent event) { /// annuler les changements faits
     	
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();

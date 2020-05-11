@@ -14,31 +14,6 @@ import javafx.stage.Stage;
 
 public class ProprietesSourceConstController extends ProprietesController {																										// direction
 	
-	
-	public Composant getcmp() {
-		return cmp;
-	}
-
-	public void setcmp(Composant cmp) {
-		this.cmp = cmp;
-	}
-
-	public void initialiser(Composant cmp) {
-		this.cmp = cmp;
-		SourceConstante sourceconstanteComposant = (SourceConstante) cmp;
-		if (sourceconstanteComposant.getEtatLogique() != EtatLogique.ONE) {
-			composant.setText("Masse");
-		} else {
-			composant.setText("VCC");
-		}
-
-		label.setText(cmp.getNom());
-		if (! cmp.isDessocier()) {
-			applyOpaciteForImages(btns);
-		}
-
-	}
-
 	@FXML
 	private Pane pane_proprietes;
 
@@ -83,15 +58,39 @@ public class ProprietesSourceConstController extends ProprietesController {					
 
 	@FXML
 	private ImageView imgPreviousDirection;
+	
+	public Composant getcmp() {
+		return cmp;
+	}
+
+	public void setcmp(Composant cmp) {
+		this.cmp = cmp;
+	}
+
+	public void initialiser(Composant cmp) { /// initialiser le nécessaire pour la fenetre
+		this.cmp = cmp;
+		SourceConstante sourceconstanteComposant = (SourceConstante) cmp;
+		if (sourceconstanteComposant.getEtatLogique() != EtatLogique.ONE) {
+			composant.setText("Masse"); ///voir si il s'agit d'une masse
+		} else {
+			composant.setText("VCC"); /// voir s'il s'agit d'un vcc
+		}
+
+		label.setText(cmp.getNom());
+		if (! cmp.isDessocier()) {
+			applyOpaciteForImages(btns);
+		}
+
+	}
 
 	@FXML
-	void annuler(ActionEvent event) {
+	void annuler(ActionEvent event) { /// annuler les modifications faites
 		Stage s = (Stage) annuler.getScene().getWindow();
 		s.close();
 	}
 
 	@FXML
-	void modifier(ActionEvent event) {
+	void modifier(ActionEvent event) { /// appliquer les modifications faites
 
 		cmp.setNom(label.getText());
 		if (cmp.isDessocier()) {

@@ -30,43 +30,6 @@ public class ProprietesPortesController extends ProprietesController{
 	private String bddDirection[] = {"Est","Sud","West","Nord"}; //base de données de directions
 	private int direct; //indice qui gere la direction
 	
-    public Composant getcmp() {
-		return cmp;
-	}
-
-	public void setcmp(Composant cmp) {
-		this.cmp = cmp;
-	}
-
-	public void initialiser(Composant cmp) {
-		//initialiser les textes de la fenetre
-		btns.add(imgMoinsNbEntrees);
-		btns.add(imgNextDirection);
-		btns.add(imgPlusNbEntrees);
-		btns.add(imgPreviousDirection);
-		this.cmp = cmp;
-		i=cmp.getNombreEntree();
-		direct = cmp.getDirection();
-		direction.setText(bddDirection[direct]);
-		composant.setText(cmp.getClass().getSimpleName().toString());
-		label.setText(cmp.getNom());
-		nbEntres.setText(Integer.toString(i));
-		if(i==2) {
-			moinsNbEntrees.setVisible(false);
-			imgMoinsNbEntrees.setVisible(false);
-		}
-		if(i==5){
-			plusNbEntrees.setVisible(false);
-			imgPlusNbEntrees.setVisible(false);
-		}
-		if (! cmp.isDessocier()) {
-			nextDirection.setDisable(true);
-			previousDirection.setDisable(true);
-			plusNbEntrees.setDisable(true);
-			moinsNbEntrees.setDisable(true);
-			applyOpaciteForImages(btns);
-		}
-	}
 	@FXML
     private Pane pane_proprietes;
 
@@ -111,15 +74,53 @@ public class ProprietesPortesController extends ProprietesController{
 
     @FXML
     private ImageView imgPreviousDirection;
+	
+    public Composant getcmp() {
+		return cmp;
+	}
+
+	public void setcmp(Composant cmp) {
+		this.cmp = cmp;
+	}
+
+	public void initialiser(Composant cmp) {
+		//initialiser les textes de la fenetre
+		btns.add(imgMoinsNbEntrees);
+		btns.add(imgNextDirection);
+		btns.add(imgPlusNbEntrees);
+		btns.add(imgPreviousDirection);
+		this.cmp = cmp;
+		i=cmp.getNombreEntree();
+		direct = cmp.getDirection();
+		direction.setText(bddDirection[direct]);
+		composant.setText(cmp.getClass().getSimpleName().toString());
+		label.setText(cmp.getNom());
+		nbEntres.setText(Integer.toString(i));
+		if(i==2) {
+			moinsNbEntrees.setVisible(false);
+			imgMoinsNbEntrees.setVisible(false);
+		}
+		if(i==5){
+			plusNbEntrees.setVisible(false);
+			imgPlusNbEntrees.setVisible(false);
+		}
+		if (! cmp.isDessocier()) { // voir si le composant est dessocié
+			nextDirection.setDisable(true);
+			previousDirection.setDisable(true);
+			plusNbEntrees.setDisable(true);
+			moinsNbEntrees.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
+	}
     
     @FXML
-    void annuler(ActionEvent event) {
+    void annuler(ActionEvent event) { /// annuler les modifications faites
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }
 
     @FXML
-    void modifier(ActionEvent event) {
+    void modifier(ActionEvent event) { /// appliquer les modifications faites
     //Sauvgarder les changements 
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
@@ -151,7 +152,7 @@ public class ProprietesPortesController extends ProprietesController{
     }
 
     @FXML
-    void moinsNbEntrees(ActionEvent event) {
+    void moinsNbEntrees(ActionEvent event) { /// changer le nombre d'entrees
     	i--;
     	nbEntres.setText(Integer.toString(i));
     	plusNbEntrees.setVisible(true);
@@ -163,14 +164,14 @@ public class ProprietesPortesController extends ProprietesController{
     }
 
     @FXML
-    void nextDirection(ActionEvent event) {
+    void nextDirection(ActionEvent event) { /// changer la direction
     	direct ++;
     	if(direct > 3) direct=0;
     	direction.setText(bddDirection[direct]);
     }
 
     @FXML
-    void plusNbEntrees(ActionEvent event) {
+    void plusNbEntrees(ActionEvent event) { /// changer le nombre d'entrees
     	i++;
     	nbEntres.setText(Integer.toString(i));
     	moinsNbEntrees.setVisible(true);
@@ -182,7 +183,7 @@ public class ProprietesPortesController extends ProprietesController{
     }
 
     @FXML
-    void previousDirection(ActionEvent event) {
+    void previousDirection(ActionEvent event) { /// changer la direction
     	direct--;
     	if(direct < 0) direct = 3;
     	direction.setText(bddDirection[direct]);

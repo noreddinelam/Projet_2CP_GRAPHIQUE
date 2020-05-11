@@ -11,17 +11,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import noyau.ComposantDeChronogramme;
 
-public class ListCellController extends ListCell<ComposantDeChronogramme>{
+public class ListCellController extends ListCell<ComposantDeChronogramme>{ /// utiliser dans la construction des cellules de la table de composant qui s'affiche avant le chronogramme
 	
-    public ListCellController() {
-		super();
-		this.setStyle("-fx-background-radius:32 32 32 32;-fx-border-radius:32 32 32 32;-fx-background-color:#e0e0d1");
-	
-		// TODO Auto-generated constructor stub
-	}
-
-
 	private FXMLLoader mLLoader;
+	
     @FXML
     private ImageView imageDeComposant;
 
@@ -30,8 +23,14 @@ public class ListCellController extends ListCell<ComposantDeChronogramme>{
 
     @FXML
     private HBox hbox;
+	
+    public ListCellController() {
+		super();
+		this.setStyle("-fx-background-radius:32 32 32 32;-fx-border-radius:32 32 32 32;-fx-background-color:#e0e0d1");
+	
+		// TODO Auto-generated constructor stub
+	}
     
-
     @Override
     protected void updateItem(ComposantDeChronogramme composant, boolean empty) {
     	// TODO Auto-generated method stub

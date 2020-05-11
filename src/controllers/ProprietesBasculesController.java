@@ -16,30 +16,7 @@ public class ProprietesBasculesController extends ProprietesController {
 
 	private String bddNbFront[] = {"Montant","Descendant"};
 	private int i;   //Nombre d'entrées
-
-	public Composant getCmp() {
-		return cmp;
-	}
-
-	public void setCmp(Composant cmp) {
-		this.cmp = cmp;
-	}
-
-	public void initialiser(Composant cmp) {
-		btns.add(imgNextFront);
-		btns.add(imgPreviousFront);
-		this.cmp = cmp;
-		composant.setText(cmp.getClass().getSimpleName());
-		i=((Bascule)cmp).getFront().ordinal();
-		label.setText(cmp.getNom());
-		front.setText(bddNbFront[i]);
-		if (! cmp.isDessocier()) {
-			nextFront.setDisable(true);
-			previousFront.setDisable(true);
-			applyOpaciteForImages(btns);
-		}
-	}
-
+	
 	@FXML
 	private TextField label;
 
@@ -66,6 +43,29 @@ public class ProprietesBasculesController extends ProprietesController {
 
 	@FXML
 	private Label composant;
+
+	public Composant getCmp() {
+		return cmp;
+	}
+
+	public void setCmp(Composant cmp) {
+		this.cmp = cmp;
+	}
+
+	public void initialiser(Composant cmp) { /// initialiser les champs nécessaires pour la fenetre
+		btns.add(imgNextFront);
+		btns.add(imgPreviousFront);
+		this.cmp = cmp;
+		composant.setText(cmp.getClass().getSimpleName());
+		i=((Bascule)cmp).getFront().ordinal();
+		label.setText(cmp.getNom());
+		front.setText(bddNbFront[i]);
+		if (! cmp.isDessocier()) { /// desactiver la rotation pour ce composant
+			nextFront.setDisable(true);
+			previousFront.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
+	}
 
 	@FXML
 	void annuler(ActionEvent event) {

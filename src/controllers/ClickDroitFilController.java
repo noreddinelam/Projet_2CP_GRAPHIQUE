@@ -52,7 +52,7 @@ public class ClickDroitFilController {
     private Button supprimerTous;
 
     @FXML
-    void supprimer(ActionEvent event) {
+    void supprimer(ActionEvent event) { /// supprimer le fil d'un composant
     	InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(line);
     	if (infoLine.getLineParent() != null) {
     		sauveGarderSuppressionFil(infoLine);
@@ -63,9 +63,9 @@ public class ClickDroitFilController {
     }
 
     @FXML
-    void supprimerTous(ActionEvent event) {
+    void supprimerTous(ActionEvent event) { /// appliquer une suppression totale des fils
     	ArrayList<InfoPolyline> list = Circuit.getListFromPolyline(line);
-    	sauveGarderSuppressionToutFil(new ArrayList<InfoPolyline>(list));
+    	sauveGarderSuppressionToutFil(new ArrayList<InfoPolyline>(list)); /// faire une sauvegarder qui va aider dans le ctrl z
     	int i = list.size()-1;
     	while(i >= 0) {
     		InfoPolyline infoLine = list.get(i);
@@ -75,12 +75,12 @@ public class ClickDroitFilController {
 		Stage s = (Stage)supprimer.getScene().getWindow(); 
     	s.close();
     }
-    public static void supprimer(InfoPolyline infoLine) {
+    public static void supprimer(InfoPolyline infoLine) { /// la fonction responsable de suppression des fils graphique et noyau
     	if(infoLine!=null) {
     	Polyline line = infoLine.getLinePrincipale();
     	if(infoLine.getNbFils() == 0 ) { //On peut le supprimer
     		
-    		if(infoLine.isRelier()){ //relier a une entrée
+    		if(infoLine.isRelier()){ // derelier la connexion avec le fil supprimé
     			Fil fil = new Fil(null);
     			if(infoLine.getEntre() >= 0) {
     				infoLine.getDestination().getEntrees()[infoLine.getEntre()] = null;
@@ -119,7 +119,7 @@ public class ClickDroitFilController {
     	}
     }
     
-    public void sauveGarderSuppressionFil(InfoPolyline infoPolyline) {
+    public void sauveGarderSuppressionFil(InfoPolyline infoPolyline) { /// appliquer une sauvegarde de suppression fil
 		Donnes sauveGarde= new Donnes();
 		if (infoPolyline.getLineParent() != null) {
 			Polyline parent = new Polyline();
@@ -132,8 +132,8 @@ public class ClickDroitFilController {
 		HomeController.undoDeque.addFirst(sauveGarde);
 	}
     
-    public void sauveGarderSuppressionToutFil(ArrayList<InfoPolyline> infoPolylines) {
-    	Donnes donnes = new Donnes();
+    public void sauveGarderSuppressionToutFil(ArrayList<InfoPolyline> infoPolylines) { /// appliquer une sauvegarde de suppression totale des fils
+    	Donnes donnes = new Donnes(); /// donnees est la classe essentiel dans l'operation du ctrl + z
     	ArrayList<Polyline> result=new ArrayList<Polyline>();
     	for (InfoPolyline infoPolyline : infoPolylines) {
     		if (infoPolyline.getLineParent() != null) {

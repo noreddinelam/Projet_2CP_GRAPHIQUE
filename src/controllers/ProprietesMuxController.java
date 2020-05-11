@@ -22,37 +22,6 @@ public class ProprietesMuxController extends ProprietesController {
 	String bddNbEntrees[] = {"2X1","4X1","8X1","16X1"};
 	int i;
 
-
-	public Composant getCmp() {
-		return cmp;
-	}
-
-	public void setCmp(Composant cmp) {
-		this.cmp = cmp;
-	}
-
-	public void initialiser(Composant cmp) {
-		btns.add(imgMoinsNbEntrees);
-		btns.add(imgPlusNbEntrees);
-		this.cmp = cmp;
-		i=((Multiplexeur)cmp).getNbCommande();
-		label.setText(cmp.getNom());
-		nbEntres.setText(bddNbEntrees[i-1]);
-		if(i==1) {
-			moinsNbEntrees.setVisible(false);
-			imgMoinsNbEntrees.setVisible(false);
-		}
-		if(i==4){
-			plusNbEntrees.setVisible(false);
-			imgPlusNbEntrees.setVisible(false);
-		}
-		if (! cmp.isDessocier()) {
-			plusNbEntrees.setDisable(true);
-			moinsNbEntrees.setDisable(true);
-			applyOpaciteForImages(btns);
-		}
-	}
-
 	@FXML
 	private Pane pane_proprietes;
 
@@ -98,14 +67,44 @@ public class ProprietesMuxController extends ProprietesController {
 	@FXML
 	private Label composant;
 
+	public Composant getCmp() {
+		return cmp;
+	}
+
+	public void setCmp(Composant cmp) {
+		this.cmp = cmp;
+	}
+
+	public void initialiser(Composant cmp) { /// initialiser le nécessaire dans la fenetre
+		btns.add(imgMoinsNbEntrees);
+		btns.add(imgPlusNbEntrees);
+		this.cmp = cmp;
+		i=((Multiplexeur)cmp).getNbCommande();
+		label.setText(cmp.getNom());
+		nbEntres.setText(bddNbEntrees[i-1]);
+		if(i==1) {
+			moinsNbEntrees.setVisible(false);
+			imgMoinsNbEntrees.setVisible(false);
+		}
+		if(i==4){
+			plusNbEntrees.setVisible(false);
+			imgPlusNbEntrees.setVisible(false);
+		}
+		if (! cmp.isDessocier()) {
+			plusNbEntrees.setDisable(true);
+			moinsNbEntrees.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
+	}
+
 	@FXML
-	void annuler(ActionEvent event) {
+	void annuler(ActionEvent event) { /// annuler les changements faits
 		Stage s = (Stage)annuler.getScene().getWindow(); 
 		s.close();
 	}
 
 	@FXML
-	void modifier(ActionEvent event) {
+	void modifier(ActionEvent event) { /// appliquer les modifications faites
 		cmp.setNom(label.getText());
 		if (cmp.isDessocier()) {
 			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
@@ -127,7 +126,7 @@ public class ProprietesMuxController extends ProprietesController {
 	}
 
 	@FXML
-	void moinsNbEntrees(ActionEvent event) {
+	void moinsNbEntrees(ActionEvent event) { /// deminuer le nombre de bits
 		i--;
 		nbEntres.setText(bddNbEntrees[i-1]);
 		plusNbEntrees.setVisible(true);
@@ -140,7 +139,7 @@ public class ProprietesMuxController extends ProprietesController {
 
 
 	@FXML
-	void plusNbEntrees(ActionEvent event) {
+	void plusNbEntrees(ActionEvent event) { /// augmenter le nombre de bits 
 		i++;
 		nbEntres.setText(bddNbEntrees[i-1]);
 		moinsNbEntrees.setVisible(true);

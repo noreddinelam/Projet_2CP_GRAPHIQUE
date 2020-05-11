@@ -18,40 +18,6 @@ public class ProprietesDecodeurController extends ProprietesController{
 	private String bddNbEntrees[] = {"1X2","2X4","3X8","4X16"};
 	private int i;
 	
-	
-    public Composant getCmp() {
-		return cmp;
-	}
-
-	public void setCmp(Composant cmp) {
-		this.cmp = cmp;
-	}
-
-	public void initialiser(Composant cmp) {
-	/*
-	 * l'initialisations des textes fr la fenetre .
-	 */
-		btns.add(imgMoinsNbEntrees);
-		btns.add(imgPlusNbEntrees);
-		this.cmp = cmp;
-		i=cmp.getNombreEntree();
-		label.setText(cmp.getNom());
-		nbEntres.setText(bddNbEntrees[i-1]);
-		if(i==1) {
-			moinsNbEntrees.setVisible(false);
-			imgMoinsNbEntrees.setVisible(false);
-		}
-		if(i==4){
-			plusNbEntrees.setVisible(false);
-			imgPlusNbEntrees.setVisible(false);
-		}
-		if (! cmp.isDessocier()) {
-			plusNbEntrees.setDisable(true);
-			moinsNbEntrees.setDisable(true);
-			applyOpaciteForImages(btns);
-		}
-	}
-	
 	@FXML
     private Pane pane_proprietes;
 
@@ -96,9 +62,42 @@ public class ProprietesDecodeurController extends ProprietesController{
 
     @FXML
     private Label composant;
+	
+    public Composant getCmp() {
+		return cmp;
+	}
+
+	public void setCmp(Composant cmp) {
+		this.cmp = cmp;
+	}
+
+	public void initialiser(Composant cmp) {
+	/*
+	 * l'initialisations des textes fr la fenetre .
+	 */
+		btns.add(imgMoinsNbEntrees);
+		btns.add(imgPlusNbEntrees);
+		this.cmp = cmp;
+		i=cmp.getNombreEntree();
+		label.setText(cmp.getNom());
+		nbEntres.setText(bddNbEntrees[i-1]);
+		if(i==1) {
+			moinsNbEntrees.setVisible(false);
+			imgMoinsNbEntrees.setVisible(false);
+		}
+		if(i==4){
+			plusNbEntrees.setVisible(false);
+			imgPlusNbEntrees.setVisible(false);
+		}
+		if (! cmp.isDessocier()) {
+			plusNbEntrees.setDisable(true);
+			moinsNbEntrees.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
+	}
 
     @FXML
-    void annuler(ActionEvent event) {
+    void annuler(ActionEvent event) { /// annuler les modifications faites
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }

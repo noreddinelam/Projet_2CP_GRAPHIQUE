@@ -24,9 +24,9 @@ import noyau.Composant;
 public class ClickDroitController extends Controller{
 
 	int direct ;
-	private ArrayList<String> bddPortes = new ArrayList<String>(Arrays.asList("And","Or","Xor","Nor","Nand"));
-	private ArrayList<String> bddBascules = new ArrayList<String>(Arrays.asList("JK","D","RST","T"));
-	private static HashMap<String, String> BddFenetre = new HashMap<String, String>();
+	private ArrayList<String> bddPortes = new ArrayList<String>(Arrays.asList("And","Or","Xor","Nor","Nand")); /// pour afficher les propriétées des portes
+	private ArrayList<String> bddBascules = new ArrayList<String>(Arrays.asList("JK","D","RST","T")); /// pour faire les proprieté des bascules
+	private static HashMap<String, String> BddFenetre = new HashMap<String, String>(); /// les fenetres nécessaires 
 	static{
 		BddFenetre.put("Portes","ProprietesPortes.fxml");
 		BddFenetre.put("Bascule","ProprietesBascules.fxml");
@@ -88,7 +88,7 @@ public class ClickDroitController extends Controller{
     private ImageView imgRotationG;
     
 	@FXML
-	void copier(ActionEvent event) {
+	void copier(ActionEvent event) { /// sert pour copier un composant
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
     	HomeController.setCopierActive(true);
@@ -96,7 +96,7 @@ public class ClickDroitController extends Controller{
 	}
 
 	@FXML
-	void couper(ActionEvent event) {
+	void couper(ActionEvent event) { /// sert pour couper un composant
 		workSpace.getChildren().remove(HomeController.selectionne);
 		Stage s = (Stage)prop.getScene().getWindow(); 
 		s.close();
@@ -107,18 +107,18 @@ public class ClickDroitController extends Controller{
 		ImageView sauv = HomeController.elementSeclecionner;
 		HomeController.elementAsuprimer = sauv;
 		HomeController.sauveGarderSupression();
-		if(sauv.getId().equals("clock"))
+		if(sauv.getId().equals("clock")) /// verifier si le composant est une horloge
 		{
 			HomeController.horloged =false;
 			HomeController.horlogeDeCercuit =null; 
 		}
-		else if (sauv.getId().equals("CircuitIntegre")) {
+		else if (sauv.getId().equals("CircuitIntegre")) { /// verifier si le composant est un circuit intégre
 			ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
 			for (Circle circle : arrayList) {
 				workSpace.getChildren().remove(circle);
 			}
 		} 
-		else if (sauv.getId().equals("CircuitIntegreSequentiel")) {
+		else if (sauv.getId().equals("CircuitIntegreSequentiel")) {/// verifier si le composant est un circuit intégre Sequentiel
 			ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
 			for (Circle circle : arrayList) {
 				workSpace.getChildren().remove(circle);
@@ -134,26 +134,26 @@ public class ClickDroitController extends Controller{
 	}
 
 	@FXML
-	void prop(ActionEvent event) {
+	void prop(ActionEvent event) { /// afficher les propriétées d'un composant
 		//remouver la selection 
 		workSpace.getChildren().remove(HomeController.selectionne);
 		Stage s = (Stage)prop.getScene().getWindow(); 
 		HomeController.sauveGarderModification();
     	s.close();
 		String nom = cmp.getClass().getSimpleName(), key;
-		if(bddPortes.contains(nom)) {
+		if(bddPortes.contains(nom)) { /// si c'est une porte
 			key = "Portes";
-		}else if(bddBascules.contains(nom)){
+		}else if(bddBascules.contains(nom)){ /// si c'est une bascule
 			key = "Bascule";
 		}else {
 		
 			key = nom;
 		}
-	    new Proprietes(BddFenetre.get(key), cmp,workSpace, HomeController.homeWindow);
+	    new Proprietes(BddFenetre.get(key), cmp,workSpace, HomeController.homeWindow); /// avoir une fenetre des propriétées
 	}
 
 	@FXML
-	void rotationD(ActionEvent event) {
+	void rotationD(ActionEvent event) { /// faire une rotation droite
 		workSpace.getChildren().remove(HomeController.selectionne);
 		direct ++;
 		if(direct > 3) direct=0;
@@ -169,7 +169,7 @@ public class ClickDroitController extends Controller{
 	}
 
 	@FXML
-	void rotationG(ActionEvent event) {
+	void rotationG(ActionEvent event) { /// faire une rotation gauche
 		workSpace.getChildren().remove(HomeController.selectionne);
 		direct--;
 		if(direct < 0) direct = 3;
@@ -186,24 +186,24 @@ public class ClickDroitController extends Controller{
 	}
 
 	@FXML
-	void supprimer(ActionEvent event) {
+	void supprimer(ActionEvent event) { /// pour supprimer un composant
 		workSpace.getChildren().remove(HomeController.selectionne);
 		ImageView imageDeComposant=Circuit.getImageFromComp(cmp);
 		HomeController.elementAsuprimer=imageDeComposant;
 		HomeController.sauveGarderSupression();
 		HomeController.supprimerDequeFilProbleme(cmp);
-		if(imageDeComposant.getId().equals("clock"))
+		if(imageDeComposant.getId().equals("clock")) /// verifier si le composant est une horloge
 		{
 			HomeController.horloged =false;
 			HomeController.horlogeDeCercuit =null; 
 		}
-		else if (imageDeComposant.getId().equals("CircuitIntegre")) {
+		else if (imageDeComposant.getId().equals("CircuitIntegre")) {/// verifier si le composant est un circuit intégre
 			ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
 			for (Circle circle : arrayList) {
 				workSpace.getChildren().remove(circle);
 			}
 		} 
-		else if (imageDeComposant.getId().equals("CircuitIntegreSequentiel")) {
+		else if (imageDeComposant.getId().equals("CircuitIntegreSequentiel")) {/// verifier si le composant est un circuit intégre Sequentiel
 			ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
 			for (Circle circle : arrayList) {
 				workSpace.getChildren().remove(circle);
@@ -214,18 +214,18 @@ public class ClickDroitController extends Controller{
 		Stage s = (Stage)prop.getScene().getWindow(); 
     	s.close();
 	}
-	public void initialiser() {
+	public void initialiser() { /// sert pour initialiser les effets nécessaires de la fenetre click droit
 		supprimer.setCursor(Cursor.HAND);
 		direct = cmp.getDirection();
-		if (cmp.getClass().equals(CircuitIntegre.class) || cmp.getClass().equals(CircuitIntegreSequentiel.class)) {
+		if (cmp.getClass().equals(CircuitIntegre.class) || cmp.getClass().equals(CircuitIntegreSequentiel.class)) { /// verifier s'il s'agit d'un circuit intégré
 			prop.setDisable(true);
 			imgProprietes.setOpacity(0.4);
 		}
 		else {
 			prop.setCursor(Cursor.HAND);
 		}
-		if ( (!bddPortes.contains(cmp.getClass().getSimpleName()) && !cmp.getClass().getSimpleName().equals("Pin") && !cmp.getClass().getSimpleName().equals("Not"))  || ! cmp.isDessocier()) {
-			rotationD.setDisable(true);
+		if ( (!bddPortes.contains(cmp.getClass().getSimpleName()) && !cmp.getClass().getSimpleName().equals("Pin") && !cmp.getClass().getSimpleName().equals("Not"))  || ! cmp.isDessocier()) { 
+			rotationD.setDisable(true); /// desactiver la rotation pour les composants a part les portes/pin
 			rotationG.setDisable(true);
 			imgRotationD.setOpacity(0.4);
 			imgRotationG.setOpacity(0.4);

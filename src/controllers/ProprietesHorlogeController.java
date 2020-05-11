@@ -29,13 +29,13 @@ public class ProprietesHorlogeController extends ProprietesController{
 	private TextField frequance;
 
 	@FXML
-	void annuler(ActionEvent event) {
+	void annuler(ActionEvent event) { /// annuler les changements faits
 		Stage s = (Stage)annuler.getScene().getWindow(); 
 		s.close();
 	}
 
 	@FXML
-	void modifier(ActionEvent event) {
+	void modifier(ActionEvent event) { /// appliquer les modifications faites
 		if(Double.parseDouble(frequance.getText())<=10)
 		{
 			cmp.setNom(label.getText());
@@ -54,13 +54,13 @@ public class ProprietesHorlogeController extends ProprietesController{
 	}
 
 	@Override
-	public void initialiser(Composant cmp) {
+	public void initialiser(Composant cmp) {/// initialisation de la fenetre
 		this.cmp=cmp;
 		double tempH =(double)Horloge.temps;
 		frequance.setText(String.valueOf(arrondiDouble(1/(tempH/1000),2)));
 		frequance.textProperty().addListener(new ChangeListener<String>() {
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) { /// interdire l'ecreture des lettres
 				if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
 					frequance.setText(oldValue);
 				}

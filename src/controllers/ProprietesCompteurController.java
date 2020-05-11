@@ -19,48 +19,7 @@ public class ProprietesCompteurController extends ProprietesController{
 	int frnt;
 	String bddCmp[] = {"Compteur","Décompteur"};
 	int cmpt;
-		
-    public Composant getCmp() {
-		return cmp;
-	}
-
-	public void setCmp(Composant cmp) {
-		this.cmp = cmp;
-	}
-
-	public void initialiser(Composant cmp){
-		btns.add(imgNextCompteur);
-		btns.add(imgNextFront);
-		btns.add(imgPreviousCompteur);
-		btns.add(imgPreviousFront);
-		btns.add(imgMoinsNbBits);
-		btns.add(imgPlusNbBits);
-		this.cmp = cmp;
-		label.setText(cmp.getNom());		
-		i=cmp.getNombreEntree();
-		nbBits.setText(Integer.toString(i));
-		frnt=((Compteur)cmp).getFront().ordinal();
-		front.setText(bddFront[frnt]);
-		cmpt = (((Compteur)cmp).getCompter() == true) ? 0 : 1 ;
-		compteur.setText(bddCmp[cmpt]);		
-		if(i==2) {
-			moinsNbBits.setVisible(false);
-			imgMoinsNbBits.setVisible(false);
-		}
-		if(i==4){
-			plusNbBits.setVisible(false);
-			imgPlusNbBits.setVisible(false);
-		}
-		if (!cmp.isDessocier()) {
-			plusNbBits.setDisable(true);
-			moinsNbBits.setDisable(true);
-			nextFront.setDisable(true);
-			previousFront.setDisable(true);
-			nextCompteur.setDisable(true);
-			previousCompteur.setDisable(true);
-			applyOpaciteForImages(btns);
-		}
-	}
+	
 	@FXML
     private TextField label;
 
@@ -117,15 +76,57 @@ public class ProprietesCompteurController extends ProprietesController{
 
     @FXML
     private Label composant;
+		
+    public Composant getCmp() {
+		return cmp;
+	}
+
+	public void setCmp(Composant cmp) {
+		this.cmp = cmp;
+	}
+
+	public void initialiser(Composant cmp){ /// initialiser les boutons nécessaires pour la fenetre
+		btns.add(imgNextCompteur);
+		btns.add(imgNextFront);
+		btns.add(imgPreviousCompteur);
+		btns.add(imgPreviousFront);
+		btns.add(imgMoinsNbBits);
+		btns.add(imgPlusNbBits);
+		this.cmp = cmp;
+		label.setText(cmp.getNom());		
+		i=cmp.getNombreEntree();
+		nbBits.setText(Integer.toString(i));
+		frnt=((Compteur)cmp).getFront().ordinal();
+		front.setText(bddFront[frnt]);
+		cmpt = (((Compteur)cmp).getCompter() == true) ? 0 : 1 ;
+		compteur.setText(bddCmp[cmpt]);		
+		if(i==2) {
+			moinsNbBits.setVisible(false);
+			imgMoinsNbBits.setVisible(false);
+		}
+		if(i==4){
+			plusNbBits.setVisible(false);
+			imgPlusNbBits.setVisible(false);
+		}
+		if (!cmp.isDessocier()) {
+			plusNbBits.setDisable(true);
+			moinsNbBits.setDisable(true);
+			nextFront.setDisable(true);
+			previousFront.setDisable(true);
+			nextCompteur.setDisable(true);
+			previousCompteur.setDisable(true);
+			applyOpaciteForImages(btns);
+		}
+	}
 
     @FXML
-    void annuler(ActionEvent event) {
+    void annuler(ActionEvent event) { /// annuler les modifications faites
     	Stage s = (Stage)annuler.getScene().getWindow(); 
     	s.close();
     }
 
     @FXML
-    void modifier(ActionEvent event) {
+    void modifier(ActionEvent event) { /// appliquer les modification nécessaires
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
     		removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
@@ -154,7 +155,7 @@ public class ProprietesCompteurController extends ProprietesController{
     }
 
     @FXML
-    void moinsNbBits(ActionEvent event) {
+    void moinsNbBits(ActionEvent event) { /// deminuer le nombre de bits
     	i--;
     	nbBits.setText(Integer.toString(i));
     	plusNbBits.setVisible(true);
@@ -166,21 +167,21 @@ public class ProprietesCompteurController extends ProprietesController{
     }
 
     @FXML
-    void nextCompteur(ActionEvent event) {
+    void nextCompteur(ActionEvent event) { /// changer le comptage (compteur / decompteur)
       	cmpt++;
     	if(cmpt > 1 ) cmpt=0;
     	compteur.setText(bddCmp[cmpt]);
     }
 
     @FXML
-    void nextFront(ActionEvent event) {
+    void nextFront(ActionEvent event) { /// changer de front
     	frnt++;
     	if(frnt > 1) frnt=0;
     	front.setText(bddFront[frnt]);
     }
 
     @FXML
-    void plusNbBits(ActionEvent event) {
+    void plusNbBits(ActionEvent event) { /// ajouter plus de bits
        	i++;
     	nbBits.setText(Integer.toString(i));
     	moinsNbBits.setVisible(true);
@@ -192,14 +193,14 @@ public class ProprietesCompteurController extends ProprietesController{
     }
 
     @FXML
-    void previousCompteur(ActionEvent event) {
+    void previousCompteur(ActionEvent event) { /// changer de comptage (compteur/decompteur)
     	cmpt--;
     	if(cmpt < 0 ) cmpt=1;
     	compteur.setText(bddCmp[cmpt]);
     }
 
     @FXML
-    void previousFront(ActionEvent event) {
+    void previousFront(ActionEvent event) { /// changer de front 
     	frnt--;
     	if(frnt < 0 ) frnt=1;
     	front.setText(bddFront[frnt]);

@@ -15,20 +15,6 @@ public class ProprietesAfficheurSegmentController extends ProprietesController{
 	/*
 	 * Controlleur de la fenetre Proprietes Afficheur Hex
 	 */
-
-	public Composant getNot() {
-		return cmp;
-	}
-
-	public void setNot(Composant cmp) {
-		this.cmp = cmp;
-	}
-
-	public void initialiser(Composant cmp) {
-		this.cmp = cmp;          
-		composant.setText("Afficheur HEX"); //le nom de la fenetre
-	}
-
 	@FXML
 	private TextField label;
 
@@ -40,9 +26,22 @@ public class ProprietesAfficheurSegmentController extends ProprietesController{
 
 	@FXML
 	private Label composant;
+
+	public Composant getNot() {
+		return cmp;
+	}
+
+	public void setNot(Composant cmp) {
+		this.cmp = cmp;
+	}
+
+	public void initialiser(Composant cmp) {/// initialiser les champs nécessaires pour la fenetre
+		this.cmp = cmp;          
+		composant.setText("Afficheur HEX"); //le nom de la fenetre
+	}
 	
 	@FXML
-	void annuler(ActionEvent event) {
+	void annuler(ActionEvent event) {/// annuler la modification
 		Stage s = (Stage)annuler.getScene().getWindow(); 
 		s.close();
 	}

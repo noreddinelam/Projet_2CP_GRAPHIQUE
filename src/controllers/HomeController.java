@@ -1471,7 +1471,6 @@ public class HomeController extends Controller {
 			public void handle(MouseEvent e) {
 				eleementAdrager.setCursor(Cursor.HAND);
 				select = true;
-				System.out.println("djfhqimdseudksg +++++++");
 			}
 		});
 

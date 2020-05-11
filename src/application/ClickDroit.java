@@ -13,7 +13,7 @@ import noyau.Composant;
 public class ClickDroit extends Stage{
 
 
-	public ClickDroit(Composant cmp,Double x,Double y,AnchorPane workSpace, Stage st) {
+	public ClickDroit(Composant cmp,Double x,Double y,AnchorPane workSpace, Stage st) { /// afficher
 		try
 		{			
 			FXMLLoader loader = new FXMLLoader();

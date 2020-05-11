@@ -32,10 +32,9 @@ public class TableDeVeriteController extends Controller implements Initializable
 
 	public ObservableList<ArrayList<String>> list = FXCollections.observableArrayList();
 
-	//public ArrayList<TableColumn<ArrayList<String>,String>> ListColonnes = new ArrayList<TableColumn<ArrayList<String>,String>>();
 	private ArrayList<String> labels = new ArrayList<String>();
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize(URL arg0, ResourceBundle arg1) { /// initialiser le necessaire pour la fenetre
 		// TODO Auto-generated method stub
 		EtatLogique tableVerite[][] = Circuit.tableVerite;
 		int j = 0,i = 1;
