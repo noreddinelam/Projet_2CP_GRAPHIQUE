@@ -1,6 +1,5 @@
 package controllers;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +11,6 @@ import javax.sound.sampled.Clip;
 import application.ClickDroitFil;
 import application.ClickSouris2;
 import javafx.animation.FadeTransition;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;

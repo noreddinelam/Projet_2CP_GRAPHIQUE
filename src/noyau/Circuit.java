@@ -191,12 +191,6 @@ public class Circuit {
 		double l=Math.pow(2, nbEntrees); // calculer le nombre de lignes de la table de verité
 		tableVerite = new EtatLogique[(int)l][c]; // initialiser la taille de la table
 		EtatLogique ligne[] ; // sert à stocker une ligne 
-		/*for (Pin pin : entreesCircuit) { // affichage des labels des pins d'entrees
-			System.out.print(pin.nom+"  ");
-		}*/
-		/*for (Affichage pin : sortiesCircuit) { // affichage des labels des pins de sorties 
-			System.out.print(((Pin)pin).nom + "  ");
-		}*/
 		for (SourceConstante cte : listSouceCte) {
 			cte.evaluer();
 		}

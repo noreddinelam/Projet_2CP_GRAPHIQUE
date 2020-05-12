@@ -24,7 +24,6 @@ public class ClickSouris2 extends Stage{ /// click droit sur le workspace
 		this.initStyle(StageStyle.UNDECORATED);
 		this.setY(y);
 		this.setFullScreen(false);
-		//this.toBack();
 		this.initOwner(st);
 		this.show();
 		} catch(Exception e) {

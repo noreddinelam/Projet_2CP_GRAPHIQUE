@@ -244,7 +244,7 @@ public class ElementChronoController implements Initializable {
 	if(!composantDeListAdroite.isEmpty())	    listeChrono.setItems(composantDeListAdroite);
 		 listeCircuit.setCellFactory(composantDeListAgauche -> new ListCellController());
 		 listeChrono.setCellFactory(composantDeListAdroite -> new ListCellController());
-/////////Traitement de drage and Drop de la fentre/////////////////////////////////////////////////////////////////////////////////
+		 /////////Traitement de drage and Drop de la fentre/////////////////////////////////////////////////////////////////////////////////
 		 header.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
