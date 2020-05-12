@@ -138,10 +138,9 @@ public class HomeController extends Controller {
 	int switchingZ = 0;
 	public static Polyline selectionne = new Polyline();
 	private static boolean select = false;
-	// utilisé dans la sauvegarde des coordonnées
-
-	double posX;
-	double posY;
+	
+	double posX; // utilisé dans la sauvegarde des coordonnées
+ 	double posY; // utilisé dans la sauvegarde des coordonnées
 
 	ArrayList<Text> listDesNoms = new ArrayList<Text>();
 	public static ArrayList<Button> btnsToHide = new ArrayList<Button>();
@@ -713,6 +712,10 @@ public class HomeController extends Controller {
 			}
 		}
 		else {
+			Controller.getRightBareButtons().get(0).setText("   Circuit personalisé");
+			Controller.getRightBareButtons().get(0).setAlignment(Pos.BASELINE_LEFT);
+			Controller.getRightBareButtons().get(1).setText("  Table de vérité");
+			Controller.getRightBareButtons().get(1).setAlignment(Pos.BASELINE_LEFT);
 			showButtonsFile();
 			remouveNomPin();
 			affichage.setOpacity(0.4);
@@ -829,7 +832,6 @@ public class HomeController extends Controller {
 				scrollPane);
 
 		ClickBarDroite tableauFenetres[] = { fichierFenetre, editionFenetre, affichageFenetre, aideFenetre };
-		//tableVerite.setVisible(false);
 		for (ClickBarDroite click : tableauFenetres) {
 			click.close();
 		}
@@ -1138,7 +1140,6 @@ public class HomeController extends Controller {
 
 					ImageView dragImageView = new ImageView();
 					dragImageView.setMouseTransparent(true);
-					// dragImageView.setViewOrder(1); //l'ordre
 					dragImageView.toFront();
 					elementAdrager.setMouseTransparent(true);
 					elementAdrager.setCursor(Cursor.CLOSED_HAND);
@@ -1453,6 +1454,8 @@ public class HomeController extends Controller {
 				if (! simul) {
 					posX = eleementAdrager.getLayoutX();
 					posY = eleementAdrager.getLayoutY();
+					afficheurX.setText("X : " + posX);
+					afficheurY.setText("Y : " + posY);
 					selectionne(eleementAdrager);
 					if (e.getButton() != MouseButton.SECONDARY) {
 						if(clickDroitFenetre != null) clickDroitFenetre.close();
@@ -1641,6 +1644,13 @@ public class HomeController extends Controller {
 									workSpace.getChildren().remove(guideXp);
 									workSpace.getChildren().remove(guideY);
 									workSpace.getChildren().remove(guideYp);
+									Composant composant = Circuit.getCompFromImage(eleementAdrager);
+									if (composant.getClass().equals(CircuitIntegre.class)) {
+										((CircuitIntegre)composant).resetCirclesPosition(posX, posY);
+									}
+									else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
+										((CircuitIntegreSequentiel)composant).resetCirclesPosition(posX, posY);
+									}
 								}
 								else {
 									posX = eleementAdrager.getLayoutX();
@@ -2473,6 +2483,8 @@ public class HomeController extends Controller {
 		Optional<ButtonType> result = alert.showAndWait();
 		if ( result.get() !=buttonTypeCancel)
 		{
+			afficheurX.setText("X : " + 0);
+			afficheurY.setText("Y : " + 0);
 			if (result.get() ==buttonTypeSauvgarder) {
 				if (fichierCourant == null) {
 					final FileChooser fileChooser = new FileChooser();
@@ -2544,6 +2556,8 @@ public class HomeController extends Controller {
 		Optional<ButtonType> result = alert.showAndWait();
 		if ( result.get() !=buttonTypeCancel)
 		{
+			afficheurX.setText("X : " + 0);
+			afficheurY.setText("Y : " + 0);
 			if (result.get() ==buttonTypeSauvgarder) {
 				if (fichierCourant == null) {
 					FileChooser fileChooser = new FileChooser();
@@ -2774,132 +2788,148 @@ public class HomeController extends Controller {
 		alert.initOwner(homeWindow);
 		alert.setY(homeWindow.getY()+250);
 		if (simul) { /// verifier si on est dans le mode de simulation
-			if(ListTextPin == null && ListTextPin2 == null) { /// verifier si les deux listes entrees / sorties sont vides
-				ListTextPin = new ArrayList<Pin>();
-				ListText = new ArrayList<Text>();
+			if(Circuit.getEntreesCircuit().size() <= 10 && Circuit.getSortiesCircuit().size() <= 10) {
+				if(ListTextPin == null && ListTextPin2 == null) { /// verifier si les deux listes entrees / sorties sont vides
+					ListTextPin = new ArrayList<Pin>();
+					ListText = new ArrayList<Text>();
 
-				ListTextPin2 = new ArrayList<Pin>();
-				ListText2 = new ArrayList<Text>();
-				try {
-					Stage s = (Stage) encapsuler.getScene().getWindow();
-					s.close();
-					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/ReminderCI.fxml"));
-					Parent root = fxmlLoader.load();
-					Stage stage = new Stage();
-					Scene scene = new Scene(root);
-					stage.setScene(scene);
-					stage.setTitle("Remarques");
-					stage.setResizable(false);
-					stage.initModality(Modality.APPLICATION_MODAL);
-					stage.initOwner(homeWindow);
-					stage.centerOnScreen();
-					stage.show();
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-				encapsuler.setText("  Encapsuler");
-				encapsuler.setAlignment(Pos.BASELINE_LEFT);
-			}else {
-				if(ListTextPin.size() == Circuit.getEntreesCircuit().size() && ListTextPin2.size() == Circuit.getSortiesCircuit().size()) {
-					/// verifier si tout les entrees / sorties sont sélectionnées
-					if(Circuit.getListeEtages().size()==0 && !horloged) {
-						ci = new CircuitIntegre(ListTextPin.size(),ListTextPin2.size(), "CircuitIntegre");
-						Collections.reverse(ListTextPin);
-						Circuit.tableVerite(ListTextPin,ListTextPin2);
-						ci.setTableVerite(Circuit.getTableVerite());
-					}else {
-						if(!horloged) { /// verifier si le circuit est alimenté par un pin d'horloge
-							if(Circuit.occurencePinHorlogee() == 1) { /// si le nombre de pin d'horloge égal à 1
-								ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
-								ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
-								for (Pin pin : ListTextPin) {
-									if(!pin.isHorloge()) {
-										entreCircuit.add(pin);
-									}else {
-										pin.setHorloge(false);
-										ciq.setHorloge(pin);
+					ListTextPin2 = new ArrayList<Pin>();
+					ListText2 = new ArrayList<Text>();
+					try {
+						Stage s = (Stage) encapsuler.getScene().getWindow();
+						s.close();
+						FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/ReminderCI.fxml"));
+						Parent root = fxmlLoader.load();
+						Stage stage = new Stage();
+						Scene scene = new Scene(root);
+						stage.setScene(scene);
+						stage.setTitle("Remarques");
+						stage.setResizable(false);
+						stage.initModality(Modality.APPLICATION_MODAL);
+						stage.initOwner(homeWindow);
+						stage.centerOnScreen();
+						stage.show();
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+					encapsuler.setText("  Encapsuler");
+					encapsuler.setAlignment(Pos.BASELINE_LEFT);
+				}else {
+					if(ListTextPin.size() == Circuit.getEntreesCircuit().size() && ListTextPin2.size() == Circuit.getSortiesCircuit().size()) {
+						/// verifier si tout les entrees / sorties sont sélectionnées
+						if(Circuit.getListeEtages().size()==0 && !horloged) {
+							ci = new CircuitIntegre(ListTextPin.size(),ListTextPin2.size(), "CircuitIntegre");
+							Collections.reverse(ListTextPin);
+							Circuit.tableVerite(ListTextPin,ListTextPin2);
+							ci.setTableVerite(Circuit.getTableVerite());
+						}else {
+							if(!horloged) { /// verifier si le circuit est alimenté par un pin d'horloge
+								if(Circuit.occurencePinHorlogee() == 1) { /// si le nombre de pin d'horloge égal à 1
+									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
+									ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
+									for (Pin pin : ListTextPin) {
+										if(!pin.isHorloge()) {
+											entreCircuit.add(pin);
+										}else {
+											pin.setHorloge(false);
+											ciq.setHorloge(pin);
+										}
 									}
+									ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+									ciq.setEntreesCircuit(entreCircuit);
+									ciq.setSortiesCircuit(ListTextPin2);
+									ciq.setListSouceCte(Circuit.getListSouceCte());
+									ciq.setListeEtages(Circuit.getListeEtages());
+									ciq.setNbEtages(Circuit.getNbEtages());
+									ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
+								}else {
+									alert.showAndWait();
 								}
-								ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
-								ciq.setEntreesCircuit(entreCircuit);
-								ciq.setSortiesCircuit(ListTextPin2);
-								ciq.setListSouceCte(Circuit.getListSouceCte());
-								ciq.setListeEtages(Circuit.getListeEtages());
-								ciq.setNbEtages(Circuit.getNbEtages());
-								ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
-							}else {
-								alert.showAndWait();
-							}
-						}else { /// le circuit possede une horloge
-							if(Circuit.occurencePinHorlogee() == 0) { /// verifier si le nombre de pin de pin egal à zero
-								ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
-								ArrayList<Pin> entreCircuit = new ArrayList<Pin>(ListTextPin);
-								Pin pinHorloge = new Pin(true, "horloge");
-								for (Composant cmp : Circuit.getCompUtilises().keySet()) {
-									if(cmp.getClass().getSimpleName().equals("Horloge")) {
-										pinHorloge.getSorties()[0] = cmp.getSorties()[0];
-										break;
+							}else { /// le circuit possede une horloge
+								if(Circuit.occurencePinHorlogee() == 0) { /// verifier si le nombre de pin de pin egal à zero
+									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
+									ArrayList<Pin> entreCircuit = new ArrayList<Pin>(ListTextPin);
+									Pin pinHorloge = new Pin(true, "horloge");
+									for (Composant cmp : Circuit.getCompUtilises().keySet()) {
+										if(cmp.getClass().getSimpleName().equals("Horloge")) {
+											pinHorloge.getSorties()[0] = cmp.getSorties()[0];
+											break;
+										}
 									}
+									ciq.setHorloge(pinHorloge);
+									ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+									ciq.setEntreesCircuit(entreCircuit);
+									ciq.setSortiesCircuit(ListTextPin2);
+									ciq.setListeEtages(Circuit.getListeEtages());
+									ciq.setNbEtages(Circuit.getNbEtages());
+									ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
+									ciq.setListSouceCte(Circuit.getListSouceCte());
+								}else {
+									alert.showAndWait();
 								}
-								ciq.setHorloge(pinHorloge);
-								ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
-								ciq.setEntreesCircuit(entreCircuit);
-								ciq.setSortiesCircuit(ListTextPin2);
-								ciq.setListeEtages(Circuit.getListeEtages());
-								ciq.setNbEtages(Circuit.getNbEtages());
-								ciq.setFilUtilises(new ArrayList<Fil>(Circuit.getfilUtilises().keySet()));
-								ciq.setListSouceCte(Circuit.getListSouceCte());
-							}else {
-								alert.showAndWait();
 							}
 						}
-					}
-					opacityElements4();
+						opacityElements4();
 
-					final FileChooser fileChooser = new FileChooser(); /// sert à la specification de l'emplacement ou il faut mettre le circuit
-					fileChooser.setInitialDirectory(
-							new File(System.getProperty("user.home"))
-							);               
-					fileChooser.getExtensionFilters().addAll(
-							new FileChooser.ExtensionFilter("INT", "*.int")
-							);/// ajouter l'extension des fichiers
-					if (ciq != null || ci != null) {
-						File f = fileChooser.showSaveDialog(homeWindow);
-						if (f != null) {
-							try {
-								fichier = new FileOutputStream(f.getAbsolutePath());
-								oo = new ObjectOutputStream(fichier);
-								if(ci!=null) {
-									oo.writeObject(ci);
-								}else if(ciq != null){
-									oo.writeObject(ciq);
-								}
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-							finally {
+						final FileChooser fileChooser = new FileChooser(); /// sert à la specification de l'emplacement ou il faut mettre le circuit
+						fileChooser.setInitialDirectory(
+								new File(System.getProperty("user.home"))
+								);               
+						fileChooser.getExtensionFilters().addAll(
+								new FileChooser.ExtensionFilter("INT", "*.int")
+								);/// ajouter l'extension des fichiers
+						if (ciq != null || ci != null) {
+							File f = fileChooser.showSaveDialog(homeWindow);
+							System.out.println("le fichier : "+f);
+							if (f != null) {
 								try {
-									oo.close();
-								} catch (IOException e) {
+									fichier = new FileOutputStream(f.getAbsolutePath());
+									oo = new ObjectOutputStream(fichier);
+									if(ci!=null) {
+										oo.writeObject(ci);
+									}else if(ciq != null){
+										oo.writeObject(ciq);
+									}
+									encapsuler.setText("  Circuit personalisé");
+								} catch (Exception e) {
 									e.printStackTrace();
 								}
+								finally {
+									try {
+										oo.close();
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+								}
 							}
 						}
+					}else {
+						Alert a = new Alert(AlertType.WARNING);
+						a.initOwner(homeWindow);
+						a.initStyle(StageStyle.UTILITY);
+						a.setHeaderText("Circuit integré erreur");
+						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+						a.setTitle("Circuit Integré");
+						a.setContentText("Entrée ou sortie non selectionnée");
+						a.initOwner(homeWindow);
+						a.initStyle(StageStyle.UTILITY);
+						a.setX(homeWindow.getX()+500);
+						a.setY(homeWindow.getY()+250);
+						a.showAndWait();
 					}
-				}else {
-					Alert a = new Alert(AlertType.WARNING);
-					a.initOwner(homeWindow);
-					a.initStyle(StageStyle.UTILITY);
-					a.setHeaderText("Circuit integré erreur");
-					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
-					a.setTitle("Circuit Integré");
-					a.setContentText("Entrée ou sortie non selectionnée");
-					a.initOwner(homeWindow);
-					a.initStyle(StageStyle.UTILITY);
-					a.setX(homeWindow.getX()+500);
-					a.setY(homeWindow.getY()+250);
-					a.showAndWait();
 				}
+			}
+			else {
+				Alert a = new Alert(AlertType.INFORMATION);
+				a.initOwner(homeWindow);
+				a.initStyle(StageStyle.UTILITY);
+				a.setHeaderText("Circuit integré");
+				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				a.setTitle("Circuit Integré");
+				a.setContentText("Le circuit contient plus de 10 entrées ou sorties");
+				a.initOwner(homeWindow);
+				a.initStyle(StageStyle.UTILITY);
+				a.showAndWait();
 			}
 		}
 		Stage s = (Stage) encapsuler.getScene().getWindow();
@@ -2907,7 +2937,6 @@ public class HomeController extends Controller {
 	}
 
 	@FXML
-
 	void chronogramme(ActionEvent event) { /// charger la fenetre du chronogramme
 		Stage s = (Stage) chronogramme.getScene().getWindow();
 		s.close();
