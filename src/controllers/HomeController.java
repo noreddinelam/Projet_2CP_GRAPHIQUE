@@ -2818,10 +2818,23 @@ public class HomeController extends Controller {
 					if(ListTextPin.size() == Circuit.getEntreesCircuit().size() && ListTextPin2.size() == Circuit.getSortiesCircuit().size()) {
 						/// verifier si tout les entrees / sorties sont sélectionnées
 						if(Circuit.getListeEtages().size()==0 && !horloged) {
-							ci = new CircuitIntegre(ListTextPin.size(),ListTextPin2.size(), "CircuitIntegre");
-							Collections.reverse(ListTextPin);
-							Circuit.tableVerite(ListTextPin,ListTextPin2);
-							ci.setTableVerite(Circuit.getTableVerite());
+							if (Circuit.getEntreesCircuit().size() != 0 && Circuit.getSortiesCircuit().size() != 0) {
+								ci = new CircuitIntegre(ListTextPin.size(),ListTextPin2.size(), "CircuitIntegre");
+								Collections.reverse(ListTextPin);
+								Circuit.tableVerite(ListTextPin,ListTextPin2);
+								ci.setTableVerite(Circuit.getTableVerite());
+							}
+							else {
+								Alert a = new Alert(AlertType.ERROR);
+								a.initOwner(homeWindow);
+								a.initStyle(StageStyle.UTILITY);
+								a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+								a.setTitle("Entree / sortie manquante");
+								a.setHeaderText("Pas d'entrées ou de sorties dans le circuit");
+								a.setContentText("Il faut exister au moins une entrée et une sortie pour générer la table de verité");
+								a.initStyle(StageStyle.UTILITY);
+								alert.showAndWait();
+							}
 						}else {
 							if(!horloged) { /// verifier si le circuit est alimenté par un pin d'horloge
 								if(Circuit.occurencePinHorlogee() == 1) { /// si le nombre de pin d'horloge égal à 1
@@ -2880,7 +2893,6 @@ public class HomeController extends Controller {
 								);/// ajouter l'extension des fichiers
 						if (ciq != null || ci != null) {
 							File f = fileChooser.showSaveDialog(homeWindow);
-							System.out.println("le fichier : "+f);
 							if (f != null) {
 								try {
 									fichier = new FileOutputStream(f.getAbsolutePath());
@@ -3058,7 +3070,6 @@ public class HomeController extends Controller {
 						alert.setHeaderText("Pas de selection ");
 						alert.setContentText("Il faut que vous sélectionner au moins une entrée et une sortie pour générer la table de verité !");
 						alert.initStyle(StageStyle.UTILITY);
-						alert.initOwner(homeWindow);
 						alert.setX(homeWindow.getX()+500);
 						alert.setY(homeWindow.getY()+250);
 						alert.showAndWait();
