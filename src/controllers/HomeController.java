@@ -1431,7 +1431,7 @@ public class HomeController extends Controller {
 	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant
 		//est ajoute dans le workSpace
 
-		eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
+		eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() { // ajouter un effet quand on rentre avec la souris dans l'image
 			@Override
 			public void handle(MouseEvent e) {
 				eleementAdrager.setCursor(Cursor.HAND);
@@ -1439,7 +1439,7 @@ public class HomeController extends Controller {
 			}
 		});
 
-		eleementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() {
+		eleementAdrager.setOnMouseExited(new EventHandler<MouseEvent>() { // ajouter un effey quand on sort de l'image
 
 			@Override
 			public void handle(MouseEvent arg0) {
@@ -1487,7 +1487,7 @@ public class HomeController extends Controller {
 
 						if (clickDroitFenetre != null)
 							clickDroitFenetre.close();
-						if (clicDroitX > 1140) {
+						if (clicDroitX > 1140) { /// faire un traitement pour l'affichage de la fenetre du click droit du composant
 							if (clicDroitY > 550) {
 								clickDroitFenetre = new ClickDroit(composant,clicDroitX-150,clicDroitY-150,workSpace, homeWindow);
 							}
@@ -1519,7 +1519,6 @@ public class HomeController extends Controller {
 							if (!simul) {	
 								workSpace.getChildren().remove(selectionne);
 								if (e.getButton() == MouseButton.PRIMARY) {
-									//ajout des points
 									addPoints();/// ajouter les points
 									Composant ci=Circuit.getCompFromImage(eleementAdrager);
 									if (ci.getClass().getSimpleName().equals("CircuitIntegre")) {
@@ -1567,7 +1566,7 @@ public class HomeController extends Controller {
 										afficheurY.setText("Y : 0");
 
 									}
-									if (e.getSceneX() > 1275) {
+									if (e.getSceneX() > 1275) { /// pour faire le defilemen du scroll Pane
 										scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 										scrollPane.setHvalue(scrollPane.getHvalue() + 0.01);
 									}
@@ -1586,7 +1585,7 @@ public class HomeController extends Controller {
 
 								}
 
-								else
+								else /// seter les coordonnees des coordonées des composants
 								{
 									guideX.setLayoutX(0);
 									guideY.setLayoutY(0);
@@ -1626,14 +1625,12 @@ public class HomeController extends Controller {
 							public void handle(MouseEvent e) {
 								if (! simul) {
 									dragItem = null;
-									if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY())
+									if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY()) /// verifier si la position du composant a été modifié
 									{
-										Donnes sauveGarde=new Donnes();
+										Donnes sauveGarde=new Donnes(); /// faire une sauvegarde de mouvement
 										sauveGarde.setTypeDaction(Actions.Mouvement);
 										sauveGarde.setComposantCommeImage(eleementAdrager);
 										sauveGarde.setSwitching(switchingZ);											
-										
-										//undoDeque.remove(sauveGarde);
 										sauveGarde.setPosX(posX);
 										sauveGarde.setPosY(posY);
 										undoDeque.addFirst(sauveGarde);
@@ -1641,9 +1638,10 @@ public class HomeController extends Controller {
 									eleementAdrager.setMouseTransparent(false);
 									eleementAdrager.setCursor(Cursor.DEFAULT);
 									if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>720 || intersectionComposant(eleementAdrager))
+									/// verifier si le composant a été déposé dans une zone interdite
 									{
-										eleementAdrager.setLayoutX(posX);
-										eleementAdrager.setLayoutY(posY);
+										eleementAdrager.setLayoutX(posX); //
+										eleementAdrager.setLayoutY(posY); // rendre le composant à sa place précedante
 										updatePolyline(eleementAdrager);
 										afficheurX.setText(String.valueOf(posX));
 										afficheurY.setText(String.valueOf(posY));
@@ -1662,7 +1660,7 @@ public class HomeController extends Controller {
 					});
 
 				}else {
-					if(ListTextPin == null) {
+					if(ListTextPin == null) { /// pour donner la main à l'utilisateur pour changer la valeur stocké dans le pin
 						if (eleementAdrager.getId().equals("pin")) {
 							Pin pin = (Pin) Circuit.getCompFromImage(eleementAdrager);
 							if (pin.getInput()) {
@@ -1685,9 +1683,9 @@ public class HomeController extends Controller {
 							}
 						}
 					}else {
-						Composant compos = Circuit.getCompFromImage(eleementAdrager);
+						Composant compos = Circuit.getCompFromImage(eleementAdrager); /// pour donner la main pour selectionner l'ordre des pins d'entrees et sorties
 						if(compos.getClass().getSimpleName().equals("Pin")) {
-							if( ((Pin)compos).isInput()) {
+							if( ((Pin)compos).isInput()) { /// verifier si c'est un pin d'entree
 								if(!ListTextPin.contains(compos)){
 									Text number = new Text();
 									number.setLayoutX(eleementAdrager.getLayoutX()-9);
@@ -1722,7 +1720,7 @@ public class HomeController extends Controller {
 									}
 								}
 							}
-							else {
+							else { /// pin de sortie
 								if(!ListTextPin2.contains(compos)){
 									Text number = new Text();
 									number.setLayoutX(eleementAdrager.getLayoutX() - 9  );
@@ -1735,7 +1733,7 @@ public class HomeController extends Controller {
 									workSpace.getChildren().add(number);
 									ListTextPin2.add((Pin)compos);
 									ListText2.add(number);
-								}else {
+								}else { /// afficher une alerte si un pin est re-sélectionné
 									Alert alert = new Alert(AlertType.CONFIRMATION);
 									alert.initOwner(homeWindow);
 									alert.initStyle(StageStyle.UTILITY);
@@ -2005,7 +2003,7 @@ public class HomeController extends Controller {
 		guideFilY.setEndY(0);
 	}
 
-	private void instanceComposant(ImageView img) {
+	private void instanceComposant(ImageView img) { /// cette est utilisé pour faire une instance d'un composant selon une image donné
 		Composant comp;
 		switch (img.getId()) {
 		case "hex": {
@@ -2103,24 +2101,10 @@ public class HomeController extends Controller {
 			comp = new Encodeur(2, "");
 		}
 		}
-		Circuit.ajouterComposant(comp, img);
+		Circuit.ajouterComposant(comp, img); /// ajout du composant au hashmap des composant utilisé
 	}
 
-	/*private Polyline AjouterLignesInitiale(ImageView composant) {
-    	double x=composant.getLayoutX()+composant.getBoundsInLocal().getWidth()-5;
-    	double y=composant.getLayoutY()+composant.getBoundsInLocal().getHeight()/2;
-    	Polyline a = new Polyline(x,y,x+8,y); //(x,y,x+8,y) avec x,y coordonnees de la sortie
-		a.setStrokeWidth(3);
-		a.setSmooth(true);
-		a.setStrokeType(StrokeType.CENTERED);
-		a.setCursor(Cursor.HAND);
-		ajouterGeste(a);
-		testPoly = a;
-		return a;
-    }*/
-
-
-	private boolean intersectionComposant(ImageView image) {
+	private boolean intersectionComposant(ImageView image) { /// 
 		boolean trouv = false;
 		Collection<ImageView> list = Circuit.getCompUtilises().values();
 		Iterator<ImageView> iterator = list.iterator();
@@ -3298,7 +3282,21 @@ public class HomeController extends Controller {
 						((Demultiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
 						composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
 					}
-					else if(composant.getClass().equals(Pin.class)) ((Pin)composant).setInput(sauveGarde.getTypePin());
+					else if(composant.getClass().equals(Pin.class)) {
+						if (sauveGarde.getTypePin()){
+							if (! ((Pin)composant).getInput()) {
+								Circuit.getEntreesCircuit().add((Pin)composant);
+								Circuit.getSortiesCircuit().remove((Pin)composant);
+							}
+						}
+						else {
+							if (((Pin)composant).getInput()) {
+								Circuit.getEntreesCircuit().remove((Pin)composant);
+								Circuit.getSortiesCircuit().add((Pin)composant);
+							}
+						}
+						((Pin)composant).setInput(sauveGarde.getTypePin());
+					}
 					else if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
 					else if(composant.getClass().equals(Horloge.class)) ((Horloge)horloge).setTemps(sauveGarde.getFrequence());
 					addAllPolylinesToWorkSpace(composant.generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY()));
