@@ -222,7 +222,6 @@ public class Circuit {
 			for (int j = 0; j < tableVerite[i].length; j++) {
 				System.out.print(tableVerite[i][j].getNum() + " | ");
 			}
-			System.out.println();
 		}
 	}
 	public static void initialiser() {// à completer au fur et mesure .

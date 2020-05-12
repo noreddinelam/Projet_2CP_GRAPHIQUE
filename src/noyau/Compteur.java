@@ -127,7 +127,6 @@ public class Compteur extends Sequentiels{
 		// TODO Auto-generated method stub
 		if (load.getEtatLogiqueFil() == EtatLogique.ZERO) {
 			for (int i = 0; i < nombreEntree; i++) {
-				System.out.println("Entree [ "+ i + " ] " +entrees[i]);
 				etatPrec[i] = entrees[i].getEtatLogiqueFil();
 			}
 		}

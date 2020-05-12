@@ -139,7 +139,6 @@ public class ProprietesRegistreController extends ProprietesController{
 			else
 				((RegistreDecalage)cmp).setDecalageDroite(true);
 			cmp.setCord();
-			System.out.println("FRONT : "+((Sequentiels)cmp).getFront());
 			cmp.getLesCoordonnees().setNbCordEntree(i+1);
 			Image image = new Image(cmp.generatePath());
 			ImageView imageView = Circuit.getImageFromComp(cmp);
