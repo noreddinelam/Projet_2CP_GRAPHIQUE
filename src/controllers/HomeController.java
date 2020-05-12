@@ -3070,8 +3070,6 @@ public class HomeController extends Controller {
 						alert.setHeaderText("Pas de selection ");
 						alert.setContentText("Il faut que vous sélectionner au moins une entrée et une sortie pour générer la table de verité !");
 						alert.initStyle(StageStyle.UTILITY);
-						alert.setX(homeWindow.getX()+500);
-						alert.setY(homeWindow.getY()+250);
 						alert.showAndWait();
 					}
 				}
@@ -3085,9 +3083,6 @@ public class HomeController extends Controller {
 				alert.setHeaderText("Pas d'entrées ou de sorties dans le circuit");
 				alert.setContentText("Il faut exister au moins une entrée et une sortie pour générer la table de verité");
 				alert.initStyle(StageStyle.UTILITY);
-				alert.initOwner(homeWindow);
-				alert.setX(homeWindow.getX()+500);
-				alert.setY(homeWindow.getY()+250);
 				alert.showAndWait();
 			}
 		}
