@@ -343,7 +343,6 @@ public class RegistreDecalage extends Sequentiels {
 		else if (entreeHorloge == null) {
 			Circuit.AjouterUneException(new HorlogeManquante(TypesExceptions.ERREUR,this));
 			Circuit.ajouterCompErrone(this);
-			System.out.println("husdhih");
 		}
 		else if (entrees[0] == null) {
 			Circuit.AjouterUneException(new EntreeManquante(TypesExceptions.ERREUR,this,0));

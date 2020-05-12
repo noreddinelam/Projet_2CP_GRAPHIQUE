@@ -43,7 +43,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="encapsuler" layoutX="3.0" layoutY="172.0" mnemonicParsing="false" onAction="#encapsulerEtSauvgarder" prefHeight="42.0" prefWidth="236.0" text="Encapsuler et sauvegarder                       ">
+      <Button fx:id="encapsuler" layoutX="3.0" layoutY="172.0" mnemonicParsing="false" onAction="#encapsulerEtSauvgarder" prefHeight="42.0" prefWidth="236.0" text="Circuit personnalisé                                 ">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>

@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import noyau.Circuit;
+import noyau.CircuitIntegreSequentiel;
 import noyau.Composant;
 import noyau.ComposantDeChronogramme;
 import noyau.Compteur;
@@ -235,7 +236,7 @@ public class ElementChronoController implements Initializable {
 		composantDeListAdroite=  FXCollections.observableArrayList();
 		composantDeListAdroite.add((Horloge)Circuit.getCompFromImage(HomeController.horlogeDeCercuit));
 		for (Sequentiels sequentiels : Circuit.getListeEtages()) {
-			if(! sequentiels.getClass().equals(Compteur.class))
+			if(! sequentiels.getClass().equals(Compteur.class) && !sequentiels.getClass().equals(CircuitIntegreSequentiel.class))
 				composantDeListAgauche.add(sequentiels);
 		}
 	if(! Circuit.getSortiesCircuit().isEmpty())     composantDeListAgauche.addAll(Circuit.getSortiesCircuit());
@@ -243,7 +244,7 @@ public class ElementChronoController implements Initializable {
 	if(!composantDeListAdroite.isEmpty())	    listeChrono.setItems(composantDeListAdroite);
 		 listeCircuit.setCellFactory(composantDeListAgauche -> new ListCellController());
 		 listeChrono.setCellFactory(composantDeListAdroite -> new ListCellController());
-/////////Traitement de drage and Drop de la fentre/////////////////////////////////////////////////////////////////////////////////
+		 /////////Traitement de drage and Drop de la fentre/////////////////////////////////////////////////////////////////////////////////
 		 header.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
