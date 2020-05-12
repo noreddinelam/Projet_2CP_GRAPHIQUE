@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import noyau.Circuit;
+import noyau.CircuitIntegreSequentiel;
 import noyau.Composant;
 import noyau.ComposantDeChronogramme;
 import noyau.Compteur;
@@ -115,7 +116,7 @@ public class ElementChronoController implements Initializable {
 			i++;
 		}
 		i=0;
-		while(i<10 && i<Circuit.getSortiesCircuit().size())//Ajout des Pin de sorties
+		while(i<10 && i<Circuit.getSortiesCircuit().size())//Ajout des Pins de sorties
 		{
 			if(composantDeListAdroite.contains(Circuit.getSortiesCircuit().get(i))) ChronogrammeController.pinDeSorties.add( Circuit.getSortiesCircuit().get(i));
 			i++;
@@ -235,7 +236,7 @@ public class ElementChronoController implements Initializable {
 		composantDeListAdroite=  FXCollections.observableArrayList();
 		composantDeListAdroite.add((Horloge)Circuit.getCompFromImage(HomeController.horlogeDeCercuit));
 		for (Sequentiels sequentiels : Circuit.getListeEtages()) {
-			if(! sequentiels.getClass().equals(Compteur.class))
+			if(! sequentiels.getClass().equals(Compteur.class) && !sequentiels.getClass().equals(CircuitIntegreSequentiel.class))
 				composantDeListAgauche.add(sequentiels);
 		}
 	if(! Circuit.getSortiesCircuit().isEmpty())     composantDeListAgauche.addAll(Circuit.getSortiesCircuit());

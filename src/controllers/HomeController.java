@@ -1728,8 +1728,8 @@ public class HomeController extends Controller {
 									String id = Integer.toString(ListTextPin2.size()+1);
 									number.setText(id);
 									number.setId(id);
-									number.setStroke(Color.RED);
 									number.setFont(Font.font("Calisto MT",FontWeight.NORMAL,18));
+								    number.setFill(Color.web("#e4e4e4"));
 									workSpace.getChildren().add(number);
 									ListTextPin2.add((Pin)compos);
 									ListText2.add(number);
