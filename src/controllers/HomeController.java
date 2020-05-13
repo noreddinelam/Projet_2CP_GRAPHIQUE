@@ -2833,7 +2833,7 @@ public class HomeController extends Controller {
 								a.setHeaderText("Pas d'entrées ou de sorties dans le circuit");
 								a.setContentText("Il faut exister au moins une entrée et une sortie pour générer la table de verité");
 								a.initStyle(StageStyle.UTILITY);
-								alert.showAndWait();
+								a.showAndWait();
 							}
 						}else {
 							if(!horloged) { /// verifier si le circuit est alimenté par un pin d'horloge
