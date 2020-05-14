@@ -23,6 +23,8 @@ import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
+import com.sun.glass.ui.Size;
+
 import application.ClickBarDroite;
 import application.ClickDroit;
 import application.ClickDroitLabel;
@@ -2863,6 +2865,8 @@ public class HomeController extends Controller {
 									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
 									ArrayList<Pin> entreCircuit = new ArrayList<Pin>(ListTextPin);
 									Pin pinHorloge = new Pin(true, "horloge");
+									Circuit.getEntreesCircuit().remove(pinHorloge);
+									Circuit.getCompUtilises().remove(pinHorloge);
 									for (Composant cmp : Circuit.getCompUtilises().keySet()) {
 										if(cmp.getClass().getSimpleName().equals("Horloge")) {
 											pinHorloge.getSorties()[0] = cmp.getSorties()[0];
@@ -2956,6 +2960,8 @@ public class HomeController extends Controller {
 			try {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/elementDechronogramme.fxml"));
 				Parent root = fxmlLoader.load();
+				ElementChronoController controller = fxmlLoader.getController();
+				controller.setParentStage(homeWindow);
 				Stage stage = new Stage();
 				Scene scene = new Scene(root);
 				stage.setScene(scene);

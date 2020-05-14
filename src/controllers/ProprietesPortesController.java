@@ -124,6 +124,7 @@ public class ProprietesPortesController extends ProprietesController{
     //Sauvgarder les changements 
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
+    		HomeController.sauveGarderModification();
     		ImageView img= Circuit.getImageFromComp(cmp);
     		cmp.setNombreEntree(i);
     		cmp.getLesCoordonnees().setNbCordEntree(i);  		

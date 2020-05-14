@@ -129,6 +129,7 @@ public class ProprietesCompteurController extends ProprietesController{
     void modifier(ActionEvent event) { /// appliquer les modification nécessaires
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
+    		HomeController.sauveGarderModification();
     		removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
     		cmp.setNombreEntree(i);
     		cmp.setNombreSortieAndUpdateFil(i);

@@ -38,6 +38,7 @@ public class ProprietesHorlogeController extends ProprietesController{
 	void modifier(ActionEvent event) { /// appliquer les modifications faites
 		if(Double.parseDouble(frequance.getText())<=10)
 		{
+			HomeController.sauveGarderModification();
 			cmp.setNom(label.getText());
 			Horloge.temps=arrondi((1/Double.parseDouble(frequance.getText()))*1000, 0);
 			Stage s = (Stage)mdf.getScene().getWindow(); 

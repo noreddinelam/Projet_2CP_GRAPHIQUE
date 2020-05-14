@@ -107,6 +107,7 @@ public class ProprietesMuxController extends ProprietesController {
 	void modifier(ActionEvent event) { /// appliquer les modifications faites
 		cmp.setNom(label.getText());
 		if (cmp.isDessocier()) {
+			HomeController.sauveGarderModification();
 			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
 			((Multiplexeur)cmp).setNbCommande(i);
 			int nbEntree = (int)Math.pow(2, i);

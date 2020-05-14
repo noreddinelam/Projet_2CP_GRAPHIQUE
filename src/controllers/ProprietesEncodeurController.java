@@ -107,6 +107,7 @@ public class ProprietesEncodeurController extends ProprietesController{
 		cmp.setNom(label.getText());
 
 		if (cmp.isDessocier()) {
+			HomeController.sauveGarderModification();
 			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
 			cmp.setNombreSortieAndUpdateFil(i);
 			int nbEntree = (int)Math.pow(2, i);

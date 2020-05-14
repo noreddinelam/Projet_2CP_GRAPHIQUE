@@ -16,7 +16,6 @@ public class ClickDroitFil extends Stage{ /// pour afficher la fenetre click dro
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("ClickDroitFil.fxml"));
 			Parent root = loader.load();
-			System.out.println(root);
 			ClickDroitFilController c=loader.getController();
 			c.setLine(line);
 			ClickDroitFilController.setPane(workSpace);

@@ -94,6 +94,7 @@ public class ProprietesDemuxController extends ProprietesController{
     	//Sauvgarder les changements 
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
+    		HomeController.sauveGarderModification();
     		removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
     		((Demultiplexeur)cmp).setNbCommande(i);
     		int nbSortie = (int)Math.pow(2, i);

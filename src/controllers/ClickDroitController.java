@@ -138,7 +138,7 @@ public class ClickDroitController extends Controller{
 		//remouver la selection 
 		workSpace.getChildren().remove(HomeController.selectionne);
 		Stage s = (Stage)prop.getScene().getWindow(); 
-		HomeController.sauveGarderModification();
+//		HomeController.sauveGarderModification();
     	s.close();
 		String nom = cmp.getClass().getSimpleName(), key;
 		if(bddPortes.contains(nom)) { /// si c'est une porte
