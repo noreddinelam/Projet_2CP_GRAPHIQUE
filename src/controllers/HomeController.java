@@ -2833,7 +2833,7 @@ public class HomeController extends Controller {
 								a.setHeaderText("Pas d'entrées ou de sorties dans le circuit");
 								a.setContentText("Il faut exister au moins une entrée et une sortie pour générer la table de verité");
 								a.initStyle(StageStyle.UTILITY);
-								alert.showAndWait();
+								a.showAndWait();
 							}
 						}else {
 							if(!horloged) { /// verifier si le circuit est alimenté par un pin d'horloge
@@ -3941,6 +3941,7 @@ public class HomeController extends Controller {
 	public void remplireNomPinEtAfficher() { /// afficher les noms des pins dans le mode de simulation
 		Text text;
 		ImageView imageView;
+		System.out.println(Circuit.getSortiesCircuit() + "fffff" +Circuit.getEntreesCircuit());
 		for (Pin pin : Circuit.getEntreesCircuit()) {
 			imageView = Circuit.getImageFromComp(pin);
 			text = new Text(pin.getNom());

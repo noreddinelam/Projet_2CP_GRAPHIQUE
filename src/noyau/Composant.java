@@ -118,7 +118,7 @@ public abstract class Composant implements Serializable{
 			entrees[i].addEtages(etage);
 		}
 	}
-	public void defaultValue() {
+	public void defaultValue() {//affecter la valeur par defaut au composant apres la simulation 
 		for (int i = 0; i < nombreSortie; i++) {
 			etatFinal[i] = EtatLogique.HAUTE_IMPEDANCE;
 		}
