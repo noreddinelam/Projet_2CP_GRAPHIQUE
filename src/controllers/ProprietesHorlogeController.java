@@ -39,7 +39,11 @@ public class ProprietesHorlogeController extends ProprietesController{
 		if(Double.parseDouble(frequance.getText())<=10)
 		{
 			cmp.setNom(label.getText());
-			Horloge.temps=arrondi((1/Double.parseDouble(frequance.getText()))*1000, 0);
+			long tmp =arrondi((1/Double.parseDouble(frequance.getText()))*1000, 0);
+			if (tmp != Horloge.temps) {
+				HomeController.sauveGarderModification();
+			}
+			Horloge.temps=tmp;
 			Stage s = (Stage)mdf.getScene().getWindow(); 
 			s.close();
 		}

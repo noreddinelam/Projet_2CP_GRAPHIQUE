@@ -127,6 +127,7 @@ public class ProprietesRegistreController extends ProprietesController{
 	void modifier(ActionEvent event) {/// appliquer les modifications faites
 		cmp.setNom(label.getText());
 		if (cmp.isDessocier()) {
+			HomeController.sauveGarderModification();
 			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
 			((RegistreDecalage)cmp).setTaille(i);
 			((RegistreDecalage)cmp).setNombreEntree(i+1);

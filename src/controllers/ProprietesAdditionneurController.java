@@ -115,6 +115,7 @@ public class ProprietesAdditionneurController extends ProprietesController{
     //Sauvgarder les changements 
     	cmp.setNom(label.getText());
     		if (cmp.isDessocier()) {
+    			HomeController.sauveGarderModification();
     			removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(cmp));
     			if(cmp.getClass().getSimpleName().equals("DemiAdditionneur"))
     			{

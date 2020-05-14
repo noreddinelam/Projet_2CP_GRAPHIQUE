@@ -111,6 +111,7 @@ public class ProprietesPinController extends ProprietesController{
     void modifier(ActionEvent event) { /// appliquer les modifications faites
     	cmp.setNom(label.getText());
     	if (cmp.isDessocier()) {
+    		HomeController.sauveGarderModification();
         	Pin pin =((Pin)cmp);
         	ImageView imageView = Circuit.getImageFromComp(cmp);
         	if(putInt == 0){ //Entrée 

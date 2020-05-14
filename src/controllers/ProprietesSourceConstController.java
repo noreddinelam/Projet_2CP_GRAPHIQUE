@@ -94,6 +94,7 @@ public class ProprietesSourceConstController extends ProprietesController {					
 
 		cmp.setNom(label.getText());
 		if (cmp.isDessocier()) {
+			HomeController.sauveGarderModification();
 			cmp.setCord();
 			Circuit.getImageFromComp(cmp).setImage(new Image(cmp.generatePath()));
 		} 

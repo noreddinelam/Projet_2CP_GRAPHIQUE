@@ -20,11 +20,11 @@ public class Circuit {
 	private static ArrayList<Sequentiels> listeEtages = new ArrayList<Sequentiels>(); // la liste des etages pour les elts sequentiels 
 	private static int nbEtages = 0; // nombre des etages	
 	private static ArrayList<SourceConstante> listSouceCte = new ArrayList<SourceConstante>();//liste des sources constants
-	private static ArrayList<ExceptionProgramme> circuitException = new ArrayList<ExceptionProgramme>();
-	private static ArrayList<Composant> composantsErronee = new ArrayList<Composant>();
+	private static ArrayList<ExceptionProgramme> circuitException = new ArrayList<ExceptionProgramme>(); // la liste des exceptions du circuit
+	private static ArrayList<Composant> composantsErronee = new ArrayList<Composant>();// la liste des composants erronés
 
 	
-	public static void ajouterCompErrone(Composant composant) { /// pour ajouter des composant erronnes
+	public static void ajouterCompErrone(Composant composant) { /// pour ajouter des composant erronnés
 		composantsErronee.add(composant);
 	}
 	

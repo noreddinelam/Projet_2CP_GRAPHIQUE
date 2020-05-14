@@ -62,6 +62,7 @@ public class ElementChronoController implements Initializable {
     private HBox header;
    
     Stage stage ;
+    Stage parentStage;
     /////Variables de Drage and drop 
     private static double xOffset = 0;
     private static double yOffset = 0;
@@ -135,6 +136,7 @@ public class ElementChronoController implements Initializable {
 			scene.setFill(Color.TRANSPARENT);
 			stage.initStyle(StageStyle.TRANSPARENT);
 			stage.setAlwaysOnTop(true);
+			stage.initOwner(parentStage);
 			scene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST,
 					this::closeWindowEvent);
 			scene.setFill(Color.TRANSPARENT);
@@ -315,5 +317,13 @@ public class ElementChronoController implements Initializable {
 		
 	}
 
+	public Stage getParentStage() {
+		return parentStage;
+	}
+
+	public void setParentStage(Stage parentStage) {
+		this.parentStage = parentStage;
+	}
+	
 
 }

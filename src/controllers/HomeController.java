@@ -23,6 +23,8 @@ import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
+import com.sun.glass.ui.Size;
+
 import application.ClickBarDroite;
 import application.ClickDroit;
 import application.ClickDroitLabel;
@@ -2863,6 +2865,8 @@ public class HomeController extends Controller {
 									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
 									ArrayList<Pin> entreCircuit = new ArrayList<Pin>(ListTextPin);
 									Pin pinHorloge = new Pin(true, "horloge");
+									Circuit.getEntreesCircuit().remove(pinHorloge);
+									Circuit.getCompUtilises().remove(pinHorloge);
 									for (Composant cmp : Circuit.getCompUtilises().keySet()) {
 										if(cmp.getClass().getSimpleName().equals("Horloge")) {
 											pinHorloge.getSorties()[0] = cmp.getSorties()[0];
@@ -2956,6 +2960,8 @@ public class HomeController extends Controller {
 			try {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/elementDechronogramme.fxml"));
 				Parent root = fxmlLoader.load();
+				ElementChronoController controller = fxmlLoader.getController();
+				controller.setParentStage(homeWindow);
 				Stage stage = new Stage();
 				Scene scene = new Scene(root);
 				stage.setScene(scene);
@@ -3257,40 +3263,42 @@ public class HomeController extends Controller {
 				{
 					ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
 					Composant composant= Circuit.getCompFromImage( imageDeComposant);
-					imageDeComposant.setImage(sauveGarde.getImage());
-					imageDeComposant.setFitHeight(sauveGarde.getImage().getHeight());
-					imageDeComposant.setFitWidth(imageDeComposant.getImage().getWidth());
-					removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(composant));
-					composant.setNombreEntree(sauveGarde.getNombreDesEntrees());
-					composant.setNombreSortie(sauveGarde.getNombreDesSorties());
-					composant.getLesCoordonnees().setNbCordEntree(sauveGarde.getNombreDesEntrees());
-					composant.getLesCoordonnees().setNbCordSorties(sauveGarde.getNombreDesSorties());
-					if (composant.getClass().equals(Multiplexeur.class)) {
-						((Multiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
-						composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
-					}
-					else if(composant.getClass().equals(Demultiplexeur.class)){
-						((Demultiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
-						composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
-					}
-					else if(composant.getClass().equals(Pin.class)) {
-						if (sauveGarde.getTypePin()){
-							if (! ((Pin)composant).getInput()) {
-								Circuit.getEntreesCircuit().add((Pin)composant);
-								Circuit.getSortiesCircuit().remove((Pin)composant);
-							}
+					if(!composant.getClass().equals(Horloge.class)) {
+						imageDeComposant.setImage(sauveGarde.getImage());
+						imageDeComposant.setFitHeight(sauveGarde.getImage().getHeight());
+						imageDeComposant.setFitWidth(imageDeComposant.getImage().getWidth());
+						removeAllPolylinesFromWorkSpace(Circuit.supprimerAllPolylinesForCompounent(composant));
+						composant.setNombreEntree(sauveGarde.getNombreDesEntrees());
+						composant.setNombreSortie(sauveGarde.getNombreDesSorties());
+						composant.getLesCoordonnees().setNbCordEntree(sauveGarde.getNombreDesEntrees());
+						composant.getLesCoordonnees().setNbCordSorties(sauveGarde.getNombreDesSorties());
+						if (composant.getClass().equals(Multiplexeur.class)) {
+							((Multiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
+							composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
 						}
-						else {
-							if (((Pin)composant).getInput()) {
-								Circuit.getEntreesCircuit().remove((Pin)composant);
-								Circuit.getSortiesCircuit().add((Pin)composant);
-							}
+						else if(composant.getClass().equals(Demultiplexeur.class)){
+							((Demultiplexeur)composant).setNbCommande(sauveGarde.getNombreDeCommandes());
+							composant.getLesCoordonnees().setNbCordCommandes(sauveGarde.getNombreDeCommandes());
 						}
-						((Pin)composant).setInput(sauveGarde.getTypePin());
+						else if(composant.getClass().equals(Pin.class)) {
+							if (sauveGarde.getTypePin()){
+								if (! ((Pin)composant).getInput()) {
+									Circuit.getEntreesCircuit().add((Pin)composant);
+									Circuit.getSortiesCircuit().remove((Pin)composant);
+								}
+							}
+							else {
+								if (((Pin)composant).getInput()) {
+									Circuit.getEntreesCircuit().remove((Pin)composant);
+									Circuit.getSortiesCircuit().add((Pin)composant);
+								}
+							}
+							((Pin)composant).setInput(sauveGarde.getTypePin());
+						}
+						else if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
+						addAllPolylinesToWorkSpace(composant.generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY()));
 					}
-					else if(composant.getClass().isAssignableFrom(Sequentiels.class)) ((Sequentiels)composant).setFront(sauveGarde.getFront());
-					else if(composant.getClass().equals(Horloge.class)) Horloge.setTemps(sauveGarde.getFrequence());
-					addAllPolylinesToWorkSpace(composant.generatePolyline(imageDeComposant.getLayoutX(), imageDeComposant.getLayoutY()));
+					else Horloge.setTemps(sauveGarde.getFrequence());
 				}break;
 				case Supression: /// la suppression d'un composant
 				{

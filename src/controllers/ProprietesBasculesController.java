@@ -78,6 +78,7 @@ public class ProprietesBasculesController extends ProprietesController {
 		//Sauvgarder les changements
 		cmp.setNom(label.getText());
 		if (cmp.isDessocier()) { //il faut que le composant serai dessocier 
+			HomeController.sauveGarderModification();
 			if(i == 0)
 				((Bascule)cmp).setFront(Front.Front_Montant);
 			else
