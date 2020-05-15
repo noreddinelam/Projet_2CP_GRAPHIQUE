@@ -954,37 +954,38 @@ public class HomeController extends Controller {
 						undoChanges(workSpace);
 					}
 					if (event.isControlDown() && (event.getCode() == KeyCode.X)) {
-						workSpace.getChildren().remove(selectionne);
-						copierActive = true;
-						copyActive = true;
-						ImageView sauv = elementSeclecionner;
-						elementAsuprimer = elementSeclecionner;
-						sauveGarderSupression();
-						workSpace.getChildren().remove(elementSeclecionner);
-						Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
-						composantCopy = composantCouper;
-						ArrayList<Polyline> lineListe = Circuit.supprimerComp(composantCouper);
-						for (Polyline line : lineListe)
-							workSpace.getChildren().remove(line);
-						if(elementSeclecionner.getId().equals("clock"))
-						{
-							HomeController.horloged =false;
-							HomeController.horlogeDeCercuit =null; 
+						if(elementSeclecionner != null) {
+							workSpace.getChildren().remove(selectionne);
+							copierActive = true;
+							copyActive = true;
+							ImageView sauv = elementSeclecionner;
+							elementAsuprimer = elementSeclecionner;
+							sauveGarderSupression();
+							workSpace.getChildren().remove(elementSeclecionner);
+							Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
+							composantCopy = composantCouper;
+							ArrayList<Polyline> lineListe = Circuit.supprimerComp(composantCouper);
+							for (Polyline line : lineListe)
+								workSpace.getChildren().remove(line);
+							if(elementSeclecionner.getId().equals("clock"))
+							{
+								HomeController.horloged =false;
+								HomeController.horlogeDeCercuit =null; 
+							}
+							else if (elementSeclecionner.getId().equals("CircuitIntegre")) {
+								ArrayList<Circle> arrayList = ((CircuitIntegre)composantCouper).getListeCercles();
+								for (Circle circle : arrayList) {
+									workSpace.getChildren().remove(circle);
+								}
+							} 
+							else if (elementSeclecionner.getId().equals("CircuitIntegreSequentiel")) {
+								ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)composantCouper).getListeCercles();
+								for (Circle circle : arrayList) {
+									workSpace.getChildren().remove(circle);
+								}
+							} 
+							elementSeclecionner = sauv;
 						}
-						else if (elementSeclecionner.getId().equals("CircuitIntegre")) {
-							ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
-							for (Circle circle : arrayList) {
-								workSpace.getChildren().remove(circle);
-							}
-						} 
-						else if (elementSeclecionner.getId().equals("CircuitIntegreSequentiel")) {
-							ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
-							for (Circle circle : arrayList) {
-								workSpace.getChildren().remove(circle);
-							}
-						} 
-						elementSeclecionner = sauv;
-
 					}
 
 					if (event.isControlDown() && (event.getCode() == KeyCode.C)) {
@@ -2194,6 +2195,7 @@ public class HomeController extends Controller {
 				Optional<ButtonType> result = alert.showAndWait();	    		
 				if(result.get() == ButtonType.OK){
 					Circuit.clearCircuit();
+					undoDeque.clear();
 					workSpace.getChildren().clear();
 					horloged = false;
 					horlogeDeCercuit = null;
@@ -2271,6 +2273,7 @@ public class HomeController extends Controller {
 							}
 							else if(cmp2.getClass().getSimpleName().equals("CircuitIntegre")) {
 								((CircuitIntegre)cmp2).setTableVerite(((CircuitIntegre)composantCopy).getTableVerite());
+								((CircuitIntegre)cmp2).setCord();
 								ArrayList<Circle> reList = ((CircuitIntegre)cmp2).generateCercles(dragImageView.getLayoutX(), dragImageView.getLayoutY());
 								for (Circle circle : reList) {
 									workSpace.getChildren().add(circle);
@@ -2352,6 +2355,8 @@ public class HomeController extends Controller {
 		copyActive = true;
 		ImageView sauv = elementSeclecionner;
 		elementAsuprimer = elementSeclecionner;
+		workSpace.getChildren().remove(elementSeclecionner);
+		Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
 		sauveGarderSupression();
 		if(elementSeclecionner.getId().equals("clock"))
 		{
@@ -2359,19 +2364,17 @@ public class HomeController extends Controller {
 			HomeController.horlogeDeCercuit =null; 
 		}
 		else if (elementSeclecionner.getId().equals("CircuitIntegre")) { /// verifier si c'est un circuit integre
-			ArrayList<Circle> arrayList = ((CircuitIntegre)cmp).getListeCercles();
+			ArrayList<Circle> arrayList = ((CircuitIntegre)composantCouper).getListeCercles();
 			for (Circle circle : arrayList) {
 				workSpace.getChildren().remove(circle);
 			}
 		} 
 		else if (elementSeclecionner.getId().equals("CircuitIntegreSequentiel")) { /// verifier si c'est un circuit int�gr� sequentielx
-			ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)cmp).getListeCercles();
+			ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)composantCouper).getListeCercles();
 			for (Circle circle : arrayList) {
 				workSpace.getChildren().remove(circle);
 			}
 		} 
-		workSpace.getChildren().remove(elementSeclecionner);
-		Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
 		composantCopy = composantCouper;
 		ArrayList<Polyline> lineListe = Circuit.supprimerComp(composantCouper);
 		for (Polyline line : lineListe)
@@ -3968,37 +3971,56 @@ public class HomeController extends Controller {
 	public void remplireNomPinEtAfficher() { /// afficher les noms des pins dans le mode de simulation
 		Text text;
 		ImageView imageView;
-		for (Pin pin : Circuit.getEntreesCircuit()) {
-			imageView = Circuit.getImageFromComp(pin);
-			text = new Text(pin.getNom());
-			if (pin.getDirection() != 3) {
-				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()-3);
+		for (Composant composant : Circuit.getCompUtilises().keySet()) {
+			if (composant.getClass().equals(Pin.class)) {
+				Pin pin = (Pin)composant;
+				imageView = Circuit.getImageFromComp(pin);
+				text = new Text(pin.getNom());
+				text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
+				text.setFill(Color.web("#e0e0d1"));
+				if (pin.getInput()) {
+					if (pin.getDirection() != 3) {
+						text.setLayoutX(imageView.getLayoutX());
+						text.setLayoutY(imageView.getLayoutY()-3);
+					}
+					else {
+						text.setLayoutX(imageView.getLayoutX());
+						text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 18);
+					}
+				}
+				else {
+					if (pin.getDirection() == 1) {
+						text.setLayoutX(imageView.getLayoutX());
+						text.setLayoutY(imageView.getLayoutY()-3);
+					}
+					else {
+						text.setLayoutX(imageView.getLayoutX());
+						text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 18);
+					}
+				}
+				listDesNoms.add(text);
+				workSpace.getChildren().add(text);
 			}
-			else {
+			else if (composant.getClass().equals(CircuitIntegre.class)) {
+				imageView = Circuit.getImageFromComp(composant);
+				text = new Text(composant.getNom());
+				text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
+				text.setFill(Color.web("#e0e0d1"));
 				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 18);
+				text.setLayoutY(imageView.getLayoutY()-4);
+				listDesNoms.add(text);
+				workSpace.getChildren().add(text);
 			}
-			text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
-			text.setFill(Color.web("#e0e0d1"));
-			listDesNoms.add(text);
-			workSpace.getChildren().add(text);
-		}
-		for (Pin pin : Circuit.getSortiesCircuit()) {
-			imageView = Circuit.getImageFromComp(pin);
-			text = new Text(pin.getNom());
-			if (pin.getDirection() == 1) {
+			else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
+				imageView = Circuit.getImageFromComp(composant);
+				text = new Text(composant.getNom());
+				text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
+				text.setFill(Color.web("#e0e0d1"));
 				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()-3);
+				text.setLayoutY(imageView.getLayoutY()-4);
+				listDesNoms.add(text);
+				workSpace.getChildren().add(text);
 			}
-			else {
-				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 18);
-			}
-			text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
-			text.setFill(Color.web("#e0e0d1"));
-			listDesNoms.add(text);
-			workSpace.getChildren().add(text);
 		}
 	}
 
@@ -4021,18 +4043,6 @@ public class HomeController extends Controller {
 		}
 	}
 
-	public void tekhlat() {
-		/*ColorAdjust color = new ColorAdjust();
-		color.setBrightness(-0.75);
-		color.setContrast(-0.29);
-		color.setHue(1.0);
-		color.setSaturation(-1);
-		workSpace.setStyle("-fx-background-color : #e4e4e4");*/
-		for (Composant cmp : Circuit.getCompUtilises().keySet()) {
-			selectionne(Circuit.getImageFromComp(cmp));
-		}
-
-	}
 	public void selectionne(ImageView image) { /// afficher un cadre au tour d'un composant s�lectionn�
 		selectionne.setStroke(Color.DARKGRAY);
 		selectionne.setStrokeWidth(2);
