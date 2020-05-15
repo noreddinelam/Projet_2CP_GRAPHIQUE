@@ -92,8 +92,11 @@ public class Fil implements Serializable{
 		}
 		return null;	
 	}
-
-
+	public void initialiserSortieParZero(){
+		for (Composant composant : destination) 
+			composant.initialiserSortieParZero(); 
+	}
+  
 	public EtatLogique getEtat() {
 		return etat;
 	}
