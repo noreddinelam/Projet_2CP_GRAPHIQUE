@@ -107,6 +107,7 @@ public class ClickDroitController extends Controller{
 		ImageView sauv = HomeController.elementSeclecionner;
 		HomeController.elementAsuprimer = sauv;
 		HomeController.sauveGarderSupression();
+		HomeController.supprimerDequeFilProbleme(cmp);
 		if(sauv.getId().equals("clock")) /// verifier si le composant est une horloge
 		{
 			HomeController.horloged =false;

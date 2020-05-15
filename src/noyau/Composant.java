@@ -23,6 +23,8 @@ public abstract class Composant implements Serializable{
 	protected int nombreEntree;
 	protected int nombreSortie;
 	protected boolean sleep = false;
+	protected boolean init = false;
+	protected boolean stuckOverFlow = false;
 	protected int direction = 0;
 	protected LesCoordonnees lesCoordonnees ;
 		
@@ -37,18 +39,23 @@ public abstract class Composant implements Serializable{
 										// valider si les entrees et les sorties sont pretes 
 
 	public void evaluer() {
-		if(valider()) // si le composant est pret 
+		if(valider() && !stuckOverFlow) // si le composant est pret 
 		{
-			genererSorties(); //executer sa fonction logique et mettre le resultat sur le fil de sortie 
+			try {
+				genererSorties(); //executer sa fonction logique et mettre le resultat sur le fil de sortie 
 
-			for (int i = 0; i < nombreSortie; i++) 
-			{
-				if(sorties[i].getEtatLogiqueFil().getNum() != etatFinal[i].getNum())  //verifier si l'etat precedent du composant a changé ou non 
+				for (int i = 0; i < nombreSortie; i++) 
 				{
-					etatFinal[i]=sorties[i].getEtatLogiqueFil(); //mettre a jour l'etat final du composant 
-					sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
-				}
-			}		
+					if(sorties[i].getEtatLogiqueFil().getNum() != etatFinal[i].getNum())  //verifier si l'etat precedent du composant a changé ou non 
+					{
+						etatFinal[i]=sorties[i].getEtatLogiqueFil(); //mettre a jour l'etat final du composant 
+						sorties[i].evaluer(); //passer au composant suivant relié au fil de sortie 
+					}
+				}		
+			} catch (StackOverflowError e) {
+				// TODO: handle exception
+				stuckOverFlow = true;				
+			}
 		}
 	}
 	
@@ -118,7 +125,9 @@ public abstract class Composant implements Serializable{
 			entrees[i].addEtages(etage);
 		}
 	}
-	public void defaultValue() {
+	public void defaultValue() {//affecter la valeur par defaut au composant apres la simulation 
+		init = false;
+		stuckOverFlow = false;
 		for (int i = 0; i < nombreSortie; i++) {
 			etatFinal[i] = EtatLogique.HAUTE_IMPEDANCE;
 		}
@@ -157,10 +166,12 @@ public abstract class Composant implements Serializable{
 			if (entrees[i] != null) {
 				if (! entrees[i].getSource().equals(this)) { // pour savoir si une entree est relié avec une sortie du mm composant
 					entrees[i].derelierCompFromDestination(this);
-					ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(entrees[i]);
-					for (InfoPolyline infoPolyline : resList) {
-						infoPolyline.setRelier(false);
-					}
+					ImageView imageView = Circuit.getImageFromComp(this);
+					Polyline polyline = entrees[i].polylineParPoint(lesCoordonnees.coordReelesEntrees(imageView, i));
+					InfoPolyline info = Circuit.getInfoPolylineFromPolyline(polyline);
+					if(info != null) {
+						info.setRelier(false);
+					}					
 				}
 			}
 		}
@@ -186,6 +197,7 @@ public abstract class Composant implements Serializable{
 				}
 				else {
 					Circuit.getInfoPolylineFromPolyline(polyline).setRelier(true);
+					Circuit.getInfoPolylineFromPolyline(polyline).setDestination(this);
 					entrees[i].addDestination(this);
 				}
 			}
@@ -264,6 +276,17 @@ public abstract class Composant implements Serializable{
 		this.nombreSortie = nombreSortie;
 		for (int i = 0; i < nombreSortie; i++) {
 			sorties[i] = new Fil(this);
+		}
+	}
+	public void initialiserSortieParZero() {
+		if(!init) // si le composant est pret 
+		{
+			init = true;
+			for (int i = 0; i < nombreSortie; i++) 
+			{
+				sorties[i].setEtatLogiqueFil(EtatLogique.ZERO); 
+				sorties[i].initialiserSortieParZero(); 
+			}		
 		}
 	}
 

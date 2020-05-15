@@ -50,19 +50,31 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 		if (entreeHorloge != null) { // derelier l'horloge
 			if (! entreeHorloge.getSource().equals(this)) {
 				entreeHorloge.derelierCompFromDestination(this);
-				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(entreeHorloge);
-				for (InfoPolyline infoPolyline : resList) {
-					infoPolyline.setRelier(false);
-				}
+				ImageView imageView = Circuit.getImageFromComp(this);
+				Polyline polyline = entreeHorloge.polylineParPoint(lesCoordonnees.coordReelesHorloge(imageView));
+				InfoPolyline info = Circuit.getInfoPolylineFromPolyline(polyline);
+				if(info != null) {
+					info.setRelier(false);
+				}				
+//				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(entreeHorloge);
+//				for (InfoPolyline infoPolyline : resList) {
+//					infoPolyline.setRelier(false);
+//				}
 			}
 		}
 		if (clear.getSource() != null) { // derelier le clear
 			if (! clear.getSource().equals(this)) {
 				clear.derelierCompFromDestination(this);
-				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(clear);
-				for (InfoPolyline infoPolyline : resList) {
-					infoPolyline.setRelier(false);
-				}
+				ImageView imageView = Circuit.getImageFromComp(this);
+				Polyline polyline = clear.polylineParPoint(lesCoordonnees.coordReelesClear(imageView));
+				InfoPolyline info = Circuit.getInfoPolylineFromPolyline(polyline);
+				if(info != null) {
+					info.setRelier(false);
+				}				
+//				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(clear);
+//				for (InfoPolyline infoPolyline : resList) {
+//					infoPolyline.setRelier(false);
+//				}
 			}
 		}
 

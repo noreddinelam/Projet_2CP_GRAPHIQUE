@@ -216,10 +216,24 @@ public class Circuit {
 			for (int j = 0; j < tableVerite[i].length; j++) {
 				System.out.print(tableVerite[i][j].getNum() + " | ");
 			}
-			System.out.println();
 		}
 	}
 	public static void initialiser() {// à completer au fur et mesure .
+		
+		/*for (Pin pin : entreesCircuit) { // initialiser les sorties par 0
+			pin.initialiserSortieParZero();  
+		}*/
+		for(Composant cmp : compUtilises.keySet()) {
+			
+			if(cmp.getClass().getSimpleName().equals("Pin")) {
+				if( ((Pin)cmp).getInput()) {
+					cmp.initialiserSortieParZero();
+				}
+			}else if(cmp.getClass().getSimpleName().equals("Horloge") || cmp.getClass().getSimpleName().equals("SourceConstante")) {
+				cmp.initialiserSortieParZero();
+			}
+
+		}
 		for (Pin pin : entreesCircuit) { // initialiser les pins d'entrees pour le commencement de la simulation
 			pin.evaluer();  
 		}

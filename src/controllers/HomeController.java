@@ -963,6 +963,7 @@ public class HomeController extends Controller {
 							sauveGarderSupression();
 							workSpace.getChildren().remove(elementSeclecionner);
 							Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
+							supprimerDequeFilProbleme(composantCouper);
 							composantCopy = composantCouper;
 							ArrayList<Polyline> lineListe = Circuit.supprimerComp(composantCouper);
 							for (Polyline line : lineListe)
@@ -1327,7 +1328,7 @@ public class HomeController extends Controller {
 		return line;
 	}
 
-	public void SupprimerPereUndoChanges(Polyline line1) { /// utilisï¿½ pour regler les problï¿½mes dans l'operation du ctrl + z
+	public void SupprimerPereUndoChanges(Polyline line1) { /// utilisé pour regler les problï¿½mes dans l'operation du ctrl + z
 		for (Donnes donnes : undoDeque) { 
 			if(donnes.getInfoPolyline() != null && !donnes.isSupprime() ) {
 				if(donnes.getInfoPolyline().getLineParent() == line1) {
@@ -2357,6 +2358,7 @@ public class HomeController extends Controller {
 		elementAsuprimer = elementSeclecionner;
 		workSpace.getChildren().remove(elementSeclecionner);
 		Composant composantCouper = Circuit.getCompFromImage(elementSeclecionner);
+		supprimerDequeFilProbleme(composantCouper);
 		sauveGarderSupression();
 		if(elementSeclecionner.getId().equals("clock"))
 		{
@@ -3325,7 +3327,6 @@ public class HomeController extends Controller {
 				}break;
 				case Supression: /// la suppression d'un composant
 				{
-
 					ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
 					workSpace.getChildren().add(imageDeComposant);
 					imageDeComposant.setLayoutX(sauveGarde.getPosX());
@@ -3365,6 +3366,7 @@ public class HomeController extends Controller {
 				{
 					ClickDroitFilController.setPane(workSpace);
 					InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(sauveGarde.getParent());
+					//InfoPolyline infoLine = sauveGarde.getInfoPolyline();
 					ClickDroitFilController.supprimer(infoLine);
 				}break;
 				case SuppressionToutFil :{ /// la suppression de tout les fils
@@ -4061,7 +4063,20 @@ public class HomeController extends Controller {
 			workSpace.getChildren().add(selectionne);
 		}
 	}
-
+	public static void stuckOverFlowAlert() {
+		Alert a = new Alert(AlertType.ERROR);
+		a.initOwner(homeWindow);
+		a.initStyle(StageStyle.UTILITY);
+		a.setHeaderText("Boucle infinie");
+		//a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+		a.setTitle("Boucle infinie");
+		a.setContentText( "Le circuit entrain une boucle infinie!");
+		a.initOwner(homeWindow);
+		a.initStyle(StageStyle.UTILITY);
+		a.setX(homeWindow.getX()+500);
+		a.setY(homeWindow.getY()+250);
+		a.showAndWait();
+	}
 	public Button getNouveau() {
 		return nouveau;
 	}

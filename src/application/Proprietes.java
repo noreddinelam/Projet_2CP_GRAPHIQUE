@@ -18,7 +18,6 @@ public class Proprietes extends Stage{ /// afficher la fenetre des propriétées d
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource(Fenete));
 			Parent root = loader.load();
-			System.out.println(root);
 			ProprietesController c=loader.getController();
 			c.setWorkSpace(workSpace);
 			c.initialiser(cmp);

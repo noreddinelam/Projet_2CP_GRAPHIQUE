@@ -125,10 +125,16 @@ public abstract class Bascule extends Sequentiels{
 		if (preset.getSource() != null) { /// si le preset est relié
 			if (! preset.getSource().equals(this)) { /// si la source est differente de lui meme
 				preset.derelierCompFromDestination(this); /// derelier le preset de cette bascule
-				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(preset);
-				for (InfoPolyline infoPolyline : resList) {
-					infoPolyline.setRelier(false);
-				}
+				ImageView imageView = Circuit.getImageFromComp(this);
+				Polyline polyline = preset.polylineParPoint(lesCoordonnees.coordReelesPreset(imageView));
+				InfoPolyline info = Circuit.getInfoPolylineFromPolyline(polyline);
+				if(info != null) {
+					info.setRelier(false);
+				}				
+//				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(preset);
+//				for (InfoPolyline infoPolyline : resList) {
+//					infoPolyline.setRelier(false);
+//				}
 			}
 		}
 	}

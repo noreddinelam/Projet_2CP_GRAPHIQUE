@@ -117,7 +117,7 @@ public class ElementChronoController implements Initializable {
 			i++;
 		}
 		i=0;
-		while(i<10 && i<Circuit.getSortiesCircuit().size())//Ajout des Pin de sorties
+		while(i<10 && i<Circuit.getSortiesCircuit().size())//Ajout des Pins de sorties
 		{
 			if(composantDeListAdroite.contains(Circuit.getSortiesCircuit().get(i))) ChronogrammeController.pinDeSorties.add( Circuit.getSortiesCircuit().get(i));
 			i++;
