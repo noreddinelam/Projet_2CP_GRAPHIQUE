@@ -3302,7 +3302,6 @@ public class HomeController extends Controller {
 				}break;
 				case Supression: /// la suppression d'un composant
 				{
-
 					ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
 					workSpace.getChildren().add(imageDeComposant);
 					imageDeComposant.setLayoutX(sauveGarde.getPosX());
@@ -3342,6 +3341,7 @@ public class HomeController extends Controller {
 				{
 					ClickDroitFilController.setPane(workSpace);
 					InfoPolyline infoLine = Circuit.getInfoPolylineFromPolyline(sauveGarde.getParent());
+					//InfoPolyline infoLine = sauveGarde.getInfoPolyline();
 					ClickDroitFilController.supprimer(infoLine);
 				}break;
 				case SuppressionToutFil :{ /// la suppression de tout les fils

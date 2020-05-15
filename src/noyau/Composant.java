@@ -157,10 +157,12 @@ public abstract class Composant implements Serializable{
 			if (entrees[i] != null) {
 				if (! entrees[i].getSource().equals(this)) { // pour savoir si une entree est relié avec une sortie du mm composant
 					entrees[i].derelierCompFromDestination(this);
-					ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(entrees[i]);
-					for (InfoPolyline infoPolyline : resList) {
-						infoPolyline.setRelier(false);
-					}
+					ImageView imageView = Circuit.getImageFromComp(this);
+					Polyline polyline = entrees[i].polylineParPoint(lesCoordonnees.coordReelesEntrees(imageView, i));
+					InfoPolyline info = Circuit.getInfoPolylineFromPolyline(polyline);
+					if(info != null) {
+						info.setRelier(false);
+					}					
 				}
 			}
 		}
@@ -186,6 +188,7 @@ public abstract class Composant implements Serializable{
 				}
 				else {
 					Circuit.getInfoPolylineFromPolyline(polyline).setRelier(true);
+					Circuit.getInfoPolylineFromPolyline(polyline).setDestination(this);
 					entrees[i].addDestination(this);
 				}
 			}

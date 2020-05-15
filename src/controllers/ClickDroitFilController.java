@@ -76,7 +76,7 @@ public class ClickDroitFilController {
     	s.close();
     }
     public static void supprimer(InfoPolyline infoLine) { /// la fonction responsable de suppression des fils graphique et noyau
-    	//if(infoLine!=null) {
+    	if(infoLine!=null) {
     	Polyline line = infoLine.getLinePrincipale();
     	if(infoLine.getNbFils() == 0 ) { //On peut le supprimer
     		
@@ -116,6 +116,7 @@ public class ClickDroitFilController {
     		}
     	}
     	line.setStroke(Color.BLACK);
+    	}
     }
     
     public void sauveGarderSuppressionFil(InfoPolyline infoPolyline) { /// appliquer une sauvegarde de suppression fil

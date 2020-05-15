@@ -132,10 +132,16 @@ public class Demultiplexeur extends Combinatoires{
 			if (commande[i] != null) {
 				if (! commande[i].getSource().equals(this)) {
 					commande[i].derelierCompFromDestination(this);
-					ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(commande[i]);
-					for (InfoPolyline infoPolyline : resList) {
-						infoPolyline.setRelier(false);
-					}
+					ImageView imageView = Circuit.getImageFromComp(this);
+					Polyline polyline = commande[i].polylineParPoint(lesCoordonnees.coordReelesCommande(imageView, i));
+					InfoPolyline info = Circuit.getInfoPolylineFromPolyline(polyline);
+					if(info != null) {
+						info.setRelier(false);
+					}				
+//					ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(commande[i]);
+//					for (InfoPolyline infoPolyline : resList) {
+//						infoPolyline.setRelier(false);
+//					}
 				}
 			}
 		}
