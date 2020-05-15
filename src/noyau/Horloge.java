@@ -50,7 +50,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 	}
 
 	@Override
-	public boolean valider() { // à voir apres si elle est nécessaire
+	public boolean valider() { // ï¿½ voir apres si elle est nï¿½cessaire
 		return false;
 	}
 
@@ -88,22 +88,24 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 				});
 			}
 			try {
-				Thread.sleep(temps);		
-			} catch (InterruptedException e) {// exception traité par la clasee thread
+
+				Thread.sleep(temps);
+			} catch (InterruptedException e) {// exception traitï¿½ par la clasee thread
+
 				e.printStackTrace();
 			}
 		}
 	}
 
 	@Override
-	public void defaultValue() { /// afecter les valeur par defaut à l'horloge
+	public void defaultValue() { /// afecter les valeur par defaut ï¿½ l'horloge
 		// TODO Auto-generated method stub
 		super.defaultValue();
 		etat = EtatLogique.ZERO;
 	}
 
 	@Override
-	public String generatePath() { /// generer les images relatives à l'horloge
+	public String generatePath() { /// generer les images relatives ï¿½ l'horloge
 		// TODO Auto-generated method stub
 		if (etat == EtatLogique.ONE) {
 			return "Horloge/1.png";
@@ -112,7 +114,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 	}
 
 	@Override
-	public void setCord() { /// seter les coordonnées de sorties de l'horloge
+	public void setCord() { /// seter les coordonnï¿½es de sorties de l'horloge
 		// TODO Auto-generated method stub
 		ImageView img = Circuit.getImageFromComp(this);
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(img.getBoundsInLocal().getWidth(), img.getBoundsInLocal().getHeight() / 2), 0);
