@@ -36,7 +36,7 @@ public class ProprietesHorlogeController extends ProprietesController{
 
 	@FXML
 	void modifier(ActionEvent event) { /// appliquer les modifications faites
-		if(Double.parseDouble(frequance.getText())<=10 && Double.parseDouble(frequance.getText()) >= 1 )
+		if(Double.parseDouble(frequance.getText())<=10 )
 		{
 			cmp.setNom(label.getText());
 			long tmp =arrondi((1/Double.parseDouble(frequance.getText()))*1000, 0);
@@ -53,7 +53,7 @@ public class ProprietesHorlogeController extends ProprietesController{
 			a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 			a.setTitle("Frequence");
 			a.initOwner(homeWindow);
-			a.setContentText((Double.parseDouble(frequance.getText()) > 10 ) ? "La frequence d'horloge ne doit pas dépasser 10 Hz" : "La frequence d'horloge ne doit pas etre inferieur à 1 Hz");
+			a.setContentText( "La frequence d'horloge ne doit pas dï¿½passer 10 Hz ");
 			a.showAndWait();
 		}
 	}
