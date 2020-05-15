@@ -3952,37 +3952,56 @@ public class HomeController extends Controller {
 	public void remplireNomPinEtAfficher() { /// afficher les noms des pins dans le mode de simulation
 		Text text;
 		ImageView imageView;
-		for (Pin pin : Circuit.getEntreesCircuit()) {
-			imageView = Circuit.getImageFromComp(pin);
-			text = new Text(pin.getNom());
-			if (pin.getDirection() != 3) {
-				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()-3);
+		for (Composant composant : Circuit.getCompUtilises().keySet()) {
+			if (composant.getClass().equals(Pin.class)) {
+				Pin pin = (Pin)composant;
+				imageView = Circuit.getImageFromComp(pin);
+				text = new Text(pin.getNom());
+				text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
+				text.setFill(Color.web("#e0e0d1"));
+				if (pin.getInput()) {
+					if (pin.getDirection() != 3) {
+						text.setLayoutX(imageView.getLayoutX());
+						text.setLayoutY(imageView.getLayoutY()-3);
+					}
+					else {
+						text.setLayoutX(imageView.getLayoutX());
+						text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 18);
+					}
+				}
+				else {
+					if (pin.getDirection() == 1) {
+						text.setLayoutX(imageView.getLayoutX());
+						text.setLayoutY(imageView.getLayoutY()-3);
+					}
+					else {
+						text.setLayoutX(imageView.getLayoutX());
+						text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 18);
+					}
+				}
+				listDesNoms.add(text);
+				workSpace.getChildren().add(text);
 			}
-			else {
+			else if (composant.getClass().equals(CircuitIntegre.class)) {
+				imageView = Circuit.getImageFromComp(composant);
+				text = new Text(composant.getNom());
+				text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
+				text.setFill(Color.web("#e0e0d1"));
 				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 18);
+				text.setLayoutY(imageView.getLayoutY()-4);
+				listDesNoms.add(text);
+				workSpace.getChildren().add(text);
 			}
-			text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
-			text.setFill(Color.web("#e0e0d1"));
-			listDesNoms.add(text);
-			workSpace.getChildren().add(text);
-		}
-		for (Pin pin : Circuit.getSortiesCircuit()) {
-			imageView = Circuit.getImageFromComp(pin);
-			text = new Text(pin.getNom());
-			if (pin.getDirection() == 1) {
+			else if (composant.getClass().equals(CircuitIntegreSequentiel.class)) {
+				imageView = Circuit.getImageFromComp(composant);
+				text = new Text(composant.getNom());
+				text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
+				text.setFill(Color.web("#e0e0d1"));
 				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()-3);
+				text.setLayoutY(imageView.getLayoutY()-4);
+				listDesNoms.add(text);
+				workSpace.getChildren().add(text);
 			}
-			else {
-				text.setLayoutX(imageView.getLayoutX());
-				text.setLayoutY(imageView.getLayoutY()+imageView.getFitHeight() + 18);
-			}
-			text.setFont(Font.font("Calisto MT",FontWeight.NORMAL,20));
-			text.setFill(Color.web("#e0e0d1"));
-			listDesNoms.add(text);
-			workSpace.getChildren().add(text);
 		}
 	}
 
