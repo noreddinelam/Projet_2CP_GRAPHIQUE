@@ -58,7 +58,7 @@ public class PremierePageController implements Initializable{ /// c'est le respo
 		}
 	}
 	@Override
-	public void initialize(URL url, ResourceBundle rb) { /// initialiser les attributs nécessaires pour que l'application marche
+	public void initialize(URL url, ResourceBundle rb) { /// initialiser les attributs nï¿½cessaires pour que l'application marche
 		// TODO Auto-generated method stub
 		Thread th = new Thread(new bg_thread());
 		th.start();
@@ -138,8 +138,9 @@ public class PremierePageController implements Initializable{ /// c'est le respo
 										if ( HomeController.horloged && Controller.simul) {
 											Horloge horloge = ((Horloge) Circuit.getCompFromImage(HomeController.horlogeDeCercuit));
 											try {
+												HomeController.t1.join(1);
 												horloge.stop();
-												HomeController.t1.join();
+											
 											} catch (InterruptedException e) {
 												// TODO Auto-generated catch block
 												e.printStackTrace();
