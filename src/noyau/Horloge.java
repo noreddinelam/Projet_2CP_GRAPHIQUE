@@ -88,7 +88,7 @@ public class Horloge extends Composant implements ElementHorloge,Runnable,Compos
 				});
 			}
 			try {
-				Thread.sleep(temps);;		
+				Thread.sleep(temps);		
 			} catch (InterruptedException e) {// exception traité par la clasee thread
 				e.printStackTrace();
 			}
