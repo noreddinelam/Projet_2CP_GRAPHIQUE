@@ -121,7 +121,7 @@
                   <Insets left="10.0" top="5.0" />
                </VBox.margin>
             </Text>
-            <Text fill="WHITE" lineSpacing="3.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Pour ajouter des éléments au chronogramme séléctionner d'abord un élément de la liste à gauche puis appuiyer sur AJOUTER " textAlignment="CENTER" wrappingWidth="189.0">
+            <Text fill="WHITE" lineSpacing="3.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Pour ajouter des éléments au chronogramme séléctionner d'abord un élément de la liste à gauche puis appuyer sur AJOUTER " textAlignment="CENTER" wrappingWidth="189.0">
                <font>
                   <Font name="Calisto MT" size="14.0" />
                </font>
@@ -129,7 +129,7 @@
                   <Insets left="10.0" top="5.0" />
                </VBox.margin>
             </Text>
-            <Text fill="WHITE" lineSpacing="3.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Pour retirer des éléments de chronogramme séléctionner d'abord un élément de la liste à droite puis appuiyer sur RETIRER" textAlignment="CENTER" wrappingWidth="184.0">
+            <Text fill="WHITE" lineSpacing="3.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Pour retirer des éléments du chronogramme sélectionner d'abord un élément de la liste à droite puis appuyer sur RETIRER" textAlignment="CENTER" wrappingWidth="184.0">
                <font>
                   <Font name="Calisto MT" size="14.0" />
                </font>

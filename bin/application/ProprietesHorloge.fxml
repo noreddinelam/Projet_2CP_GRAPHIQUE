@@ -20,7 +20,7 @@
                         <Font name="Calisto MT" size="16.0" />
                      </font>
                   </Text>
-                  <Text fill="#e4e4e4" layoutX="22.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fréquance">
+                  <Text fill="#e4e4e4" layoutX="22.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fréquence">
                      <font>
                         <Font name="Calisto MT" size="16.0" />
                      </font>

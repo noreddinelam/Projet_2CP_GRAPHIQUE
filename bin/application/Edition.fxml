@@ -48,7 +48,7 @@
       </Button>
       <Line endX="100.0" layoutX="115.0" layoutY="46.0" startX="-100.0" style="-fx-stroke: #535c68;" />
       <Line endX="100.0" layoutX="115.0" layoutY="189.0" startX="-100.0" style="-fx-stroke: #535c68;" />
-      <Button fx:id="supprimerTout" alignment="BASELINE_LEFT" layoutX="3.0" layoutY="231.0" mnemonicParsing="false" onAction="#supprimerTout" prefHeight="42.0" prefWidth="236.0" text="  Supprimer Tout">
+      <Button fx:id="supprimerTout" alignment="BASELINE_LEFT" layoutX="3.0" layoutY="231.0" mnemonicParsing="false" onAction="#supprimerTout" prefHeight="42.0" prefWidth="236.0" text="  Supprimer tout">
          <font>
             <Font name="Calisto MT" size="12.0" />
          </font>

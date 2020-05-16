@@ -35,7 +35,7 @@
             <Font name="Calisto MT Bold" size="20.0" />
          </font>
       </Text>
-      <Text fill="#e0e0d1" layoutX="65.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="vous facilite la conception et la simulation des circuits logiques ." wrappingWidth="606.13671875">
+      <Text fill="#e0e0d1" layoutX="65.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="vous facilite la conception et la simulation des circuits logiques." wrappingWidth="606.13671875">
          <font>
             <Font name="Calisto MT Bold" size="20.0" />
          </font>

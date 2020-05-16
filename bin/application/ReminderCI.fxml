@@ -14,7 +14,7 @@
             <Font name="Calisto MT" size="40.0" />
          </font>
       </Text>
-      <Text fx:id="messageAlerte" fill="#e4e4e4" layoutX="39.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pour construire le circuit integré, il faut d'abord ordonner les entrées et les sorties ." wrappingWidth="336.0">
+      <Text fx:id="messageAlerte" fill="#e4e4e4" layoutX="39.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pour construire le circuit intégré, il faut d'abord ordonner les entrées et les sorties." textAlignment="JUSTIFY" wrappingWidth="336.0">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>
@@ -24,12 +24,12 @@
             <Font name="Calisto MT" size="16.0" />
          </font>
       </Button>
-      <Text fx:id="messageAlerte1" fill="#e4e4e4" layoutX="39.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1er pin selectinné correspond à la premiere entrée/sortie dans le circuit integré ." wrappingWidth="336.0">
+      <Text fx:id="messageAlerte1" fill="#e4e4e4" layoutX="39.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1er pin sélectinné correspond à la premiere entrée/sortie dans le circuit intégré." textAlignment="JUSTIFY" wrappingWidth="336.0">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>
       </Text>
-      <Text fx:id="messageAlerte11" fill="#e4e4e4" layoutX="39.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apres la selection : cliquez sur Fichier -&gt; Encapsuler ." wrappingWidth="355.0">
+      <Text fx:id="messageAlerte11" fill="#e4e4e4" layoutX="39.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Après la sélection : cliquez sur Fichier -&gt; Encapsuler." textAlignment="JUSTIFY" wrappingWidth="355.0">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>

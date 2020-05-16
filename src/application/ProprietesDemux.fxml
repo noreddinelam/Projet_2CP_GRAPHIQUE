@@ -67,7 +67,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Label layoutX="125.0" layoutY="4.0" prefHeight="30.0" prefWidth="175.0" text="Demultipléxeur" textFill="#e4e4e4">
+      <Label layoutX="125.0" layoutY="4.0" prefHeight="30.0" prefWidth="175.0" text="Démultiplexeur" textFill="#e4e4e4">
          <font>
             <Font name="Calisto MT" size="25.0" />
          </font>

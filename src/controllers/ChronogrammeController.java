@@ -617,7 +617,6 @@ public class ChronogrammeController implements Initializable {
 			if (line.getStartX() <= detectionBar.getLayoutX()+4 && detectionBar.getLayoutX()+4 <= line.getEndX())
 			{
 				labels[valeursDesuivis.get(line)[0]].setText(String.valueOf(valeursDesuivis.get(line)[1]));
-
 			}
 		}
 	}

@@ -36,7 +36,7 @@
                      </font>
                   </Text>
                   <Pane layoutX="19.0" layoutY="137.0" prefHeight="2.0" prefWidth="140.0" style="-fx-background-color: #7c7878;" />
-                  <Text fill="#e4e4e4" layoutX="25.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Decalage à">
+                  <Text fill="#e4e4e4" layoutX="25.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Décalage à">
                      <font>
                         <Font name="Calisto MT" size="16.0" />
                      </font>
@@ -90,7 +90,7 @@
                   <Image url="@../pageEntreeIcones/next.png" />
                </image>
             </ImageView>
-            <Label fx:id="front" alignment="CENTER" layoutX="249.0" layoutY="84.0" prefHeight="19.0" prefWidth="104.0" text="Mantant" textFill="#b2b2b2">
+            <Label fx:id="front" alignment="CENTER" layoutX="249.0" layoutY="84.0" prefHeight="19.0" prefWidth="104.0" text="Montant" textFill="#b2b2b2">
                <font>
                   <Font name="Calisto MT" size="15.0" />
                </font>
@@ -115,7 +115,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Label layoutX="120.0" layoutY="3.0" prefHeight="30.0" prefWidth="219.0" text="Registre à decalage" textFill="#e4e4e4">
+      <Label layoutX="120.0" layoutY="3.0" prefHeight="30.0" prefWidth="219.0" text="Registre à décalage" textFill="#e4e4e4">
          <font>
             <Font name="Calisto MT" size="24.0" />
          </font>

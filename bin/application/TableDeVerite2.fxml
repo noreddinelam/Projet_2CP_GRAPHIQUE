@@ -15,7 +15,7 @@
             <Image url="@../tableIcones/tv.png" />
          </image>
       </ImageView>
-      <Label layoutX="279.0" layoutY="12.0" text="Table De Verité" textFill="WHITE">
+      <Label layoutX="279.0" layoutY="12.0" text="Table De Vérité" textFill="WHITE">
          <font>
             <Font name="Calisto MT" size="21.0" />
          </font>
