@@ -131,10 +131,6 @@ public abstract class Bascule extends Sequentiels{
 				if(info != null) {
 					info.setRelier(false);
 				}				
-//				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(preset);
-//				for (InfoPolyline infoPolyline : resList) {
-//					infoPolyline.setRelier(false);
-//				}
 			}
 		}
 	}

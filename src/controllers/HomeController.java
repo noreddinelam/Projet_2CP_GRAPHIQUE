@@ -1377,12 +1377,13 @@ public class HomeController extends Controller {
 							//Suppression
 							workSpace.getChildren().remove(line);
 							SupprimerPereUndoChanges(line);
+							Circuit.getListFromPolyline(line).remove(new InfoPolyline(line));
 							line.getPoints().clear();
-							Circuit.getListFromPolyline(line).remove(0);
 							listSorties.add(listSorties.indexOf(line), line2);
 							listSorties.remove(line);
 							Circuit.getInfoPolylineFromPolyline(line2).setLineParent(null);
 							line = line2;
+							System.out.println(Circuit.getListFromPolyline(line2));
 						}
 					}
 				}
@@ -3585,7 +3586,7 @@ public class HomeController extends Controller {
 				principale.getPoints().addAll(infoPolyline.getNoeudLinePrincipale());
 				Polyline polySauv=containsPolyInSauv(principale);
 				if ( polySauv== null) {
-
+					System.out.println("pppppppppppppppppppppp");
 					workSpace.getChildren().add(principale);
 					ajouterGeste(principale);
 					sauv.add(principale);
@@ -3600,7 +3601,7 @@ public class HomeController extends Controller {
 					parent.getPoints().addAll(infoPolyline.getNoeudLineParent());
 					Polyline polySauv2=containsPolyInSauv(parent);
 					if ( polySauv2== null) {
-
+						System.out.println("pppppppppppppppppppppp");
 						workSpace.getChildren().add(parent);
 						ajouterGeste(parent);
 						sauv.add(parent);

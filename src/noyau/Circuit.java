@@ -226,14 +226,14 @@ public class Circuit {
 		for(Composant cmp : compUtilises.keySet()) {
 			
 			if(cmp.getClass().getSimpleName().equals("Pin")) {
-				if( ((Pin)cmp).getInput()) {
+				if( ((Pin)cmp).getInput()) 
 					cmp.initialiserSortieParZero();
-				}
+				
 			}else if(cmp.getClass().getSimpleName().equals("Horloge") || cmp.getClass().getSimpleName().equals("SourceConstante")) {
 				cmp.initialiserSortieParZero();
 			}
 
-		}
+		}	
 		for (Pin pin : entreesCircuit) { // initialiser les pins d'entrees pour le commencement de la simulation
 			pin.evaluer();  
 		}
@@ -268,6 +268,7 @@ public class Circuit {
 		for (int i = 0; i < listeEtages.size(); i++) { // former les étages du circuit pour l'execution et la generation du chronogramme
 			for (Sequentiels b : listeEtages) {
 				b.entreeHorloge.addEtages(etage);
+				System.out.println("etages    "+etage);
 				tmp = new ArrayList<Integer>(etage);
 				if (tmp.size() != 0) {
 					max = Collections.max(tmp); // avoir le nombre des etages
@@ -276,6 +277,10 @@ public class Circuit {
 				b.setEtages(tmp);
 				etage.clear();
 			}
+			for(Composant cmp : compUtilises.keySet()) {
+				cmp.setNbEx(0);
+			}	
+			
 		}
 		
 	}

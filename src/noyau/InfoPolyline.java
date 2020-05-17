@@ -102,9 +102,13 @@ public class InfoPolyline implements Serializable{ /// classe qui contient des i
 	public void refrechPoints() {
 		if (linePrincipale != null) {
 			noeudLinePrincipale = new ArrayList<Double>(linePrincipale.getPoints());
+		}else {
+			noeudLinePrincipale.clear();
 		}
 		if (lineParent != null) {
 			noeudLineParent = new ArrayList<Double>(lineParent.getPoints());
+		}else {
+			noeudLineParent.clear();
 		}
 	}
 	
