@@ -141,8 +141,8 @@ public class HomeController extends Controller {
 	public static Polyline selectionne = new Polyline();
 	private static boolean select = false;
 	
-	double posX; // utilisï¿½ dans la sauvegarde des coordonnï¿½es
- 	double posY; // utilisï¿½ dans la sauvegarde des coordonnï¿½es
+	double posX; // utilisé dans la sauvegarde des coordonnées
+ 	double posY; // utilisé dans la sauvegarde des coordonnées
 
 	ArrayList<Text> listDesNoms = new ArrayList<Text>();
 	public static ArrayList<Button> btnsToHide = new ArrayList<Button>();
@@ -502,7 +502,7 @@ public class HomeController extends Controller {
 	@FXML
 	void ClickExit(MouseEvent event) { /// clicker sur le bouton fermer de la fenetre
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setContentText(Circuit.getCompUtilises().isEmpty() ? "Voulez vous vraiment quitter" :"Voullez vous sauvgarder ce circuit avant de quitter ?");
+		alert.setContentText(Circuit.getCompUtilises().isEmpty() ? "Voulez vous vraiment quitter" :"Voulez vous sauvegarder ce circuit avant de quitter ?");
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 		alert.initOwner(homeWindow);
 		alert.initStyle(StageStyle.UTILITY);
@@ -517,7 +517,7 @@ public class HomeController extends Controller {
 		alert.getButtonTypes().setAll(buttonTypeNon, buttonTypeCancel);
 		if(! Circuit.getCompUtilises().isEmpty())
 		{
-			buttonTypeSauvgarder = new ButtonType("Sauvgarder");
+			buttonTypeSauvgarder = new ButtonType("Sauvegarder");
 			alert.getButtonTypes().add(buttonTypeSauvgarder);
 		}
 		Optional<ButtonType> result = alert.showAndWait();	
@@ -535,7 +535,7 @@ public class HomeController extends Controller {
 						Alert a = new Alert(AlertType.INFORMATION);
 						a.initOwner(homeWindow);
 						a.initStyle(StageStyle.UTILITY);
-						a.setContentText("le circuit est bien sauvgarde");
+						a.setContentText("Le circuit est bien sauvegardé");
 						a.initOwner(homeWindow);
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.initStyle(StageStyle.UTILITY);
@@ -549,7 +549,7 @@ public class HomeController extends Controller {
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.initOwner(homeWindow);
 					a.initStyle(StageStyle.UTILITY);
-					a.setContentText("le circuit est bien sauvgarde");
+					a.setContentText("Le circuit est bien sauvegardé");
 					alert.initOwner(homeWindow);
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.initStyle(StageStyle.UTILITY);
@@ -637,7 +637,7 @@ public class HomeController extends Controller {
 		simul = (!simul);
 		workSpace.getChildren().remove(selectionne);
 		closeRightWindows();
-		if (simul) { /// verifier si on a passï¿½ au mode simulation
+		if (simul) { /// verifier si on a passé au mode simulation
 			edition.setDisable(true);
 			edition.setOpacity(0.4);
 			affichage.setOpacity(1);
@@ -659,6 +659,8 @@ public class HomeController extends Controller {
 					edition.setOpacity(1);
 					affichage.setOpacity(0.4);
 					affichage.setDisable(true);
+					Controller.getRightBareButtons().get(0).setOpacity(0.4);
+					Controller.getRightBareButtons().get(0).setDisable(true);
 				}
 				else { /// si aucun probleme 
 					remplireNomPinEtAfficher(); /// affichage des labels des pins
@@ -1119,8 +1121,8 @@ public class HomeController extends Controller {
 	}
 
 
-	private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallitï¿½ de drag and drop avant que le composant
-		//est ajoute dans le workSpace
+	private void ajouterLeGest(ImageView elementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop avant que le composant
+		//est ajouté dans le workSpace
 
 
 		elementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1328,7 +1330,7 @@ public class HomeController extends Controller {
 		return line;
 	}
 
-	public void SupprimerPereUndoChanges(Polyline line1) { /// utilisé pour regler les problï¿½mes dans l'operation du ctrl + z
+	public void SupprimerPereUndoChanges(Polyline line1) { /// utilisé pour regler les problèmes dans l'operation du ctrl + z
 		for (Donnes donnes : undoDeque) { 
 			if(donnes.getInfoPolyline() != null && !donnes.isSupprime() ) {
 				if(donnes.getInfoPolyline().getLineParent() == line1) {
@@ -1432,7 +1434,7 @@ public class HomeController extends Controller {
 		return line;
 	}
 
-	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallitï¿½ de drag and drop apres que le composant
+	private void ajouterLeGestApresCollage( ImageView eleementAdrager) {//Methode d'ajout de la fonctionallité de drag and drop apres que le composant
 		//est ajoute dans le workSpace
 
 		eleementAdrager.setOnMouseEntered(new EventHandler<MouseEvent>() { // ajouter un effet quand on rentre avec la souris dans l'image
@@ -1519,7 +1521,7 @@ public class HomeController extends Controller {
 					}
 
 					refrechLists(eleementAdrager); /// refrecher la liste des points dans le polylines
-					eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() { /// si le composant est dragï¿½ .
+					eleementAdrager.setOnMouseDragged(new EventHandler<MouseEvent>() { /// si le composant est dragé .
 						@Override
 						public void handle(MouseEvent e) {
 							if (!simul) {	
@@ -1587,7 +1589,7 @@ public class HomeController extends Controller {
 
 								}
 
-								else /// seter les coordonnees des coordonï¿½es des composants
+								else /// seter les coordonnées des composants
 								{
 									guideX.setLayoutX(0);
 									guideY.setLayoutY(0);
@@ -1627,7 +1629,7 @@ public class HomeController extends Controller {
 						public void handle(MouseEvent e) {
 							if (! simul) {
 								dragItem = null;
-								if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY()) /// verifier si la position du composant a ï¿½tï¿½ modifiï¿½
+								if(posX != eleementAdrager.getLayoutX() || posY != eleementAdrager.getLayoutY()) /// verifier si la position du composant a été modifié
 								{
 									Donnes sauveGarde=new Donnes(); /// faire une sauvegarde de mouvement
 									sauveGarde.setTypeDaction(Actions.Mouvement);
@@ -1640,10 +1642,10 @@ public class HomeController extends Controller {
 								eleementAdrager.setMouseTransparent(false);
 								eleementAdrager.setCursor(Cursor.DEFAULT);
 								if( eleementAdrager.getLayoutX() <= 0 ||eleementAdrager.getLayoutY() <= 0|| (e.getSceneX() +( eleementAdrager.getBoundsInLocal().getWidth()) / 2) > 1300 || e.getSceneY() + (eleementAdrager.getBoundsInLocal().getHeight() / 2)>720 || intersectionComposant(eleementAdrager))
-									/// verifier si le composant a ï¿½tï¿½ dï¿½posï¿½ dans une zone interdite
+									/// verifier si le composant a été déposé dans une zone interdite
 								{
 									eleementAdrager.setLayoutX(posX); //
-									eleementAdrager.setLayoutY(posY); // rendre le composant ï¿½ sa place prï¿½cedante
+									eleementAdrager.setLayoutY(posY); // rendre le composant à sa place précedante
 									updatePolyline(eleementAdrager);
 									afficheurX.setText(String.valueOf(posX));
 									afficheurY.setText(String.valueOf(posY));
@@ -1669,7 +1671,7 @@ public class HomeController extends Controller {
 					});
 
 				}else {
-					if(ListTextPin == null) { /// pour donner la main ï¿½ l'utilisateur pour changer la valeur stockï¿½ dans le pin
+					if(ListTextPin == null) { /// pour donner la main à l'utilisateur pour changer la valeur stocké dans le pin
 						if (eleementAdrager.getId().equals("pin")) {
 							Pin pin = (Pin) Circuit.getCompFromImage(eleementAdrager);
 							if (pin.getInput()) {
@@ -1692,9 +1694,9 @@ public class HomeController extends Controller {
 							}
 						}
 					}else {
-						Composant compos = Circuit.getCompFromImage(eleementAdrager); /// pour donner la main pour selectionner l'ordre des pins d'entrees et sorties
+						Composant compos = Circuit.getCompFromImage(eleementAdrager); /// pour donner la main pour sélectionner l'ordre des pins d'entrées et sorties
 						if(compos.getClass().getSimpleName().equals("Pin")) {
-							if( ((Pin)compos).isInput()) { /// verifier si c'est un pin d'entree
+							if( ((Pin)compos).isInput()) { /// verifier si c'est un pin d'entrée
 								if(!ListTextPin.contains(compos)){
 									Text number = new Text();
 									number.setLayoutX(eleementAdrager.getLayoutX()-9);
@@ -1742,7 +1744,7 @@ public class HomeController extends Controller {
 									workSpace.getChildren().add(number);
 									ListTextPin2.add((Pin)compos);
 									ListText2.add(number);
-								}else { /// afficher une alerte si un pin est re-sï¿½lectionnï¿½
+								}else { /// afficher une alerte si un pin est re-sélectionné
 									Alert alert = new Alert(AlertType.CONFIRMATION);
 									alert.initOwner(homeWindow);
 									alert.initStyle(StageStyle.UTILITY);
@@ -1750,7 +1752,7 @@ public class HomeController extends Controller {
 									alert.setTitle("Confirmation");
 									alert.setHeaderText("Refaire l'ordre ");
 									alert.initOwner(homeWindow);
-									alert.setContentText("Cette entrée est déja selectionnée, voulez-vous réordonner les entrées ?");
+									alert.setContentText("Cette entrée est déja sélectionnée, voulez-vous réordonner les entrées ?");
 									alert.initStyle(StageStyle.UTILITY);
 									alert.setX(homeWindow.getX()+500);
 									alert.setY(homeWindow.getY()+250);
@@ -2012,7 +2014,7 @@ public class HomeController extends Controller {
 		guideFilY.setEndY(0);
 	}
 
-	private void instanceComposant(ImageView img) { /// cette est utilisï¿½ pour faire une instance d'un composant selon une image donnï¿½
+	private void instanceComposant(ImageView img) { /// cette fonction est utilisé pour faire une instance d'un composant selon une image donné
 		Composant comp;
 		switch (img.getId()) {
 		case "hex": {
@@ -2110,7 +2112,7 @@ public class HomeController extends Controller {
 			comp = new Encodeur(2, "");
 		}
 		}
-		Circuit.ajouterComposant(comp, img); /// ajout du composant au hashmap des composant utilisï¿½
+		Circuit.ajouterComposant(comp, img); /// ajout du composant au hashmap des composant utilisé
 	}
 
 	private boolean intersectionComposant(ImageView image) { /// savoir s'il y'a une intersection entre les composants
@@ -2164,7 +2166,7 @@ public class HomeController extends Controller {
 		return false;
 	}
 
-	public int nbOccPoint(Polyline line, double x, double y) { /// compter le nombre de points qui ont les coordonnees passï¿½ comme parametre
+	public int nbOccPoint(Polyline line, double x, double y) { /// compter le nombre de points qui ont les coordonnées passées comme parametre
 		ArrayList<Double> list = new ArrayList<Double>(line.getPoints());
 		int i = 0, nb = 0;
 		while (i < list.size()) {
@@ -2223,7 +2225,7 @@ public class HomeController extends Controller {
 	public void copier(ActionEvent event) { /// pour copier un composant avec la bar droite
 		Stage s = (Stage) copier.getScene().getWindow();
 		s.close();
-		if(elementSeclecionner != null) { /// verifier si un composant est sï¿½lectionnï¿½
+		if(elementSeclecionner != null) { /// verifier si un composant est sélectionné
 			setCopierActive(true);
 			copyActive = false ;
 		}
@@ -2236,7 +2238,7 @@ public class HomeController extends Controller {
 	}
 
 	public void CopyUses() { /// la fonction qui fait la copie
-		if (elementSeclecionner != null) { /// verifier s'il y'a un elt sï¿½lectionnï¿½
+		if (elementSeclecionner != null) { /// verifier s'il y'a un elt sélectionné
 			if(!pastButton) {
 				if (! elementSeclecionner.getId().equals("CircuitIntegreSequentiel") && ((elementSeclecionner.getId().equals("clock") && ( ! horloged)) || (!elementSeclecionner.getId().equals("clock")))) {
 					if(!copyActive)
@@ -2321,7 +2323,7 @@ public class HomeController extends Controller {
 		workSpace.getChildren().remove(selectionne);
 		if (elementSeclecionner != null) {
 			cmp = Circuit.getCompFromImage(elementSeclecionner);
-			supprimerDequeFilProbleme(cmp); /// supprimer des erreurs dues ï¿½ la suppression d'un composant
+			supprimerDequeFilProbleme(cmp); /// supprimer des erreurs dues à la suppression d'un composant
 			elementAsuprimer = elementSeclecionner;
 			sauveGarderSupression(); /// sauvegarder une suppression
 			if(elementAsuprimer.getId().equals("clock"))
@@ -2365,13 +2367,13 @@ public class HomeController extends Controller {
 			HomeController.horloged =false;
 			HomeController.horlogeDeCercuit =null; 
 		}
-		else if (elementSeclecionner.getId().equals("CircuitIntegre")) { /// verifier si c'est un circuit integre
+		else if (elementSeclecionner.getId().equals("CircuitIntegre")) { /// verifier si c'est un circuit intégré
 			ArrayList<Circle> arrayList = ((CircuitIntegre)composantCouper).getListeCercles();
 			for (Circle circle : arrayList) {
 				workSpace.getChildren().remove(circle);
 			}
 		} 
-		else if (elementSeclecionner.getId().equals("CircuitIntegreSequentiel")) { /// verifier si c'est un circuit intï¿½grï¿½ sequentielx
+		else if (elementSeclecionner.getId().equals("CircuitIntegreSequentiel")) { /// verifier si c'est un circuit intégré sequentiel
 			ArrayList<Circle> arrayList = ((CircuitIntegreSequentiel)composantCouper).getListeCercles();
 			for (Circle circle : arrayList) {
 				workSpace.getChildren().remove(circle);
@@ -2412,7 +2414,7 @@ public class HomeController extends Controller {
 			alert.getButtonTypes().add(buttonTypeSauvgarder);
 		}
 		Optional<ButtonType> result = alert.showAndWait();	
-		if(result.get() != buttonTypeCancel) { /// voir qu'elle est le bouton cliquï¿½
+		if(result.get() != buttonTypeCancel) { /// voir qu'elle est le bouton cliqué
 			if (result.get() == buttonTypeSauvgarder){
 				if (fichierCourant == null) {
 					final FileChooser fileChooser = new FileChooser();
@@ -2434,7 +2436,7 @@ public class HomeController extends Controller {
 						a.setY(homeWindow.getY()+250);
 						a.showAndWait();
 					}
-				} else { /// afficher une alerte pour indiquer que le circuit est bien sauvegarder
+				} else { /// afficher une alerte pour indiquer que le circuit est bien sauvegardé
 					Sauvegarde sauvegarde = new Sauvegarde();
 					sauvegarde.saveCiruit(fichierCourant.getAbsolutePath());
 					Alert a = new Alert(AlertType.INFORMATION);
@@ -2469,7 +2471,7 @@ public class HomeController extends Controller {
 
 
 	@FXML
-	void nouveau(ActionEvent event) { /// creer un nouveau espace pour construire de nouveaux circuits
+	void nouveau(ActionEvent event) { /// créer un nouveau espace pour construire de nouveaux circuits
 		workSpace.getChildren().remove(selectionne);
 		Stage stage = (Stage) nouveau.getScene().getWindow();
 		stage.close();
@@ -2697,7 +2699,7 @@ public class HomeController extends Controller {
 	}
 
 	@FXML
-	void saveAs(ActionEvent event) { /// la fonctionnalitï¿½ de sauvegarder as
+	void saveAs(ActionEvent event) { /// la fonctionnalité de sauvegarder as
 		if(!Circuit.getCompUtilises().isEmpty())
 		{
 		workSpace.getChildren().remove(selectionne);
@@ -2719,7 +2721,7 @@ public class HomeController extends Controller {
 			Alert a = new Alert(AlertType.INFORMATION);
 			a.initOwner(homeWindow);
 			a.initStyle(StageStyle.UTILITY);
-			a.setContentText("Le circuit est vide, rien a sauvegarder");
+			a.setContentText("Le circuit est vide, rien à sauvegarder");
 			a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 			a.initStyle(StageStyle.UTILITY);
 			a.setX(homeWindow.getX()+500);
@@ -2732,7 +2734,7 @@ public class HomeController extends Controller {
 
 
 	@FXML
-	void importer(ActionEvent event) { /// la fonctionalitï¿½ importer circuit integrï¿½
+	void importer(ActionEvent event) { /// la fonctionalité importer circuit intégré
 		workSpace.getChildren().remove(selectionne);
 		final FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(
@@ -2751,7 +2753,7 @@ public class HomeController extends Controller {
 				fichier = new FileInputStream(f.getAbsolutePath());
 				oo = new ObjectInputStream(fichier);
 				cmp = (Composant)oo.readObject();
-				if(cmp.getClass().getSimpleName().equals("CircuitIntegre")) { /// verifier si c'est un circuit intï¿½grï¿½ simple
+				if(cmp.getClass().getSimpleName().equals("CircuitIntegre")) { /// verifier si c'est un circuit intïégré simple
 					CircuitIntegre circuitIntegre = (CircuitIntegre)cmp;
 					circuitIntegre.setNom(f.getName().substring(0, f.getName().length() - 4));
 					ImageView imageView = new ImageView(new Image(circuitIntegre.generatePath()));
@@ -2864,8 +2866,8 @@ public class HomeController extends Controller {
 								a.showAndWait();
 							}
 						}else {
-							if(!horloged) { /// verifier si le circuit est alimentï¿½ par un pin d'horloge
-								if(Circuit.occurencePinHorlogee() == 1) { /// si le nombre de pin d'horloge ï¿½gal ï¿½ 1
+							if(!horloged) { /// verifier si le circuit est alimenté par un pin d'horloge
+								if(Circuit.occurencePinHorlogee() == 1) { /// si le nombre de pin d'horloge égal à 1
 									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
 									ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
 									for (Pin pin : ListTextPin) {
@@ -2887,7 +2889,7 @@ public class HomeController extends Controller {
 									alert.showAndWait();
 								}
 							}else { /// le circuit possede une horloge
-								if(Circuit.occurencePinHorlogee() == 0) { /// verifier si le nombre de pin de pin egal ï¿½ zero
+								if(Circuit.occurencePinHorlogee() == 0) { /// verifier si le nombre de pin égal à zero
 									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
 									ArrayList<Pin> entreCircuit = new ArrayList<Pin>(ListTextPin);
 									Pin pinHorloge = new Pin(true, "horloge");
@@ -2914,7 +2916,7 @@ public class HomeController extends Controller {
 						}
 						opacityElements4();
 
-						final FileChooser fileChooser = new FileChooser(); /// sert ï¿½ la specification de l'emplacement ou il faut mettre le circuit
+						final FileChooser fileChooser = new FileChooser(); /// sert à la specification de l'emplacement où il faut mettre le circuit
 						fileChooser.setInitialDirectory(
 								new File(System.getProperty("user.home"))
 								);               
@@ -2982,7 +2984,7 @@ public class HomeController extends Controller {
 	void chronogramme(ActionEvent event) { /// charger la fenetre du chronogramme
 		Stage s = (Stage) chronogramme.getScene().getWindow();
 		s.close();
-		if (horloged) { /// verifier si il existe une horloge dans le workspace
+		if (horloged) { /// verifier s'il existe une horloge dans le workspace
 			try {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/elementDechronogramme.fxml"));
 				Parent root = fxmlLoader.load();
@@ -3028,11 +3030,11 @@ public class HomeController extends Controller {
 	}
 
 	@FXML
-	void tableDeVerite(ActionEvent event) { /// charger la fenetre du table de veritï¿½
+	void tableDeVerite(ActionEvent event) { /// charger la fenetre du table de vérité
 		Stage stage1 = (Stage) tableVerite.getScene().getWindow();
 		stage1.close();
 		if (simul) {
-			if(Circuit.getEntreesCircuit().size() != 0 && Circuit.getSortiesCircuit().size() !=0) { /// verifier si il existe des entree et sorties
+			if(Circuit.getEntreesCircuit().size() != 0 && Circuit.getSortiesCircuit().size() !=0) { /// vérifier s'il existe des entree et sorties
 				if(ListTextPin == null && ListTextPin2 == null) {
 					ListTextPin = new ArrayList<Pin>();
 					ListText = new ArrayList<Text>();
@@ -3057,17 +3059,17 @@ public class HomeController extends Controller {
 					} catch(Exception e) {
 						e.printStackTrace();
 					}
-					//Boutton Table de veritï¿½ (Mode normal)
+					//Bouton Table de vérité (Mode normal)
 					tableVerite.setText("  Générer la table");
 					tableVerite.setAlignment(Pos.BASELINE_LEFT);
 				}else { //Generer la table et aller vers l'etat normal
-					//Generer La table de veritï¿½
+					//Generer La table de vérité
 					if(ListTextPin.size() != 0 && ListTextPin2.size()!=0) {
 						Circuit.tableVerite(ListTextPin,ListTextPin2);
 						Circuit.defaultCompValue(); //Tous noir
 						Circuit.initialiser();
 						//Supprimer les numeros
-						//La fenetre de la table de veritï¿½
+						//La fenetre de la table de vérité
 						try {
 							Stage s = (Stage) tableVerite.getScene().getWindow();
 							s.close();
@@ -3077,8 +3079,7 @@ public class HomeController extends Controller {
 							Stage stage = new Stage();
 							Scene scene = new Scene(root);
 							stage.setScene(scene);
-							stage.setTitle("la table de veritï¿½");
-							//stage.setTitle("Remarque");
+							stage.setTitle("La table de vérité");
 							stage.setX(homeWindow.getX()+350);
 							stage.setY(homeWindow.getY()+200);
 							stage.setResizable(false);
@@ -3088,12 +3089,12 @@ public class HomeController extends Controller {
 						} catch(Exception e) {
 							e.printStackTrace();
 						}
-						//Boutton Table de veritï¿½ (Mode normal)
+						//Bouton Table de vérité (Mode normal)
 						tableVerite.setText("  Table de vérité");
 						tableVerite.setAlignment(Pos.BASELINE_LEFT);
 
 					}
-					else { /// afficher une alerte si l'user n'a sï¿½lectionnï¿½ aucune entree et sortie
+					else { /// afficher une alerte si l'user n'a sélectionné aucune entrée et sortie
 						Alert alert = new Alert(AlertType.ERROR);
 						alert.initOwner(homeWindow);
 						alert.initStyle(StageStyle.UTILITY);
@@ -3168,7 +3169,7 @@ public class HomeController extends Controller {
 
 	}
 
-	public static void enligne(String l) {//une methode utilise pour ouvrir un lien dans le navigateur par defaut
+	public static void enligne(String l) {//une methode utilisé pour ouvrir un lien dans le navigateur par defaut
 		try {
 			Desktop.getDesktop().browse(new URL(l).toURI());
 		} catch (MalformedURLException e) {
@@ -3187,7 +3188,7 @@ public class HomeController extends Controller {
 		enligne("https://simulini.netlify.com");
 	}
 	
-	public void aideEnLigne(ActionEvent event) {
+	public void aideEnLigne(ActionEvent event) {/// affiche l'aide en ligne
 		enligne("https://simulini.netlify.com/page-2/");
 	}
 
@@ -3250,7 +3251,7 @@ public class HomeController extends Controller {
 				sauveGarde= undoDeque.removeFirst();
 			}
 
-			if(!sauveGarde.isSupprime()) /// verifier si la sauvegarde n'est pas supprimï¿½ 
+			if(!sauveGarde.isSupprime()) /// verifier si la sauvegarde n'est pas supprimé
 			{
 				switch(sauveGarde.getTypeDaction())
 				{
@@ -3273,7 +3274,7 @@ public class HomeController extends Controller {
 					}
 					ctrlz = false;
 				}break;
-				case Creation : /// la creation d'un composant ( deposï¿½ la 1iere fois le composant dans le workspace)
+				case Creation : /// la creation d'un composant ( déposé la 1iere fois le composant dans le workspace)
 				{
 					workSpace.getChildren().remove(sauveGarde.getComposantCommeImage());
 					ArrayList<Polyline> lineListe= Circuit.supprimerComp(sauveGarde.getComposant());
@@ -3285,7 +3286,7 @@ public class HomeController extends Controller {
 						horlogeDeCercuit = null;
 					}
 				}break;
-				case Modification : /// la modification des propriï¿½tes d'un composant
+				case Modification : /// la modification des propriétés d'un composant
 				{
 					ImageView imageDeComposant= sauveGarde.getComposantCommeImage();
 					Composant composant= Circuit.getCompFromImage( imageDeComposant);
@@ -3356,11 +3357,17 @@ public class HomeController extends Controller {
 						Pin pin = (Pin)sauveGarde.getComposant();
 						if (pin.isInput()) {
 							Circuit.getEntreesCircuit().add(pin);
-							Circuit.getSortiesCircuit().remove(pin);
 						}
 						else {
-							Circuit.getEntreesCircuit().remove(pin);
 							Circuit.getSortiesCircuit().add(pin);
+						}
+					}
+					else if(sauveGarde.getComposant().getClass().getSimpleName().equals("SourceConstante")){
+						Circuit.getListSouceCte().add((SourceConstante)sauveGarde.getComposant());
+					}
+					else if(sauveGarde.getComposant().getClass().getSuperclass().equals(Sequentiels.class) || sauveGarde.getComposant().getClass().getSuperclass().equals(Bascule.class)){
+						if (((Sequentiels)sauveGarde.getComposant()).getEntreeHorloge() != null) {
+							Circuit.getListeEtages().add((Sequentiels)sauveGarde.getComposant());
 						}
 					}
 				}break;
@@ -3425,7 +3432,7 @@ public class HomeController extends Controller {
 			}
 		}
 	}
-	public static void sauveGarderModification() /// utilisï¿½ pour sauvegarder des modifications dans les proprietï¿½s d'un compsant 
+	public static void sauveGarderModification() /// utilisé pour sauvegarder des modifications dans les proprietés d'un compsant 
 	{
 		Composant composant=Circuit.getCompFromImage(elementAmodifier);
 		Donnes sauveGarde= new Donnes();
@@ -3471,7 +3478,7 @@ public class HomeController extends Controller {
 	}
 
 
-	private void updatePolyline(ImageView eleementAdrager) { /// refrescher les polylines utilisï¿½s au cas ou le composant c'est dï¿½placï¿½
+	private void updatePolyline(ImageView eleementAdrager) { /// refrescher les polylines utilisés au cas où le composant c'est déplacé
 		Composant cmp = Circuit.getCompFromImage(eleementAdrager);
 		boolean relocate = false;
 		int i = 0, j = 0 ;
@@ -3562,9 +3569,9 @@ public class HomeController extends Controller {
 		}
 	}
 
-	public void ajouterElements() { /// cette fonction est utilisï¿½ pour ajouter les composants une fois que le circuit a ï¿½tï¿½ chargï¿½
+	public void ajouterElements() { /// cette fonction est utilisé pour ajouter les composants une fois que le circuit a été½ chargé½
 		for (ImageView img : Circuit.getCompUtilises().values()) {
-			if (img.getId().equals("clock")) { /// verifier s'il ya une horloge dans le circuit ï¿½ charger
+			if (img.getId().equals("clock")) { /// verifier s'il ya une horloge dans le circuit à charger
 				horloged = true;
 				horlogeDeCercuit = img;
 			}
@@ -3625,7 +3632,7 @@ public class HomeController extends Controller {
 		}
 	}
 
-	public Polyline containsPolyInSauv(Polyline polyline) { /// savoir si il y'a un polyline qui egal ï¿½ celui passï¿½ comme parametre
+	public Polyline containsPolyInSauv(Polyline polyline) { /// savoir si il y'a un polyline qui est égal à celui passé comme parametre
 		for (Polyline polyline2 : sauv) {
 			if (equalsPolylines(polyline, polyline2)) {
 				return polyline2;
@@ -3926,7 +3933,7 @@ public class HomeController extends Controller {
 		}
 	}
 
-	public static void sauveGardeCopier(ImageView imageView , Composant composant) { /// faire une sauvegarde des infos necï¿½ssaires pour le ctrl + z de la copie
+	public static void sauveGardeCopier(ImageView imageView , Composant composant) { /// faire une sauvegarde des infos nécéssaires pour le ctrl + z de la copie
 		Donnes donnes = new Donnes();
 		donnes.setTypeDaction(Actions.Copier);
 		donnes.setComposantCommeImage(imageView);
@@ -3934,7 +3941,7 @@ public class HomeController extends Controller {
 		undoDeque.addFirst(donnes);
 	}
 
-	public static void sauveGarderRotation(Composant composant,ImageView imageView,int rotation) { /// faire une sauvegarde des infos nï¿½cessaires pour le ctrl + z de la rotation
+	public static void sauveGarderRotation(Composant composant,ImageView imageView,int rotation) { /// faire une sauvegarde des infos nécéssaires pour le ctrl + z de la rotation
 		Donnes donnes = new Donnes();
 		HomeController.supprimerDequeFilProbleme(composant);
 		donnes.setTypeDaction(Actions.Rotation);
@@ -4047,14 +4054,14 @@ public class HomeController extends Controller {
 		}
 	}
 
-	public void showButtonsFile() { /// activer les boutons desactivï¿½ lors de la simulation
+	public void showButtonsFile() { /// activer les boutons désactivé lors de la simulation
 		for (Button button : btnsToHide) {
 			button.setDisable(false);
 			button.setOpacity(1);
 		}
 	}
 
-	public void selectionne(ImageView image) { /// afficher un cadre au tour d'un composant sï¿½lectionnï¿½
+	public void selectionne(ImageView image) { /// afficher un cadre au tour d'un composant sélectionné
 		selectionne.setStroke(Color.DARKGRAY);
 		selectionne.setStrokeWidth(2);
 		selectionne.getPoints().clear();

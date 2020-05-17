@@ -78,8 +78,8 @@ public class Pin extends Composant implements ElementHorloge,ComposantDeChronogr
 	public void addEtages(ArrayList<Integer> etage) { // sert pour la creation des etages dans la simulation
 		if (! etage.contains(0)) {
 			etage.add(0);
-			this.horloge = true ; // mettre le pin comme etant une horloge
 		}
+		this.horloge = true ; // mettre le pin comme etant une horloge
 	}
 	
 	@Override

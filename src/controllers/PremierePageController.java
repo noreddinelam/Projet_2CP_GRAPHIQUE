@@ -92,7 +92,7 @@ public class PremierePageController implements Initializable{ /// c'est le respo
 						stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST,
 								(event)-> {
 									Alert alert = new Alert(AlertType.CONFIRMATION);
-									alert.setContentText(Circuit.getCompUtilises().isEmpty() ? "Voulez vous vraiment quitter" :"Voullez vous sauvgarder ce circuit avant de quitter ?");
+									alert.setContentText(Circuit.getCompUtilises().isEmpty() ? "Voulez-vous vraiment quitter ?" :"Voulez-vous sauvegarder ce circuit avant de quitter ?");
 									alert.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 									alert.initOwner(stage);
 									alert.initStyle(StageStyle.UTILITY);
@@ -103,7 +103,7 @@ public class PremierePageController implements Initializable{ /// c'est le respo
 									alert.getButtonTypes().setAll(buttonTypeNon, buttonTypeCancel);
 									if(! Circuit.getCompUtilises().isEmpty())
 									{
-										buttonTypeSauvgarder = new ButtonType("Sauvgarder");
+										buttonTypeSauvgarder = new ButtonType("Sauvegarder");
 										alert.getButtonTypes().add(buttonTypeSauvgarder);
 									}
 									Optional<ButtonType> result = alert.showAndWait();	
@@ -120,7 +120,7 @@ public class PremierePageController implements Initializable{ /// c'est le respo
 													Alert a = new Alert(AlertType.INFORMATION);
 													a.initOwner(stage);
 													a.initStyle(StageStyle.UTILITY);
-													a.setContentText("le circuit est bien sauvgarde");
+													a.setContentText("Le circuit est bien sauvegardé");
 													a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 													a.showAndWait();
 												}
@@ -130,7 +130,7 @@ public class PremierePageController implements Initializable{ /// c'est le respo
 												Alert a = new Alert(AlertType.INFORMATION);
 												a.initOwner(stage);
 												a.initStyle(StageStyle.UTILITY);
-												a.setContentText("le circuit est bien sauvgarde");
+												a.setContentText("Le circuit est bien sauvegardé");
 												a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 												a.showAndWait();
 											}
