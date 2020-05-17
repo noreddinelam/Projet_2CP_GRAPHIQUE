@@ -30,9 +30,11 @@ import application.ClickDroit;
 import application.ClickDroitLabel;
 import application.ClickSouris2;
 import application.FenetreDesErreurs;
+import application.Main;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -175,6 +177,9 @@ public class HomeController extends Controller {
 	/*------------------------------------edition----------------------------*/
 
 	static boolean cc;
+	
+	private String fileToUpload;
+	
 	@FXML
 	private Button annuler;
 
@@ -539,8 +544,6 @@ public class HomeController extends Controller {
 						a.initOwner(homeWindow);
 						a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 						a.initStyle(StageStyle.UTILITY);
-						a.setX(homeWindow.getX()+500);
-						a.setY(homeWindow.getY()+250);
 						a.showAndWait();
 					}
 				} else {
@@ -550,11 +553,9 @@ public class HomeController extends Controller {
 					a.initOwner(homeWindow);
 					a.initStyle(StageStyle.UTILITY);
 					a.setContentText("Le circuit est bien sauvegardé");
-					alert.initOwner(homeWindow);
+					a.initOwner(homeWindow);
 					a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 					a.initStyle(StageStyle.UTILITY);
-					a.setX(homeWindow.getX()+500);
-					a.setY(homeWindow.getY()+250);
 					a.showAndWait();
 				}
 			}
@@ -828,7 +829,6 @@ public class HomeController extends Controller {
 		scrollPane.setVmax(1);
 		tooltipInitialize();
 		initialiseAnimationOfBarDroite();
-
 		fichierFenetre = new ClickBarDroite(1055, 50, "Fichier.fxml", homeWindow, workSpace, afficheurX, afficheurY,
 				scrollPane);
 		editionFenetre = new ClickBarDroite(1055, 115, "Edition.fxml", homeWindow, workSpace, afficheurX, afficheurY,
@@ -915,7 +915,7 @@ public class HomeController extends Controller {
 				}
 			}
 		});
-
+		importCircuit();
 	}
 
 	private void ajouterGestWorkSpace() {// Methodes pour Ajouter l'interaction avec le drag and drop et les guides
@@ -4092,6 +4092,70 @@ public class HomeController extends Controller {
 		a.setY(homeWindow.getY()+250);
 		a.showAndWait();
 	}
+	public void importCircuit() {
+		if (fileToUpload != null) {
+			int lengthFile = fileToUpload.length();
+			String extension = fileToUpload.substring(lengthFile- 3,lengthFile);
+			if (extension.equals("sim")) {
+				Sauvegarde.loadCiruit(fileToUpload);
+				ajouterElements();
+				fichierCourant = new File(fileToUpload);
+				saveLabel.setText(fichierCourant.getName());
+			}
+			else if(extension.equals("int")) {
+				FileInputStream fichier ;
+				ObjectInputStream oo = null;
+				Composant cmp; 
+				File f = new File(fileToUpload);
+				try {
+					fichier = new FileInputStream(fileToUpload);
+					oo = new ObjectInputStream(fichier);
+					cmp = (Composant)oo.readObject();
+					if(cmp.getClass().getSimpleName().equals("CircuitIntegre")) { /// verifier si c'est un circuit intïégré simple
+						CircuitIntegre circuitIntegre = (CircuitIntegre)cmp;
+						circuitIntegre.setNom(f.getName().substring(0, f.getName().length() - 4));
+						ImageView imageView = new ImageView(new Image(circuitIntegre.generatePath()));
+						imageView.setLayoutX(10);
+						imageView.setLayoutY(10);
+						imageView.setFitHeight(imageView.getImage().getHeight());
+						imageView.setFitWidth(imageView.getImage().getWidth());
+						imageView.setId("CircuitIntegre");
+						Circuit.ajouterComposant(circuitIntegre, imageView);
+						workSpace.getChildren().add(imageView);
+						ajouterLeGestApresCollage(imageView);
+						addAllPolylinesToWorkSpace(circuitIntegre.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+						workSpace.getChildren().addAll(circuitIntegre.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
+					}else {/// verifier si c'est un circuit intégré sequentiel
+						CircuitIntegreSequentiel ciq = (CircuitIntegreSequentiel)cmp;
+						ImageView imageView = new ImageView(new Image(ciq.generatePath()));
+						ciq.setNom(f.getName().substring(0, f.getName().length() - 4));
+						imageView.setLayoutX(10);
+						imageView.setLayoutY(10);
+						imageView.setFitHeight(imageView.getImage().getHeight());
+						imageView.setFitWidth(imageView.getImage().getWidth());
+						imageView.setId("CircuitIntegreSequentiel");
+						ciq.defaultValue();
+						Circuit.ajouterComposant(ciq, imageView);
+						workSpace.getChildren().add(imageView);
+						ajouterLeGestApresCollage(imageView);
+						addAllPolylinesToWorkSpace(ciq.generatePolyline(imageView.getLayoutX(), imageView.getLayoutY()));
+						workSpace.getChildren().addAll(ciq.generateCercles(imageView.getLayoutX(), imageView.getLayoutY()));
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			}
+			else {
+				Alert a = new Alert(AlertType.WARNING);
+				a.setContentText("Le type du fichier n'est pas supporté !!");
+				a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
+				a.initStyle(StageStyle.UTILITY);
+				a.showAndWait();
+			}
+		}
+	}
+
 	public Button getNouveau() {
 		return nouveau;
 	}
@@ -4196,5 +4260,12 @@ public class HomeController extends Controller {
 	public void setChronogramme(Button chronogramme) {
 		this.chronogramme = chronogramme;
 	}
+	public String getFileToUpload() {
+		return fileToUpload;
+	}
+	public void setFileToUpload(String fileToUpload) {
+		this.fileToUpload = fileToUpload;
+	}
 
+	
 }

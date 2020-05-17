@@ -35,7 +35,8 @@ public class PremierePageController implements Initializable{ /// c'est le respo
 	private Pane pane;
 
 	private Stage window;	
-
+	
+	private String fileToUpload;
 	public void setStage(Stage window) {
 		this.window = window;
 	}
@@ -84,6 +85,7 @@ public class PremierePageController implements Initializable{ /// c'est le respo
 						HomeController controller = (HomeController) loader.getController();
 						controller.setHomeControllerStage(stage);
 						controller.setHomeControllerScene(scene);
+						controller.setFileToUpload(fileToUpload);
 						controller.inisialiser();
 						stage.getIcons().add(new Image("/homePage_icones/miniLogo.png"));
 						scene.getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
@@ -161,4 +163,12 @@ public class PremierePageController implements Initializable{ /// c'est le respo
 			});	
 		}	
 	}
+	public String getFileToUpload() {
+		return fileToUpload;
+	}
+	public void setFileToUpload(String fileToUpload) {
+		this.fileToUpload = fileToUpload;
+	}
+	
+	
 }
