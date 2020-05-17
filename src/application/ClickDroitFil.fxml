@@ -18,7 +18,7 @@
             <Image url="@../pageEntreeIcones/supprimerTous.png" />
          </image>
       </ImageView>
-      <Button fx:id="supprimerTous" alignment="TOP_LEFT" layoutY="27.0" mnemonicParsing="false" onAction="#supprimerTous" prefHeight="25.0" prefWidth="164.0" text="       Supprimer tous" textFill="WHITE">
+      <Button fx:id="supprimerTous" alignment="TOP_LEFT" layoutY="27.0" mnemonicParsing="false" onAction="#supprimerTous" prefHeight="25.0" prefWidth="164.0" text="       Supprimer tout" textFill="WHITE">
          <font>
             <Font name="Calisto MT" size="14.0" />
          </font>

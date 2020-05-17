@@ -93,7 +93,7 @@
                      <children>
                         <TableView fx:id="tableView" prefHeight="579.0" prefWidth="194.0" stylesheets="@../styleFile/tableViewChronoGramme.css">
                           <columns>
-                            <TableColumn fx:id="elementsColumn" prefWidth="88.0" text="Element" />
+                            <TableColumn fx:id="elementsColumn" prefWidth="88.0" text="Elément" />
                             <TableColumn fx:id="valeurQ" prefWidth="20.0" text="Q" />
                               <TableColumn fx:id="valeurQbar" prefWidth="21.0" text="Qb" />
                           </columns>

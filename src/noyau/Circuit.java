@@ -268,7 +268,6 @@ public class Circuit {
 		for (int i = 0; i < listeEtages.size(); i++) { // former les étages du circuit pour l'execution et la generation du chronogramme
 			for (Sequentiels b : listeEtages) {
 				b.entreeHorloge.addEtages(etage);
-				System.out.println("etages    "+etage);
 				tmp = new ArrayList<Integer>(etage);
 				if (tmp.size() != 0) {
 					max = Collections.max(tmp); // avoir le nombre des etages

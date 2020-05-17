@@ -334,7 +334,7 @@
                                                    <children>
                                                       <ImageView fx:id="not" fitHeight="48.0" fitWidth="71.0" layoutX="17.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../not/Not0.png" />
+                                                            <Image url="@../Not/Not0.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>

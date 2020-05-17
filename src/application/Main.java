@@ -31,6 +31,9 @@ public class Main extends Application { /// charger la fenetre principale et lan
 			fade.setAutoReverse(true);
 			fade.setNode(root);
 			fade.play();
+			if (getParameters().getUnnamed().size() != 0) {
+				premierePageController.setFileToUpload(getParameters().getUnnamed().get(0));
+			}
 			primaryStage.getIcons().add(new Image("/homePage_icones/miniLogo.png"));
 			primaryStage.setScene(scene);
 		    primaryStage.initStyle(StageStyle.UNDECORATED);
