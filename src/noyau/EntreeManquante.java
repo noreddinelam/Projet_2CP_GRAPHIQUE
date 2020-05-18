@@ -11,11 +11,11 @@ public class EntreeManquante extends ExceptionProgramme{ /// exception utilisé s
 	}
 	@Override
 	public String getProblem() {
-		return "L'entree : "+String.valueOf(entreeManquante) + " du composant : "+composant.getClass().getSimpleName()+" est non relié";
+		return "L'entrée : "+String.valueOf(entreeManquante) + " du composant : "+composant.getClass().getSimpleName()+" est non reliée";
 	}
 	@Override
 	public String getSolution() {
-		return "Relier l'entree : "+String.valueOf(entreeManquante) +" du composant : "+composant.getClass().getSimpleName();
+		return "Relier l'entrée : "+String.valueOf(entreeManquante) +" du composant : "+composant.getClass().getSimpleName();
 	}
 
 	public int getEntreeManquante() {

@@ -14,7 +14,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	 */
 	private static final long serialVersionUID = -1243246494701808257L;
 	protected Fil entreeHorloge = null;
-	protected EtatLogique etatPrecHorloge;
+	protected EtatLogique etatPrecHorloge = EtatLogique.ZERO;
 	protected Fil clear = null;
 	protected Fil load = null;
 	protected Front front;
@@ -30,7 +30,6 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 		this.front = front ;
 		clear = new Fil(null);
 		clear.setEtatLogiqueFil(EtatLogique.ONE);
-
 	}
 
 	public abstract void genererSortiesSyncho();
@@ -274,6 +273,12 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 
 	public void setFront(Front front) {
 		this.front = front;
+		if (front.equals(Front.Front_Montant)) {
+			etatPrecHorloge = EtatLogique.ZERO;
+		}
+		else {
+			etatPrecHorloge = EtatLogique.ONE;
+		}
 	}
 
 }
