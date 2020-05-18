@@ -853,7 +853,6 @@ public class HomeController extends Controller {
 
 				if(!select) {
 					workSpace.getChildren().remove(selectionne);
-					elementAmodifier = null;
 					elementAsuprimer = null;
 				}
 				
@@ -3100,6 +3099,7 @@ public class HomeController extends Controller {
 							stage.setY(homeWindow.getY()+200);
 							stage.setResizable(false);
 							stage.initModality(Modality.APPLICATION_MODAL);
+							stage.getIcons().add(new Image("/homePage_icones/miniLogo.png"));
 							stage.initOwner(homeWindow);
 							stage.show();
 						} catch(Exception e) {
@@ -3175,6 +3175,7 @@ public class HomeController extends Controller {
 			scene.getStylesheets().add(getClass().getResource("/styleFile/about.css").toExternalForm());
 			stage.setScene(scene);
 			stage.setTitle("About SimulINI");
+			stage.getIcons().add(new Image("/homePage_icones/miniLogo.png"));
 			stage.initOwner(s.getOwner());
 			stage.setResizable(false);
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -4100,10 +4101,6 @@ public class HomeController extends Controller {
 		//a.getDialogPane().getStylesheets().add(getClass().getResource("/styleFile/application.css").toExternalForm());
 		a.setTitle("Boucle infinie");
 		a.setContentText( "Le circuit entraine une boucle infinie !");
-		a.initOwner(homeWindow);
-		a.initStyle(StageStyle.UTILITY);
-		a.setX(homeWindow.getX()+500);
-		a.setY(homeWindow.getY()+250);
 		a.showAndWait();
 	}
 	public void importCircuit() {

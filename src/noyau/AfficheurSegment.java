@@ -1,11 +1,9 @@
 package noyau;
 
-import com.sun.org.apache.bcel.internal.generic.IfInstruction;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 
 public class AfficheurSegment extends Composant{
 	
