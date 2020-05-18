@@ -14,7 +14,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	 */
 	private static final long serialVersionUID = -1243246494701808257L;
 	protected Fil entreeHorloge = null;
-	protected EtatLogique etatPrecHorloge;
+	protected EtatLogique etatPrecHorloge = EtatLogique.ZERO;
 	protected Fil clear = null;
 	protected Fil load = null;
 	protected Front front;
@@ -56,10 +56,6 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 				if(info != null) {
 					info.setRelier(false);
 				}				
-//				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(entreeHorloge);
-//				for (InfoPolyline infoPolyline : resList) {
-//					infoPolyline.setRelier(false);
-//				}
 			}
 		}
 		if (clear.getSource() != null) { // derelier le clear
@@ -71,10 +67,6 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 				if(info != null) {
 					info.setRelier(false);
 				}				
-//				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(clear);
-//				for (InfoPolyline infoPolyline : resList) {
-//					infoPolyline.setRelier(false);
-//				}
 			}
 		}
 
@@ -274,6 +266,8 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 
 	public void setFront(Front front) {
 		this.front = front;
+		if(front.equals(Front.Front_Descendant))
+			etatPrecHorloge = EtatLogique.ONE;
 	}
 
 }

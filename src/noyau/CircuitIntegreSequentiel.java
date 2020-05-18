@@ -90,16 +90,16 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 	@Override
 	public void setCord() { /// seter les coorconnes du circuit integre
 		// TODO Auto-generated method stub
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 8.2), 0);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 23.4), 1);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 39.6), 2);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 54.6), 3);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 69.5), 4);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 85.3), 5);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 100.2), 6);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 115.2), 7);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 131.2), 8);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 146.4), 9);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 8.2), 0);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 23.4), 1);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 39.6), 2);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 54.6), 3);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 69.5), 4);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 85.3), 5);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 100.2), 6);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 115.2), 7);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 131.2), 8);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 146.4), 9);
 
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(80, 8.2), 0);
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(80, 23.4), 1);
@@ -112,7 +112,7 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(80, 131.2), 8);
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(80, 146.4), 9);
 		
-		lesCoordonnees.setCordHorloge(new Coordonnees(44, 160));
+		lesCoordonnees.setCordHorloge(new Coordonnees(42, 160));
 		
 	}
 	
@@ -137,7 +137,7 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 			listeCercles.add(circle);
 		}		
 		for (int i = 0; i < nombreEntree; i++) { /// generer les circles d'entrees du circuit
-			posX = x + lesCoordonnees.getCordEntreeInIndex(i).getX();
+			posX = x + lesCoordonnees.getCordEntreeInIndex(i).getX()+5;
 			posY = y + lesCoordonnees.getCordEntreeInIndex(i).getY() ;
 			circle = new Circle(5);
 			circle.setFill(Color.BLACK);
@@ -156,7 +156,7 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 		}
 		int j = 0;
 		for (int i = nombreSortie; i < nombreEntree+nombreSortie; i++) {
-			listeCercles.get(i).setLayoutX(x + lesCoordonnees.getCordEntreeInIndex(j).getX());
+			listeCercles.get(i).setLayoutX(x + lesCoordonnees.getCordEntreeInIndex(j).getX()+5);
 			listeCercles.get(i).setLayoutY(y + lesCoordonnees.getCordEntreeInIndex(j).getY());
 			j++;
 		}

@@ -3599,7 +3599,7 @@ public class HomeController extends Controller {
 				principale.getPoints().addAll(infoPolyline.getNoeudLinePrincipale());
 				Polyline polySauv=containsPolyInSauv(principale);
 				if ( polySauv== null) {
-					workSpace.getChildren().add(principale);
+					workSpace.getChildren().add(0,principale);
 					ajouterGeste(principale);
 					sauv.add(principale);
 					infoPolyline.setLinePrincipale(principale);
@@ -3613,7 +3613,7 @@ public class HomeController extends Controller {
 					parent.getPoints().addAll(infoPolyline.getNoeudLineParent());
 					Polyline polySauv2=containsPolyInSauv(parent);
 					if ( polySauv2== null) {
-						workSpace.getChildren().add(parent);
+						workSpace.getChildren().add(0,parent);
 						ajouterGeste(parent);
 						sauv.add(parent);
 						infoPolyline.setLineParent(parent);
@@ -3776,7 +3776,7 @@ public class HomeController extends Controller {
 			ArrayList<InfoPolyline> resArrayList =  Circuit.getListFromPolyline(parent.getLinePrincipale());
 			resArrayList.add(resArrayList.indexOf(parent)+1,infoPolyline);
 		}
-		workSpace.getChildren().add(infoPolyline.getLinePrincipale());
+		workSpace.getChildren().add(0,infoPolyline.getLinePrincipale());
 		if (infoPolyline.isRelier()) {
 			Composant source = filSortieFil.getSource();
 			int sortie = source.numCmpSorties(filSortieFil);

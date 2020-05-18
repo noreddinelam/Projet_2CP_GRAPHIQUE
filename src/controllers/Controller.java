@@ -113,7 +113,7 @@ public abstract class Controller {
 			polyline.setStrokeWidth(3);
 			polyline.setStrokeType(StrokeType.CENTERED);
 			polyline.setCursor(Cursor.HAND);
-			workSpace.getChildren().add(polyline);
+			workSpace.getChildren().add(0,polyline);
 			ajouterGeste(polyline);
 		}
 	}
@@ -195,7 +195,7 @@ public abstract class Controller {
 						x = event.getX();
 						y = event.getY();
 						Polyline line2 = initialser(x, y);
-						workSpace.getChildren().add(line2);
+						workSpace.getChildren().add(0,line2);
 						line2.getPoints().clear();
 						line2.getPoints().addAll(line.getPoints());
 						Circuit.remplacerPere(line, line2);
@@ -432,9 +432,13 @@ public abstract class Controller {
 		 * entree = -7 :preset 
 		 * entree = -8 :load
 		 */
-		Double XImg = imgCmp.getLayoutX();
-		Double Yimg = imgCmp.getLayoutY();
-		if ((Xfil >= XImg) && (XImg + imgCmp.getFitWidth() > Xfil) && (Yfil >= Yimg)
+		double XImg = imgCmp.getLayoutX();
+		double Yimg = imgCmp.getLayoutY();
+		double ci = 0; 
+		if(imgCmp.getId().equals("CircuitIntegre") || imgCmp.getId().equals("CircuitIntegreSequentiel")) //un traitement pour les coordonnées des circuit integrées
+			ci = 5;
+		
+		if ((Xfil >= XImg-ci) && (XImg + imgCmp.getFitWidth() > Xfil) && (Yfil >= Yimg)
 				&& (Yimg + imgCmp.getFitHeight() > Yfil)) {
 			Composant cmp = Circuit.getCompFromImage(imgCmp);
 			Coordonnees tabCoord[] = cmp.getLesCoordonnees().getCordEntree();

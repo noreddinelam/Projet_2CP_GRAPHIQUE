@@ -80,16 +80,16 @@ public class CircuitIntegre extends Composant implements Serializable{
 	@Override
 	public void setCord() {/// seter les coordonnees des entrees est sorties du composant
 		// TODO Auto-generated method stub
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 8.2), 0);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 23.4), 1);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 39.6), 2);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 54.6), 3);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 69.5), 4);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 85.3), 5);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 100.2), 6);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 115.2), 7);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 131.2), 8);
-		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(0, 146.4), 9);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 8.2), 0);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 23.4), 1);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 39.6), 2);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 54.6), 3);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 69.5), 4);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 85.3), 5);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 100.2), 6);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 115.2), 7);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 131.2), 8);
+		lesCoordonnees.setCordEntreeInIndex(new Coordonnees(-5, 146.4), 9);
 		
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(80, 8.2), 0);
 		lesCoordonnees.setCordSortieInIndex(new Coordonnees(80, 23.4), 1);
@@ -110,7 +110,7 @@ public class CircuitIntegre extends Composant implements Serializable{
 		Circle circle = null;
 		double posX ;
 		double posY ;
-		for (int i = 0; i < nombreSortie; i++) { /// les circles d'entrees
+		for (int i = 0; i < nombreSortie; i++) { /// les circles de sorties
 			posX = x + lesCoordonnees.getCordSortieInIndex(i).getX()+4;
 			posY = y + lesCoordonnees.getCordSortieInIndex(i).getY();
 			circle = new Circle(5); 
@@ -120,8 +120,8 @@ public class CircuitIntegre extends Composant implements Serializable{
 			circle.setLayoutY(posY);
 			listeCercles.add(circle);
 		}		
-		for (int i = 0; i < nombreEntree; i++) { /// les circles de sorties
-			posX = x + lesCoordonnees.getCordEntreeInIndex(i).getX();
+		for (int i = 0; i < nombreEntree; i++) { /// les circles d'entrées
+			posX = x + lesCoordonnees.getCordEntreeInIndex(i).getX()+5;
 			posY = y + lesCoordonnees.getCordEntreeInIndex(i).getY() ;
 			circle = new Circle(5);
 			circle.setFill(Color.BLACK);
@@ -140,7 +140,7 @@ public class CircuitIntegre extends Composant implements Serializable{
 		}
 		int j = 0;
 		for (int i = nombreSortie; i < nombreEntree+nombreSortie; i++) {
-			listeCercles.get(i).setLayoutX(x + lesCoordonnees.getCordEntreeInIndex(j).getX());
+			listeCercles.get(i).setLayoutX(x + lesCoordonnees.getCordEntreeInIndex(j).getX()+5);
 			listeCercles.get(i).setLayoutY(y + lesCoordonnees.getCordEntreeInIndex(j).getY());
 			j++;
 		}
