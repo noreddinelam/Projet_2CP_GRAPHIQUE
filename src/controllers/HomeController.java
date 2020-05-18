@@ -743,10 +743,9 @@ public class HomeController extends Controller {
                     t1.join(1);
 					horlogeDeCercuit.setImage( new Image("/Horloge/0.png"));
 					horloge.stop();
-				//	t1.join();
 				
 				} catch (InterruptedException e) {
-					System.out.print("imed");
+					e.printStackTrace();
 				}
 			}
 		}
@@ -1397,8 +1396,8 @@ public class HomeController extends Controller {
 							//Suppression
 							workSpace.getChildren().remove(line);
 							SupprimerPereUndoChanges(line);
+							Circuit.getListFromPolyline(line).remove(new InfoPolyline(line));
 							line.getPoints().clear();
-							Circuit.getListFromPolyline(line).remove(0);
 							listSorties.add(listSorties.indexOf(line), line2);
 							listSorties.remove(line);
 							Circuit.getInfoPolylineFromPolyline(line2).setLineParent(null);
@@ -3615,7 +3614,6 @@ public class HomeController extends Controller {
 				principale.getPoints().addAll(infoPolyline.getNoeudLinePrincipale());
 				Polyline polySauv=containsPolyInSauv(principale);
 				if ( polySauv== null) {
-
 					workSpace.getChildren().add(principale);
 					ajouterGeste(principale);
 					sauv.add(principale);

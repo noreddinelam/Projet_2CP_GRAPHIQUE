@@ -27,6 +27,7 @@ public abstract class Composant implements Serializable{
 	protected boolean stuckOverFlow = false;
 	protected int direction = 0;
 	protected LesCoordonnees lesCoordonnees ;
+	protected int nbEx = 0 ; //regler la boucle infinie de la formation des etages 
 		
 	public Composant(int nombreEntree,String nom) {
 		this.nombreEntree = nombreEntree;
@@ -119,14 +120,18 @@ public abstract class Composant implements Serializable{
 		for(int i=0;i<nombreSortie;i++) // initialiser les fils de sortie
 			sorties[i]=new Fil(this);
 	}
-	
+
 	public void addEtages(ArrayList<Integer> etage) { // pour la construction des etages pour le sequentiels
-		for (int i = 0; i < nombreEntree; i++) {
-			entrees[i].addEtages(etage);
+		if(nbEx <= Circuit.getListeEtages().size() ) {
+			nbEx++;
+			for (int i = 0; i < nombreEntree; i++) {
+				entrees[i].addEtages(etage);
+			}
 		}
 	}
 	public void defaultValue() {//affecter la valeur par defaut au composant apres la simulation 
 		init = false;
+		nbEx = 0;
 		stuckOverFlow = false;
 		for (int i = 0; i < nombreSortie; i++) {
 			etatFinal[i] = EtatLogique.HAUTE_IMPEDANCE;
@@ -347,6 +352,12 @@ public abstract class Composant implements Serializable{
 	}
 	public void setLesCoordonnees(LesCoordonnees lesCoordonnees) {
 		this.lesCoordonnees = lesCoordonnees;
+	}
+	public int getNbEx() {
+		return nbEx;
+	}
+	public void setNbEx(int nbEx) {
+		this.nbEx = nbEx;
 	}
 	
 }

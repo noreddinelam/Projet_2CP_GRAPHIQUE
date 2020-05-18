@@ -90,7 +90,7 @@ public class Sauvegarde implements Serializable {
 				imageView.setId(circuitSauv.lesID.get(entry.getKey()));
 				compMap.put(entry.getKey(), imageView);
 			}
-			Circuit.setCompUtilises(compMap); 
+			Circuit.setCompUtilises(compMap);
 			Circuit.setFilUtilises(circuitSauv.getFilUtilises());
 			Circuit.setEntreesCircuit(circuitSauv.getEntreesCircuit());
 			Circuit.setListeEtages(circuitSauv.getListeEtages());
