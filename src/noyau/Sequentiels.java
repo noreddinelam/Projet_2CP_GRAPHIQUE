@@ -30,7 +30,6 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 		this.front = front ;
 		clear = new Fil(null);
 		clear.setEtatLogiqueFil(EtatLogique.ONE);
-
 	}
 
 	public abstract void genererSortiesSyncho();
@@ -266,8 +265,12 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 
 	public void setFront(Front front) {
 		this.front = front;
-		if(front.equals(Front.Front_Descendant))
+		if (front.equals(Front.Front_Montant)) {
+			etatPrecHorloge = EtatLogique.ZERO;
+		}
+		else {
 			etatPrecHorloge = EtatLogique.ONE;
+		}
 	}
 
 }

@@ -55,7 +55,7 @@ public abstract class Composant implements Serializable{
 				}		
 			} catch (StackOverflowError e) {
 				// TODO: handle exception
-				stuckOverFlow = true;				
+				stuckOverFlow = true;		
 			}
 		}
 	}
@@ -102,13 +102,10 @@ public abstract class Composant implements Serializable{
 		EtatLogique etatLogique = EtatLogique.ONE;
 		while(i<nombreEntree && etatLogique==EtatLogique.ONE) {
 			if(entrees[i] == null) // verifier si toutes les entrees du composants sont reliées a un autre composant 
-				//return null;
 				etatLogique = null;
 			else if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.HAUTE_IMPEDANCE.getNum()) //  verifier si le fil d'entree est en haute impedence . 
-				//return EtatLogique.HAUTE_IMPEDANCE;
 				etatLogique = EtatLogique.HAUTE_IMPEDANCE;
 			else if(entrees[i].getEtatLogiqueFil().getNum() == EtatLogique.ERROR.getNum()) // verifier si le fil d'entree contient une erreur .
-				//return EtatLogique.ERROR;
 				etatLogique = EtatLogique.HAUTE_IMPEDANCE;
 			i++;
 		}

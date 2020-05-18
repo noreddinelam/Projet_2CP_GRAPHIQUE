@@ -295,10 +295,6 @@ public class RegistreDecalage extends Sequentiels {
 				if(info != null) {
 					info.setRelier(false);
 				}				
-//				ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(load);
-//				for (InfoPolyline infoPolyline : resList) {
-//					infoPolyline.setRelier(false);
-//				}
 			}
 		}
 	}

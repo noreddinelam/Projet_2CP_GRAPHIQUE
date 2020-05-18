@@ -138,10 +138,6 @@ public class Demultiplexeur extends Combinatoires{
 					if(info != null) {
 						info.setRelier(false);
 					}				
-//					ArrayList<InfoPolyline> resList = Circuit.getPolylineFromFil(commande[i]);
-//					for (InfoPolyline infoPolyline : resList) {
-//						infoPolyline.setRelier(false);
-//					}
 				}
 			}
 		}

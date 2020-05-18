@@ -16,7 +16,7 @@ public class ComposantNonRelier extends ExceptionProgramme{ /// exception utilis
 	@Override
 	public String getSolution() {
 		// TODO Auto-generated method stub
-		return "Relier toutes les connections du composants";
+		return "Relier toutes les connections du composant";
 	}
 
 }

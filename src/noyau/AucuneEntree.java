@@ -10,13 +10,13 @@ public class AucuneEntree extends ExceptionProgramme{ /// exception generer si l
 	@Override
 	public String getProblem() {
 		// TODO Auto-generated method stub
-		return "Le circuit ne contient pas d'entree";
+		return "Le circuit ne contient pas d'entrées";
 	}
 
 	@Override
 	public String getSolution() {
 		// TODO Auto-generated method stub
-		return "Ajouter des elements d'entree (PIN / HORLOGE)";
+		return "Ajouter des éléments d'entrée (PIN / HORLOGE)";
 	}
 
 }

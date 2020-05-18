@@ -220,9 +220,6 @@ public class Circuit {
 	}
 	public static void initialiser() {// à completer au fur et mesure .
 		
-		/*for (Pin pin : entreesCircuit) { // initialiser les sorties par 0
-			pin.initialiserSortieParZero();  
-		}*/
 		for(Composant cmp : compUtilises.keySet()) {
 			
 			if(cmp.getClass().getSimpleName().equals("Pin")) {
