@@ -2888,8 +2888,10 @@ public class HomeController extends Controller {
 										if(!pin.isHorloge()) {
 											entreCircuit.add(pin);
 										}else {
-											pin.setHorloge(false);
-											ciq.setHorloge(pin);
+											Pin pin2 = new Pin(true, "Pin");
+											Circuit.getEntreesCircuit().remove(pin2);
+											pin2.getSorties()[0] = pin.getSorties()[0];
+											ciq.setHorloge(pin2);
 										}
 									}
 									ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));

@@ -55,7 +55,8 @@ public abstract class Composant implements Serializable{
 				}		
 			} catch (StackOverflowError e) {
 				// TODO: handle exception
-				stuckOverFlow = true;				
+				stuckOverFlow = true;		
+				HomeController.stuckOverFlowAlert();
 			}
 		}
 	}
