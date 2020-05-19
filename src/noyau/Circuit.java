@@ -229,7 +229,9 @@ public class Circuit {
 			}else if(cmp.getClass().getSimpleName().equals("Horloge") || cmp.getClass().getSimpleName().equals("SourceConstante")) {
 				cmp.initialiserSortieParZero();
 			}
-
+			else if (cmp.getClass().equals(CircuitIntegreSequentiel.class)) {
+				((CircuitIntegreSequentiel)cmp).initS();
+			}
 		}	
 		for (Pin pin : entreesCircuit) { // initialiser les pins d'entrees pour le commencement de la simulation
 			pin.evaluer();  

@@ -2886,6 +2886,7 @@ public class HomeController extends Controller {
 									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
 									ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
 									Pin pin2 = new Pin(true, "Pin");
+									Pin sauvPin = null;
 									for (Pin pin : ListTextPin) {
 										if(!pin.isHorloge()) {
 											entreCircuit.add(pin);
@@ -2893,10 +2894,12 @@ public class HomeController extends Controller {
 											Circuit.getEntreesCircuit().remove(pin2);
 											pin2.getSorties()[0] = pin.getSorties()[0];
 											ciq.setHorloge(pin2);
+											sauvPin = pin;
 										}
 									}
 									ArrayList<Composant> arrayList = new ArrayList<Composant>(Circuit.getCompUtilises().keySet());
 									arrayList.add(pin2);
+									arrayList.remove(sauvPin);
 									ciq.setCompUtilises(arrayList);
 									ciq.setEntreesCircuit(entreCircuit);
 									ciq.setSortiesCircuit(ListTextPin2);
@@ -2914,14 +2917,19 @@ public class HomeController extends Controller {
 									Pin pinHorloge = new Pin(true, "horloge");
 									Circuit.getEntreesCircuit().remove(pinHorloge);
 									Circuit.getCompUtilises().remove(pinHorloge);
+									Horloge horloge = null;
 									for (Composant cmp : Circuit.getCompUtilises().keySet()) {
 										if(cmp.getClass().getSimpleName().equals("Horloge")) {
 											pinHorloge.getSorties()[0] = cmp.getSorties()[0];
+											horloge = (Horloge)cmp;
 											break;
 										}
 									}
 									ciq.setHorloge(pinHorloge);
-									ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+									ArrayList<Composant> arrayList = new ArrayList<Composant>(Circuit.getCompUtilises().keySet());
+									arrayList.add(pinHorloge);
+									arrayList.remove(horloge);
+									ciq.setCompUtilises(arrayList);
 									ciq.setEntreesCircuit(entreCircuit);
 									ciq.setSortiesCircuit(ListTextPin2);
 									ciq.setListeEtages(Circuit.getListeEtages());

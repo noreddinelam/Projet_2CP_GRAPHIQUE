@@ -221,19 +221,11 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 	@Override
 	public void initialiser() { /// initialiser les entrees du composant et la liste des sources constantes utillisées
 		// TODO Auto-generated method stub
-		for(Composant cmp : compUtilises) {
-			if(cmp.getClass().getSimpleName().equals("Pin")) {
-				if( ((Pin)cmp).getInput()) 
-					cmp.initialiserSortieParZero();
-
-			}else if(cmp.getClass().getSimpleName().equals("SourceConstante")) {
-				cmp.initialiserSortieParZero();
-			}
-
-		}
+		
 		for (int i=0;i<nombreEntree;i++) {
 			entreesCircuit.get(i).setEtat(entrees[i].getEtatLogiqueFil());
 		}
+		horloge.evaluer();
 		for (int i=0;i<listSouceCte.size();i++) {
 			listSouceCte.get(i).evaluer();	
 		}
@@ -264,6 +256,17 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 	public void forcerInit() { /// forcer initialisation des états précédents
 		for(Sequentiels s : listeEtages) /// initialiser les etats precedents des fils horloge de chaque composant
 			s.etatPrecHorloge = s.entreeHorloge.getEtatLogiqueFil();
+	}
+	
+	public void initS() {
+		for(Composant cmp : compUtilises) {
+			if(cmp.getClass().getSimpleName().equals("Pin")) {
+				if( ((Pin)cmp).getInput()) 
+					cmp.initialiserSortieParZero();
+			}else if(cmp.getClass().getSimpleName().equals("SourceConstante")) {
+				cmp.initialiserSortieParZero();
+			}
+		}
 	}
 	public Pin getHorloge() {
 		return horloge;
