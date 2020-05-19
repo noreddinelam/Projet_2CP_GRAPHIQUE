@@ -14,7 +14,7 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 	 */
 	private static final long serialVersionUID = -1243246494701808257L;
 	protected Fil entreeHorloge = null;
-	protected EtatLogique etatPrecHorloge = EtatLogique.ZERO;
+	protected EtatLogique etatPrecHorloge;
 	protected Fil clear = null;
 	protected Fil load = null;
 	protected Front front;
@@ -162,7 +162,20 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 			Circuit.AjouterListeException(arrayList);	
 		}
 	}
-
+	
+	@Override
+	public void defaultValue() {
+		// TODO Auto-generated method stub
+		super.defaultValue();
+		etatPrecHorloge = EtatLogique.HAUTE_IMPEDANCE;
+//		if (front.equals(Front.Front_Montant)) {
+//			etatPrecHorloge = EtatLogique.ZERO;
+//		}
+//		else {
+//			etatPrecHorloge = EtatLogique.ONE;
+//		}
+	}
+	
 	public ArrayList<Integer> getEtages() {
 		return etages;
 	}
@@ -265,12 +278,12 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 
 	public void setFront(Front front) {
 		this.front = front;
-		if (front.equals(Front.Front_Montant)) {
-			etatPrecHorloge = EtatLogique.ZERO;
-		}
-		else {
-			etatPrecHorloge = EtatLogique.ONE;
-		}
+//		if (front.equals(Front.Front_Montant)) {
+//			etatPrecHorloge = EtatLogique.ZERO;
+//		}
+//		else {
+//			etatPrecHorloge = EtatLogique.ONE;
+//		}
 	}
 
 }

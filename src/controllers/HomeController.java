@@ -2748,6 +2748,8 @@ public class HomeController extends Controller {
 
 	@FXML
 	void importer(ActionEvent event) { /// la fonctionalité importer circuit intégré
+		Stage stage = (Stage)importer.getScene().getWindow();
+		stage.close();
 		workSpace.getChildren().remove(selectionne);
 		final FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(
@@ -2883,17 +2885,19 @@ public class HomeController extends Controller {
 								if(Circuit.occurencePinHorlogee() == 1) { /// si le nombre de pin d'horloge égal à 1
 									ciq = new CircuitIntegreSequentiel("CircuitIntegreSequentiel");
 									ArrayList<Pin> entreCircuit = new ArrayList<Pin>();
+									Pin pin2 = new Pin(true, "Pin");
 									for (Pin pin : ListTextPin) {
 										if(!pin.isHorloge()) {
 											entreCircuit.add(pin);
 										}else {
-											Pin pin2 = new Pin(true, "Pin");
 											Circuit.getEntreesCircuit().remove(pin2);
 											pin2.getSorties()[0] = pin.getSorties()[0];
 											ciq.setHorloge(pin2);
 										}
 									}
-									ciq.setCompUtilises(new ArrayList<Composant>(Circuit.getCompUtilises().keySet()));
+									ArrayList<Composant> arrayList = new ArrayList<Composant>(Circuit.getCompUtilises().keySet());
+									arrayList.add(pin2);
+									ciq.setCompUtilises(arrayList);
 									ciq.setEntreesCircuit(entreCircuit);
 									ciq.setSortiesCircuit(ListTextPin2);
 									ciq.setListSouceCte(Circuit.getListSouceCte());

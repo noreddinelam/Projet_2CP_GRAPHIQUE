@@ -40,6 +40,11 @@ public class Pin extends Composant implements ElementHorloge,ComposantDeChronogr
 	public void evaluer() {
 		if(valider()) // si le composant est pret 
 		{
+			if (horloge == true) {
+				for(Sequentiels s : Circuit.getListeEtages()) { /// initialiser les etats precedents des fils horloge de chaque composant
+					s.etatPrecHorloge = s.entreeHorloge.getEtatLogiqueFil();
+				}
+			}
 			genererSorties(); //executer sa fonction logique et mettre le resultat sur le fil de sortie 
 			
 			for (int i = 0; i < nombreSortie; i++) 

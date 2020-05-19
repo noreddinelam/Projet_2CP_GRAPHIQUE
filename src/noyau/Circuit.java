@@ -313,6 +313,9 @@ public class Circuit {
 		}
 		for(Composant composant : compUtilises.keySet()) {
 			composant.defaultValue();
+			if (composant.getClass().equals(Pin.class)) {
+				((Pin)composant).setHorloge(false);
+			}
 		}
 	}
 	

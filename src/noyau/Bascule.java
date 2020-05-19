@@ -98,7 +98,6 @@ public abstract class Bascule extends Sequentiels{
 		super.defaultValue();
 		sorties[0].setEtat(EtatLogique.ZERO);
 		sorties[1].setEtat(EtatLogique.ONE);
-		
 	}
 	
 	@Override

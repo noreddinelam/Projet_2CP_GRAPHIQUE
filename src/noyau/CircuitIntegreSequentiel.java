@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
@@ -182,7 +181,6 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 			for (Sequentiels b : listeEtages) { // executer tout les composants sequentiels dans un étage donné
 			
 				if (b.getEtages().contains(etage) && b.validerSyncho() && b.sleep == false) { // verifier si l'elt existe dans l'etage à executer 																						  // et verifier si il peut etre executé
-					
 					b.genererSortiesSyncho(); // generer les sorties en mode synchrone
 					b.sleep = true ;
 					
@@ -206,6 +204,8 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 
 		if(entreeHorloge.getEtat().getNum() != horloge.getEtat().getNum()) { /// verifier si on a un front de l'horloge
 			horloge.setEtat(entreeHorloge.getEtatLogiqueFil());
+			for(Sequentiels s : listeEtages) /// initialiser les etats precedents des fils horloge de chaque composant
+				s.etatPrecHorloge = s.entreeHorloge.getEtatLogiqueFil();
 			horloge.evaluer();
 			tictac();
 		}
@@ -221,6 +221,16 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 	@Override
 	public void initialiser() { /// initialiser les entrees du composant et la liste des sources constantes utillisées
 		// TODO Auto-generated method stub
+		for(Composant cmp : compUtilises) {
+			if(cmp.getClass().getSimpleName().equals("Pin")) {
+				if( ((Pin)cmp).getInput()) 
+					cmp.initialiserSortieParZero();
+
+			}else if(cmp.getClass().getSimpleName().equals("SourceConstante")) {
+				cmp.initialiserSortieParZero();
+			}
+
+		}
 		for (int i=0;i<nombreEntree;i++) {
 			entreesCircuit.get(i).setEtat(entrees[i].getEtatLogiqueFil());
 		}
@@ -250,7 +260,11 @@ public class CircuitIntegreSequentiel extends Sequentiels implements Serializabl
 			}
 		}
 	}
-
+	
+	public void forcerInit() { /// forcer initialisation des états précédents
+		for(Sequentiels s : listeEtages) /// initialiser les etats precedents des fils horloge de chaque composant
+			s.etatPrecHorloge = s.entreeHorloge.getEtatLogiqueFil();
+	}
 	public Pin getHorloge() {
 		return horloge;
 	}
