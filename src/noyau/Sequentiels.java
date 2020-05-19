@@ -168,12 +168,6 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 		// TODO Auto-generated method stub
 		super.defaultValue();
 		etatPrecHorloge = EtatLogique.HAUTE_IMPEDANCE;
-//		if (front.equals(Front.Front_Montant)) {
-//			etatPrecHorloge = EtatLogique.ZERO;
-//		}
-//		else {
-//			etatPrecHorloge = EtatLogique.ONE;
-//		}
 	}
 	
 	public ArrayList<Integer> getEtages() {
@@ -278,12 +272,6 @@ public abstract class Sequentiels extends Composant implements ComposantDeChrono
 
 	public void setFront(Front front) {
 		this.front = front;
-//		if (front.equals(Front.Front_Montant)) {
-//			etatPrecHorloge = EtatLogique.ZERO;
-//		}
-//		else {
-//			etatPrecHorloge = EtatLogique.ONE;
-//		}
 	}
 
 }
